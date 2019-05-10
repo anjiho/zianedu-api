@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright(c) 2015 BirdLetter. All rights reserved.
+  ~ This software is the proprietary information of BirdLetter.
+  -->
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>properties</comment>
+    <entry key="zian.oracle.db.url">jdbc:oracle:thin:@zianedu-db.cya2qq1chtth.ap-northeast-2.rds.amazonaws.com:1521:orcl</entry>
+    <entry key="zian.oracle.db.username">zianedu</entry>
+    <entry key="zian.oracle.db.password">wldksdpeb12#$</entry>
+    <entry key="logger.root">${logger.root}</entry>
+    <entry key="logger.level">DEBUG</entry>
+    <entry key="logger.name">STDOUT</entry>
+</properties>

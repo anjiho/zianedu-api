@@ -1,0 +1,79 @@
+documents.txt file-encoding : UTF-8
+======================================================================================
+/                               MessageController                                    /
+======================================================================================
+<문자발송>
+1. CALL URL : domain/message/send_sms
+2. METHOD : POST
+3. TYPE : JSON
+4. JSON PARAM FORMAT :
+[
+    {
+      "send_number":"01012341234",
+      "receive_number":"01011112222",
+      "message":"테스트발송입니다",
+      "reserve_time":"2018-07-23 06:21:00" --> UTC기준시 한국시준시간에서 9시간을 뺸 시간을 입력해야한다.(즉시발송은 공백값으로 세팅)
+    },
+    {
+      "send_number":"01012341234",
+      "receive_number":"01011112222",
+      "message":"테스트발송입니다",
+      "reserve_time":""
+    },
+    ....
+]
+5. RETURN : OK
+
+<문자발송목록조회>
+1. CALL URL : domain/message/sms_send_list
+2. METHOD : GET
+3. TYPE : JSON
+4. PARAM FORMAT : yyyyMM=201807(조회할 년원)
+5. RETURN :
+[
+    {
+        "seqNo": 1,
+        "destNo": "01062585228",
+        "callBack": "01011111111",
+        "msgContents": "송신시험oooo",
+        "msgInstm": 1531860130563,
+        "sendreqTime": 1531860130563,
+        "mobsendTime": null,
+        "reqmsgRecvtm": null,
+        "statusCode": 70,
+        "mobCompany": "0",
+        "titleStr": null,
+        "msgType": "S",
+        "fileName1": null,
+        "fileName2": null,
+        "fileName3": null,
+        "fileName4": null,
+        "fileName5": null,
+        "billId": null,
+        "appEtc1": null,
+        "appEtc2": null
+    },
+    {
+        "seqNo": 2,
+        "destNo": "01062585228",
+        "callBack": "01011111111",
+        "msgContents": "송신시험kjjkh124",
+        "msgInstm": 1531860172453,
+        "sendreqTime": 1531860172453,
+        "mobsendTime": 1531860177000,
+        "reqmsgRecvtm": null,
+        "statusCode": 6,
+        "mobCompany": "16",
+        "titleStr": null,
+        "msgType": "S",
+        "fileName1": null,
+        "fileName2": null,
+        "fileName3": null,
+        "fileName4": null,
+        "fileName5": null,
+        "billId": null,
+        "appEtc1": null,
+        "appEtc2": null
+    },
+    ....
+]
