@@ -1,8 +1,0 @@
-com/zianedu/api/controller/TestController.class
-com/zianedu/api/define/datasource/DataSourceType.class
-com/zianedu/api/config/ConfigHolder.class
-com/zianedu/api/aop/ExecutionDatasourceAspect.class
-com/zianedu/api/define/datasource/RoutingDataSource.class
-com/zianedu/api/mapper/UserMapper.class
-com/zianedu/api/define/datasource/DataSource.class
-com/zianedu/api/define/datasource/ContextHolder.class
