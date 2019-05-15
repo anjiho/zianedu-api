@@ -66,7 +66,7 @@
 
     <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="routingDataSource"/>
-        <property name="typeAliasesPackage" value="com.zianedu.api.dto"/>
+        <property name="typeAliasesPackage" value="com.zianedu.api.vo"/>
         <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:com.zianedu.api.mapper/*.xml"/>
     </bean>
@@ -74,34 +74,29 @@
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean" />
     </bean>
-    <!--
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
-		<constructor-arg index="0" ref="sqlSessionFactoryBean" />
-		<constructor-arg index="1" value="BATCH" />
-	</bean>
-     -->
+
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.zianedu.lms.mapper"/>
+        <property name="basePackage" value="com.zianedu.api.mapper"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
     <!-- Filter -->
 <!--    <bean id="userSessionFilter" class="com.zianedu.lms.filter.UserSessionFilter"/>-->
-    <!-- @ResponseBoby 한글 깨짐 처리 -->
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                    <property name="supportedMediaTypes">
-                        <list>
-                            <value>text/html;charset=UTF-8</value>
-                        </list>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
+<!--     @ResponseBoby 한글 깨짐 처리-->
+<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
+<!--        <property name="messageConverters">-->
+<!--            <list>-->
+<!--                <bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+<!--                    <property name="supportedMediaTypes">-->
+<!--                        <list>-->
+<!--                            <value>text/html;charset=UTF-8</value>-->
+<!--                        </list>-->
+<!--                    </property>-->
+<!--                </bean>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
 
     <!-- ========================= CONFIG OBJECT DEFINITIONS CONFIG ======================== -->
     <bean id="ConfigHolder" class="com.zianedu.api.config.ConfigHolder"/>

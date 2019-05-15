@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-  <display-name>BirdLetter MVC Application</display-name>
+  <display-name>Zianedu API Application</display-name>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -51,15 +51,20 @@
       <param-value>true</param-value>
     </init-param>
   </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
-<!--  <filter>-->
-<!--    <filter-name>SimpleCORSFilter</filter-name>-->
-<!--    <filter-class>com.mindedu.api.filter.SimpleCORSFilter</filter-class>-->
-<!--  </filter>-->
-<!--  <filter-mapping>-->
-<!--    <filter-name>SimpleCORSFilter</filter-name>-->
-<!--    <url-pattern>/*</url-pattern>-->
-<!--  </filter-mapping>-->
+
+  <filter>
+    <filter-name>SimpleCORSFilter</filter-name>
+    <filter-class>com.zianedu.api.filter.SimpleCORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SimpleCORSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
 
   <!--<filter>
@@ -89,10 +94,6 @@
     <!--<url-pattern>/*</url-pattern>-->
   <!--</filter-mapping>-->
 
-  <filter-mapping>
-    <filter-name>encodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
   <!--<filter-mapping>
      <filter-name>jsonFilter</filter-name>
      <url-pattern>/*</url-pattern>

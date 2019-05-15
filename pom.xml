@@ -61,6 +61,7 @@
                     <server>Dev_TomcatServer</server>
                     <path>/</path>
                     <port>9090</port>
+                    <uriEncoding>UTF-8</uriEncoding>
                     <!--<url>http://192.168.0.8:8000/manager/text</url>-->
                 </configuration>
 

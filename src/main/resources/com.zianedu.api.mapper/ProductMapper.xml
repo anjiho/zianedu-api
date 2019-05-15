@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.ProductMapper">
+
+    <resultMap id="promotionOnlineSignUpMap" type="OnlineSignUpVO">
+        <result property="jKey" column="J_KEY"/>
+        <result property="stepCtgKey" column="STEP_CTG_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <collection property="onlineSignUpSubjectList" javaType="java.util.ArrayList" resultMap="onlineSignUpSubjectListMap"/>
+    </resultMap>
+    <resultMap id="onlineSignUpSubjectListMap" type="OnlineSubjectListVO">
+        <result property="jGKey" column="J_G_KEY"/>
+        <result property="gKey" column="G_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <result property="startDate" column="START_DATE"/>
+        <result property="endDate" column="END_DATE"/>
+        <result property="name" column="NAME"/>
+    </resultMap>
+
+    <select id="selectAcademySignUp" resultType="AcademySignUpVO">
+        SELECT
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            C.NAME,
+            TO_CHAR(D.STARTDATE, 'YYYY-MM-DD') as startDate,
+            TO_CHAR((D.STARTDATE + D.LIMIT_DAY), 'YYYY-MM-DD') as endDate
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN t_lec D
+        ON C.G_KEY = D.G_KEY
+        WHERE 1=1
+        AND A.USER_KEY = #{userKey}
+        AND A.TYPE = 2
+        AND B.PAY_STATUS = 2
+        ORDER BY B.J_KEY asc
+    </select>
+
+    <select id="selectPromotionOnlineSignUp" resultMap="promotionOnlineSignUpMap">
+        SELECT
+            B.J_KEY,
+            A.J_G_KEY,
+            A.G_KEY,
+            TO_CHAR(B.PAY_DATE, 'YYYY-MM-DD') as startDate,
+            TO_CHAR((B.PAY_DATE + 366), 'YYYY-MM-DD') as endDate,
+            D.step_ctg_key,
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            C.NAME,
+            A.KIND,
+            E.J_LEC_KEY
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND A.J_KEY = (
+                SELECT A.J_KEY
+                FROM T_ORDER A
+                INNER JOIN T_ORDER_GOODS B
+                ON A.J_KEY = B.J_KEY
+                INNER JOIN T_ORDER_PROMOTION C
+                ON B.J_G_KEY = C.J_G_KEY
+                INNER JOIN T_GOODS D
+                ON B.G_KEY = D.G_KEY
+                WHERE A.USER_KEY = #{userKey}
+                AND A.PAY_STATUS = 2
+        )
+        <if test="deviceType != '' and deviceType != null">
+            <if test="deviceType == 'PC'">
+                AND A.KIND IN (100)
+            </if>
+            <if test="deviceType == 'MOBILE'">
+                AND A.KIND IN (101, 102)
+            </if>
+
+        </if>
+        ORDER BY D.STEP_CTG_KEY ASC
+    </select>
+
+    <select id="selectOnlineLectureProgressRate" resultType="Integer">
+        SELECT (SUM(T.REMAIN_TIME) / (SUM(T.VOD_TIME)  * 0.01) ) as progressRate
+        FROM (
+            SELECT
+                Z.CURRI_KEY, Z.NAME, Z.VOD_TIME,
+                NVL((SELECT J_CURRI_KEY FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as J_CURRI_KEY,
+                NVL((SELECT TIME FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as REMAIN_TIME
+            FROM T_LEC_CURRI Z
+            WHERE Z.LEC_KEY = (
+                SELECT C.LEC_KEY
+                FROM T_ORDER_LEC A
+                INNER JOIN T_ORDER_GOODS B
+                ON A.J_G_KEY = B.J_G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                WHERE A.J_LEC_KEY = #{jLecKey}
+            )
+        ) T
+    </select>
+</mapper>

@@ -2,5 +2,89 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.UserMapper">
 
+    <select id="selectUserInfo" resultType="TUserVO">
+        SELECT
+            USER_KEY, USER_ID, INDATE, NAME, AUTHORITY, BIRTH, LUNAR, GENDER, TELEPHONE, TELEPHONE_MOBILE,
+            ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, EMAIL, INTEREST_CTG_KEY_0, INTEREST_CTG_KEY_1
+        FROM T_USER
+        WHERE 1=1
+        AND USER_ID = #{userId}
+        AND USER_PWD = #{userPwd}
+    </select>
+
+    <select id="selectUserCount" resultType="Integer">
+        SELECT COUNT ( USER_KEY ) FROM T_USER
+        WHERE 1=1
+        AND USER_ID = #{userId}
+        AND USER_PWD = #{userPwd}
+    </select>
+
+    <select id="selectDuplicatedUserId" resultType="Integer">
+        SELECT COUNT ( USER_KEY ) FROM T_USER
+        WHERE 1=1
+        AND USER_ID = #{userId}
+    </select>
+
+    <select id="selectUserInfoByUserKey" resultType="TUserVO">
+        SELECT
+            USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE,
+            RECV_SMS, RECV_EMAIL, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, INTEREST_CTG_KEY_0
+        FROM T_USER
+        WHERE 1=1
+        AND USER_KEY = #{userKey}
+    </select>
+
+    <select id="selectUserCountAtChangePasswd" resultType="Integer">
+        SELECT COUNT ( USER_KEY ) FROM T_USER
+        WHERE 1=1
+        AND USER_KEY = #{userKey}
+        AND USER_PWD = #{userPwd}
+    </select>
+
+    <insert id="insertUserInfo" parameterType="TUserVO">
+        <selectKey resultType="Integer" keyProperty="userKey" order="BEFORE">
+            SELECT T_USER_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_USER
+        (
+            USER_KEY, C_KEY, USER_ID, INDATE, NAME, AUTHORITY, STATUS, PWD, BIRTH, LUNAR, GENDER, TELEPHONE,
+            TELEPHONE_MOBILE, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, EMAIL, RECV_SMS, RECV_EMAIL,
+            WELFARE_DC_PERCENT, GRADE, INTEREST_CTG_KEY_0, INTEREST_CTG_KEY_1, IS_MOBILE_REG,
+            ADMIN_AUTHORITY_KEY, GRADE_G_KEY, GRADE_PRICE, NOTE, USER_PWD, CERT_CODE
+        )
+        VALUES
+        (
+            #{userKey}, 100, #{userId}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'), #{name}, #{authority}, 10, #{pwd}, #{birth}, #{lunar}, #{gender}, #{telephone},
+            #{telephoneMobile}, #{zipcode}, #{addressRoad}, #{addressNumber}, #{address}, #{email}, #{recvSms}, #{recvEmail},
+            0, #{grade}, #{interestCtgKey0}, 0, #{isMobileReg},
+            #{adminAuthorityKey}, 0, #{gradePrice}, #{note}, #{userPwd}, #{certCode}
+        )
+    </insert>
+
+    <update id="updateUserInfo" parameterType="TUserVO">
+        UPDATE T_USER
+        <set>
+            <if test="birth != null and birth != ''">BIRTH = #{birth},</if>
+            <if test="email != null and email != ''">EMAIL = #{email},</if>
+            <if test="telephone != null and telephone != ''">TELEPHONE = #{telephone},</if>
+            <if test="telephoneMobile != null and telephoneMobile != ''">TELEPHONE_MOBILE = #{telephoneMobile},</if>
+            <if test="recvSms != null and recvSms > -1">RECV_SMS = #{recvSms},</if>
+            <if test="recvEmail != null and recvEmail > -1">RECV_EMAIL = #{recvEmail},</if>
+            <if test="zipcode != null and zipcode != ''">ZIPCODE = #{zipcode},</if>
+            <if test="addressRoad != null and addressRoad != ''">ADDRESS_ROAD = #{addressRoad},</if>
+            <if test="addressNumber != null and addressNumber != ''">ADDRESS_NUMBER = #{addressNumber},</if>
+            <if test="address != null and address != ''">ADDRESS = #{address},</if>
+            <if test="interestCtgKey0 != null and interestCtgKey0 > -1">INTEREST_CTG_KEY_0 = #{interestCtgKey0},</if>
+        </set>
+        WHERE USER_KEY = #{userKey}
+    </update>
+
+    <update id="updateUserPassword">
+        UPDATE T_USER
+        <set>
+            <if test="userPwd != null and userPwd != ''">USER_PWD = #{userPwd},</if>
+        </set>
+        WHERE USER_KEY = #{userKey}
+    </update>
 
 </mapper>
