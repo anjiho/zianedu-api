@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Created by jihoan on 2017. 11. 2..
+ */
 public class ConfigHolder {
 
     private static ConfigHolder configHolder;
@@ -14,11 +17,11 @@ public class ConfigHolder {
     private String loggerLevel;
     @Value("#{config['logger.name']}")
     private String loggerName;
-    @Value("#{config['board.file.upload.path']}")
-    private String boardFileUploadPath;
+    @Value("#{config['file.domain.url']}")
+    private String fileDomainUrl;
 
-    public static String getBoardFileUploadPath() {
-        return configHolder.boardFileUploadPath;
+    public static String getFileDomainUrl() {
+        return configHolder.fileDomainUrl;
     }
 
     @PostConstruct
@@ -26,4 +29,5 @@ public class ConfigHolder {
         configHolder = this;
         return this;
     }
+
 }

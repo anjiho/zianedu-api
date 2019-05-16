@@ -13,4 +13,5 @@
     <entry key="logger.root">${logger.root}</entry>
     <entry key="logger.level">${logger.level}</entry>
     <entry key="logger.name">${logger.name}</entry>
+    <entry key="file.domain.url">${file.domain.url}</entry>
 </properties>

@@ -1,7 +1,6 @@
 package com.zianedu.api.mapper;
 
-import com.zianedu.api.vo.AcademySignUpVO;
-import com.zianedu.api.vo.OnlineSignUpVO;
+import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,7 +14,24 @@ public interface ProductMapper {
 
     Integer selectOnlineLectureProgressRate(@Param("jLecKey") int jLecKey);
 
+    List<OnlineSignUpVO> selectVideoOnlineSignUp(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
+
+    OnlineLectureDetailVO selectOnlineLectureDetailInfo(@Param("jLecKey") int jLecKey);
+
+    List<OnlineLectureSubjectListVO> selectOnlineLectureSubjectList(@Param("jLecKey") int jLecKey);
+
+    List<TGoodsReviewVO> selectGoodsReviewList(@Param("jLecKey") int jLecKey, @Param("startNumber") int startNumber,
+                                               @Param("listLimitNumber") int listLimitNumber);
+
+    Integer selectGoodsReviewListCount(@Param("jLecKey") int jLecKey);
+
+    VideoPausePopupVO selectVideoPauseRequestPopup(@Param("jLecKey") int jLecKey);
+
+    Integer selectTOrderLecPauseCnt(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
+    Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
     /** UPDATE **/
+    void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
 }

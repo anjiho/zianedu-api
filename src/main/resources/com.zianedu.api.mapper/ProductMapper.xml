@@ -15,6 +15,7 @@
         <result property="startDate" column="START_DATE"/>
         <result property="endDate" column="END_DATE"/>
         <result property="name" column="NAME"/>
+        <result property="pauseCnt" column="PAUSE_CNT"/>
     </resultMap>
 
     <select id="selectAcademySignUp" resultType="AcademySignUpVO">
@@ -73,12 +74,11 @@
         )
         <if test="deviceType != '' and deviceType != null">
             <if test="deviceType == 'PC'">
-                AND A.KIND IN (100)
+                AND A.KIND IN (100, 102)
             </if>
             <if test="deviceType == 'MOBILE'">
                 AND A.KIND IN (101, 102)
             </if>
-
         </if>
         ORDER BY D.STEP_CTG_KEY ASC
     </select>
@@ -102,4 +102,179 @@
             )
         ) T
     </select>
+
+    <select id="selectVideoOnlineSignUp" resultMap="promotionOnlineSignUpMap">
+        SELECT
+            B.J_KEY,
+            A.J_G_KEY,
+            A.G_KEY,
+            TO_CHAR(E.start_dt, 'YYYY-MM-DD') as startDate,
+            TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') as endDate,
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            C.NAME,
+            A.KIND,
+            E.J_LEC_KEY,
+            E.PAUSE_CNT
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND B.user_key = #{userKey}
+        AND B.pay_status = 2
+        AND A.j_pm_key = 0
+        AND E.PAUSE_DAY IS NOT NULL
+        <![CDATA[
+            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <![CDATA[
+            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <if test="deviceType != '' and deviceType != null">
+            <if test="deviceType == 'PC'">
+                AND A.KIND IN (100, 102)
+            </if>
+            <if test="deviceType == 'MOBILE'">
+                AND A.KIND IN (101, 102)
+            </if>
+        </if>
+        ORDER BY A.STEP_CTG_KEY ASC
+    </select>
+
+    <select id="selectOnlineLectureDetailInfo" resultType="OnlineLectureDetailVO">
+        SELECT
+            B.J_KEY,
+            A.J_G_KEY,
+            A.G_KEY,
+            CONCAT( CONCAT( TO_CHAR(E.start_dt, 'YYYY-MM-DD'), ' ~ '),  TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD')) as lectureDate,
+            (SELECT COUNT(*) FROM t_lec_curri WHERE t_lec_curri.lec_key = D.lec_key) as lectureCnt,
+            E.status,
+            H.NAME as teacherName,
+            C.NAME as lectureName,
+            G.image_teacher_list,
+            C.description,
+            E.J_LEC_KEY
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK F
+        ON C.g_key = F.G_KEY
+        INNER JOIN T_TEACHER G
+        ON F.TEACHER_KEY = G.TEACHER_KEY
+        INNER JOIN T_USER H
+        ON G.USER_KEY = H.USER_KEY
+        WHERE 1=1
+        AND E.j_lec_key = #{jLecKey}
+    </select>
+
+    <select id="selectOnlineLectureSubjectList" resultType="OnlineLectureSubjectListVO">
+        SELECT T.*, (T.REMAIN_TIME / (T.VOD_TIME  * 0.01)) as progressRate
+        FROM (
+            SELECT
+                Z.CURRI_KEY, Z.NAME, Z.VOD_TIME, Z.DATA_FILE, Z.VOD_FILE_HIGH, Z.VOD_FILE_LOW, Z.VOD_FILE_MOBILE_HIGH, Z.VOD_FILE_MOBILE_LOW,
+                NVL((SELECT J_CURRI_KEY FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as J_CURRI_KEY,
+                NVL((SELECT TIME FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as REMAIN_TIME
+            FROM T_LEC_CURRI Z
+            WHERE Z.LEC_KEY = (
+                SELECT C.LEC_KEY
+                FROM T_ORDER_LEC A
+                INNER JOIN T_ORDER_GOODS B
+                ON A.J_G_KEY = B.J_G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                WHERE A.J_LEC_KEY = #{jLecKey}
+            )
+            AND Z.IS_SHOW = 1
+            ORDER BY Z.CURRI_KEY ASC
+        ) T
+    </select>
+
+    <select id="selectGoodsReviewList" resultType="TGoodsReviewVO">
+        SELECT
+            G_REVIEW_KEY,
+            TO_CHAR(INDATE, 'YYYY-MM-DD') as indate,
+            TITLE, CONTENTS, POINT
+            FROM T_GOODS_REVIEW
+        WHERE G_KEY = (
+                SELECT C.G_KEY
+                FROM T_ORDER_LEC A
+                INNER JOIN T_ORDER_GOODS B
+                ON A.J_G_KEY = B.J_G_KEY
+                INNER JOIN T_GOODS C
+                ON B.G_KEY = C.G_KEY
+                WHERE A.J_LEC_KEY = #{jLecKey}
+        )
+        ORDER BY G_REVIEW_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectGoodsReviewListCount" resultType="Integer">
+        SELECT COUNT ( G_REVIEW_KEY )
+        FROM T_GOODS_REVIEW
+        WHERE G_KEY = (
+                SELECT C.G_KEY
+                FROM T_ORDER_LEC A
+                INNER JOIN T_ORDER_GOODS B
+                ON A.J_G_KEY = B.J_G_KEY
+                INNER JOIN T_GOODS C
+                ON B.G_KEY = C.G_KEY
+                WHERE A.J_LEC_KEY = #{jLecKey}
+        )
+    </select>
+
+    <select id="selectVideoPauseRequestPopup" resultType="VideoPausePopupVO">
+        SELECT A.J_LEC_KEY, C.NAME,
+               TO_CHAR(A.START_DT, 'YYYY-MM-DD') as startDt,
+               TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt
+        FROM T_ORDER_LEC A
+        INNER JOIN T_ORDER_GOODS B
+        ON A.J_G_KEY = B.J_G_KEY
+        INNER JOIN T_GOODS C
+        ON B.G_KEY = C.G_KEY
+        WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
+    <select id="selectTOrderLecPauseCnt" resultType="Integer">
+        SELECT PAUSE_CNT FROM T_ORDER_LEC WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
+    <update id="updateTOrderLecPauseCnt" parameterType="Integer">
+        UPDATE T_ORDER_LEC
+        <set>
+            <if test="pauseDay == 0">
+                PAUSE_START_DT = '',
+            </if>
+            <if test="pauseDay > 0">
+                PAUSE_START_DT = sysdate,
+                PAUSE_CNT = PAUSE_CNT + 1,
+            </if>
+            PAUSE_DAY = #{pauseDay}
+        </set>
+        WHERE J_LEC_KEY = #{jLecKey}
+    </update>
+
+    <insert id="insertTOrderLecStartStopLog" parameterType="TOrderLecStartStopLogVO">
+        <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
+            SELECT T_ORDER_LEC_START_STOP_LOG_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_LEC_START_STOP_LOG
+        (
+            IDX, J_LEC_KEY, LOG_TYPE
+        )
+        VALUES
+        (
+            #{idx}, #{jLecKey}, #{logType}
+        )
+    </insert>
 </mapper>
