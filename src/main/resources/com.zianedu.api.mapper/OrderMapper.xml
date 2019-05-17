@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.OrderMapper">
+
+    <select id="selectCartList" resultType="CartListVO">
+        SELECT
+            A.CART_KEY, A.G_KEY, A.PRICE_KEY, A.GROUP_ID, B.KIND, B.PRICE, B.SELL_PRICE, C.NAME as goodsName,
+            C.TYPE, A.CNT, A.FREEBIE_PARENT_KEY, A.LINK_PRICE, A.LINK_SELL_PRICE, A.LINK_POINT,
+            A.EXTEND_DAY, C.IS_FREEBIE_DELIVERY_FREE, A.CTG_KEY, 0 as PM_TYPE
+        FROM T_CART A
+        INNER JOIN T_GOODS_PRICE_OPTION B
+        ON A.PRICE_KEY = B.PRICE_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        WHERE 1=1
+        AND A.USER_KEY = #{userKey}
+        <if test="type > 0">
+            AND C.TYPE = #{type}
+        </if>
+        AND C.IS_SELL = 1
+        AND A.IS_DELETE = 0
+        AND A.IS_DIRECT = 0
+        AND A.J_ID IS NULL
+        AND A.EXTEND_DAY = -1
+    </select>
+</mapper>

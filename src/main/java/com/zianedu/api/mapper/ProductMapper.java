@@ -29,6 +29,10 @@ public interface ProductMapper {
 
     Integer selectTOrderLecPauseCnt(@Param("jLecKey") int jLecKey);
 
+    List<OnlineVideoPauseVO> selectVideoOnlinePauseList(@Param("userKey") int userKey);
+
+    List<OnlineVideoEndVO> selectVideoOnlineEndList(@Param("userKey") int userKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

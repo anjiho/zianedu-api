@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
+import com.zianedu.api.define.datasource.GoodsKindType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiPagingResultDTO;
@@ -217,6 +218,55 @@ public class MyPageService extends PagingSupport {
             }
         }
         return new ApiResultCodeDTO("J_LEC_KEY", jLecKey, resultCode);
+    }
+
+    /**
+     * 일시정지강좌 목록
+     * @param userKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getOnlineVideoPauseList(int userKey) {
+        int resultCode = OK.value();
+
+        List<OnlineVideoPauseVO> videoPauseList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            videoPauseList = productMapper.selectVideoOnlinePauseList(userKey);
+            if (videoPauseList != null || videoPauseList.size() > 0) {
+                lectureProgressRateRepository.injectLectureProgressRateAny(videoPauseList);
+            }
+        }
+        return new ApiResultListDTO(videoPauseList, resultCode);
+    }
+
+    /**
+     * 일시정지강좌 목록
+     * @param userKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getOnlineVideoEndList(int userKey) {
+        int resultCode = OK.value();
+
+        List<OnlineVideoEndVO> videoEndList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            videoEndList = productMapper.selectVideoOnlineEndList(userKey);
+            if (videoEndList.size() > 0 || videoEndList != null) {
+                for (OnlineVideoEndVO videoEndVO : videoEndList) {
+                    videoEndVO.setKindName(GoodsKindType.getGoodsKindName(videoEndVO.getKind()));
+                    if (videoEndVO.getExtendDay() == -1) {
+                        videoEndVO.setExtendDayName("");
+                    } else {
+                        videoEndVO.setExtendDayName(videoEndVO.getExtendDay() + "일 재수강");
+                    }
+                }
+            }
+        }
+        return new ApiResultListDTO(videoEndList, resultCode);
     }
 
 }

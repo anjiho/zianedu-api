@@ -104,4 +104,22 @@ public class MyPageController {
         return myPageService.requestVideoStartStop(jLecKey, pauseDay, requestType);
     }
 
+    @RequestMapping(value = "/getOnlineVideoPauseList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 일시정지강좌 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getOnlineVideoPauseList(@PathVariable("userKey") int userKey) {
+        return myPageService.getOnlineVideoPauseList(userKey);
+    }
+
+    @RequestMapping(value = "/getOnlineVideoEndList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강완료강좌 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getOnlineVideoEndList(@PathVariable("userKey") int userKey) {
+        return myPageService.getOnlineVideoEndList(userKey);
+    }
+
 }

@@ -1,79 +1,269 @@
 documents.txt file-encoding : UTF-8
 ======================================================================================
-/                               MessageController                                    /
+/                               MyPageController                                    /
 ======================================================================================
-<문자발송>
-1. CALL URL : domain/message/send_sms
-2. METHOD : POST
-3. TYPE : JSON
-4. JSON PARAM FORMAT :
-[
-    {
-      "send_number":"01012341234",
-      "receive_number":"01011112222",
-      "message":"테스트발송입니다",
-      "reserve_time":"2018-07-23 06:21:00" --> UTC기준시 한국시준시간에서 9시간을 뺸 시간을 입력해야한다.(즉시발송은 공백값으로 세팅)
-    },
-    {
-      "send_number":"01012341234",
-      "receive_number":"01011112222",
-      "message":"테스트발송입니다",
-      "reserve_time":""
-    },
-    ....
-]
-5. RETURN : OK
 
-<문자발송목록조회>
-1. CALL URL : domain/message/sms_send_list
-2. METHOD : GET
-3. TYPE : JSON
-4. PARAM FORMAT : yyyyMM=201807(조회할 년원)
-5. RETURN :
-[
+/myPage/getAcademySignUp/{userKey} 내 강의실 > 학원수강내역
+
+{
+"result": [
     {
-        "seqNo": 1,
-        "destNo": "01062585228",
-        "callBack": "01011111111",
-        "msgContents": "송신시험oooo",
-        "msgInstm": 1531860130563,
-        "sendreqTime": 1531860130563,
-        "mobsendTime": null,
-        "reqmsgRecvtm": null,
-        "statusCode": 70,
-        "mobCompany": "0",
-        "titleStr": null,
-        "msgType": "S",
-        "fileName1": null,
-        "fileName2": null,
-        "fileName3": null,
-        "fileName4": null,
-        "fileName5": null,
-        "billId": null,
-        "appEtc1": null,
-        "appEtc2": null
+    "ctgName": "종합반",
+    "name": "[학원실강] 2019 임업직9급 시험대비 전과목(공통3+임경+조림) 이론종합반[1월 예약접수중]",
+    "startDate": "2019-01-07",
+    "endDate": "2019-03-08"
+    },
+    ...........
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+==================================================================================================================================================
+
+/myPage/getOnlineVideoPauseList/{userKey} 내 강의실 > 일시정지강좌 리스트
+
+{
+    "result": [
+    {
+        "startDate": "2019-04-30",
+        "endDate": "2019-07-09",
+        "stopStartDate": "2019-05-17",
+        "stopEndDate": "2019-05-27",
+        "ctgName": "모의고사",
+        "name": "2019 지방직 시험대비 임찬호 한국사 동형모의고사 강의 [5%적립]",
+        "kind": 102,
+        "pauseCnt": 1,
+        "pauseDay": 10,
+        "progressRate": 0,
+        "progressRateName": "0%",
+        "jlecKey": 570586,
+        "gkey": 106979,
+        "jkey": 312645,
+        "jgkey": 729740
+    }
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+==================================================================================================================================================
+
+/myPage/getGoodsReview/{jLecKey} 내 강의실 > 수강중인강좌 > 수강중인강좌 상세정보 > 회원리뷰
+
+{
+"cnt": 36,
+"result": [
+    {
+    "indate": "2019-03-25",
+    "title": "강의 잘 듣고 있습니다.",
+    "contents": "내용을 알차지만 말이 좀 빠르셔서 아쉽습니다..",
+    "point": 4,
+    "gkey": 0,
+    "greviewKey": 26750
     },
     {
-        "seqNo": 2,
-        "destNo": "01062585228",
-        "callBack": "01011111111",
-        "msgContents": "송신시험kjjkh124",
-        "msgInstm": 1531860172453,
-        "sendreqTime": 1531860172453,
-        "mobsendTime": 1531860177000,
-        "reqmsgRecvtm": null,
-        "statusCode": 6,
-        "mobCompany": "16",
-        "titleStr": null,
-        "msgType": "S",
-        "fileName1": null,
-        "fileName2": null,
-        "fileName3": null,
-        "fileName4": null,
-        "fileName5": null,
-        "billId": null,
-        "appEtc1": null,
-        "appEtc2": null
+    "indate": "2019-03-24",
+    "title": "좋습니다",
+    "contents": "이해도 쉽고 알기쉽게 설명해주셔서 금방 진도가 나가네요",
+    "point": 5,
+    "gkey": 0,
+    "greviewKey": 26737
     },
-    ....
-]
+    ......
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+==================================================================================================================================================
+
+/myPage/getOnlineLectureDetail/{jLecKey} 내 강의실 > 수강중인강좌 > 수강중인강좌 상세정보
+
+{
+    "result": {
+    "lectureDate": "2019-01-03 ~ 2020-01-04",
+    "lectureCnt": 91,
+    "status": 1,
+    "teacherName": "조현준교수님",
+    "lectureName": "[빅데이터 1.0] 2019 시험대비 조현준 정보보호론 기본+심화 이론강의 [5%적립]",
+    "imageTeacherList": "100/teacher/조상진_중.png",
+    "description": "",
+    "progressRate": "0%",
+    "teacherImgUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+    "lectureStatusName": "진행중",
+    "lectureCntName": "91강",
+    "jlecKey": 485514,
+    "gkey": 106456,
+    "jkey": 288721,
+    "jgkey": 625110
+},
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/myPage/getOnlineLectureSubjectList/{jLecKey} 내 강의실 > 수강중인강좌 > 수강중인강좌 상세정보 > 강좌목차
+
+{
+"result": [
+    {
+    "curriKey": 120775,
+    "name": "01강 180912_정보보호관리의 개념(정보화사회의 정보보호) P2~",
+    "vodTime": "54",
+    "dataFile": "100\\lec\\2019년이론수업첨부파일.zip",
+    "vodFileLow": "zian/data/protect/01/180912_106456_05_M.mp4",
+    "vodFileHigh": "zian/data/protect/01/180912_106456_05_H.mp4",
+    "vodFileMobileLow": "zian/data/protect/01/180912_106456_05_M.mp4",
+    "vodFileMobileHigh": "zian/data/protect/01/180912_106456_05_H.mp4",
+    "remainTime": 0,
+    "progressRate": 0,
+    "time": "0 / 54",
+    "progressRateName": "0%"
+    },
+....
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/myPage/getPromotionSignUp/{userKey} 내 강의실 > 수강중인강좌(프로모션)
+
+{
+"result": [
+    {
+    "stepCtgKey": 203,
+    "ctgName": "이론",
+    "jkey": 288721,
+    "onlineSignUpSubjectList": [
+        {
+            "ctgName": "이론",
+            "startDate": "2019-01-03",
+            "endDate": "2020-01-04",
+            "name": "2019 시험대비 임찬호 한국사 기초이론 강의[5% 적립]\t",
+            "pauseCnt": 0,
+            "progressRate": 0,
+            "jlecKey": 485538,
+            "gkey": 106304,
+            "jgkey": 625134
+        },
+        .........
+        ]
+    },
+    {
+    "stepCtgKey": 204,
+    "ctgName": "단과",
+    "jkey": 288721,
+    "onlineSignUpSubjectList": [
+        {
+            "ctgName": "단과",
+            "startDate": "2019-01-03",
+            "endDate": "2020-01-04",
+            "name": "2019 전산 계리직 시험대비 프로그래밍언어론 1월이론특강 [5%적립] ",
+            "pauseCnt": 0,
+            "progressRate": 0,
+            "jlecKey": 503832,
+            "gkey": 106772,
+            "jgkey": 647168
+        },
+        .........
+        ]
+    },
+    .........
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/myPage/getVideoPauseRequestPopup/{jLecKey} 내 강의실 > 수강중인강좌 > 동영상 수강중인강좌 > 일시정지 버튼 클릭 팝업 데이터
+
+{
+"result": {
+    "name": "[빅데이터 1.0] 2019 시험대비 조현준 정보보호론 기본+심화 이론강의 [5%적립]",
+    "startDt": "2019-01-03",
+    "endDt": "2020-01-04",
+    "jlecKey": 485514
+},
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/myPage/getVideoSignUp/{userKey} 내 강의실 > 수강중인강좌(동영상)
+{
+"result": [
+{
+    "stepCtgKey": 0,
+    "ctgName": "문제풀이",
+    "jkey": 312644,
+    "onlineSignUpSubjectList": [
+    {
+        "ctgName": "문제풀이",
+        "startDate": "2019-04-30",
+        "endDate": "2019-07-09",
+        "name": "[무료특강] 국가직,서울시,지방직,교육행정직 행정학 천정운 해설 특강 모음",
+        "pauseCnt": 0,
+        "progressRate": 0,
+        "jlecKey": 570585,
+        "gkey": 106974,
+        "jgkey": 729739
+    },
+    ........
+    ]
+}
+],
+"resultCode": 200,
+"resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/myPage/getOnlineVideoEndList/{userKey} 내 강의실 > 수강완료강좌 리스트
+{
+  "result": [
+    {
+      "limitDay": 80,
+      "pauseTotalDay": 42,
+      "startDate": "2017-08-02",
+      "endDate": "2017-12-02",
+      "ctgName": "이론",
+      "name": "2017 시험대비 이학민 응용역학 기본이론강의[5%적립] ",
+      "kind": 101,
+      "kindName": "스마트기기 전용",
+      "pauseCnt": 3,
+      "pauseDay": 0,
+      "extendDay": -1,
+      "extendDayName": "",
+      "jlecKey": 273498,
+      "jkey": 226093,
+      "jgkey": 368861,
+      "gkey": 104826,
+      "jpmKey": 0
+    },
+    {
+      "limitDay": 30,
+      "pauseTotalDay": 36,
+      "startDate": "2017-12-05",
+      "endDate": "2018-02-09",
+      "ctgName": "이론",
+      "name": "2017 시험대비 이학민 응용역학 기본이론강의[5%적립] ",
+      "kind": 101,
+      "kindName": "스마트기기 전용",
+      "pauseCnt": 1,
+      "pauseDay": 0,
+      "extendDay": 30,
+      "extendDayName": "30일 재수강",
+      "jlecKey": 314500,
+      "jkey": 241154,
+      "jgkey": 418849,
+      "gkey": 104826,
+      "jpmKey": 0
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
