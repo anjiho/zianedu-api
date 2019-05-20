@@ -16,6 +16,8 @@ public interface UserMapper {
 
     Integer selectUserCountAtChangePasswd(@Param("userKey") int userId, @Param("userPwd") String userPwd);
 
+    Integer selectUserCurrentPoint(@Param("userKey") int userKey);
+
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 

@@ -321,6 +321,14 @@
         ORDER BY A.J_G_KEY ASC
     </select>
 
+    <select id="selectVideoSubjectCount" resultType="Integer">
+        SELECT COUNT(A.LEC_KEY)
+        FROM T_LEC_CURRI A
+        INNER JOIN T_LEC B
+        ON A.LEC_KEY = B.LEC_KEY
+        WHERE G_KEY = #{gKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

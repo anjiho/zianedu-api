@@ -33,6 +33,8 @@ public interface ProductMapper {
 
     List<OnlineVideoEndVO> selectVideoOnlineEndList(@Param("userKey") int userKey);
 
+    Integer selectVideoSubjectCount(@Param("gKey") int gKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

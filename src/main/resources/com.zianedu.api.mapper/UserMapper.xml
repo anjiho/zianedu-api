@@ -27,7 +27,7 @@
 
     <select id="selectUserInfoByUserKey" resultType="TUserVO">
         SELECT
-            USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE,
+            USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,
             RECV_SMS, RECV_EMAIL, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, INTEREST_CTG_KEY_0
         FROM T_USER
         WHERE 1=1
@@ -39,6 +39,11 @@
         WHERE 1=1
         AND USER_KEY = #{userKey}
         AND USER_PWD = #{userPwd}
+    </select>
+
+    <select id="selectUserCurrentPoint" resultType="Integer">
+         SELECT NVL( SUM(POINT), 0 ) as userPoint
+         FROM T_POINT WHERE USER_KEY = #{userKey}
     </select>
 
     <insert id="insertUserInfo" parameterType="TUserVO">

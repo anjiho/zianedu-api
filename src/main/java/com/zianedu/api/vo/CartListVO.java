@@ -42,4 +42,13 @@ public class CartListVO {
     private int ctgKey;
 
     private int pmType;
+
+    private String priceName;
+
+    private String sellPriceName;
+
+    private String pointName;
+
+    private String subjectCount;
+
 }

@@ -26,4 +26,19 @@ public class GsonUtil {
     public static <T> List<T> getObjectFromJsonArray(JsonArray jsonArray, Class<T> type) {
         return new Gson().fromJson(jsonArray.toString(), new ListOf<>(type));
     }
+
+    public static Integer[] convertToIntegerArrayFromString(String fromStr) {
+        Gson gson = new Gson();
+        Integer[] arr = gson.fromJson(fromStr, Integer[].class);
+        return arr;
+    }
+
+    public static void main(String[] args) {
+        String str = "[1,2]";
+
+        Gson gson = new Gson();
+        Integer[] arr = gson.fromJson(str, Integer[].class);
+
+        System.out.println(arr);
+    }
 }

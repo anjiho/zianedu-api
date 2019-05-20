@@ -1,5 +1,6 @@
 package com.zianedu.api.dto;
 
+import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.vo.CartListVO;
 import lombok.Data;
 
@@ -15,6 +16,14 @@ public class CartResultDTO {
     private int totalPrice;
 
     private int totalPoint;
+
+    private String orderPriceName;
+
+    private String deliveryPriceName;
+
+    private String totalPriceName;
+
+    private String totalPointName;
 
     private List<CartListVO> academyCartInfo;
 
@@ -34,7 +43,11 @@ public class CartResultDTO {
         this.orderPrice = orderPrice;
         this.deliveryPrice = deliveryPrice;
         this.totalPrice = totalPrice;
-        this.totalPrice = totalPoint;
+        this.totalPoint = totalPoint;
+        this.orderPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(orderPrice)) + "원";
+        this.deliveryPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice)) + "원";
+        this.totalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPrice)) + "원";
+        this.totalPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPoint)) + "점";
         this.academyCartInfo = academyCartInfo;
         this.videoCartInfo = videoCartInfo;
         this.promotionCartInfo = promotionCartInfo;

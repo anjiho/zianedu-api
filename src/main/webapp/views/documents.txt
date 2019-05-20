@@ -267,3 +267,288 @@ documents.txt file-encoding : UTF-8
   "resultMsg": "SUCCESS"
 }
 
+======================================================================================
+/                               OrderController                                    /
+======================================================================================
+
+/order/getUserCartInfo/{userKey} 장바구니 리스트
+{
+  "result": {
+    "orderPrice": 726800,   //주문금액
+    "deliveryPrice": 2500,  //배송비
+    "totalPrice": 729300,   //총 주문금액
+    "totalPoint": 13440,    //총 마일리지
+    "orderPriceName": "726,800원",
+    "deliveryPriceName": "2,500원",
+    "totalPriceName": "729,300원",
+    "totalPointName": "13,440점",
+    "academyCartInfo": [    //학원실강 장바구니
+      {
+        "cartKey": 388072,
+        "priceKey": 111025,
+        "groupId": null,
+        "kind": 1,
+        "price": 120000,
+        "sellPrice": 100000,
+        "point": 5000,
+        "goodsName": "[학원실강] 2019 지방직대비 공통(오선희국어+영어+한국사) 실전 동형모의고사 문제풀이반[4월 접수중]",
+        "type": 2,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 0,
+        "linkSellPrice": 0,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 766,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 106919
+      }
+    ],
+    "videoCartInfo": [  //동영상 장바구니
+      {
+        "cartKey": 388064,
+        "priceKey": 110295,
+        "groupId": null,
+        "kind": 102,
+        "price": 140000,
+        "sellPrice": 60000,
+        "point": 3000,
+        "goodsName": "2019 시험대비 오선희 국어 기초이론 강의[5% 적립]",
+        "type": 1,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 0,
+        "linkSellPrice": 0,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 235,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 106321
+      },
+      {
+        "cartKey": 388066,
+        "priceKey": 110424,
+        "groupId": null,
+        "kind": 102,
+        "price": 160000,
+        "sellPrice": 80000,
+        "point": 4000,
+        "goodsName": "2019 오선희 SUN한 국어 기본+심화 이론 개념완성 강의  [5%적립]",
+        "type": 1,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 0,
+        "linkSellPrice": 0,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 235,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 106451
+      }
+    ],
+    "promotionCartInfo": [  //프로모션 장바구니
+      {
+        "cartKey": 388067,
+        "priceKey": 100924,
+        "groupId": null,
+        "kind": 0,
+        "price": 0,
+        "sellPrice": 0,
+        "point": 0,
+        "goodsName": "자유패키지",
+        "type": 5,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 120000,
+        "linkSellPrice": 108000,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 765,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 101400
+      },
+      {
+        "cartKey": 388071,
+        "priceKey": 111133,
+        "groupId": null,
+        "kind": 12,
+        "price": 1100000,
+        "sellPrice": 350000,
+        "point": 0,
+        "goodsName": "2020 공통과목 365지안패스\t",
+        "type": 5,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 0,
+        "linkSellPrice": 0,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 7163,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 107006
+      }
+    ],
+    "bookCartInfo": [   //도서 장바구니
+      {
+        "cartKey": 388065,
+        "priceKey": 110264,
+        "groupId": null,
+        "kind": 0,
+        "price": 32000,
+        "sellPrice": 28800,
+        "point": 1440,
+        "goodsName": "2019 지안국어[10%할인+5%적립] ",
+        "type": 3,
+        "cnt": 1,
+        "freebieParentKey": 0,
+        "linkPrice": 0,
+        "linkSellPrice": 0,
+        "linkPoint": 0,
+        "extendDay": -1,
+        "isFreebieDeliveryFree": 0,
+        "ctgKey": 235,
+        "pmType": 0,
+        "priceName": "120,000원",
+        "sellPriceName": "100,000원",
+        "pointName": "5,000점",
+        "gkey": 106296
+      }
+    ],
+    "examCartInfo": []  //시험 장바구니
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+/order/getOrderSheetInfo/{userKey} 주문서 작성 (cartKeys : [388065,388071,388067,388066,388064,388072])
+
+{
+  "result": {
+    "orderProductList": [
+      {
+        "productType": "도서",
+        "productName": "2019 지안국어[10%할인+5%적립] ",
+        "count": 1,
+        "sellPriceName": "28,800원",
+        "kind": 0
+      },
+      {
+        "productType": "프로모션",
+        "productName": "2020 공통과목 365지안패스\t",
+        "count": 1,
+        "sellPriceName": "350,000원",
+        "kind": 12
+      },
+      {
+        "productType": "프로모션",
+        "productName": "자유패키지",
+        "count": 1,
+        "sellPriceName": "108,000원",
+        "kind": 0
+      },
+      {
+        "productType": "동영상",
+        "productName": "2019 오선희 SUN한 국어 기본+심화 이론 개념완성 강의  [5%적립]",
+        "count": 1,
+        "sellPriceName": "80,000원",
+        "kind": 102
+      },
+      {
+        "productType": "동영상",
+        "productName": "2019 시험대비 오선희 국어 기초이론 강의[5% 적립]",
+        "count": 1,
+        "sellPriceName": "60,000원",
+        "kind": 102
+      },
+      {
+        "productType": "학원실강",
+        "productName": "[학원실강] 2019 지방직대비 공통(오선희국어+영어+한국사) 실전 동형모의고사 문제풀이반[4월 접수중]",
+        "count": 1,
+        "sellPriceName": "100,000원",
+        "kind": 1
+      }
+    ],
+    "productTotalPrice": {
+      "productTotalPrice": 0,
+      "totalPoint": 0,
+      "deliveryPrice": 0,
+      "productTotalPriceName": "726,800원",
+      "totalPointName": "13,440점",
+      "deliveryPriceName": "2,500원"
+    },
+    "productGroupPrice": {
+      "videoTotalPriceName": "140,000원",
+      "academyTotalPriceName": "100,000원",
+      "promotionTotalPriceName": "458,000원",
+      "bookTotalPriceName": "28,800원",
+      "examTotalPriceName": "0원",
+      "deliveryPriceName": "2,500원"
+    },
+    "userPoint": 500,
+    "orderUserInfo": {
+      "userKey": 0,
+      "userId": "juhun213",
+      "indate": "2013-07-12 00:00:00",
+      "name": "박주환",
+      "authority": 10,
+      "status": 0,
+      "pwd": null,
+      "birth": "1995-02-13 00:00:00",
+      "lunar": "0",
+      "gender": 0,
+      "telephone": "02-598-8524",
+      "telephoneMobile": "010-4940-8524",
+      "zipcode": "137845",
+      "addressRoad": null,
+      "addressNumber": null,
+      "address": "958-11 2층",
+      "email": "juhun213@naver.com",
+      "snsFacebook": null,
+      "snsTwiter": null,
+      "snsGoogleplus": null,
+      "recvSms": 1,
+      "recvEmail": 1,
+      "recvSnsFacebook": null,
+      "recvSnsTwiter": null,
+      "recvSnsGoogleplus": null,
+      "welfareDcPercent": 0,
+      "certCode": null,
+      "grade": 0,
+      "interestCtgKey0": 3614,
+      "interestCtgKey1": 0,
+      "isMobileReg": 0,
+      "adminAuthorityKey": 0,
+      "gradeDate": null,
+      "gradeGKey": 0,
+      "gradePrice": 0,
+      "note": null,
+      "appPushKey": null,
+      "appDeviceType": null,
+      "userPwd": null,
+      "ckey": null
+    }
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
