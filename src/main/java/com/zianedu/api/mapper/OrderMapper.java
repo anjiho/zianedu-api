@@ -12,6 +12,21 @@ public interface OrderMapper {
 
     CartListVO selectOrderListByCartKey(@Param("cartKey") int cartKey);
 
+    List<CartListVO> selectOrderListByImmediatelyBuy(@Param("gKeys") List<Integer>gKeys);
+
+    List<CartListVO> selectOrderListByImmediatelyBuyAtFree(@Param("ctgKey") int ctgKey);
+
+    List<OrderDeliveryListVO> selectUserOrderDeliveryList(@Param("userKey") int userKey, @Param("startDate") String startDate,
+                                                    @Param("endDate") String endDate);
+
+    List<String> selectGoodsNameFromOrderList(@Param("jKey") int jKey);
+
+    List<OrderGoodsDetailVO> selectOrderGoodsDetailInfo(@Param("jKey") int jKey);
+
+    DeliveryAddressVO selectDeliveryAddressInfo(@Param("jKey") int jKey);
+
+    TOrderVO selectUserOrderInfo(@Param("jKey") int jKey);
+
 
     /** INSERT **/
 

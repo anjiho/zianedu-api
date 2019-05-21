@@ -26,12 +26,12 @@ public class GroupTotalPriceDTO {
     public GroupTotalPriceDTO(int videoTotalPrice, int academyTotalPrice, int promotionTotalPrice,
                               int bookTotalPrice, int examTotalPrice, int deliveryPrice) {
 
-        this.videoTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(videoTotalPrice)) + "원";
-        this.academyTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(academyTotalPrice)) + "원";
-        this.promotionTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(promotionTotalPrice)) + "원";
-        this.bookTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(bookTotalPrice)) + "원";
-        this.examTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(examTotalPrice)) + "원";
-        this.deliveryPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice)) + "원";
+        this.videoTotalPriceName = videoTotalPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(videoTotalPrice)) + "원";
+        this.academyTotalPriceName = academyTotalPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(academyTotalPrice)) + "원";
+        this.promotionTotalPriceName = promotionTotalPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(promotionTotalPrice)) + "원";
+        this.bookTotalPriceName = bookTotalPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(bookTotalPrice)) + "원";
+        this.examTotalPriceName = examTotalPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(examTotalPrice)) + "원";
+        this.deliveryPriceName = deliveryPrice == 0 ? null : StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice)) + "원";
     }
 
 }

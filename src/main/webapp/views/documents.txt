@@ -440,6 +440,7 @@ documents.txt file-encoding : UTF-8
   "resultMsg": "SUCCESS"
 }
 
+==================================================================================================================================================
 /order/getOrderSheetInfo/{userKey} 주문서 작성 (cartKeys : [388065,388071,388067,388066,388064,388072])
 
 {
@@ -552,3 +553,100 @@ documents.txt file-encoding : UTF-8
   "resultMsg": "SUCCESS"
 }
 
+==================================================================================================================================================
+/order/getUserOrderDeliveryInfo/{userKey} 주문배송조회 리스트 > param : (startDate: yyyy-mm-dd, endDate : yyyy-mm-dd)
+
+{
+  "result": [
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312650,
+      "jid": "190515-0942-333045"
+    },
+    {
+      "price": 200000,
+      "pricePay": 200000,
+      "indate": "2019-05-15",
+      "payStatus": 0,
+      "isCancelRequest": 0,
+      "goodsNameList": [],
+      "payStatusName": "입금예정",
+      "priceName": "200,000원",
+      "jkey": 312649,
+      "jid": "190515-1033-452590"
+    },
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312648,
+      "jid": "190515-0945-254318"
+    },
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312647,
+      "jid": "190515-0944-359034"
+    },
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312646,
+      "jid": "190515-0942-336855"
+    },
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [
+        "2019 지방직 시험대비 임찬호 한국사 동형모의고사 강의 [5%적립]"
+      ],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312645,
+      "jid": "190515-0942-335745"
+    },
+    {
+      "price": 0,
+      "pricePay": 0,
+      "indate": "2019-05-15",
+      "payStatus": 2,
+      "isCancelRequest": 0,
+      "goodsNameList": [
+        "[무료특강] 국가직,서울시,지방직,교육행정직 행정학 천정운 해설 특강 모음"
+      ],
+      "payStatusName": "결제완료",
+      "priceName": "0원",
+      "jkey": 312644,
+      "jid": "190515-0942-333700"
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}

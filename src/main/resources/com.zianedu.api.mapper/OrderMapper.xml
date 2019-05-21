@@ -26,9 +26,9 @@
 
     <select id="selectOrderListByCartKey" resultType="CartListVO">
         SELECT
-        A.CART_KEY, A.G_KEY, A.PRICE_KEY, A.GROUP_ID, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, C.NAME as goodsName,
-        C.TYPE, A.CNT, A.FREEBIE_PARENT_KEY, A.LINK_PRICE, A.LINK_SELL_PRICE, A.LINK_POINT,
-        A.EXTEND_DAY, C.IS_FREEBIE_DELIVERY_FREE, A.CTG_KEY, 0 as PM_TYPE
+            A.CART_KEY, A.G_KEY, A.PRICE_KEY, A.GROUP_ID, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, C.NAME as goodsName,
+            C.TYPE, A.CNT, A.FREEBIE_PARENT_KEY, A.LINK_PRICE, A.LINK_SELL_PRICE, A.LINK_POINT,
+            A.EXTEND_DAY, C.IS_FREEBIE_DELIVERY_FREE, A.CTG_KEY, 0 as PM_TYPE
         FROM T_CART A
         INNER JOIN T_GOODS_PRICE_OPTION B
         ON A.PRICE_KEY = B.PRICE_KEY
@@ -43,6 +43,83 @@
         AND A.IS_DIRECT = 0
         AND A.J_ID IS NULL
         AND A.EXTEND_DAY = -1
+    </select>
+
+    <select id="selectOrderListByImmediatelyBuy" resultType="CartListVO">
+        SELECT
+            A.G_KEY, B.PRICE_KEY, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, A.NAME as goodsName,
+            A.TYPE, A.IS_FREEBIE_DELIVERY_FREE, 0 as PM_TYPE
+        FROM T_GOODS A
+        INNER JOIN T_GOODS_PRICE_OPTION B
+        ON A.G_KEY = B.G_KEY
+        WHERE 1=1
+        AND A.G_KEY IN
+        <foreach collection="gKeys" item="gKey" separator="," open="(" close=")">
+            #{gKey}
+        </foreach>
+    </select>
+
+    <select id="selectOrderListByImmediatelyBuyAtFree" resultType="CartListVO">
+        SELECT
+            A.G_KEY, B.PRICE_KEY, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, A.NAME as goodsName,
+            A.TYPE, A.IS_FREEBIE_DELIVERY_FREE, 0 as PM_TYPE
+        FROM T_GOODS A
+        INNER JOIN T_GOODS_PRICE_OPTION B
+        ON A.G_KEY = B.G_KEY
+        WHERE 1=1
+        AND A.G_KEY IN
+        (
+            SELECT G_KEY FROM T_CATEGORY_GOODS WHERE CTG_KEY = #{ctgKey}
+        )
+        ORDER BY A.EMPHASIS DESC, B.KIND DESC
+    </select>
+
+    <select id="selectUserOrderDeliveryList" resultType="OrderDeliveryListVO">
+        SELECT
+            J_KEY, PRICE, PRICE_PAY,  TO_CHAR(INDATE, 'YYYY-MM-DD') as INDATE,
+            PAY_STATUS, J_ID, IS_CANCEL_REQUEST
+        FROM T_ORDER
+        WHERE USER_KEY = #{userKey}
+        <![CDATA[
+            AND TO_CHAR(INDATE, 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+            AND TO_CHAR(INDATE, 'YYYY-MM-DD') < TO_DATE(#{endDate}, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+            AND PAY_STATUS < 10
+        ]]>
+        ORDER BY J_KEY DESC
+    </select>
+
+    <select id="selectGoodsNameFromOrderList" resultType="String">
+        SELECT B.NAME
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        WHERE A.J_KEY = #{jKey}
+        AND A.J_PM_KEY = 0
+    </select>
+
+    <select id="selectOrderGoodsDetailInfo" resultType="OrderGoodsDetailVO">
+        SELECT
+            A.SELL_PRICE, A.CNT, A.TYPE, A.KIND, A.PM_TYPE, B.NAME as goodsName
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        WHERE A.J_KEY = #{jKey}
+        AND A.J_PM_KEY = 0
+    </select>
+
+    <select id="selectDeliveryAddressInfo" resultType="DeliveryAddressVO">
+         SELECT DELIVERY_NANE as DeliveryName, DELIVERY_TELEPHONE, DELIVERY_TELEPHONE_MOBILE, DELIVERY_EMAIL,
+                DELIVERY_ZIPCODE, DELIVERY_ADDRESS, DELIVERY_ADDRESS_ROAD, DELIVERY_ADDRESS_ADD
+         FROM T_ORDER
+         WHERE J_KEY = #{jKey}
+    </select>
+
+    <select id="selectUserOrderInfo" resultType="TOrderVO">
+        SELECT * FROM T_ORDER WHERE J_KEY = #{jKey}
     </select>
 
     <delete id="deleteCartInfo">
