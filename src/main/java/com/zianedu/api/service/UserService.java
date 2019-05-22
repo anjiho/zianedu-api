@@ -145,5 +145,22 @@ public class UserService extends ApiResultKeyCode {
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO requestMemberSecession(String userName, String userId, String userPassword,
+                                                   String secessionReason, String memo) {
+        int resultCode = OK.value();
+
+        if ("".equals(userName) || "".equals(userId) || "".equals(userPassword)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TUserVO userInfo = userMapper.selectUserInfoAtSecession(userName, userId, userPassword);
+            if (userInfo == null) {
+                resultCode = ZianErrCode.CUSTOM_NOT_FOUNT_USER.code();
+            } else {
+
+            }
+        }
+    }
+
 }
 

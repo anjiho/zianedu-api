@@ -97,6 +97,20 @@ public class UserController {
         return userService.modifyUserPassword(userKey, currentUserPwd, changeUserPwd);
     }
 
+    @RequestMapping(value = "/memberSecession", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("회원 탈퇴")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "currentUserPwd", value = "현재 비말번호", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "changeUserPwd", value = "변경할 비밀번호", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO memberSecession(@RequestParam("userName") int userName,
+                                            @RequestParam("userId") String userId,
+                                            @RequestParam("userPassword") String userPassword) {
+
+
+    }
+
 }
 
 

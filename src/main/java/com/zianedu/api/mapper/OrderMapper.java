@@ -25,7 +25,9 @@ public interface OrderMapper {
 
     DeliveryAddressVO selectDeliveryAddressInfo(@Param("jKey") int jKey);
 
-    TOrderVO selectUserOrderInfo(@Param("jKey") int jKey);
+    PaymentVO selectUserPaymentInfo(@Param("jKey") int jKey);
+
+    List<PointListVO> selectUserPointListInfo(@Param("userKey") int userKey);
 
 
     /** INSERT **/

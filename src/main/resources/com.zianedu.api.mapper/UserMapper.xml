@@ -34,6 +34,17 @@
         AND USER_KEY = #{userKey}
     </select>
 
+    <select id="selectUserInfoAtSecession" resultType="TUserVO">
+        SELECT
+            USER_KEY, USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,
+            RECV_SMS, RECV_EMAIL, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, INTEREST_CTG_KEY_0
+        FROM T_USER
+        WHERE 1=1
+        AND NAME = #{userName}
+        AND USER_ID = #{userId}
+        AND USER_PWD = #{userPassword}
+    </select>
+
     <select id="selectUserCountAtChangePasswd" resultType="Integer">
         SELECT COUNT ( USER_KEY ) FROM T_USER
         WHERE 1=1
@@ -63,6 +74,20 @@
             #{telephoneMobile}, #{zipcode}, #{addressRoad}, #{addressNumber}, #{address}, #{email}, #{recvSms}, #{recvEmail},
             0, #{grade}, #{interestCtgKey0}, 0, #{isMobileReg},
             #{adminAuthorityKey}, 0, #{gradePrice}, #{note}, #{userPwd}, #{certCode}
+        )
+    </insert>
+
+    <insert id="insertUserSecession">
+        <selectKey resultType="Integer" keyProperty="secessionKey" order="BEFORE">
+            SELECT T_USER_SECESSION_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_USER_SECESSION
+        (
+            SECESSION_KEY, C_KEY, USER_KEY, USER_ID, NAME, INDATE, REASON, MEMO, OBTAIN_DATE
+        )
+        VALUES
+        (
+            #{secessionKey}, #{cKey}, #{userKey}, #{userId}, #{name}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'), #{reason}, #{memo}, sysdate
         )
     </insert>
 

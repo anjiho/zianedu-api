@@ -14,12 +14,17 @@ public interface UserMapper {
 
     TUserVO selectUserInfoByUserKey(@Param("userKey") int userKey);
 
+    TUserVO selectUserInfoAtSecession(@Param("userName") String userName, @Param("userId") String userId,
+                                      @Param("userPassword") String userPassword);
+
     Integer selectUserCountAtChangePasswd(@Param("userKey") int userId, @Param("userPwd") String userPwd);
 
     Integer selectUserCurrentPoint(@Param("userKey") int userKey);
 
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
+
+    Integer insertUserSecession();
 
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);

@@ -1,7 +1,9 @@
 package com.zianedu.api.service;
 
+import com.zianedu.api.define.datasource.DeliveryStatusType;
 import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.datasource.OrderPayStatusType;
+import com.zianedu.api.define.datasource.OrderPayType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.OrderMapper;
@@ -415,6 +417,12 @@ public class OrderService {
         return new ApiResultListDTO(orderDeliveryList, resultCode);
     }
 
+    /**
+     * 주문배송조회 상세
+     * @param userKey
+     * @param jKey
+     * @return
+     */
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getUserOrderDeliveryDetailInfo(int userKey, int jKey) {
         int resultCode = OK.value();
@@ -422,7 +430,7 @@ public class OrderService {
         List<OrderGoodsDetailVO> orderGoodsDetailList = new ArrayList<>();
         TUserVO orderUserInfo = new TUserVO();
         DeliveryAddressVO deliveryAddressInfo = new DeliveryAddressVO();
-        TOrderVO orderVO = new TOrderVO();
+        PaymentVO paymentInfo = new PaymentVO();
 
         if (jKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -439,14 +447,58 @@ public class OrderService {
             orderUserInfo = userMapper.selectUserInfoByUserKey(userKey);
             //배송지 정보
             deliveryAddressInfo = orderMapper.selectDeliveryAddressInfo(jKey);
-            //결제정보
-            orderVO = orderMapper.selectUserOrderInfo(jKey);
+            //결제,배송정보
+            paymentInfo = orderMapper.selectUserPaymentInfo(jKey);
+            if (paymentInfo != null) {
+                paymentInfo.setPayStatusName(OrderPayStatusType.getOrderPayStatusStr(paymentInfo.getPayStatus()));
+                paymentInfo.setPayTypeName(OrderPayType.getOrderPayTypeStr(paymentInfo.getPayType()));
+                paymentInfo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusTypeStr(paymentInfo.getDeliveryStatus()));
+                paymentInfo.setPricePayName(StringUtils.addThousandSeparatorCommas(String.valueOf(paymentInfo.getPricePay())) + "원");
+            }
         }
-
         OrderDetailDTO orderDetailInfo = new OrderDetailDTO(
-                orderGoodsDetailList, orderUserInfo, deliveryAddressInfo);
+                orderGoodsDetailList, orderUserInfo, deliveryAddressInfo, paymentInfo);
 
         return new ApiResultObjectDTO(orderDetailInfo, resultCode);
+    }
+
+    /**
+     * 마일리지 목록
+     * @param userKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserPointList(int userKey) {
+        int resultCode = OK.value();
+
+        int remainPoint = 0;
+        String remainPointName = "";
+        List<PointListVO> pointList = new ArrayList<>();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            pointList = orderMapper.selectUserPointListInfo(userKey);
+
+            if (pointList.size() > 0) {
+
+                for (PointListVO vo : pointList) {
+                    String pointDesc = "";
+                    if (vo.getDescType() == 1) pointDesc = "마일리지 사용";
+                    else if (vo.getDescType() == 2) pointDesc = "마일리지 획득";
+                    else if (vo.getDescType() == 5) pointDesc = "마일리지 반환";
+
+                    vo.setPointDesc(pointDesc);
+                    vo.setPointName(StringUtils.addThousandSeparatorCommas(vo.getPoint() + "점"));
+
+                    remainPoint += vo.getPoint();
+                }
+            }
+        }
+        remainPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(remainPoint)) + "점";
+        PointInfoDTO pointInfo = new PointInfoDTO(remainPointName, pointList);
+
+        return new ApiResultObjectDTO(pointInfo, resultCode);
     }
 
     /**

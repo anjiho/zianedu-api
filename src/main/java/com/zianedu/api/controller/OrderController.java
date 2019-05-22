@@ -104,5 +104,12 @@ public class OrderController {
         return orderService.getUserOrderDeliveryDetailInfo(userKey, jKey);
     }
 
-
+    @RequestMapping(value = "/getUserPointInfo/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 나의 마일리지")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+    })
+    public ApiResultObjectDTO getUserPointInfo(@PathVariable("userKey") int userKey) {
+        return orderService.getUserPointList(userKey);
+    }
 }

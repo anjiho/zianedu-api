@@ -118,8 +118,23 @@
          WHERE J_KEY = #{jKey}
     </select>
 
-    <select id="selectUserOrderInfo" resultType="TOrderVO">
-        SELECT * FROM T_ORDER WHERE J_KEY = #{jKey}
+    <select id="selectUserPaymentInfo" resultType="PaymentVO">
+        SELECT A.PAY_STATUS, A.PAY_TYPE, B.STATUS, B.DELIVERY_NO,
+                C.NAME as DELIVERY_COMPANY_NAME, C.DELIVERY_MASTER_KEY, A.PRICE_PAY
+        FROM T_ORDER A
+        LEFT OUTER JOIN T_ORDER_DELIVERY B
+        ON A.J_KEY = B.J_KEY
+        LEFT JOIN T_DELIVERY_MASTER C
+        ON B.DELIVERY_MASTER_KEY = C.DELIVERY_MASTER_KEY
+        WHERE A.J_KEY = #{jKey}
+    </select>
+
+    <select id="selectUserPointListInfo" resultType="PointListVO">
+        SELECT TO_CHAR(INDATE, 'YYYY-MM-DD') as createDate,
+               TYPE, POINT, J_KEY, J_ID, DESC_TYPE
+        FROM T_POINT
+        WHERE USER_KEY = #{userKey}
+        ORDER BY INDATE DESC
     </select>
 
     <delete id="deleteCartInfo">

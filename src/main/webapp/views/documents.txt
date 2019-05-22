@@ -650,3 +650,145 @@ documents.txt file-encoding : UTF-8
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+==================================================================================================================================================
+/order/getUserOrderDeliveryInfo/{userKey}/{jKey} 주문배송 상세정보
+
+{
+  "result": {
+    //구매상품 정보
+    "orderProductInfo": [
+      {
+        "sellPrice": 10000,
+        "cnt": 1,
+        "type": 3,
+        "kind": 0,
+        "pmType": 0,
+        "goodsName": "2019 응용역학 예상편",
+        "productType": "도서",
+        "priceName": "10,000원"
+      }
+    ],
+    //주문자 정보
+    "orderUserInfo": {
+      "userKey": 0,
+      "userId": "axd45628",
+      "indate": "2017-11-29 11:23:00",
+      "name": "김용수",
+      "authority": 10,
+      "status": 0,
+      "pwd": null,
+      "birth": "2017-11-29 00:00:00",
+      "lunar": "0",
+      "gender": 0,
+      "telephone": "032-565-3018",
+      "telephoneMobile": "010-5267-3022",
+      "zipcode": "22762",
+      "addressRoad": "인천광역시 서구 청라커낼로 252 (경서동, 청라 롯데캐슬)",
+      "addressNumber": "인천광역시 서구 경서동 958-1 청라 롯데캐슬",
+      "address": "104동 2902호",
+      "email": "axd45628@naver.com",
+      "snsFacebook": null,
+      "snsTwiter": null,
+      "snsGoogleplus": null,
+      "recvSms": 0,
+      "recvEmail": 1,
+      "recvSnsFacebook": null,
+      "recvSnsTwiter": null,
+      "recvSnsGoogleplus": null,
+      "welfareDcPercent": 0,
+      "certCode": null,
+      "grade": 0,
+      "interestCtgKey0": 3608,
+      "interestCtgKey1": 0,
+      "isMobileReg": 0,
+      "adminAuthorityKey": 0,
+      "gradeDate": null,
+      "gradeGKey": 0,
+      "gradePrice": 0,
+      "note": null,
+      "appPushKey": null,
+      "appDeviceType": null,
+      "userPwd": null,
+      "ckey": null
+    },
+    //배송지 정보
+    "deliveryAddressInfo": {
+      "deliveryName": "김용수",
+      "deliveryTelephone": "032-565-3018",
+      "deliveryTelephoneMobile": "010-5267-3022",
+      "deliveryEmail": "axd45628@naver.com",
+      "deliveryZipcode": "22762",
+      "deliveryAddress": "인천광역시 서구 경서동 958-1 청라 롯데캐슬",
+      "deliveryAddressRoad": "인천광역시 서구 청라커낼로 252 (경서동, 청라 롯데캐슬)",
+      "deliveryAddressAdd": "104동 2902호",
+      "jkey": 0
+    },
+    //결제정보
+    "paymentInfo": {
+      "payStatus": 2,
+      "payType": 0,
+      "deliveryStatus": 0,
+      "deliveryNo": "622069254832",
+      "deliveryCompanyName": "대한통운",
+      "payStatusName": "결제완료",
+      "payTypeName": "신용카드",
+      "deliveryStatusName": "준비중",
+      "deliveryMasterKey": 6,
+      "pricePay": 12500,
+      "pricePayName": "12,500원"
+    }
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/order/getUserPointInfo/{userKey} 내 강의실 > 나의 마일리지
+
+{
+  "result": {
+    "remainPointName": "15점",
+    "pointList": [
+      {
+        "createDate": "2018-12-17",
+        "type": 0,
+        "point": -4400,
+        "descType": 2,
+        "pointDesc": "마일리지 획득",
+        "jid": "181217-2156-471311",
+        "jkey": 285823
+      },
+      {
+        "createDate": "2018-12-12",
+        "type": 1,
+        "point": 3960,
+        "descType": 1,
+        "pointDesc": "마일리지 사용",
+        "jid": "181212-2308-496896",
+        "jkey": 285242
+      },
+      {
+        "createDate": "2018-04-12",
+        "type": 1,
+        "point": 375,
+        "descType": 1,
+        "pointDesc": "마일리지 사용",
+        "jid": "180412-0911-258569",
+        "jkey": 259273
+      },
+      {
+        "createDate": "2018-04-10",
+        "type": 0,
+        "point": -750,
+        "descType": 5,
+        "pointDesc": "마일리지 반환",
+        "jid": "180409-1930-467945",
+        "jkey": 258929
+      },
+      ...............
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
