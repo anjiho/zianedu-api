@@ -1,5 +1,6 @@
 package com.zianedu.api.service;
 
+import com.google.gson.JsonArray;
 import com.zianedu.api.define.datasource.DeliveryStatusType;
 import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.datasource.OrderPayStatusType;
@@ -9,6 +10,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.OrderMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
+import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
@@ -518,6 +520,79 @@ public class OrderService {
                 orderMapper.deleteCartInfo(cartKey);
             }
             resultKey = StringUtils.implodeFromInteger(",", cartKeys);
+        }
+        return new ApiResultCodeDTO("CART_KEY", resultKey, resultCode);
+    }
+
+    /**
+     * 장바구니 저장
+     * @param saveCartInfo
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveCart(String saveCartInfo) {
+        int resultCode = OK.value();
+        String resultKey = "";
+
+        if ("".equals(saveCartInfo)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            JsonArray saveCartInfoJson = GsonUtil.convertStringToJsonArray(saveCartInfo);
+            List<SaveCartVO>saveCartList = GsonUtil.getObjectFromJsonArray(saveCartInfoJson, SaveCartVO.class);
+
+            if (saveCartList.size() > 0) {
+                List<Long>cartKeyList = new ArrayList<>();
+                for (SaveCartVO vo : saveCartList) {
+                    TCartVO cartVO = new TCartVO(
+                            vo.getUserKey(), vo.getGKey(), vo.getPriceKey(), vo.getGCount()
+                    );
+                    orderMapper.insertTCart(cartVO);
+                    cartKeyList.add(cartVO.getCartKey());
+                }
+                Long[] cartKeyArray = StringUtils.arrayLongListToStringArray(cartKeyList);
+                resultKey = StringUtils.implodeFromLong(",", cartKeyArray);
+            }
+        }
+        return new ApiResultCodeDTO("CART_KEY", resultKey, resultCode);
+    }
+
+    /**
+     * 자유패키지 장바구니 저장
+     * @param userKey
+     * @param gKeys
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO saveCartFreePackage(int userKey, Integer[] gKeys) {
+        int resultCode = OK.value();
+        String resultKey = "";
+
+        if (gKeys == null || gKeys.length == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int linkPirce = 0;
+            int linkSellPirce = 0;
+
+            List<Integer>gKeyList = StringUtils.integerArrayToArrayList(gKeys);
+            List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuy(gKeyList);
+
+            if (buyProductList.size() > 0) {
+                for (CartListVO product : buyProductList) {
+                    linkPirce += product.getSellPrice();
+                }
+
+                if (buyProductList.size() == 2) {
+                    linkSellPirce = (int)(linkPirce - (linkPirce * 0.1));
+                } else if (buyProductList.size() > 2) {
+                    linkSellPirce = (int)(linkPirce - (linkPirce * 0.2));
+                }
+
+                TCartVO cartVO = new TCartVO(
+                    userKey, linkPirce, linkSellPirce
+                );
+                orderMapper.insertTCart(cartVO);
+                resultKey = cartVO.getCartKey().toString();
+            }
         }
         return new ApiResultCodeDTO("CART_KEY", resultKey, resultCode);
     }

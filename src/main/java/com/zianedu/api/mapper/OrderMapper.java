@@ -31,6 +31,7 @@ public interface OrderMapper {
 
 
     /** INSERT **/
+    Integer insertTCart(TCartVO tCartVO);
 
     /** UPDATE **/
 

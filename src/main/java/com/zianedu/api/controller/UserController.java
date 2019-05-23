@@ -100,15 +100,18 @@ public class UserController {
     @RequestMapping(value = "/memberSecession", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("회원 탈퇴")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "currentUserPwd", value = "현재 비말번호", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "changeUserPwd", value = "변경할 비밀번호", dataType = "String", paramType = "query", required = true)
+            @ApiImplicitParam(name = "userName", value = "회원 이름", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userId", value = "회원 아이디", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userPassword", value = "회원 패스워드", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "reason", value = "탈퇴 이유", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "memo", value = "메모", dataType = "String", paramType = "query", required =  false)
     })
-    public ApiResultCodeDTO memberSecession(@RequestParam("userName") int userName,
+    public ApiResultCodeDTO memberSecession(@RequestParam("userName") String userName,
                                             @RequestParam("userId") String userId,
-                                            @RequestParam("userPassword") String userPassword) {
-
-
+                                            @RequestParam("userPassword") String userPassword,
+                                            @RequestParam("reason") String reason,
+                                            @RequestParam(value = "memo", required = false) String memo) {
+        return userService.requestMemberSecession(userName, userId, userPassword, reason, memo);
     }
 
 }

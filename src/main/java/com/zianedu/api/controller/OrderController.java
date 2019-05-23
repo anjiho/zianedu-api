@@ -5,6 +5,7 @@ import com.zianedu.api.service.MyPageService;
 import com.zianedu.api.service.OrderService;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
+import com.zianedu.api.vo.SaveCartVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -19,8 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/order")
 public class OrderController {
-
-    protected final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     private OrderService orderService;
@@ -111,5 +110,26 @@ public class OrderController {
     })
     public ApiResultObjectDTO getUserPointInfo(@PathVariable("userKey") int userKey) {
         return orderService.getUserPointList(userKey);
+    }
+
+    @RequestMapping(value = "/saveCart", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("장바구니 담기(자유패키지 외 상품)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "saveCartInfo", value = "저장할 카트 정보", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveCart(@RequestParam("saveCartInfo") String saveCartInfo) {
+        return orderService.saveCart(saveCartInfo);
+    }
+
+    @RequestMapping(value = "/saveCartFreePackage", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("장바구니 담기(자유패키지)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "gKeys", value = "상품 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveCartFreePackage(@RequestParam("userKey") int userKey,
+                                                  @RequestParam("gKeys") String gKeys) {
+        Integer[] gKeyArray = GsonUtil.convertToIntegerArrayFromString(gKeys);
+        return orderService.saveCartFreePackage(userKey, gKeyArray);
     }
 }

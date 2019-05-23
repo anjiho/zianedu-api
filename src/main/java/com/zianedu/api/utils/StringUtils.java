@@ -156,6 +156,16 @@ public class StringUtils {
         return sj.toString();
     }
 
+    public static String implodeFromLong(String separator, Long[] data) {
+        StringJoiner sj = new StringJoiner(separator);
+        for (Long number : data) {
+            if (!COMMA.matcher(String.valueOf(number)).matches()) {
+                sj.add(String.valueOf(number));
+            }
+        }
+        return sj.toString();
+    }
+
     /**
      * 콤마 자르기
      * @param srcStr
@@ -202,6 +212,11 @@ public class StringUtils {
     public static String[] arrayListToStringArray(List<String> arrayList) {
         if (arrayList.size() == 0) return null;
         return arrayList.toArray(new String[arrayList.size()]);
+    }
+
+    public static Long[] arrayLongListToStringArray(List<Long> arrayList) {
+        if (arrayList.size() == 0) return null;
+        return arrayList.toArray(new Long[arrayList.size()]);
     }
 
     /**

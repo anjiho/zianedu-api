@@ -137,6 +137,22 @@
         ORDER BY INDATE DESC
     </select>
 
+    <insert id="insertTCart" parameterType="TCartVO">
+        <selectKey resultType="Long" keyProperty="cartKey" order="BEFORE">
+            SELECT T_CART_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_CART
+        (
+            CART_KEY, C_KEY, INDATE, USER_KEY, G_KEY, PRICE_KEY, GROUP_ID, IS_DELETE, IS_DIRECT, IS_MEMBER, J_ID, CNT,
+            FREEBIE_PARENT_KEY, LINK_PRICE, LINK_SELL_PRICE, LINK_POINT, EXTEND_DAY, CTG_KEY, SITE_NAME
+        )
+        VALUES
+        (
+            #{cartKey}, #{cKey}, sysdate, #{userKey}, #{gKey}, #{priceKey}, #{groupId}, #{isDelete}, #{isDirect}, #{isMember}, #{jId}, #{cnt},
+            #{freebieParentKey}, #{linkPrice}, #{linkSellPrice}, #{linkPoint}, #{extendDay}, #{ctgKey}, #{siteName}
+        )
+    </insert>
+
     <delete id="deleteCartInfo">
         DELETE FROM T_CART WHERE CART_KEY = #{cartKey}
     </delete>

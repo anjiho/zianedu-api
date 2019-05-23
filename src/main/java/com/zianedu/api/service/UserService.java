@@ -11,6 +11,7 @@ import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.SecurityUtil;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.AcademySignUpVO;
+import com.zianedu.api.vo.TUserSecessionVO;
 import com.zianedu.api.vo.TUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,17 +150,23 @@ public class UserService extends ApiResultKeyCode {
     public ApiResultCodeDTO requestMemberSecession(String userName, String userId, String userPassword,
                                                    String secessionReason, String memo) {
         int resultCode = OK.value();
+        int secessionKey = 0;
 
         if ("".equals(userName) || "".equals(userId) || "".equals(userPassword)) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            TUserVO userInfo = userMapper.selectUserInfoAtSecession(userName, userId, userPassword);
+            TUserVO userInfo = userMapper.selectUserInfoAtSecession(userName, userId, SecurityUtil.encryptSHA256(userPassword));
             if (userInfo == null) {
                 resultCode = ZianErrCode.CUSTOM_NOT_FOUNT_USER.code();
             } else {
-
+                TUserSecessionVO secessionVO = new TUserSecessionVO(
+                        userInfo.getUserKey(), userInfo.getUserId(),  userInfo.getName(), secessionReason, memo
+                );
+                userMapper.insertUserSecession(secessionVO);
+                secessionKey = secessionVO.getSecessionKey();
             }
         }
+        return new ApiResultCodeDTO("SECESSION_KEY", secessionKey, resultCode);
     }
 
 }

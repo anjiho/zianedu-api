@@ -77,7 +77,7 @@
         )
     </insert>
 
-    <insert id="insertUserSecession">
+    <insert id="insertUserSecession" parameterType="TUserSecessionVO">
         <selectKey resultType="Integer" keyProperty="secessionKey" order="BEFORE">
             SELECT T_USER_SECESSION_SEQ.nextval FROM DUAL
         </selectKey>
@@ -87,7 +87,7 @@
         )
         VALUES
         (
-            #{secessionKey}, #{cKey}, #{userKey}, #{userId}, #{name}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'), #{reason}, #{memo}, sysdate
+            #{secessionKey}, #{cKey}, #{userKey}, #{userId}, #{name}, sysdate, #{reason}, #{memo}, sysdate
         )
     </insert>
 

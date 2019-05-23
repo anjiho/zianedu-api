@@ -1,5 +1,6 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.vo.TUserSecessionVO;
 import com.zianedu.api.vo.TUserVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,7 +25,7 @@ public interface UserMapper {
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 
-    Integer insertUserSecession();
+    Integer insertUserSecession(TUserSecessionVO tUserSecessionVO);
 
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);
