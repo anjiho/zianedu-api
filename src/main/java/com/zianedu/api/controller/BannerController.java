@@ -49,4 +49,33 @@ public class BannerController {
     public ApiResultListDTO getPopup(@PathVariable("ctgKey") int ctgKey) {
         return bannerService.getPopup(ctgKey);
     }
+
+    @RequestMapping(value = "/getTeacherBannerList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사(지안교수진) 배너 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey) {
+        return bannerService.getTeacherBannerList(ctgKey);
+    }
+
+    @RequestMapping(value = "/getPopulateAcademyLectureList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원 인기강좌 리스트")
+    public ApiResultListDTO getPopulateAcademyLectureList() {
+        return bannerService.getPopulateAcademyLectureList(225);
+    }
+
+    @RequestMapping(value = "/getPopulateVideoLectureList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("동영상 인기 강좌 리스트")
+    public ApiResultListDTO getPopulateVideoLectureList() {
+        return bannerService.getPopulateVideoLectureList(226);
+    }
+
+    @RequestMapping(value = "/getPackageLectureList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("패키기 강좌 리스트")
+    public ApiResultListDTO getPackageLectureList() {
+        return bannerService.getPackageLectureList(227);
+    }
+
+
 }

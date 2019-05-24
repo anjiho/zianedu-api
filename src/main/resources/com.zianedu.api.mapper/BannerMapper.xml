@@ -36,13 +36,105 @@
         AND A.REQ_TYPE = 100
         AND A.RES_TYPE = 300
         AND B.IS_SHOW = 1
-        <![CDATA[
-        AND TO_CHAR('YYYY-MM-DD', B.START_DATE) < TO_CHAR('YYYY-MM-DD', sysdate)
-        ]]>
-        <![CDATA[
-        AND TO_CHAR('YYYY-MM-DD', B.START_DATE) >= TO_CHAR('YYYY-MM-DD', sysdate)
-        ]]>
+        AND TO_CHAR(SYSDATE, 'YYYY-MM-DD hh24:mm:ss') BETWEEN TO_CHAR(B.START_DATE, 'YYYY-MM-DD hh24:mm:ss')
+        AND TO_CHAR(B.END_DATE, 'YYYY-MM-DD hh24:mm:ss')
         ORDER BY A.POS ASC
+    </select>
+
+    <select id="selectTeacherBannerList" resultType="TeacherBannerVO">
+        SELECT
+            A.value_4 as targetUrl,
+            D.NAME as teacherName,
+            A.value_long_1 as subjectCode,
+            A.value_long_2 as teacherKey,
+            A.value_bit_1 as isNewPageOpen,
+            B.IMAGE_LIST as teacherImage,
+            C.NAME as subjectName
+        FROM T_CATEGORY_OTHER_INFO A
+        INNER JOIN T_TEACHER B
+        ON A.VALUE_LONG_2 = B.TEACHER_KEY
+        INNER JOIN T_CATEGORY C
+        ON A.VALUE_LONG_1 = C.CTG_KEY
+        INNER JOIN T_USER D
+        ON B.USER_KEY = D.USER_KEY
+        WHERE A.ctg_key = #{ctgKey}
+        AND A.type = 1
+        ORDER BY A.pos ASC
+    </select>
+
+    <select id="selectPopulateAcademyLectureList" resultType="PopulateLectureVO">
+        SELECT A.*, B.*, C.PRICE, C.SELL_PRICE, D.TEACHER_KEY, E.IMAGE_LIST as teacherImage
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.g_key = B.g_key
+        INNER JOIN T_GOODS_PRICE_OPTION C
+        ON B.G_KEY = C.G_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK D
+        ON A.G_KEY = D.G_KEY
+        INNER JOIN T_TEACHER E
+        ON D.TEACHER_KEY = E.TEACHER_KEY
+        WHERE B.emphasis = 2
+        AND A.ctg_key = #{ctgKey}
+        AND B.is_sell = 1
+        AND B.type = 2
+    </select>
+
+    <select id="selectTeacherNameAndSubjectName" resultType="TeacherBannerVO">
+        SELECT DISTINCT C.NAME as subjectName, D.NAME as teacherName
+        FROM T_CATEGORY_OTHER_INFO A
+        INNER JOIN T_TEACHER B
+        ON A.VALUE_LONG_2 = B.TEACHER_KEY
+        INNER JOIN T_CATEGORY C
+        ON A.VALUE_LONG_1 = C.CTG_KEY
+        INNER JOIN T_USER D
+        ON B.USER_KEY = D.USER_KEY
+        WHERE B.TEACHER_KEY = #{teacherKey}
+    </select>
+
+    <select id="selectPopulateVideoLectureList" resultType="PopulateLectureVO">
+        SELECT A.*, B.*, D.TEACHER_KEY, F.NAME as teacherName, E.IMAGE_LIST as teacherImage,
+                (SELECT SELL_PRICE FROM T_GOODS_PRICE_OPTION WHERE G_KEY = B.G_KEY AND ROWNUM = 1) as sellPrice,
+                (SELECT PRICE FROM T_GOODS_PRICE_OPTION WHERE G_KEY = B.G_KEY  AND ROWNUM = 1) as price
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.g_key = B.g_key
+        INNER JOIN T_GOODS_TEACHER_LINK D
+        ON A.G_KEY = D.G_KEY
+        INNER JOIN T_TEACHER E
+        ON D.TEACHER_KEY = E.TEACHER_KEY
+        INNER JOIN T_USER F
+        ON E.USER_KEY = F.USER_KEY
+        WHERE B.emphasis in (0,1,2)
+        AND A.ctg_key = #{ctgKey}
+        AND B.is_sell = 1
+        AND B.is_show = 1
+        AND B.type = 1
+        ORDER BY POS ASC
+    </select>
+
+    <select id="selectCtgNameAtLectureBannerList" resultType="String">
+        SELECT * FROM (
+            SELECT NAME
+            FROM t_category_goods A
+            INNER JOIN t_category B
+            ON A.CTG_KEY = B.CTG_KEY
+            WHERE G_KEY = #{gKey}
+            AND B.VALUE_NUMBER= 0
+            ORDER BY A.POS ASC
+        )
+        WHERE ROWNUM =1
+    </select>
+
+    <select id="selectPackageLectureList" resultType="PopulateLectureVO">
+        SELECT A.*, B.*,
+                (SELECT SELL_PRICE FROM T_GOODS_PRICE_OPTION WHERE G_KEY = B.G_KEY AND ROWNUM = 1) as sellPrice,
+                (SELECT PRICE FROM T_GOODS_PRICE_OPTION WHERE G_KEY = B.G_KEY  AND ROWNUM = 1) as price
+        FROM T_CATEGORY_GOODS A
+        LEFT JOIN T_GOODS B
+        ON A.g_key = B.g_key
+        WHERE A.ctg_key = #{ctgKey}
+        AND B.IS_SELL = 1
+        AND B.IS_SHOW = 1
     </select>
 
 </mapper>

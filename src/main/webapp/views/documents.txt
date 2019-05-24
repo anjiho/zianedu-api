@@ -842,3 +842,231 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultCode": 200, // 900 : 사용자없음, 400 : 파라미터 에러
   "resultMsg": "SUCCESS"
 }
+
+======================================================================================
+/                               BannerController                                    /
+======================================================================================
+
+/banner/getMainPageTopBanner 메인페이지 최상단 배너
+
+{
+  "result": {
+    "fileUrl": "100\\main\\top_banner.png",
+    "colorCode": "f1f8fe",
+    "targetUrl": "http://www.zianedu.com/tt/review/2019_review.html",
+    "type": 1,
+    "fullFileUrl": "http://www.zianedu.com/Upload/100\\main\\top_banner.png"
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/banner/getMainPageTopBanner 메인페이지 최상단 배너
+
+{
+  "result": [
+    {
+      "fileUrl": "100\\main\\2020행정직연간회원제 메인배너(0).jpg",
+      "colorCode": null,
+      "targetUrl": "http://www.zianedu.com/tt/event/2019_public/hang_year_2020.html",
+      "type": 1,
+      "fullFileUrl": "http://www.zianedu.com/Upload/100\\main\\2020행정직연간회원제 메인배너(0).jpg"
+    },
+    {
+      "fileUrl": "100\\main\\계리직 180지안패스 메인배너.jpg",
+      "colorCode": "ffffff",
+      "targetUrl": "http://postvod.zianedu.com/front/FreePass?mnk=7138",
+      "type": 1,
+      "fullFileUrl": "http://www.zianedu.com/Upload/100\\main\\계리직 180지안패스 메인배너.jpg"
+    },
+    .....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getMainMiniBanner/{ctgKey} 대 배너 밑 미니 배너
+
+{
+  "result": [
+    {
+      "fileUrl": "100\\main\\2020행정직연간회원제 메인미니배너.jpg",
+      "colorCode": null,
+      "targetUrl": "http://www.zianedu.com/tt/event/2019_public/hang_year_2020.html",
+      "type": 1,
+      "fullFileUrl": "http://www.zianedu.com/Upload/100\\main\\2020행정직연간회원제 메인미니배너.jpg"
+    },
+    {
+      "fileUrl": "100\\main\\계리직 180지안패스_메인미니배너.jpg",
+      "colorCode": null,
+      "targetUrl": "http://postvod.zianedu.com/front/FreePass?mnk=7138",
+      "type": 1,
+      "fullFileUrl": "http://www.zianedu.com/Upload/100\\main\\계리직 180지안패스_메인미니배너.jpg"
+    },
+    ....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getPopupList/{ctgKey} 팝업 리스트
+{
+  "result": [
+    {
+      "popupName": "2019 기술직 실전 동형모의고사 패키지",
+      "contents": "<center>\r\n<a href=\"http://techvod.zianedu.com/front/FixedPacakgeList\"><img src=\"http://www.zianedu.com/tt/popup/2019_package_final_exam_tec.jpg\"></a>\r\n\r\n</center>"
+    },
+    {
+      "popupName": "2019_산림청 시험대비 임업직 문제풀이반",
+      "contents": "<center>\r\n<a href=\"http://tech.zianedu.com/front/ProductOfflineLecList?a_lLinkCtgKey=1131\"><img src=\"http://www.zianedu.com/tt/popup/2019_forest_exam_class.jpg\"></a>\r\n\r\n</center>"
+    },
+    {
+      "popupName": "2019 실전모의고사반 개강",
+      "contents": "<center>\r\n<a href=\"http://tech.zianedu.com/front/ProductOfflineLecList?a_lLinkCtgKey=1127\"><img src=\"http://www.zianedu.com/tt/popup/2019_final_exam_class.jpg\"></a>\r\n\r\n</center>"
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getTeacherBannerList/{ctgKey} 강사 배너 리스트
+{
+  "result": [
+    {
+      "targetUrl": "http://public.zianedu.com/front/TeacherViewMain?mnk=109&parent_mnk=353",
+      "teacherName": "[국어]오선희",
+      "subjectCode": 3711,
+      "teacherKey": 109,
+      "isNewPageOpen": 0,
+      "teacherImage": "100\\teacher\\국어_오선희.png",
+      "subjectName": "국어",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\국어_오선희.png"
+    },
+    {
+      "targetUrl": "http://public.zianedu.com/front/TeacherViewMain?mnk=120&parent_mnk=353",
+      "teacherName": "[국어]안효선",
+      "subjectCode": 3711,
+      "teacherKey": 120,
+      "isNewPageOpen": 0,
+      "teacherImage": "100\\teacher\\국어_안효선(1).png",
+      "subjectName": "국어",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\국어_안효선(1).png"
+    },
+    ....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getPopulateAcademyLectureList 학원 인기강좌 리스트
+{
+  "result": [
+    {
+      "name": "2019 시험대비 임찬호 한국사 기초이론 강의[5% 적립]\t",
+      "price": 140000,
+      "sellPrice": 60000,
+      "priceName": "140,000원",
+      "sellPriceName": "60,000원",
+      "teacherName": "임찬호",
+      "subjectName": "한국사",
+      "teacherKey": 24,
+      "teacherImage": "100/teacher/임찬호_중.png",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/임찬호_중.png",
+      "gkey": 106304
+    },
+    {
+      "name": " 2019 시험대비 윤광덕 영어 기초이론 강의[5% 적립]",
+      "price": 140000,
+      "sellPrice": 60000,
+      "priceName": "140,000원",
+      "sellPriceName": "60,000원",
+      "teacherName": "윤광덕",
+      "subjectName": "영어",
+      "teacherKey": 116,
+      "teacherImage": "100\\teacher\\영어_윤광덕.png",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕.png",
+      "gkey": 106335
+    },
+    ...
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getPopulateVideoLectureList 동영상 인기 강좌 리스트
+{
+  "result": [
+    {
+      "name": "2019 시험대비 임찬호 한국사 기초이론 강의[5% 적립]\t",
+      "price": 140000,
+      "sellPrice": 60000,
+      "priceName": "140,000원",
+      "sellPriceName": "60,000원",
+      "teacherName": "임찬호",
+      "subjectName": "한국사",
+      "teacherKey": 24,
+      "teacherImage": "100/teacher/임찬호_중.png",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/임찬호_중.png",
+      "gkey": 106304
+    },
+    {
+      "name": " 2019 시험대비 윤광덕 영어 기초이론 강의[5% 적립]",
+      "price": 140000,
+      "sellPrice": 60000,
+      "priceName": "140,000원",
+      "sellPriceName": "60,000원",
+      "teacherName": "윤광덕",
+      "subjectName": "영어",
+      "teacherKey": 116,
+      "teacherImage": "100\\teacher\\영어_윤광덕.png",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕.png",
+      "gkey": 106335
+    },
+    ....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getPackageLectureList 패키기 강좌 리스트
+{
+  "result": [
+    {
+      "name": "[한가위 이벤트] 2019 농업직 전공 재배학+식용작물 김동이샘 기본 심화 이론 특별패키지-마감",
+      "price": 280000,
+      "sellPrice": 210000,
+      "priceName": "280,000원",
+      "sellPriceName": "210,000원",
+      "teacherName": null,
+      "subjectName": null,
+      "teacherKey": 0,
+      "teacherImage": null,
+      "teacherImageUrl": null,
+      "gkey": 106500
+    },
+    {
+      "name": "[한가위 이벤트] 2019 통신직 전공 통신+전자 양윤석샘 기본 심화이론 특별패키지-마감",
+      "price": 240000,
+      "sellPrice": 192000,
+      "priceName": "240,000원",
+      "sellPriceName": "192,000원",
+      "teacherName": null,
+      "subjectName": null,
+      "teacherKey": 0,
+      "teacherImage": null,
+      "teacherImageUrl": null,
+      "gkey": 106501
+    },
+    .....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
