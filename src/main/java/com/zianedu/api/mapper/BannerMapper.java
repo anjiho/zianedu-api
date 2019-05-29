@@ -8,6 +8,8 @@ import java.util.List;
 public interface BannerMapper {
 
     /** SELECT **/
+    List<TCategoryVO> selectMainPageCtgKeyList(@Param("ctgKey") int ctgKey);
+
     BannerVO selectBannerInfoBySingle(@Param("ctgKey") int ctgKey);
 
     List<BannerVO> selectBannerList(@Param("ctgKey") int ctgKey);
@@ -25,6 +27,12 @@ public interface BannerMapper {
     String selectCtgNameAtLectureBannerList(@Param("gKey") int gKey);
 
     List<PopulateLectureVO> selectPackageLectureList(@Param("ctgKey") int ctgKey);
+
+    List<NoticeVO> selectBannerNoticeList(@Param("bbsMasterKey") int bbsMasterKey);
+
+    List<BannerBookVO> selectBannerBookList();
+
+    List<TSearchKeywordVO> selectSearchKeywordList(@Param("className") String className);
 
     /** INSERT **/
 

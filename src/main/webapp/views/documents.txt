@@ -1070,3 +1070,74 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+==================================================================================================================================================
+/banner/getNoticeList/{subject} 공시사항 리스트
+{
+  "result": {
+    "subjectOpenNoticeInfo": [  //개강안내
+      {
+        "idx": 3,
+        "bbsMasterKey": 10001,
+        "createDate": "2019-05-24 13:46:02",
+        "title": "[학원실강] 2019 지방직 서울시 대비 파이널 안다 국어 문학사+문법특강 [접수중]",
+        "writeUserKey": 0,
+        "isHead": 0,
+        "contents": null,
+        "filename": null
+      },
+      ....
+    ],
+    "academyInfo": [    //학원소식
+      {
+        "idx": 191,
+        "bbsMasterKey": 10007,
+        "createDate": "2019-03-13 17:55:14",
+        "title": "2019 국가직9급 시험대비 행정직9급 학원, 온라인 지안모의고사 실시(3/23(토) 오전10시) - 22일 17시 접수마감",
+        "writeUserKey": 0,
+        "isHead": 0,
+        "contents": null,
+        "filename": null
+      },
+      ....
+    ],
+    "videoInfo": [  //동영상소식
+      {
+        "idx": 347,
+        "bbsMasterKey": 10009,
+        "createDate": "2019-01-28 09:07:51",
+        "title": "공통과목 강의 3일 무료체험 이벤트",
+        "writeUserKey": 0,
+        "isHead": 0,
+        "contents": null,
+        "filename": null
+      },
+      ...
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/banner/getOnlineBookList 배너 온라인 서점 리스트
+{
+  "result": [
+        {
+          "subjectCtgKey": 3682,
+          "bookName": "최신판 건축시공학[10%할인+5%적립]",
+          "sellPrice": 24300,
+          "price": 27000,
+          "writer": "김창훈",
+          "bookCompanyName": "탑스팟",
+          "subName": "[10%할인+5%적립]",
+          "sellPriceName": "24,300원",
+          "priceName": "27,000원",
+          "gkey": 106896
+        },
+        ....
+    ],
+  },
+    "resultCode": 200,
+    "resultMsg": "SUCCESS"
+}

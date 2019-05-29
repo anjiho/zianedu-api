@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.BannerMapper">
 
+    <select id="selectMainPageCtgKeyList" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        WHERE PARENT_KEY =
+        (
+            SELECT CTG_KEY FROM T_CATEGORY
+            WHERE PARENT_KEY = #{ctgKey}
+            AND ROLE_TYPE = 12001
+        )
+        AND VALUE IS NOT NULL
+        ORDER BY POS ASC
+    </select>
+
     <select id="selectBannerInfoBySingle" resultType="BannerVO">
         SELECT
             VALUE_1 as fileUrl,
@@ -135,6 +147,40 @@
         WHERE A.ctg_key = #{ctgKey}
         AND B.IS_SELL = 1
         AND B.IS_SHOW = 1
+    </select>
+
+    <select id="selectBannerNoticeList" resultType="NoticeVO">
+        SELECT IDX, BBS_MASTER_KEY, TO_CHAR(CREATE_DATE, 'YYYY-MM-DD hh24:mi:ss') as createDate, TITLE
+        FROM T_NOTICE
+        WHERE 1=1
+        AND BBS_MASTER_KEY = #{bbsMasterKey}
+        ORDER BY CREATE_DATE DESC
+        OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY
+    </select>
+
+    <select id="selectBannerBookList" resultType="BannerBookVO">
+        SELECT
+            A.G_KEY, C.SUBJECT_CTG_KEY, B.NAME as bookName, D.SELL_PRICE,
+            D.PRICE, C.WRITER, E.NAME as bookCompanyName, '[10%할인+5%적립]' as subName
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_BOOK C
+        ON A.G_KEY = C.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION D
+        ON B.G_KEY = D.G_KEY
+        LEFT JOIN  T_CP E
+        ON B.CP_KEY = E.CP_KEY
+        WHERE A.CTG_KEY = 229
+        AND B.TYPE = 3
+        AND B.IS_SHOW = 1
+        ORDER BY A.G_KEY DESC
+    </select>
+
+    <select id="selectSearchKeywordList" resultType="TSearchKeywordVO">
+        SELECT * FROM T_SEARCH_KEYWORD
+		WHERE SITE_CLASS_NAME = #{className}
+		ORDER BY POS ASC
     </select>
 
 </mapper>

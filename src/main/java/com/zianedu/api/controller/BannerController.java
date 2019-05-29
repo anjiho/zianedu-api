@@ -20,6 +20,15 @@ public class BannerController {
     @Autowired
     private BannerService bannerService;
 
+    @RequestMapping(value = "/getMainPageCtgKeyInfo/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("직렬별 메인페이지 관련 CTG_KEY 목록 불러오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키 (지안에듀 : 215, 행정직학원 : 216, 행정직동영상 : 217, 기술직학원 : 218, 기술직동영상 : 219, 계리직학원 : 220, 계리직동영상 : 221, 온라인서점 : 687, 빅모의고사 : 6736", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getMainPageCtgKeyInfo(@PathVariable("ctgKey") int ctgKey) {
+        return bannerService.getMainPageCtgKeyInfo(ctgKey);
+    }
+
     @RequestMapping(value = "/getMainPageTopBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("메인페이지 최상단 배너")
     public ApiResultObjectDTO getMainPageTopBanner() {
@@ -77,5 +86,27 @@ public class BannerController {
         return bannerService.getPackageLectureList(227);
     }
 
+    @RequestMapping(value = "/getNoticeList/{subject}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("배너 공시사항 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "subject", value = "공지사항 종류 값( PUBLIC : 행정직, TECH : 기술직, POST : 계리직 )", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getBannerNoticeList(@PathVariable("subject") String subject) {
+        return bannerService.getBannerNoticeList(subject);
+    }
 
+    @RequestMapping(value = "/getOnlineBookList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("배너 온라인 서점 리스트")
+    public ApiResultListDTO getBannerBookList() {
+        return bannerService.getBannerBookList();
+    }
+
+    @RequestMapping(value = "/getSearchKeywordList/{className}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("인기 검색어 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "className", value = "( PUBLIC : 행정직, TECH : 기술직, POST : 계리직, BOOK : 온라인서점 )", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getSearchKeywordList(@PathVariable("className") String className) {
+        return bannerService.getSearchKeywordList(className);
+    }
 }
