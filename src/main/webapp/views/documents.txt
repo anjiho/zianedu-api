@@ -1141,3 +1141,27 @@ param > userKey : 5, gKeys : [106304,106321,....]
     "resultCode": 200,
     "resultMsg": "SUCCESS"
 }
+
+==================================================================================================================================================
+/banner/getSearchKeywordList/{className} 인기 검색어 리스트
+{
+  "result": [
+    {
+      "searchKeywordKey": 37,
+      "siteClassName": "public",
+      "keyword": "안효선12",
+      "pos": 0,
+      "ckey": 100
+    },
+    {
+      "searchKeywordKey": 38,
+      "siteClassName": "public",
+      "keyword": "조재권",
+      "pos": 1,
+      "ckey": 100
+    },
+    .....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
