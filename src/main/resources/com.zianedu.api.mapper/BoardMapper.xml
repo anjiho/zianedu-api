@@ -2,6 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.BoardMapper">
 
+    <select id="selectTBbsDataList" resultType="TBbsDataVO">
+        SELECT * FROM T_BBS_DATA
+        WHERE BBS_MASTER_KEY = #{bbsMasterKey}
+        AND CTG_KEY = #{teacherKey}
+        ORDER BY BBS_KEY DESC
+        <if test="listType =='LIMIT'">
+            OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+        </if>
+        <if test="listType =='PAGE'">
+            OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+        </if>
+    </select>
 
+    <select id="selectGoodsReviewList" resultType="GoodsReviewVO">
+        SELECT
+            A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_USER B
+        ON A.USER_KEY = B.USER_KEY
+        WHERE 1=1
+        AND A.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+        ORDER BY A.G_REVIEW_KEY DESC
+        <if test="listType =='LIMIT'">
+            OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+        </if>
+        <if test="listType =='PAGE'">
+            OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+        </if>
+    </select>
 
 </mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.MenuMapper">
+
+    <select id="selectSubjectCtgKeyByMenuCtgKey" resultType="Integer">
+        SELECT res_key as ctg_key
+        FROM T_LINK_KEY
+        WHERE REQ_TYPE = 100
+        AND RES_TYPE = 100
+        AND REQ_KEY = #{menuCtgKey}
+    </select>
+</mapper>

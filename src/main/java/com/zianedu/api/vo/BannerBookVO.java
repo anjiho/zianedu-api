@@ -24,4 +24,8 @@ public class BannerBookVO {
     private String sellPriceName;
 
     private String priceName;
+
+    private String imageList;
+
+    private String imageUrl;
 }

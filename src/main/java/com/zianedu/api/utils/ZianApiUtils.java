@@ -6,4 +6,8 @@ public class ZianApiUtils {
 
     public static final String SUCCESS = "SUCCESS";
 
+    public static final String LIMIT = "LIMIT";
+
+    public static final String PAGE = "PAGE";
+
 }

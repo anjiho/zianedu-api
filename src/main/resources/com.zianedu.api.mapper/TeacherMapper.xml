@@ -2,6 +2,63 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.TeacherMapper">
 
+    <select id="selectTeacherInfo" resultType="TTeacherVO">
+        SELECT * FROM T_TEACHER WHERE TEACHER_KEY = #{teacherKey}
+    </select>
 
+    <select id="selectTeacherIntroduceInfo" resultType="String">
+        SELECT VALUE_TEXT as teacherIntroduce
+        FROM T_RES A
+        WHERE TYPE = 2
+        AND A.KEY_00 = #{teacherKey}
+        AND A.DEVICE = #{device}
+        AND A.KEY_01 =
+        (
+            SELECT res_key as ctg_key
+            FROM T_LINK_KEY
+            WHERE REQ_TYPE = 100
+            AND RES_TYPE = 100
+            AND REQ_KEY = #{menuCtgKey}
+        )
+    </select>
+
+    <select id="selectGoodsListAtTeacherHome" resultType="GoodsListVO">
+        -- 겸업 강사 시 추가 LEFT OUTER JOIN T_CATEGORY_GOODS D ON A.g_key = D.g_key --AND D.CTG_KEY
+        SELECT  A.G_KEY, B.LEC_KEY, C.NAME as ctgName, A.NAME as goodsName, A.emphasis,  B.LIMIT_COUNT, B.LIMIT_DAY,
+                (
+                   SELECT * FROM (
+                        SELECT T.vod_file_low
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.curri_key ASC
+                    ) WHERE ROWNUM = 1
+                ) as lowVideo,
+                (
+                   SELECT * FROM (
+                        SELECT T.vod_file_high
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.curri_key ASC
+                    ) WHERE ROWNUM = 1
+                ) as highVideo,
+                (
+                   SELECT * FROM (
+                        SELECT T.CURRI_KEY
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.curri_key ASC
+                    ) WHERE ROWNUM = 1
+                ) as curriKey
+        FROM T_GOODS A
+        INNER JOIN T_LEC B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.STEP_CTG_KEY = C.CTG_KEY
+        WHERE A.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+        AND A.TYPE = #{type}
+        AND A.IS_SHOW =1
+        AND B.LIMIT_COUNT > 0
+        ORDER BY A.G_KEY DESC
+    </select>
 
 </mapper>

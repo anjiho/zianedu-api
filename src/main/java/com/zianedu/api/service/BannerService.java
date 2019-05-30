@@ -213,6 +213,7 @@ public class BannerService {
             for (BannerBookVO vo : bannerBookList) {
                 vo.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getSellPrice())) + "원");
                 vo.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getPrice())) + "원");
+                vo.setImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
             }
         }
         return new ApiResultListDTO(bannerBookList, resultCode);

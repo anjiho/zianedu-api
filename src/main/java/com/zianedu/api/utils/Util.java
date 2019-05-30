@@ -1035,11 +1035,19 @@ public class Util {
 
     }
 
+    public static String getProductDiscountRate(int price, int sellPrice) {
+        int onePercentPrice = (int)( price * 0.01 );
+        int sellPricePercent = (sellPrice / onePercentPrice);
+        int discountRate = 100 - sellPricePercent;
+
+        return discountRate + "%";
+    }
+
 
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(plusDate(Util.returnNow(), -1));
+        System.out.println(getProductDiscountRate(160000, 90000));
 
 
     }

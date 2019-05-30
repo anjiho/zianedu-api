@@ -160,7 +160,7 @@
 
     <select id="selectBannerBookList" resultType="BannerBookVO">
         SELECT
-            A.G_KEY, C.SUBJECT_CTG_KEY, B.NAME as bookName, D.SELL_PRICE,
+            A.G_KEY, B.IMAGE_LIST, C.SUBJECT_CTG_KEY, B.NAME as bookName, D.SELL_PRICE,
             D.PRICE, C.WRITER, E.NAME as bookCompanyName, '[10%할인+5%적립]' as subName
         FROM T_CATEGORY_GOODS A
         INNER JOIN T_GOODS B
