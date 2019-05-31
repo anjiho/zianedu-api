@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -88,7 +90,7 @@ public class BannerService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getTeacherBannerList(int ctgKey) {
+    public ApiResultListDTO getTeacherBannerList(int ctgKey) throws Exception {
         int resultCode = OK.value();
 
         List<TeacherBannerVO>teacherBannerList = new ArrayList<>();
@@ -98,7 +100,14 @@ public class BannerService {
             teacherBannerList = bannerMapper.selectTeacherBannerList(ctgKey);
             if (teacherBannerList.size() > 0) {
                 for (TeacherBannerVO vo : teacherBannerList) {
+                    if (vo.getTargetUrl().contains("&")) {
+                        URL url = new URL(vo.getTargetUrl());
+                        Map<String, List<String>> urlParamMap = Util.splitQuery(url);
+                        int parentMnk = Integer.parseInt(urlParamMap.get("parent_mnk").get(0));
+                        vo.setParentMnk(parentMnk);
+                    }
                     vo.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getTeacherImage()));
+
                 }
             }
         }

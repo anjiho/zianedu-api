@@ -16,6 +16,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -1043,11 +1045,36 @@ public class Util {
         return discountRate + "%";
     }
 
-
+    public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
+        final Map<String, List<String>> query_pairs = new LinkedHashMap<>();
+        final String[] pairs = url.getQuery().split("&");
+        for (String pair : pairs) {
+            final int idx = pair.indexOf("=");
+            final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
+            if (!query_pairs.containsKey(key)) {
+                query_pairs.put(key, new LinkedList<>());
+            }
+            final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
+            query_pairs.get(key).add(value);
+        }
+        return query_pairs;
+    }
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(getProductDiscountRate(160000, 90000));
+        String str = "http://www.zianedu.com/tt/t_branding/society.html";
+
+        if (str.contains("&")) {
+            System.out.println("T");
+        } else {
+            System.out.println("F");
+        }
+        //String[] splits = split(str, "?");
+        URL url = new URL(str);
+        Map<String, List<String>> map = splitQuery(url);
+        System.out.println(map.toString());
+        System.out.println(map.get("parent_mnk").get(0));
+        //System.out.println(getProductDiscountRate(160000, 90000));
 
 
     }

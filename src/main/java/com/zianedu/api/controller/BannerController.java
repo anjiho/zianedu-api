@@ -64,7 +64,7 @@ public class BannerController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ctgKey", value = "카테고리 키", dataType = "int", paramType = "path", required = true)
     })
-    public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey) {
+    public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey) throws Exception {
         return bannerService.getTeacherBannerList(ctgKey);
     }
 

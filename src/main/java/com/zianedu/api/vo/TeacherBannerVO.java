@@ -21,4 +21,6 @@ public class TeacherBannerVO {
 
     private String teacherImageUrl;
 
+    private int parentMnk;
+
 }
