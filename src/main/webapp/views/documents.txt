@@ -1165,3 +1165,141 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+======================================================================================
+/                               TeacherController                                    /
+======================================================================================
+
+{
+  "result": {
+    "teacherInfo": {    //강사정보
+      "teacherKey": 116,
+      "userKey": 93995,
+      "imageList": "100\\teacher\\영어_윤광덕.png",
+      "imageView": null,
+      "imageTeacherList": "100\\teacher\\영어_윤광덕.png",
+      "imageTeacherView": "100\\teacher\\영어_윤광덕(0).png",
+      "imageMainList": null,
+      "imageContents": null,
+      "greeting": null,
+      "history": "현) 지안공무원학원 영어문법 강사\r\n현) 해커스 편입 문법 교수\r\n전) 성북 메가스터디 영어과 팀장\r\n전) 이익훈 어학원 공무원 영어 강사\r\n전) 김영 편입학원 문법 강사\r\n전) LIA 어학원 영어과 팀장\r\n전) G20 정상 회담 통역",
+      "bookWriting": null,
+      "onlinelecCalculateRate": 40,
+      "offlinelecCalculateRate": 50,
+      "sampleVodFile": "zian/english/yoon/01/180903_106446_01_H.mp4",
+      "imageListUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕.png",
+      "imageTeacherListUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕.png",
+      "imageTeacherViewUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕(0).png",
+      "introduce": null
+    },
+    "referenceRoom": [  //학습자료실
+      {
+        "bbsKey": 119369,
+        "bbsMasterKey": 10023,
+        "bbsParentKey": 0,
+        "indate": "2019-04-01 01:40:59.0",
+        "title": "3.29일 동형 모의 고사 7~8회",
+        "writeUserKey": 93995,
+        "ctgKey": 116,
+        "ctgKey02": 3712,
+        "readCount": 113,
+        "isShow": 0,
+        "isNotice": 0,
+        "pwd": null,
+        "contents": "&lt;p&gt;그동안 모두 정말 고생 많으셨습니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;다가오는 국가직 시험에 좋은 결과가 있길 바랍니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;철저한 복습에서 실력이 향상한다는것을 꼭 명심해 주시고 &lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;시험장 가기 전까지 꼼꼼히 배웠던 것을 복습해서 자기것으로 만들어 주시길 바랍니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;여러분들의 합격을 진심으로&amp;nbsp;기원합니다! ^^&amp;nbsp;&lt;/p&gt;",
+        "docType": 0,
+        "imageFile1": null,
+        "imageFile2": null,
+        "imageFile3": null,
+        "file1": null,
+        "file2": null,
+        "file3": null,
+        "ip": null,
+        "isShowImageFile": 0,
+        "bbsOldKey": 0,
+        "isHaveAnswer": 0,
+        "bbsCustomKey": 0
+      },
+      ....
+    ],
+    "learningQna": [    //QNA
+      {
+        "bbsKey": 119045,
+        "bbsMasterKey": 10025,
+        "bbsParentKey": 118248,
+        "indate": "2019-03-27 01:09:39.0",
+        "title": "답변 드립니다.",
+        "writeUserKey": 93995,
+        "ctgKey": 116,
+        "ctgKey02": 3712,
+        "readCount": 8,
+        "isShow": 0,
+        "isNotice": 0,
+        "pwd": null,
+        "contents": "&lt;p&gt;일단 진중한 질문 잘 봤습니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;토익 800점이면 그래도 영어공부를 어느 정도 하신 분이라는 생각이 드는군요&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;아직은 문법이 완벽하진 않지만, 문장 구조를 끊어 해석 할 수있고, 기초 어휘는 어느정도 된것으로 보입니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;일단 영어의 기본적인 문법틀을 잡았고, 어휘도 기초 어휘를 모두 외웠다면&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;중-고급 이상의 수준으로 공부하셔야 합니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;즉, 목표점수가 난이도에 상관 없이&amp;nbsp;80이상으로 꾸준히 나올 정도가 되는것이죠.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;여기서부턴 좀 다른 공부법이 필요합니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;문법도 큰 틀보단, 좀더 구체적인 단순 암기형 문법까지 꼼꼼히 외워야 하며, 품사 파트(명사,관사, 대명사등) &lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;도 중요한것들을 따로 외워야 하지요.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;이런 공부가 당연히 시간은 더 많이 잡아 먹는데 효율이 바로 나타나진 않아요. 왜냐 하면 시험에 자주 나오진 않기 때문입니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;어휘도 마찬가지에요. 기초 어휘를 다 외웠다면 지금부터 더 신경 써서 봐야 할부분은&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;숙어와 다의어, 동의어, 그리고 약간의 고급 어휘 입니다 (각종 33000 이름의 교재&amp;nbsp;수준의 어휘)&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;그리고 독해도 일부로 어려운 문제들도 많이 찾아서 풀어야 합니다. 수능 기준으로 3점짜리 문제들만 모아놓은 문제들을 풀어본다 든가,&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;단순 해석이 아닌 이해력을 요하는 문제들을 풀어봐야 되요.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;이부분도 시간이 적게 들지 않죠. 이정도가 되면&amp;nbsp;영어 실력은 어딜 가도 흔들리지 않죠.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;말은 쉽게 해도 쉽진&amp;nbsp;않습니다. 공무원이 영어 시험만 있는것도 아니죠. &amp;nbsp;하지만 영어는 언어기 때문에 쉽게 공부하거나, &lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;장시간 보지 않으면&amp;nbsp;자꾸, 빈틈이 생기기 마련이에요. 그러다면 점수가 일정하지 않게&amp;nbsp;됩니다. &lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;고득점이 나오려면 당연 실력을 쌓는게 중요합니다. 왕도는 없고 제가 말씀드린 부분을 꼼꼼하게 정검해 주시길 바랍니다.&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;답변이 늦어서 죄송합니다 ^^ 또 질문 있으면 올려주세요 ^^&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&amp;nbsp;&lt;/p&gt;",
+        "docType": 0,
+        "imageFile1": null,
+        "imageFile2": null,
+        "imageFile3": null,
+        "file1": null,
+        "file2": null,
+        "file3": null,
+        "ip": null,
+        "isShowImageFile": 0,
+        "bbsOldKey": 0,
+        "isHaveAnswer": 0,
+        "bbsCustomKey": 0
+      },
+      ...
+    ],
+    "lectureReview": [  //수강후기
+      {
+        "title": "3/15 국가직 예상문풀은 없나요...?",
+        "point": 5,
+        "name": "조정우",
+        "indate": "2019-03-21",
+        "contents": "첨부파일에 동형모의고사밖에 없어서\r\n저번주에 3/8일에 나눠주신걸로 하는줄 알았더니 아니네요..?",
+        "greviewKey": 26706
+      },
+      ...
+    ],
+    "videoLecture": [   //동영상강좌
+      {
+        "lecKey": 14396,
+        "ctgName": "모의고사",
+        "goodsName": "2019시험대비 윤광덕 영어 실전 동형모의고사 문제풀이반 [5%적립]",
+        "emphasis": 2,
+        "limitCount": 13,
+        "limitDay": 6,
+        "lowVideo": "zian/english/yoon/02_03/190308_106885_01_M.mp4",
+        "highVideo": "zian/english/yoon/02_03/190308_106885_01_H.mp4",
+        "curriKey": 124908,
+        "gkey": 106885
+      },
+    .....
+    ],
+    //학원강좌
+    "academyLecture": [],
+    //도서
+    "teacherBook": [
+      {
+        "subjectCtgKey": 73,
+        "bookName": "윤광덕 기본영어 교재[5%적립]",
+        "sellPrice": 0,
+        "price": 0,
+        "writer": "윤광덕",
+        "bookCompanyName": "탑스팟",
+        "subName": null,
+        "sellPriceName": null,
+        "priceName": null,
+        "imageList": null,
+        "imageUrl": null,
+        "publishDate": "2018-09-06",
+        "gkey": 106491
+      },
+     ...
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}

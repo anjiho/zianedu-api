@@ -28,4 +28,6 @@ public class BannerBookVO {
     private String imageList;
 
     private String imageUrl;
+
+    private String publishDate;
 }
