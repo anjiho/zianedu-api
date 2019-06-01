@@ -61,4 +61,18 @@
         ORDER BY A.G_KEY DESC
     </select>
 
+    <select id="selectTeacherBookList" resultType="BannerBookVO">
+        SELECT A.G_KEY, A.NAME as bookName, B.WRITER, TO_CHAR(B.PUBLISH_DATE, 'YYYY-MM-DD') as publishDate, C.NAME as bookCompanyName
+        FROM T_GOODS A
+        INNER JOIN T_BOOK B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_CP C
+        ON B. = C.CP_KEY
+        WHERE A.TYPE = 3
+        AND B.WRITER LIKE '%'||(SELECT NAME FROM T_USER T INNER JOIN T_TEACHER TT ON T.USER_KEY = TT.USER_KEY WHERE TT.TEACHER_KEY = #{teacherKey}) || '%'
+        AND A.IS_SHOW = 1
+        AND A.IS_SELL = 1
+        ORDER BY A.G_KEY DESC
+    </select>
+
 </mapper>

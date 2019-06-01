@@ -52,8 +52,10 @@ public class TeacherService {
             List<GoodsListVO> videoLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 1);
             //학원강좌정보
             List<GoodsListVO> academyLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 2);
+            //도서정보
+            List<BannerBookVO> teacherBook = teacherMapper.selectTeacherBookList(teacherKey);
 
-            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, lectureReview, videoLecture, academyLecture);
+            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, lectureReview, videoLecture, academyLecture, teacherBook);
         }
         return new ApiResultObjectDTO(teacherHomeInfo, resultCode);
     }
