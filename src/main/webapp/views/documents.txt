@@ -1292,8 +1292,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
         "subName": null,
         "sellPriceName": null,
         "priceName": null,
-        "imageList": null,
-        "imageUrl": null,
+        "imageList": "100\\book\\제목 없음-1(1).jpg",
+        "imageUrl": "http://www.zianedu.com/Upload/100\\book\\제목 없음-1(1).jpg",
         "publishDate": "2018-09-06",
         "gkey": 106491
       },
@@ -1303,3 +1303,515 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+==================================================================================================================================================
+/teacher/getTeacherVideoLecture/{teacherKey} 강사소개 > 동영상 강좌 정보
+{
+  "result": [
+    {
+      "stepCtgKey": 203,
+      "ctgName": "이론",
+      "teacherLectureList": [
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "2019 전산직7급 시험대비 박태순 소프트웨어공학 기본+심화이론반 [5%적립]",
+          "lecCount": 37,
+          "limitDay": 60,
+          "lowVideo": "zian/data/soft/01/180903_106460_01_M.mp4",
+          "highVideo": "zian/data/soft/01/180903_106460_01_H.mp4",
+          "curriKey": 120547,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "240,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110451,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "gkey": 106460
+            },
+            {
+              "priceKey": 110452,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "gkey": 106460
+            },
+            {
+              "priceKey": 110453,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 240000,
+              "point": 12000,
+              "extendPercent": 20,
+              "gkey": 106460
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11346,
+              "priceKey": 110509,
+              "writer": "박태순",
+              "bookName": "2019 소프트웨어공학[10%할인+5%적립] ",
+              "publishDate": "2018.09.03",
+              "sellPrice": "              28,800",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "gkey": 106483
+            }
+          ],
+          "gkey": 106460
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2019 전산 계리직 시험대비 박태순 컴퓨터일반 기본+심화이론강의 [5%적립]",
+          "lecCount": 122,
+          "limitDay": 70,
+          "lowVideo": "zian/data/com1/01/180904_106457_01_M.mp4",
+          "highVideo": "zian/data/com1/01/180904_106457_01_H.mp4",
+          "curriKey": 120565,
+          "pcSellPriceName": "180,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110442,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 180000,
+              "point": 9000,
+              "extendPercent": 20,
+              "gkey": 106457
+            },
+            {
+              "priceKey": 110443,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "gkey": 106457
+            },
+            {
+              "priceKey": 110444,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "gkey": 106457
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11338,
+              "priceKey": 110378,
+              "writer": "박태순.이성행 공저",
+              "bookName": "2019 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2018.08.10",
+              "sellPrice": "              32,400",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "gkey": 106415
+            }
+          ],
+          "gkey": 106457
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 1,
+          "emphasisName": "BEST",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "22%할인",
+          "goodsName": "2018 시험대비 박태순 소프트웨어공학 기본이론강의[5%적립]",
+          "lecCount": 36,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201711박태순소프트웨어공학/201711박태순소프트웨어공학01_M.mp4",
+          "highVideo": "topspot4/201711박태순소프트웨어공학/201711박태순소프트웨어공학01_H.mp4",
+          "curriKey": 115722,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "250,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109566,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "gkey": 105780
+            },
+            {
+              "priceKey": 109567,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "gkey": 105780
+            },
+            {
+              "priceKey": 109568,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 250000,
+              "point": 12500,
+              "extendPercent": 20,
+              "gkey": 105780
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11307,
+              "priceKey": 109549,
+              "writer": "박태순",
+              "bookName": "2018 소프트웨어공학[10%할인+5%적립] ",
+              "publishDate": "2017.11.06",
+              "sellPrice": "              28,800",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "gkey": 105763
+            }
+          ],
+          "gkey": 105780
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 205,
+      "ctgName": "문제풀이",
+      "teacherLectureList": [
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "23%할인",
+          "goodsName": "2019 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이강의 [5%적립]\t",
+          "lecCount": 8,
+          "limitDay": 90,
+          "lowVideo": "zian/data/soft/02_04/190418_106978_01_M.mp4",
+          "highVideo": "zian/data/soft/02_04/190418_106978_01_H.mp4",
+          "curriKey": 125443,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111092,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "gkey": 106978
+            },
+            {
+              "priceKey": 111093,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "gkey": 106978
+            },
+            {
+              "priceKey": 111094,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "gkey": 106978
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106978
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "39%할인",
+          "goodsName": "2019 시험대비 박태순 컴퓨터일반 적중1000제 예상문제풀이강의[5%적립] ",
+          "lecCount": 62,
+          "limitDay": 60,
+          "lowVideo": "zian/data/com1/02_01/190108_106769_01_M.mp4",
+          "highVideo": "zian/data/com1/02_01/190108_106769_01_H.mp4",
+          "curriKey": 123808,
+          "pcSellPriceName": "160,000원",
+          "mobileSellPriceName": "140,000원",
+          "pcMobileSellPriceName": "220,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110836,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "gkey": 106769
+            },
+            {
+              "priceKey": 110879,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "gkey": 106769
+            },
+            {
+              "priceKey": 110880,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 220000,
+              "point": 11000,
+              "extendPercent": 20,
+              "gkey": 106769
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106769
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "32%할인",
+          "goodsName": "2019 전산 계리직 시험대비 박태순 컴퓨터일반 핵심요약&기출문제풀이 강의 [5%적립]",
+          "lecCount": 64,
+          "limitDay": 70,
+          "lowVideo": "zian/data/com1/02/181106_106617_01_M.mp4",
+          "highVideo": "zian/data/com1/02/181106_106617_01_H.mp4",
+          "curriKey": 122181,
+          "pcSellPriceName": "130,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": "220,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110654,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "gkey": 106617
+            },
+            {
+              "priceKey": 110683,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "gkey": 106617
+            },
+            {
+              "priceKey": 110684,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 220000,
+              "point": 11000,
+              "extendPercent": 20,
+              "gkey": 106617
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11367,
+              "priceKey": 110639,
+              "writer": "박태순,이성행",
+              "bookName": "2019 컴퓨터일반 기출문제집[10%할인+5%적립] ",
+              "publishDate": "2018.11.01",
+              "sellPrice": "              27,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "gkey": 106602
+            }
+          ],
+          "gkey": 106617
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2018 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이 강의[5%적립]",
+          "lecCount": 53,
+          "limitDay": 90,
+          "lowVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀01_M.mp4",
+          "highVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀01_H.mp4",
+          "curriKey": 118764,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110025,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "gkey": 106109
+            },
+            {
+              "priceKey": 110026,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "gkey": 106109
+            },
+            {
+              "priceKey": 110027,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "gkey": 106109
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11328,
+              "priceKey": 109907,
+              "writer": "박태순",
+              "bookName": "2018 소프트웨어공학 기출문제집[10%할인+5%적립]",
+              "publishDate": "2018.03.09",
+              "sellPrice": "              25,200",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "gkey": 106027
+            }
+          ],
+          "gkey": 106109
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 4266,
+      "ctgName": "모의고사",
+      "teacherLectureList": [
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "34%할인",
+          "goodsName": "2019 국가직 지방직 대비  박태순 컴퓨터일반 동형모의고사 강의 [5%적립]",
+          "lecCount": 19,
+          "limitDay": 100,
+          "lowVideo": "zian/data/com1/02_03/190305_106869_01_M.mp4",
+          "highVideo": "zian/data/com1/02_03/190305_106869_01_H.mp4",
+          "curriKey": 124885,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": null,
+          "videoLectureKindList": [
+            {
+              "priceKey": 110958,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "gkey": 106869
+            },
+            {
+              "priceKey": 110976,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "gkey": 106869
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106869
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "40%할인",
+          "goodsName": "2018 전산직7급 시험대비 박태순 소프트웨어공학 모의고사 강의[5% 적립]",
+          "lecCount": 22,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀32_M.mp4",
+          "highVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀32_H.mp4",
+          "curriKey": 119713,
+          "pcSellPriceName": "80,000원",
+          "mobileSellPriceName": "70,000원",
+          "pcMobileSellPriceName": "120,000원",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110211,
+              "kind": 100,
+              "price": 100000,
+              "sellPrice": 80000,
+              "point": 4000,
+              "extendPercent": 20,
+              "gkey": 106256
+            },
+            {
+              "priceKey": 110212,
+              "kind": 101,
+              "price": 100000,
+              "sellPrice": 70000,
+              "point": 3500,
+              "extendPercent": 20,
+              "gkey": 106256
+            },
+            {
+              "priceKey": 110213,
+              "kind": 102,
+              "price": 200000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "gkey": 106256
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106256
+        }
+      ]
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+

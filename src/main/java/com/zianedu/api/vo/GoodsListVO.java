@@ -24,4 +24,6 @@ public class GoodsListVO {
     private String highVideo;
 
     private int curriKey;
+
+    private String discountPercent;
 }

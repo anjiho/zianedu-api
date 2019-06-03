@@ -2,6 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.TeacherMapper">
 
+    <resultMap id="teacherHomeLectureMap" type="TeacherHomeLectureVO">
+        <result property="stepCtgKey" column="STEP_CTG_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <collection property="teacherLectureList" javaType="java.util.ArrayList" resultMap="teacherLectureListMap"/>
+    </resultMap>
+    <resultMap id="teacherLectureListMap" type="TeacherHomeLectureListVO">
+        <result property="gKey" column="G_KEY"/>
+        <result property="goodsName" column="goodsName"/>
+        <result property="price" column="PRICE"/>
+        <result property="sellPrice" column="SELL_PRICE"/>
+        <result property="lecCount" column="lecCount"/>
+        <result property="limitDay" column="LIMIT_DAY"/>
+        <result property="lowVideo" column="lowVideo"/>
+        <result property="highVideo" column="highVideo"/>
+        <result property="curriKey" column="curriKey"/>
+        <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
+    </resultMap>
+
+    <resultMap id="teacherHomeAcademyMap" type="TeacherHomeAcademyVO">
+        <result property="stepCtgKey" column="STEP_CTG_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <collection property="teacherAcademyList" javaType="java.util.ArrayList" resultMap="teacherAcademyListMap"/>
+    </resultMap>
+    <resultMap id="teacherAcademyListMap" type="TeacherHomeAcademyListVO">
+        <result property="gKey" column="G_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <result property="emphasis" column="EMPHASIS"/>
+        <result property="goodsName" column="goodsName"/>
+        <result property="sellPrice" column="SELL_PRICE"/>
+        <result property="kind" column="KIND"/>
+        <result property="priceKey" column="PRICE_KEY"/>
+        <result property="lectureDate" column="lectureDate"/>
+        <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
+    </resultMap>
+
     <select id="selectTeacherInfo" resultType="TTeacherVO">
         SELECT * FROM T_TEACHER WHERE TEACHER_KEY = #{teacherKey}
     </select>
@@ -63,7 +98,7 @@
 
     <select id="selectTeacherBookList" resultType="BannerBookVO">
         SELECT A.G_KEY, A.NAME as bookName, B.WRITER, TO_CHAR(B.PUBLISH_DATE, 'YYYY-MM-DD') as publishDate,
-               C.NAME as bookCompanyName, B.SUBJECT_CTG_KEY
+               C.NAME as bookCompanyName, B.SUBJECT_CTG_KEY, A.IMAGE_LIST
         FROM T_GOODS A
         INNER JOIN T_BOOK B
         ON A.G_KEY = B.G_KEY
@@ -74,6 +109,92 @@
         AND A.IS_SHOW = 1
         AND A.IS_SELL = 1
         ORDER BY A.G_KEY DESC
+    </select>
+
+    <select id="selectTeacherVideoLectureList" resultMap="teacherHomeLectureMap">
+        SELECT Z.*
+        FROM (
+                SELECT A.G_KEY, C.STEP_CTG_KEY, D.NAME as ctgName, A.EMPHASIS, A.NAME as goodsName,
+                        (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, E.IMAGE_TEACHER_LIST,
+                         (
+                           SELECT * FROM (
+                                SELECT T.VOD_FILE_LOW
+                                FROM T_LEC_CURRI T
+                                WHERE T.LEC_KEY = C.LEC_KEY
+                                ORDER BY T.CURRI_KEY ASC
+                            ) WHERE ROWNUM = 1
+                        ) as lowVideo,
+                        (
+                           SELECT * FROM (
+                                SELECT T.VOD_FILE_HIGH
+                                FROM T_LEC_CURRI T
+                                WHERE T.LEC_KEY = C.LEC_KEY
+                                ORDER BY T.CURRI_KEY ASC
+                            ) WHERE ROWNUM = 1
+                        ) as highVideo,
+                         (
+                           SELECT * FROM (
+                                SELECT T.CURRI_KEY
+                                FROM T_LEC_CURRI T
+                                WHERE T.LEC_KEY = C.LEC_KEY
+                                ORDER BY T.CURRI_KEY ASC
+                            ) WHERE ROWNUM = 1
+                        ) as curriKey
+                FROM T_GOODS A
+                INNER JOIN T_GOODS_TEACHER_LINK B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON A.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_TEACHER E
+                ON B.TEACHER_KEY = E.TEACHER_KEY
+                INNER JOIN T_USER F
+                ON E.USER_KEY = F.USER_KEY
+                WHERE 1=1
+                AND E.TEACHER_KEY = #{teacherKey}
+                AND A.TYPE = 1
+                AND A.IS_SHOW = 1
+                AND A.IS_SELL =1
+        ) Z
+        WHERE 1=1
+        <if test="stepCtgKey > 0">
+            AND Z.STEP_CTG_KEY = #{stepCtgKey}
+        </if>
+        ORDER BY Z.STEP_CTG_KEY ASC, Z.G_KEY DESC
+    </select>
+
+    <select id="selectTeacherAcademyLectureList" resultMap="teacherHomeAcademyMap">
+        SELECT Z.*
+        FROM (
+                SELECT A.G_KEY, C.STEP_CTG_KEY, D.NAME as ctgName, A.EMPHASIS, A.NAME as goodsName,
+                       (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, E.IMAGE_TEACHER_LIST, G.KIND, G.PRICE_KEY,
+                        CONCAT( CONCAT( TO_CHAR(C.STARTDATE, 'YYYY-MM-DD'), ' ~ '),  TO_CHAR(C.STARTDATE + C.LIMIT_DAY, 'YYYY-MM-DD')) as lectureDate,
+                       TRIM ( TO_CHAR(G.SELL_PRICE, '999,999') ) as sellPrice
+                FROM T_GOODS A
+                INNER JOIN T_GOODS_TEACHER_LINK B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON A.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_TEACHER E
+                ON B.TEACHER_KEY = E.TEACHER_KEY
+                INNER JOIN T_USER F
+                ON E.USER_KEY = F.USER_KEY
+                INNER JOIN T_GOODS_PRICE_OPTION G
+                ON A.G_KEY = G.G_KEY
+                WHERE 1=1
+                AND E.TEACHER_KEY = #{teacherKey}
+                AND A.TYPE = 2
+                AND A.IS_SHOW = 1
+                AND A.IS_SELL =1
+        ) Z
+        WHERE 1=1
+        <if test="stepCtgKey > 0">
+            AND Z.STEP_CTG_KEY = #{stepCtgKey}
+        </if>
+        ORDER BY Z.STEP_CTG_KEY ASC, Z.G_KEY DESC
     </select>
 
 </mapper>

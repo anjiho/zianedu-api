@@ -1,5 +1,6 @@
 package com.zianedu.api.controller;
 
+import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.TeacherService;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -29,5 +30,16 @@ public class TeacherController {
                                              @RequestParam("device") int device,
                                              @RequestParam("menuCtgKey") int menuCtgKey) {
         return teacherService.getTeacherHomeInfo(teacherKey, listLimit, device, menuCtgKey);
+    }
+
+    @RequestMapping(value = "/getTeacherVideoLecture/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 동영상 강좌 정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 키값(전체는 0) ", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getTeacherVideoLecture(@PathVariable("teacherKey") int teacherKey,
+                                                   @RequestParam("stepCtgKey") int stepCtgKey) {
+        return teacherService.getTeacherLectureList(teacherKey, stepCtgKey);
     }
 }

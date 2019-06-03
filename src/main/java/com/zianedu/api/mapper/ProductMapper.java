@@ -35,6 +35,12 @@ public interface ProductMapper {
 
     Integer selectVideoSubjectCount(@Param("gKey") int gKey);
 
+    CalcPriceVO selectTopCalcPrice(@Param("gKey") int gKey);
+
+    List<TGoodsPriceOptionVO> selectGoodsPriceOptionList(@Param("gKey") int gKey);
+
+    List<LectureBookVO> selectTeacherBookListFromVideoLectureLink(@Param("gKey") int gKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
