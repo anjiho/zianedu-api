@@ -1,9 +1,6 @@
 package com.zianedu.api.mapper;
 
-import com.zianedu.api.vo.GoodsReviewVO;
-import com.zianedu.api.vo.ReferenceRoomDetailVO;
-import com.zianedu.api.vo.ReferenceRoomVO;
-import com.zianedu.api.vo.TBbsDataVO;
+import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,5 +28,5 @@ public interface BoardMapper {
 
     ReferenceRoomDetailVO selectTeacherReferenceRoomDetailInfo(@Param("bbsKey") int bbsKey);
 
-    List<ReferenceRoomVO> selectTBbsDataAll(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey);
+    List<PrevNextVO> selectTeacherReferenceRoomPrevNext(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("bbsKey") int bbsKey);
 }

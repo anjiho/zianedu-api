@@ -7,6 +7,7 @@ import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.ReferenceRoomDetailDTO;
 import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
@@ -203,13 +204,11 @@ public class TeacherService extends PagingSupport {
 
         int totalCount = 0;
         int startNumber = getPagingStartNumber(sPage, listLimit);
-        List<TeacherVideoAcademyProductVO> teacherVideoAcademyProductList = new ArrayList<>();
         List<GoodsReviewVO> lectureReviewList = new ArrayList<>();
 
         if (teacherKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            teacherVideoAcademyProductList = teacherMapper.selectTeacherVideoAcademyProductList(teacherKey);
             totalCount = boardMapper.selectTeacherReviewListCount(teacherKey, gKey);
             lectureReviewList = boardMapper.selectTeacherReviewList(teacherKey, gKey, startNumber, listLimit);
         }
@@ -236,26 +235,44 @@ public class TeacherService extends PagingSupport {
         return new ApiResultListDTO(teacherVideoAcademyProductList, resultCode);
     }
 
+    @Transactional(readOnly = true)
     public ApiResultObjectDTO getTeacherReferenceRoomDetailInfo(int bbsKey, int teacherKey) {
         int resultCode = OK.value();
 
-        List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
+        ReferenceRoomDetailDTO detailDTO = null;
 
-        if (teacherKey == 0) {
+        if (teacherKey == 0 && bbsKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            referenceRoomList = boardMapper.selectTBbsDataAll(
-                    BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
-                    teacherKey
+            detailDTO = new ReferenceRoomDetailDTO(
+                    //학습자료실 상세정보
+                    boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey),
+                    //하단 이전글, 다음글
+                    boardMapper.selectTeacherReferenceRoomPrevNext(
+                            BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey)
             );
-            List<Integer>bbsKeyArr = new ArrayList<>();
-            if (referenceRoomList.size() > 0) {
-                for (ReferenceRoomVO vo : referenceRoomList) {
-                    bb
-                }
-            }
         }
+        return new ApiResultObjectDTO(detailDTO, resultCode);
+    }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getTeacherLearningQnaDetailInfo(int bbsKey, int teacherKey) {
+        int resultCode = OK.value();
+
+        ReferenceRoomDetailDTO detailDTO = null;
+
+        if (teacherKey == 0 && bbsKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            detailDTO = new ReferenceRoomDetailDTO(
+                    //학습자료실 상세정보
+                    boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey),
+                    //하단 이전글, 다음글
+                    boardMapper.selectTeacherReferenceRoomPrevNext(
+                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey)
+            );
+        }
+        return new ApiResultObjectDTO(detailDTO, resultCode);
     }
 
     /**

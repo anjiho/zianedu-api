@@ -1928,54 +1928,69 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "cnt": 42,
   "result": [
     {
-      "num": 42,
+      "num": 0,
       "bbsKey": 108213,
-      "createDate": "2018.11.19",
-      "userName": "박태순",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "소공_시스템 개발 주기(폭포수 모형)",
       "readCount": 134,
       "pwd": null,
-      "writeUserKey": 60480
+      "writeUserKey": 60480,
+      "commentCount": 1,
+      "level": 1
     },
     {
-      "num": 41,
+      "num": 0,
       "bbsKey": 99654,
-      "createDate": "2018.06.01",
-      "userName": "지안에듀",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "2018.5.19 시행 교육청 컴퓨터일반 해설 영상(박태순)",
       "readCount": 557,
       "pwd": null,
-      "writeUserKey": 87017
+      "writeUserKey": 87017,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 40,
+      "num": 0,
       "bbsKey": 99287,
-      "createDate": "2018.05.25",
-      "userName": "지안에듀",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "2018.5.19.시행 지방직 컴퓨터일반 해설 강의",
       "readCount": 316,
       "pwd": null,
-      "writeUserKey": 70995
+      "writeUserKey": 70995,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 39,
+      "num": 0,
       "bbsKey": 98486,
-      "createDate": "2018.05.08",
-      "userName": "지안에듀",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "2018 4 7 시행 국가직 컴퓨터일반 박태순 해설강의",
       "readCount": 180,
       "pwd": null,
-      "writeUserKey": 70995
+      "writeUserKey": 70995,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 38,
+      "num": 0,
       "bbsKey": 96216,
-      "createDate": "2018.03.29",
-      "userName": "박태순",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "2018 컴퓨터일반 이론서 정오표",
       "readCount": 147,
       "pwd": null,
-      "writeUserKey": 60480
+      "writeUserKey": 60480,
+      "commentCount": 0,
+      "level": 1
     }
   ],
   "resultCode": 200,
@@ -1986,57 +2001,72 @@ param > userKey : 5, gKeys : [106304,106321,....]
 
 /teacher/getTeacherLearningQna/{teacherKey} 강사소개 > 학습 Q/A
 {
-  "cnt": 352,
+  "cnt": 350,
   "result": [
     {
-      "num": 352,
+      "num": 0,
       "bbsKey": 123600,
-      "createDate": "2019.05.22",
-      "userName": "홍현정",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "컴일 1000제 문의드립니다",
       "readCount": 6,
       "pwd": null,
-      "writeUserKey": 105950
+      "writeUserKey": 105950,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 351,
+      "num": 0,
       "bbsKey": 123311,
-      "createDate": "2019.05.19",
-      "userName": "노경완",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "동형모고 5회 7번",
       "readCount": 5,
       "pwd": null,
-      "writeUserKey": 103092
+      "writeUserKey": 103092,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 350,
+      "num": 0,
       "bbsKey": 123280,
-      "createDate": "2019.05.18",
-      "userName": "박성진",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "질문 드립니다.",
       "readCount": 2,
       "pwd": "1",
-      "writeUserKey": 73529
+      "writeUserKey": 73529,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 349,
+      "num": 0,
       "bbsKey": 122736,
-      "createDate": "2019.05.10",
-      "userName": "이원진",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "710쪽",
       "readCount": 11,
       "pwd": null,
-      "writeUserKey": 113928
+      "writeUserKey": 113928,
+      "commentCount": 0,
+      "level": 1
     },
     {
-      "num": 348,
+      "num": 0,
       "bbsKey": 122735,
-      "createDate": "2019.05.10",
-      "userName": "이원진",
+      "bbsParentKey": 0,
+      "createDate": null,
+      "userName": null,
       "title": "int 크기",
       "readCount": 5,
       "pwd": null,
-      "writeUserKey": 113928
+      "writeUserKey": 113928,
+      "commentCount": 0,
+      "level": 1
     }
   ],
   "resultCode": 200,
@@ -2057,6 +2087,121 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "gkey": 106923
     },
   ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherLectureReview/{teacherKey} 강사소개 > 수강후기
+{
+  "cnt": 497,
+  "result": [
+    {
+      "title": "선생님 이 교재 답안지는 따로 없나요",
+      "point": 5,
+      "name": "이동기",
+      "indate": "2019.04.03",
+      "contents": "궁금합니다 ^^",
+      "greviewKey": 26928
+    },
+    {
+      "title": "교재?~",
+      "point": 5,
+      "name": "최은미",
+      "indate": "2019.04.02",
+      "contents": "교재는  구매해야 되는건가요?~",
+      "greviewKey": 26892
+    },
+    {
+      "title": "너무 좋아서 ",
+      "point": 5,
+      "name": "전민혁",
+      "indate": "2019.03.27",
+      "contents": "부족한 점을 많이 채우게 됩니다!.!",
+      "greviewKey": 26793
+    },
+    {
+      "title": "확실히 강의가 좋습니다.",
+      "point": 5,
+      "name": "이정화",
+      "indate": "2019.03.25",
+      "contents": "두번째 듣는거지만 역시 문제들도 좋고 강의도 귀에 잘 들어 옵니다.\r\n좋은 강의 감사드립니다.~~~",
+      "greviewKey": 26759
+    },
+    {
+      "title": "피드백 감사합니다",
+      "point": 5,
+      "name": "이형석",
+      "indate": "2019.03.21",
+      "contents": "감사합니다.",
+      "greviewKey": 26707
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherReferenceRoomDetail/{teacherKey} 강사소개 > 학습자료실 상세정보
+{
+  "result": {
+    "referenceRoomDetailInfo": {
+      "bbsKey": 99654,
+      "indate": "2018.06.01",
+      "title": "2018.5.19 시행 교육청 컴퓨터일반 해설 영상(박태순)",
+      "readCount": 557,
+      "userName": "지안에듀",
+      "userId": "zianpic2",
+      "contents": "&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/ct7jWGk8WhA&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot; allow=&quot;autoplay; encrypted-media&quot;&gt;&lt;/iframe&gt;",
+      "fileName": null
+    },
+    "prevNextBbsList": [
+      {
+        "prevBbsKey": 108213,
+        "prevTitle": "소공_시스템 개발 주기(폭포수 모형)",
+        "prevWriteUserKey": 60480,
+        "prevPwd": 0,
+        "nextBbsKey": 99287,
+        "nextTitle": "2018.5.19.시행 지방직 컴퓨터일반 해설 강의",
+        "nextWriteUserKey": 70995,
+        "nextPwd": 0
+      }
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherLearningQnaDetail/{teacherKey} 강사소개 > 학습Q/A 상세정보
+{
+  "result": {
+    "referenceRoomDetailInfo": {
+      "bbsKey": 111795,
+      "indate": "2019.01.08",
+      "title": "적중 800제 언제 구매 가능한가요..",
+      "readCount": 159,
+      "userName": "이형석",
+      "userId": "zms213",
+      "contents": "&lt;p&gt;별도구매라 써있길래&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;일주일 전부터 인터넷서점이랑 지안 온라인서점 훑어봐도&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;새 책 목록에 안 떠있네요..&lt;/p&gt;",
+      "fileName": null
+    },
+    "prevNextBbsList": [
+      {
+        "prevBbsKey": 112873,
+        "prevTitle": "적중1000제 질문 있습니다.",
+        "prevWriteUserKey": 93771,
+        "prevPwd": 1,
+        "nextBbsKey": 111779,
+        "nextTitle": "2019년 컴퓨터일반 800제 ",
+        "nextWriteUserKey": 105447,
+        "nextPwd": 1
+      }
+    ]
+  },
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }

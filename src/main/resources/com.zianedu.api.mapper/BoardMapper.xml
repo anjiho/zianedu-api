@@ -16,50 +16,49 @@
     </select>
 
     <select id="selectTBbsDataListBySearch" resultType="ReferenceRoomVO">
-        SELECT T.* FROM (
+        SELECT * FROM (
             SELECT
-                A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT, A.PWD, A.WRITE_USER_KEY,
-                ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+                A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL, CONTENTS,
+                (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD
+                --ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num
             FROM T_BBS_DATA A
-            INNER JOIN T_USER B
-            ON A.WRITE_USER_KEY = B.USER_KEY
-            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+            WHERE A.IS_NOTICE = 0
+            AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
-        ) T
+            START WITH A.BBS_PARENT_KEY = 0
+            CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
+            ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
+        ) Z
         WHERE 1=1
         <if test="searchType == 'title'">
-            AND T.TITLE LIKE '%' || #{searchText} || '%'
-        </if>
-        <if test="searchType == 'name'">
-            AND T.userName LIKE '%' || #{searchText} || '%'
+            AND Z.TITLE LIKE '%'||#{searchText}||'%'
         </if>
         <if test="searchType == 'contents'">
-            AND T.CONTENTS LIKE '%' || #{searchText} || '%'
+            AND Z.CONTENTS LIKE '%'||#{searchText}||'%'
         </if>
-        ORDER BY T.BBS_KEY DESC
+        <if test="searchType == 'user'">
+            AND Z.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
+        </if>
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
     <select id="selectTBbsDataListBySearchCount" resultType="Integer">
-        SELECT COUNT(T.BBS_KEY) FROM (
-            SELECT
-                A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT,
-                ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+        SELECT * FROM (
+            SELECT COUNT(A.BBS_KEY)
             FROM T_BBS_DATA A
-            INNER JOIN T_USER B
-            ON A.WRITE_USER_KEY = B.USER_KEY
-            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+            WHERE A.IS_NOTICE = 0
+            AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
-        ) T
+        ) Z
         WHERE 1=1
         <if test="searchType == 'title'">
-            AND T.TITLE LIKE '%' || #{searchText} || '%'
+            AND Z.TITLE LIKE '%'||#{searchText}||'%'
         </if>
-        <if test="searchType == 'title'">
-            AND T.userName LIKE '%' || #{searchText} || '%'
+        <if test="searchType == 'contents'">
+            AND Z.CONTENTS LIKE '%'||#{searchText}||'%'
         </if>
-        <if test="searchType == 'title'">
-            AND T.CONTENTS LIKE '%' || #{searchText} || '%'
+        <if test="searchType == 'user'">
+            AND Z.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
         </if>
     </select>
 
@@ -82,7 +81,7 @@
 
     <select id="selectTeacherReviewList" resultType="GoodsReviewVO">
         SELECT
-        A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS
+        A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY.MM.dd') as indate, A.CONTENTS
         FROM T_GOODS_REVIEW A
         INNER JOIN T_USER B
         ON A.USER_KEY = B.USER_KEY
@@ -123,19 +122,26 @@
         WHERE A.BBS_KEY = #{bbsKey}
     </select>
 
-    <select id="selectTBbsDataAll" resultType="ReferenceRoomVO">
+    <select id="selectTeacherReferenceRoomPrevNext" resultType="PrevNextVO">
         SELECT T.* FROM (
             SELECT
-            A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT, A.PWD, A.WRITE_USER_KEY,
-            ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+                A.BBS_KEY,
+                LEAD (A.TITLE,1,'이전글') OVER (ORDER BY A.BBS_KEY) prevTitle,
+                LEAD (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) prevBbsKey,
+                LEAD (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) prevWriteUserKey,
+                LEAD (A.PWD,1) OVER (ORDER BY A.BBS_KEY) prevPwd,
+
+                LAG  (A.TITLE,1,'다음글') OVER (ORDER BY A.BBS_KEY) nextTitle,
+                LAG  (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) nextBbsKey,
+                LAG  (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) nextWriteUserKey,
+                LAG  (A.PWD,1)  OVER (ORDER BY A.BBS_KEY) nextPwd
             FROM T_BBS_DATA A
             INNER JOIN T_USER B
             ON A.WRITE_USER_KEY = B.USER_KEY
             WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
         ) T
-        WHERE 1=1
-        ORDER BY T.BBS_KEY DESC
+        WHERE T.BBS_KEY = #{bbsKey}
     </select>
 
 

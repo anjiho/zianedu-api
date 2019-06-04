@@ -113,6 +113,26 @@ public class TeacherController {
         return teacherService.getTeacherVideoAcademyProductList(teacherKey);
     }
 
-    public
+    @RequestMapping(value = "/getTeacherReferenceRoomDetail/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 학습자료실 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherReferenceRoomDetailInfo(@PathVariable("teacherKey") int teacherKey,
+                                                                @RequestParam("bbsKey") int bbsKey) {
+        return teacherService.getTeacherReferenceRoomDetailInfo(bbsKey, teacherKey);
+    }
+
+    @RequestMapping(value = "/getTeacherLearningQnaDetail/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 학습Q/A 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherLearningQnaDetailInfo(@PathVariable("teacherKey") int teacherKey,
+                                                                @RequestParam("bbsKey") int bbsKey) {
+        return teacherService.getTeacherLearningQnaDetailInfo(bbsKey, teacherKey);
+    }
 
 }

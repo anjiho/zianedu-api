@@ -9,6 +9,8 @@ public class ReferenceRoomVO {
 
     private int bbsKey;
 
+    private int bbsParentKey;
+
     private String createDate;
 
     private String userName;
@@ -20,5 +22,9 @@ public class ReferenceRoomVO {
     private String pwd;
 
     private int writeUserKey;
+
+    private int commentCount;
+
+    private int level;
 
 }
