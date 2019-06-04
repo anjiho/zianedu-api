@@ -34,4 +34,6 @@ public class TeacherHomeAcademyListVO {
     private String lectureDate;
 
     private String imageTeacherList;
+
+    private String imageTeacherUrl;
 }

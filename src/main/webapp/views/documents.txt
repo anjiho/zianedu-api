@@ -1814,4 +1814,249 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultMsg": "SUCCESS"
 }
 
+==================================================================================================================================================
 
+/teacher/getTeacherAcademyLecture/{teacherKey} 강사소개 > 학원 강좌 정보
+{
+  "result": [
+    {
+      "stepCtgKey": 205,
+      "ctgName": "문제풀이",
+      "teacherAcademyList": [
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": null,
+          "price": 0,
+          "discountPercent": null,
+          "goodsName": "[2관학원실강] 2019 전산직7급대비 소프트웨어공학 기출문제풀이+모의고사반 [4월18일 개강]",
+          "lecCount": 0,
+          "limitDay": 100,
+          "kind": 3,
+          "priceKey": 111008,
+          "sellPrice": "180,000",
+          "lectureDate": "2019-04-25 ~ 2019-08-03",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "imageTeacherUrl": null,
+          "gkey": 106904
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": null,
+          "price": 0,
+          "discountPercent": null,
+          "goodsName": "[2관학원실강] 2019 전산직7급대비 자구+디비+소공+정보 기출문제풀이+모의고사 종합반[4월실강]",
+          "lecCount": 0,
+          "limitDay": 100,
+          "kind": 3,
+          "priceKey": 111007,
+          "sellPrice": "580,000",
+          "lectureDate": "2019-04-15 ~ 2019-07-24",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "imageTeacherUrl": null,
+          "gkey": 106903
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 4266,
+      "ctgName": "모의고사",
+      "teacherAcademyList": [
+        {
+          "ctgName": "모의고사",
+          "emphasis": 2,
+          "emphasisName": null,
+          "price": 0,
+          "discountPercent": null,
+          "goodsName": "[2관학원실강] 2019 지방직·서울시9급 시험대비 박태순 컴퓨터일반 모의고사반[4월16일 개강]",
+          "lecCount": 0,
+          "limitDay": 60,
+          "kind": 2,
+          "priceKey": 111029,
+          "sellPrice": "100,000",
+          "lectureDate": "2019-04-16 ~ 2019-06-15",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "imageTeacherUrl": null,
+          "gkey": 106923
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 2,
+          "emphasisName": null,
+          "price": 0,
+          "discountPercent": null,
+          "goodsName": "[2관학원 실강] 2019 지방직 서울시9급 시험대비 전산직 실전동형 모의고사 전과목 종합반 [4월접수중]",
+          "lecCount": 0,
+          "limitDay": 60,
+          "kind": 2,
+          "priceKey": 111027,
+          "sellPrice": "260,000",
+          "lectureDate": "2019-04-15 ~ 2019-06-14",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "imageTeacherUrl": null,
+          "gkey": 106921
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 2,
+          "emphasisName": null,
+          "price": 0,
+          "discountPercent": null,
+          "goodsName": "[2관학원 실강] 2019 지방직 서울시9급 시험대비 전산직 전공(컴퓨터일반+정보보호론) 모의고사반 ",
+          "lecCount": 0,
+          "limitDay": 60,
+          "kind": 2,
+          "priceKey": 111012,
+          "sellPrice": "180,000",
+          "lectureDate": "2019-04-16 ~ 2019-06-15",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "imageTeacherUrl": null,
+          "gkey": 106908
+        }
+      ]
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherReferenceRoom/{teacherKey} 강사소개 > 학습 자료실
+{
+  "cnt": 42,
+  "result": [
+    {
+      "num": 42,
+      "bbsKey": 108213,
+      "createDate": "2018.11.19",
+      "userName": "박태순",
+      "title": "소공_시스템 개발 주기(폭포수 모형)",
+      "readCount": 134,
+      "pwd": null,
+      "writeUserKey": 60480
+    },
+    {
+      "num": 41,
+      "bbsKey": 99654,
+      "createDate": "2018.06.01",
+      "userName": "지안에듀",
+      "title": "2018.5.19 시행 교육청 컴퓨터일반 해설 영상(박태순)",
+      "readCount": 557,
+      "pwd": null,
+      "writeUserKey": 87017
+    },
+    {
+      "num": 40,
+      "bbsKey": 99287,
+      "createDate": "2018.05.25",
+      "userName": "지안에듀",
+      "title": "2018.5.19.시행 지방직 컴퓨터일반 해설 강의",
+      "readCount": 316,
+      "pwd": null,
+      "writeUserKey": 70995
+    },
+    {
+      "num": 39,
+      "bbsKey": 98486,
+      "createDate": "2018.05.08",
+      "userName": "지안에듀",
+      "title": "2018 4 7 시행 국가직 컴퓨터일반 박태순 해설강의",
+      "readCount": 180,
+      "pwd": null,
+      "writeUserKey": 70995
+    },
+    {
+      "num": 38,
+      "bbsKey": 96216,
+      "createDate": "2018.03.29",
+      "userName": "박태순",
+      "title": "2018 컴퓨터일반 이론서 정오표",
+      "readCount": 147,
+      "pwd": null,
+      "writeUserKey": 60480
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherLearningQna/{teacherKey} 강사소개 > 학습 Q/A
+{
+  "cnt": 352,
+  "result": [
+    {
+      "num": 352,
+      "bbsKey": 123600,
+      "createDate": "2019.05.22",
+      "userName": "홍현정",
+      "title": "컴일 1000제 문의드립니다",
+      "readCount": 6,
+      "pwd": null,
+      "writeUserKey": 105950
+    },
+    {
+      "num": 351,
+      "bbsKey": 123311,
+      "createDate": "2019.05.19",
+      "userName": "노경완",
+      "title": "동형모고 5회 7번",
+      "readCount": 5,
+      "pwd": null,
+      "writeUserKey": 103092
+    },
+    {
+      "num": 350,
+      "bbsKey": 123280,
+      "createDate": "2019.05.18",
+      "userName": "박성진",
+      "title": "질문 드립니다.",
+      "readCount": 2,
+      "pwd": "1",
+      "writeUserKey": 73529
+    },
+    {
+      "num": 349,
+      "bbsKey": 122736,
+      "createDate": "2019.05.10",
+      "userName": "이원진",
+      "title": "710쪽",
+      "readCount": 11,
+      "pwd": null,
+      "writeUserKey": 113928
+    },
+    {
+      "num": 348,
+      "bbsKey": 122735,
+      "createDate": "2019.05.10",
+      "userName": "이원진",
+      "title": "int 크기",
+      "readCount": 5,
+      "pwd": null,
+      "writeUserKey": 113928
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/teacher/getTeacherVideoAcademyProductList/{teacherKey} 강사소개 > 수강후기 > 강사의 상품목록 셀렉트박스
+{
+  "result": [
+    {
+      "goodsName": "[온라인강좌]2019 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이강의 [5%적립]\t",
+      "gkey": 106978
+    },
+    {
+      "goodsName": "[학원강의][2관학원실강] 2019 지방직·서울시9급 시험대비 박태순 컴퓨터일반 모의고사반[4월16일 개강]",
+      "gkey": 106923
+    },
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}

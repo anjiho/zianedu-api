@@ -4,15 +4,14 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.BbsMasterKeyType;
 import com.zianedu.api.define.datasource.EmphasisType;
 import com.zianedu.api.define.err.ZianErrCode;
+import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.BoardMapper;
+import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.TeacherMapper;
-import com.zianedu.api.utils.FileUtil;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
-import com.zianedu.api.utils.ZianApiUtils;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class TeacherService {
+public class TeacherService extends PagingSupport {
 
     @Autowired
     private TeacherMapper teacherMapper;
@@ -34,6 +33,9 @@ public class TeacherService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getTeacherHomeInfo(int teacherKey, int listLimit, int device, int menuCtgKey) {
@@ -99,7 +101,7 @@ public class TeacherService {
                         //할인률 주입
                         CalcPriceVO calcPriceVO = productMapper.selectTopCalcPrice(vo2.getGKey());
                         vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()) + "할인");
-
+                        //동영상, 모바일, 동영상+모바일 리스트 주입
                         List<TGoodsPriceOptionVO> videoLectureKindList = productMapper.selectGoodsPriceOptionList(vo2.getGKey());
                         vo2.setVideoLectureKindList(videoLectureKindList);
                         //동영상 종류별 금액 주입하기
@@ -122,6 +124,138 @@ public class TeacherService {
             }
         }
         return new ApiResultListDTO(teacherHomeLectureList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getTeacherAcademyList(int teacherKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<TeacherHomeAcademyVO> teacherHomeAcademyList = new ArrayList<>();
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherHomeAcademyList = teacherMapper.selectTeacherAcademyLectureList(teacherKey, stepCtgKey);
+        }
+        return new ApiResultListDTO(teacherHomeAcademyList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getTeacherLearningQna(int teacherKey, int sPage, int listLimit, String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectTBbsDataListBySearchCount(
+                    BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
+                    teacherKey,
+                    Util.isNullValue(searchType, ""),
+                    Util.isNullValue(searchText, "")
+            );
+            referenceRoomList = boardMapper.selectTBbsDataListBySearch(
+                    BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
+                    teacherKey,
+                    startNumber,
+                    listLimit,
+                    Util.isNullValue(searchType, ""),
+                    Util.isNullValue(searchText, "")
+            );
+        }
+        return new ApiPagingResultDTO(totalCount, referenceRoomList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getReferenceRoomList(int teacherKey, int sPage, int listLimit, String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectTBbsDataListBySearchCount(
+                    BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
+                    teacherKey,
+                    Util.isNullValue(searchType, ""),
+                    Util.isNullValue(searchText, "")
+            );
+            referenceRoomList = boardMapper.selectTBbsDataListBySearch(
+                    BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
+                    teacherKey,
+                    startNumber,
+                    listLimit,
+                    Util.isNullValue(searchType, ""),
+                    Util.isNullValue(searchText, "")
+            );
+        }
+        return new ApiPagingResultDTO(totalCount, referenceRoomList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getLectureReviewList(int teacherKey, int gKey, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+        List<TeacherVideoAcademyProductVO> teacherVideoAcademyProductList = new ArrayList<>();
+        List<GoodsReviewVO> lectureReviewList = new ArrayList<>();
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherVideoAcademyProductList = teacherMapper.selectTeacherVideoAcademyProductList(teacherKey);
+            totalCount = boardMapper.selectTeacherReviewListCount(teacherKey, gKey);
+            lectureReviewList = boardMapper.selectTeacherReviewList(teacherKey, gKey, startNumber, listLimit);
+        }
+        return new ApiPagingResultDTO(totalCount, lectureReviewList, resultCode);
+    }
+
+    /**
+     * 강사소개 > 수강후기 > 강사의 상품목록 셀렉트박스
+     * @param teacherKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getTeacherVideoAcademyProductList(int teacherKey) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        List<TeacherVideoAcademyProductVO> teacherVideoAcademyProductList = new ArrayList<>();
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherVideoAcademyProductList = teacherMapper.selectTeacherVideoAcademyProductList(teacherKey);
+        }
+        return new ApiResultListDTO(teacherVideoAcademyProductList, resultCode);
+    }
+
+    public ApiResultObjectDTO getTeacherReferenceRoomDetailInfo(int bbsKey, int teacherKey) {
+        int resultCode = OK.value();
+
+        List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            referenceRoomList = boardMapper.selectTBbsDataAll(
+                    BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
+                    teacherKey
+            );
+            List<Integer>bbsKeyArr = new ArrayList<>();
+            if (referenceRoomList.size() > 0) {
+                for (ReferenceRoomVO vo : referenceRoomList) {
+                    bb
+                }
+            }
+        }
+
     }
 
     /**

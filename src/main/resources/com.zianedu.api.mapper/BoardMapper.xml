@@ -15,6 +15,54 @@
         </if>
     </select>
 
+    <select id="selectTBbsDataListBySearch" resultType="ReferenceRoomVO">
+        SELECT T.* FROM (
+            SELECT
+                A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT, A.PWD, A.WRITE_USER_KEY,
+                ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+            FROM T_BBS_DATA A
+            INNER JOIN T_USER B
+            ON A.WRITE_USER_KEY = B.USER_KEY
+            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+            AND A.CTG_KEY = #{teacherKey}
+        ) T
+        WHERE 1=1
+        <if test="searchType == 'title'">
+            AND T.TITLE LIKE '%' || #{searchText} || '%'
+        </if>
+        <if test="searchType == 'name'">
+            AND T.userName LIKE '%' || #{searchText} || '%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND T.CONTENTS LIKE '%' || #{searchText} || '%'
+        </if>
+        ORDER BY T.BBS_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectTBbsDataListBySearchCount" resultType="Integer">
+        SELECT COUNT(T.BBS_KEY) FROM (
+            SELECT
+                A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT,
+                ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+            FROM T_BBS_DATA A
+            INNER JOIN T_USER B
+            ON A.WRITE_USER_KEY = B.USER_KEY
+            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+            AND A.CTG_KEY = #{teacherKey}
+        ) T
+        WHERE 1=1
+        <if test="searchType == 'title'">
+            AND T.TITLE LIKE '%' || #{searchText} || '%'
+        </if>
+        <if test="searchType == 'title'">
+            AND T.userName LIKE '%' || #{searchText} || '%'
+        </if>
+        <if test="searchType == 'title'">
+            AND T.CONTENTS LIKE '%' || #{searchText} || '%'
+        </if>
+    </select>
+
     <select id="selectGoodsReviewList" resultType="GoodsReviewVO">
         SELECT
             A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS
@@ -31,5 +79,64 @@
             OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
         </if>
     </select>
+
+    <select id="selectTeacherReviewList" resultType="GoodsReviewVO">
+        SELECT
+        A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_USER B
+        ON A.USER_KEY = B.USER_KEY
+        WHERE 1=1
+        <if test="gKey == 0">
+            AND A.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+        </if>
+        <if test="gKey > 0">
+            AND A.G_KEY = #{gKey}
+        </if>
+        ORDER BY A.G_REVIEW_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectTeacherReviewListCount" resultType="Integer">
+        SELECT COUNT(A.G_REVIEW_KEY)
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_USER B
+        ON A.USER_KEY = B.USER_KEY
+        WHERE 1=1
+        <if test="gKey == 0">
+            AND A.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+        </if>
+        <if test="gKey > 0">
+            AND A.G_KEY = #{gKey}
+        </if>
+    </select>
+
+    <select id="selectTeacherReferenceRoomDetailInfo" resultType="ReferenceRoomDetailVO">
+        SELECT
+            A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as indate, A.TITLE, A.READ_COUNT,
+            B.NAME as userName, B.USER_ID, A.CONTENTS, C.FILENAME as fileName
+        FROM T_BBS_DATA A
+        INNER JOIN T_USER B
+        ON A.WRITE_USER_KEY = B.USER_KEY
+        LEFT OUTER JOIN T_BBS_DATA_FILE C
+        ON A.BBS_KEY = C.BBS_KEY
+        WHERE A.BBS_KEY = #{bbsKey}
+    </select>
+
+    <select id="selectTBbsDataAll" resultType="ReferenceRoomVO">
+        SELECT T.* FROM (
+            SELECT
+            A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, B.name as userName, A.TITLE, A.READ_COUNT, A.PWD, A.WRITE_USER_KEY,
+            ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num, A.CONTENTS
+            FROM T_BBS_DATA A
+            INNER JOIN T_USER B
+            ON A.WRITE_USER_KEY = B.USER_KEY
+            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+            AND A.CTG_KEY = #{teacherKey}
+        ) T
+        WHERE 1=1
+        ORDER BY T.BBS_KEY DESC
+    </select>
+
 
 </mapper>

@@ -1,6 +1,8 @@
 package com.zianedu.api.mapper;
 
 import com.zianedu.api.vo.GoodsReviewVO;
+import com.zianedu.api.vo.ReferenceRoomDetailVO;
+import com.zianedu.api.vo.ReferenceRoomVO;
 import com.zianedu.api.vo.TBbsDataVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +13,23 @@ public interface BoardMapper {
     List<TBbsDataVO> selectTBbsDataList(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                          @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
+    List<ReferenceRoomVO> selectTBbsDataListBySearch(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey,
+                                                     @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                                     @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    int selectTBbsDataListBySearchCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey,
+                                        @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     List<GoodsReviewVO> selectGoodsReviewList(@Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                            @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+
+    List<GoodsReviewVO> selectTeacherReviewList(@Param("teacherKey") int teacherKey, @Param("gKey") int gKey,
+                                                @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectTeacherReviewListCount(@Param("teacherKey") int teacherKey, @Param("gKey") int gKey);
+
+    ReferenceRoomDetailVO selectTeacherReferenceRoomDetailInfo(@Param("bbsKey") int bbsKey);
+
+    List<ReferenceRoomVO> selectTBbsDataAll(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey);
 }

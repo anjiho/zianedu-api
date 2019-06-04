@@ -20,6 +20,9 @@ public interface TeacherMapper {
 
     List<TeacherHomeAcademyVO> selectTeacherAcademyLectureList(@Param("teacherKey") int teacherKey, @Param("stepCtgKey") int stepCtgKey);
 
+    List<TeacherVideoAcademyProductVO> selectTeacherVideoAcademyProductList(@Param("teacherKey") int teacherKey);
+
+
     /** INSERT **/
 
     /** UPDATE **/

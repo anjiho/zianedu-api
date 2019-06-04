@@ -197,4 +197,17 @@
         ORDER BY Z.STEP_CTG_KEY ASC, Z.G_KEY DESC
     </select>
 
+    <select id="selectTeacherVideoAcademyProductList" resultType="TeacherVideoAcademyProductVO">
+        SELECT T.G_KEY, CONCAT( T.goodsType, T.NAME) as goodsName
+        FROM (
+            SELECT B.G_KEY, B.NAME, (SELECT COUNT(G_REVIEW_KEY) FROM T_GOODS_REVIEW Z WHERE Z.G_KEY = B.G_KEY) as reviewCnt, B.TYPE,
+                   CASE B.TYPE WHEN 1 THEN '[온라인강좌]' WHEN 2 THEN '[학원강의]' END as goodsType
+            FROM T_GOODS_TEACHER_LINK A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            WHERE A.TEACHER_KEY = #{teacherKey}
+            AND B.TYPE IN (1,2)
+            ORDER BY B.G_KEY DESC
+        ) T
+    </select>
 </mapper>

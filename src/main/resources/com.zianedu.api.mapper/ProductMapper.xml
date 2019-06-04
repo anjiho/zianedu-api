@@ -342,6 +342,10 @@
         SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
     </select>
 
+    <select id="">
+
+    </select>
+
     <select id="selectTeacherBookListFromVideoLectureLink" resultType="LectureBookVO">
         SELECT
             A.LINK_KEY, C.G_KEY, B.BOOK_KEY, B.WRITER, C.NAME as bookName, TO_CHAR(B.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
