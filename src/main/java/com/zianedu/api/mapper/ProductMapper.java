@@ -41,6 +41,16 @@ public interface ProductMapper {
 
     List<LectureBookVO> selectTeacherBookListFromVideoLectureLink(@Param("gKey") int gKey);
 
+    VideoLectureDetailVO selectOnlineVideoLectureDetailInfo(@Param("gKey") int gKey);
+
+    List<TGoodsPriceOptionVO> selectGoodsPriceOption(@Param("gKey") int gKey);
+
+    List<TLecCurriVO> selectLectureListFromVideoProduct(@Param("gKey") int gKey, @Param("device") int device);
+
+    AcademyLectureDetailVO selectAcademyLectureDetailInfo(@Param("gKey") int gKey);
+
+    List<TeacherInfoVO> selectAcademyLectureTeacherList(@Param("gKey") int gKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

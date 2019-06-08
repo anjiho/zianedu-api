@@ -3,19 +3,13 @@ package com.zianedu.api.vo;
 import lombok.Data;
 
 @Data
-public class LectureBookVO {
+public class AcademyLectureDetailVO {
 
     private int gKey;
 
-    private int bookKey;
+    private String goodsName;
 
-    private int priceKey;
-
-    private String writer;
-
-    private String bookName;
-
-    private String publishDate;
+    private String point;
 
     private int sellPrice;
 
@@ -25,17 +19,14 @@ public class LectureBookVO {
 
     private String priceName;
 
-    private int valueBit;
+    private String lectureDate;
 
-    private String isMain;
+    private String month;
 
     private String imageView;
 
-    private String imageList;
-
     private String imageViewUrl;
 
-    private String imageListUrl;
-
     private String discountPercent;
+
 }

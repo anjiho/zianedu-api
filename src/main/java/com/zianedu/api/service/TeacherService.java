@@ -141,10 +141,10 @@ public class TeacherService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getTeacherLearningQna(int teacherKey, int sPage, int listLimit, String searchType, String searchText) {
+    public ApiPagingResultDTO getTeacherLearningQna(int teacherKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
         int resultCode = OK.value();
 
-        List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
+        List<ReferenceRoomVO> learningQnaList = new ArrayList<>();
         int totalCount = 0;
         int startNumber = getPagingStartNumber(sPage, listLimit);
 
@@ -157,7 +157,7 @@ public class TeacherService extends PagingSupport {
                     Util.isNullValue(searchType, ""),
                     Util.isNullValue(searchText, "")
             );
-            referenceRoomList = boardMapper.selectTBbsDataListBySearch(
+            learningQnaList = boardMapper.selectTBbsDataListBySearch(
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
                     teacherKey,
                     startNumber,
@@ -165,12 +165,21 @@ public class TeacherService extends PagingSupport {
                     Util.isNullValue(searchType, ""),
                     Util.isNullValue(searchText, "")
             );
+            if (learningQnaList.size() > 0) {
+                String standardDate = Util.plusDate(Util.returnNow(), -10);
+                for (ReferenceRoomVO vo : learningQnaList) {
+                    int diffDayCnt = Util.getDiffDayCount(Util.convertDateFormat3(standardDate), Util.convertDateFormat3(vo.getIndate()));
+
+                    if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
+                    else vo.setNew(false);
+                }
+            }
         }
-        return new ApiPagingResultDTO(totalCount, referenceRoomList, resultCode);
+        return new ApiPagingResultDTO(totalCount, learningQnaList, resultCode);
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getReferenceRoomList(int teacherKey, int sPage, int listLimit, String searchType, String searchText) {
+    public ApiPagingResultDTO getReferenceRoomList(int teacherKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
         int resultCode = OK.value();
 
         List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
@@ -194,6 +203,15 @@ public class TeacherService extends PagingSupport {
                     Util.isNullValue(searchType, ""),
                     Util.isNullValue(searchText, "")
             );
+            if (referenceRoomList.size() > 0) {
+                String standardDate = Util.plusDate(Util.returnNow(), -10);
+                for (ReferenceRoomVO vo : referenceRoomList) {
+                    int diffDayCnt = Util.getDiffDayCount(Util.convertDateFormat3(standardDate), Util.convertDateFormat3(vo.getIndate()));
+
+                    if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
+                    else vo.setNew(false);
+                }
+            }
         }
         return new ApiPagingResultDTO(totalCount, referenceRoomList, resultCode);
     }

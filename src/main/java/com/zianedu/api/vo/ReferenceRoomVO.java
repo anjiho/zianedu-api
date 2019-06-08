@@ -27,4 +27,8 @@ public class ReferenceRoomVO {
 
     private int level;
 
+    private String indate;
+
+    private boolean isNew;
+
 }

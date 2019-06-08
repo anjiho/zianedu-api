@@ -20,7 +20,6 @@
             SELECT
                 A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL, CONTENTS,
                 (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD
-                --ROW_NUMBER() OVER (ORDER BY A.BBS_KEY ASC) num
             FROM T_BBS_DATA A
             WHERE A.IS_NOTICE = 0
             AND A.BBS_MASTER_KEY = #{bbsMasterKey}
@@ -144,5 +143,18 @@
         WHERE T.BBS_KEY = #{bbsKey}
     </select>
 
+    <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
+        <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
+            SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_GOODS_REVIEW
+        (
+            G_REVIEW_KEY, G_KEY, INDATE, USER_KEY, TITLE, CONTENTS, POINT
+        )
+        VALUES
+        (
+            #{gReviewKey}, #{gKey}, sysdate, #{userKey}, #{title}, #{contents}, #{point}
+        )
+    </insert>
 
 </mapper>

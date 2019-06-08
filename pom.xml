@@ -20,7 +20,7 @@
     <repositories>
         <repository>
             <id>central</id>
-            <url>http://211.62.104.179:8081/nexus/content/groups/public</url>
+            <url>http://15.164.7.237:8000/nexus/content/groups/public</url>
             <releases><enabled>true</enabled></releases>
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
@@ -34,7 +34,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
-            <url>http://211.62.104.179:8081/nexus/content/groups/public</url>
+            <url>http://15.164.7.237:8000/nexus/content/groups/public</url>
             <releases><enabled>true</enabled></releases>
             <snapshots><enabled>true</enabled></snapshots>
         </pluginRepository>

@@ -18,4 +18,6 @@ public class TGoodsPriceOptionVO {
     private int point;
 
     private int extendPercent;
+
+    private String discountPercent;
 }

@@ -10,6 +10,8 @@ public interface MenuMapper {
     /** SELECT **/
     Integer selectSubjectCtgKeyByMenuCtgKey(@Param("menuCtgKey") int menuCtgKey);
 
+    List<TCategoryVO> selectTCategoryByParentKey(@Param("ctgKey") int ctgKey);
+
     /** INSERT **/
 
     /** UPDATE **/

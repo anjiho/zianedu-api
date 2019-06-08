@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface BoardMapper {
 
+    /** SELECT **/
+
     List<TBbsDataVO> selectTBbsDataList(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                          @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
@@ -29,4 +31,7 @@ public interface BoardMapper {
     ReferenceRoomDetailVO selectTeacherReferenceRoomDetailInfo(@Param("bbsKey") int bbsKey);
 
     List<PrevNextVO> selectTeacherReferenceRoomPrevNext(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("bbsKey") int bbsKey);
+
+    /** INSERT **/
+    void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 }

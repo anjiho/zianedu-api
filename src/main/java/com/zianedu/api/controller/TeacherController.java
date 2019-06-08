@@ -68,7 +68,7 @@ public class TeacherController {
                                                       @RequestParam("sPage") int sPage,
                                                       @RequestParam("listLimit") int listLimit,
                                                       @RequestParam(value = "searchType", required = false) String searchType,
-                                                      @RequestParam(value = "searchText", required = false) String searchText) {
+                                                      @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
         return teacherService.getReferenceRoomList(teacherKey, sPage, listLimit, searchType, searchText);
     }
 
@@ -85,12 +85,12 @@ public class TeacherController {
                                                       @RequestParam("sPage") int sPage,
                                                       @RequestParam("listLimit") int listLimit,
                                                       @RequestParam(value = "searchType", required = false) String searchType,
-                                                      @RequestParam(value = "searchText", required = false) String searchText) {
+                                                      @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
         return teacherService.getTeacherLearningQna(teacherKey, sPage, listLimit, searchType, searchText);
     }
 
     @RequestMapping(value = "/getTeacherLectureReview/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("강사소개 > 수강후기")
+    @ApiOperation("강사소개 > 수강후기, 온라인 상품 상세 > 회원리뷰")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "gKey", value = "상품키", dataType = "int", paramType = "query", required = true),

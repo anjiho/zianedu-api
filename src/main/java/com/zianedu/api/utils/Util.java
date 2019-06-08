@@ -1037,6 +1037,18 @@ public class Util {
 
     }
 
+    // yyyy-mm-dd -> yyyymmdd 변환
+    public static String convertDateFormat3(String date) throws Exception {
+        SimpleDateFormat fromDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
+        Date originDate = fromDateFormat.parse(date);
+
+        String newDate = dateFormat.format(originDate);
+
+        return newDate;
+
+    }
+
     public static String getProductDiscountRate(int price, int sellPrice) {
         int onePercentPrice = (int)( price * 0.01 );
         int sellPricePercent = (sellPrice / onePercentPrice);

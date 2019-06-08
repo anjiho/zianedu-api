@@ -1938,7 +1938,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 60480,
       "commentCount": 1,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -1951,7 +1952,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 87017,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -1964,7 +1966,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 70995,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -1977,7 +1980,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 70995,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -1990,7 +1994,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 60480,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     }
   ],
   "resultCode": 200,
@@ -2014,7 +2019,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 105950,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -2027,7 +2033,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 103092,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -2040,7 +2047,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": "1",
       "writeUserKey": 73529,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -2053,7 +2061,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 113928,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     },
     {
       "num": 0,
@@ -2066,7 +2075,8 @@ param > userKey : 5, gKeys : [106304,106321,....]
       "pwd": null,
       "writeUserKey": 113928,
       "commentCount": 0,
-      "level": 1
+      "level": 1,
+      "new": false
     }
   ],
   "resultCode": 200,
@@ -2199,6 +2209,169 @@ param > userKey : 5, gKeys : [106304,106321,....]
         "nextTitle": "2019년 컴퓨터일반 800제 ",
         "nextWriteUserKey": 105447,
         "nextPwd": 1
+      }
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/product/getVideoProductDetail/{gKey} 동영상 강좌 상품 상세정보
+{
+  "result": {
+    "videoLectureDetailInfo": { //상품기본 정보
+      "goodsName": "2019 시험대비 윤광덕 영어 올인원 기본+심화 이론강의  [5%적립]",
+      "status": 2,
+      "statusName": "완강",
+      "limitDay": 70,
+      "lectureCount": 56,
+      "point": "4,000",
+      "evaluationPoint": 5,
+      "lowVideo": "zian/english/yoon/01/180903_106446_01_M.mp4",
+      "highVideo": "zian/english/yoon/01/180903_106446_01_H.mp4",
+      "curriKey": 120569,
+      "imageTeacherList": "100\\teacher\\영어_윤광덕.png",
+      "teacherName": "윤광덕",
+      "description": "<p>&nbsp;</p><p>&nbsp;</p><p><span style=\"font-size: 10pt;\"><strong>지안에듀 동영상강의는 실강을 촬영하여 편집후 처리되는 시간이 있어</strong></span></p><p><span style=\"font-size: 10pt;\"><strong>실강이후 2~3일 뒤에 동영상강의가 업데이트 됩니다.(휴일,공휴일제외 하고 2~3일소요)</strong></span></p><p><span style=\"font-size: 10pt;\">&nbsp;</span></p><p><span style=\"font-size: 10pt;\"><strong>메뉴 패키지 &gt; 자유패키지에서 두과목이상 결제하실경우 10% 추가할인이 가능하니</strong></span></p><p><span style=\"font-size: 10pt;\"><strong>두개 이상의 단과를 들으실 회원분들께서는 참고부탁드립니다.</strong></span></p><p>&nbsp;</p><p>PC(VOD)강의는 2.2배수로 제한되며 강의시간 *&nbsp;2.2배수 = 재생기간으로 제한됩니다. <br>모바일은 무제한 시청이 가능하지만 1대 고정으로 이용이 제한됩니다.<br>VOD 배수시스템에 대해서는 이곳을 클릭하셔서 자세한 사항을 확인부탁드립니다.</p><p>지안패스 상품 같은경우는 PC1+모바일1대로 무제한 시청이 가능합니다.</p><p><br><a href=\"http://postvod.zianedu.com/front/Faq?mnk=637&amp;parent_mnk=0&amp;nvt=1&amp;bbsmasterkey=10018&amp;lBBSKey=24337&amp;nCustomKey=0\" target=\"_self\">2.2배수 시스템 안내 바로가기 클릭▶</a></p><p>&nbsp;</p><p>&nbsp;</p><p>※ 단 사용자가 불법내역이 없다고 판단될때 지안에듀에서 배수시스템을 1회 초기화 해드리고 있습니다. </p><p>정상 이용자분들께서는 2.2배수 이외 복습이 더 필요할경우 지안에듀 1:1문의나 연락을 주시면 1회 초기화가 가능합니다.</p><p><br><strong><span style=\"font-size: 10pt;\">PC본체에 캡쳐보드가 설치되어 있거나 빔프로젝터를 사용하시는 회원분 </span><br><span style=\"font-size: 10pt;\">노트북을 사용하시는 회원분중 화면을 그래픽포트(HDMI등)로 출력되는 모니터나 TV화면 같은경우</span><br><span style=\"font-size: 10pt;\">현재 플레이어 보안문제로 차단되시게 되니 참조부탁드립니다.</span></strong>&nbsp;</p><p>&nbsp;</p>",
+      "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\영어_윤광덕.png",
+      "gkey": 106446
+    },
+    "goodsPriceOptionInfo": [   //종류별 가격(동영상, 모바일, 동영상+모바일)
+      {
+        "priceKey": 110409,
+        "kind": 102,
+        "price": 160000,
+        "sellPrice": 80000,
+        "point": 4000,
+        "extendPercent": 20,
+        "discountPercent": "50%",
+        "gkey": 106446
+      }
+    ],
+    "lectureBookInfo": [    //강의교재
+      {
+        "bookKey": 11354,
+        "priceKey": 110517,
+        "writer": "윤광덕",
+        "bookName": "윤광덕 기본영어 교재[5%적립]",
+        "publishDate": "2018.09.06",
+        "sellPrice": 10000,
+        "price": 10000,
+        "sellPriceName": "10,000",
+        "priceName": "10,000",
+        "valueBit": 0,
+        "isMain": "부교재",
+        "imageView": "100\\book\\윤광덕 300(2).png",
+        "imageList": "100\\book\\윤광덕 300(1).png",
+        "imageViewUrl": "http://www.zianedu.com/Upload/100\\book\\윤광덕 300(2).png",
+        "imageListUrl": "http://www.zianedu.com/Upload/100\\book\\윤광덕 300(1).png",
+        "discountPercent": "0%",
+        "gkey": 106491
+      },
+      {
+        "bookKey": 11336,
+        "priceKey": 110271,
+        "writer": "탑스팟",
+        "bookName": "2019 지안영어[10%할인+5%적립] ",
+        "publishDate": "2018.07.06",
+        "sellPrice": 16200,
+        "price": 18000,
+        "sellPriceName": "16,200",
+        "priceName": "18,000",
+        "valueBit": 1,
+        "isMain": "주교재",
+        "imageView": "100\\book\\지안영어 입체표지 300픽셀(0).png",
+        "imageList": "100\\book\\지안영어 입체표지 300픽셀.png",
+        "imageViewUrl": "http://www.zianedu.com/Upload/100\\book\\지안영어 입체표지 300픽셀(0).png",
+        "imageListUrl": "http://www.zianedu.com/Upload/100\\book\\지안영어 입체표지 300픽셀.png",
+        "discountPercent": "10%",
+        "gkey": 106301
+      }
+    ],
+    "lectureList": [    //강의목록
+      {
+        "num": 1,
+        "curriKey": 0,
+        "lecKey": 0,
+        "name": "1강 180903_OT",
+        "vodFileLow": "zian/english/yoon/01/180903_106446_01_M.mp4",
+        "vodFileHigh": "zian/english/yoon/01/180903_106446_01_H.mp4",
+        "vodFileMobileLow": null,
+        "vodFileMobileHigh": null,
+        "vodTime": 55,
+        "dataFile": null,
+        "dataPage": 0,
+        "isShow": 0,
+        "isSample": 0,
+        "unitCtgKey": 0,
+        "pos": 0
+      },
+      {
+        "num": 2,
+        "curriKey": 0,
+        "lecKey": 0,
+        "name": "2강 180903_CHAPTER01. 문장의 구성 p.5~",
+        "vodFileLow": "zian/english/yoon/01/180903_106446_02_M.mp4",
+        "vodFileHigh": "zian/english/yoon/01/180903_106446_02_H.mp4",
+        "vodFileMobileLow": null,
+        "vodFileMobileHigh": null,
+        "vodTime": 66,
+        "dataFile": null,
+        "dataPage": 0,
+        "isShow": 0,
+        "isSample": 0,
+        "unitCtgKey": 0,
+        "pos": 0
+      },
+      ....
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+
+/product/getAcademyProductDetail/{gKey} 학원수강 상품 상세정보
+
+{
+  "result": {
+    "academyLectureDetailInfo": {
+      "goodsName": "[학원 실강] 2019 지방직 서울시9급 시험대비 농업직 실전 동형모의고사 종합반 [4월접수중]",
+      "point": "9,500",
+      "sellPrice": 190000,
+      "price": 240000,
+      "sellPriceName": "190,000",
+      "priceName": "240,000",
+      "lectureDate": "2019.04.15 ~ 2019.06.04",
+      "month": "1개월",
+      "imageView": "100\\lec\\농업직 9급 실전동형모의 종합반 4월 개강안내문.jpg",
+      "imageViewUrl": "http://www.zianedu.com/Upload/100\\lec\\농업직 9급 실전동형모의 종합반 4월 개강안내문.jpg",
+      "discountPercent": "21%",
+      "gkey": 106922
+    },
+    "teacherInfo": [
+      {
+        "teacherName": "오선희",
+        "teacherImage": "100\\teacher\\국어_오선희.png",
+        "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\국어_오선희.png"
+      },
+      {
+        "teacherName": "김성익",
+        "teacherImage": "100/teacher/김성익_중.png",
+        "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/김성익_중.png"
+      },
+      {
+        "teacherName": "임찬호",
+        "teacherImage": "100/teacher/임찬호_중.png",
+        "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/임찬호_중.png"
+      },
+      {
+        "teacherName": "김동이",
+        "teacherImage": "100/teacher/김동이_중.png",
+        "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/김동이_중.png"
       }
     ]
   },

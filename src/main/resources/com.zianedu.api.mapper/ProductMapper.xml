@@ -342,14 +342,15 @@
         SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
     </select>
 
-    <select id="">
-
-    </select>
-
     <select id="selectTeacherBookListFromVideoLectureLink" resultType="LectureBookVO">
         SELECT
             A.LINK_KEY, C.G_KEY, B.BOOK_KEY, B.WRITER, C.NAME as bookName, TO_CHAR(B.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
-            TRIM( TO_CHAR(D.SELL_PRICE, '999,999,999,999,999') ) as sellPrice, A.VALUE_BIT, D.PRICE_KEY, CASE A.VALUE_BIT WHEN '1' THEN '주교재' WHEN '0' THEN '부교재' END as isMain
+            TRIM( TO_CHAR(D.SELL_PRICE, '999,999,999,999,999') ) as sellPriceName,
+            TRIM( TO_CHAR(D.PRICE, '999,999,999,999,999') ) as priceName,
+            D.SELL_PRICE,
+            D.PRICE,
+            C.IMAGE_VIEW, C.IMAGE_LIST,
+            A.VALUE_BIT, D.PRICE_KEY, CASE A.VALUE_BIT WHEN '1' THEN '주교재' WHEN '0' THEN '부교재' END as isMain
         FROM T_LINK_KEY A
         INNER JOIN T_BOOK B
         ON A.RES_KEY = B.G_KEY
@@ -359,6 +360,120 @@
         ON C.G_KEY = D.G_KEY
         WHERE A.RES_TYPE = 5
         AND A.REQ_KEY = #{gKey}
+    </select>
+
+    <select id="selectOnlineVideoLectureDetailInfo" resultType="VideoLectureDetailVO">
+        SELECT A.G_KEY, A.NAME as goodsName, B.STATUS, B.LIMIT_DAY,
+                (SELECT COUNT(Z.LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = B.LEC_KEY) as lectureCount,
+                (
+                    SELECT TRIM ( TO_CHAR(POINT, '999,999') ) as point
+                    FROM (
+                        SELECT POINT
+                        FROM ZIANEDU.T_GOODS_PRICE_OPTION
+                        WHERE G_KEY = #{gKey}
+                        ORDER BY POINT DESC
+                    )
+                    WHERE ROWNUM = 1
+                ) as point,
+                (
+                    SELECT  CEIL( (SUM(POINT) / COUNT(G_REVIEW_KEY)) )
+                    FROM T_GOODS_REVIEW
+                    WHERE G_KEY = #{gKey}
+                )as evaluationPoint,
+                (
+                   SELECT * FROM (
+                        SELECT T.VOD_FILE_LOW
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.CURRI_KEY ASC
+                    ) WHERE ROWNUM = 1
+                ) as lowVideo,
+                (
+                   SELECT * FROM (
+                        SELECT T.VOD_FILE_HIGH
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.CURRI_KEY ASC
+                    ) WHERE ROWNUM = 1
+                ) as highVideo,
+                 (
+                   SELECT * FROM (
+                        SELECT T.CURRI_KEY
+                        FROM T_LEC_CURRI T
+                        WHERE T.LEC_KEY = B.LEC_KEY
+                        ORDER BY T.CURRI_KEY ASC
+                    ) WHERE ROWNUM = 1
+                ) as curriKey,
+                D.IMAGE_TEACHER_LIST, E.NAME as teacherName,
+                A.DESCRIPTION
+        FROM T_GOODS A
+        INNER JOIN T_LEC B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_TEACHER D
+        ON C.TEACHER_KEY = D.TEACHER_KEY
+        INNER JOIN T_USER E
+        ON D.USER_KEY = E.USER_KEY
+        WHERE A.TYPE = 1
+        AND A.G_KEY = #{gKey}
+    </select>
+
+    <select id="selectGoodsPriceOption" resultType="TGoodsPriceOptionVO">
+        SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
+    </select>
+
+    <select id="selectLectureListFromVideoProduct" resultType="TLecCurriVO">
+        SELECT
+            ROW_NUMBER() OVER(ORDER BY A.CURRI_KEY) NUM, A.NAME,
+            <if test="device == 1">
+                A.VOD_FILE_LOW as vodFileLow,
+                A.VOD_FILE_HIGH as vodFileHigh,
+            </if>
+            <if test="device == 3">
+                A.VOD_FILE_MOBILE_LOW as vodFileLow,
+                A.VOD_FILE_MOBILE_HIGH as vodFileHigh,
+            </if>
+            A.VOD_TIME,
+            A.DATA_FILE
+        FROM T_LEC_CURRI A
+        INNER JOIN T_LEC B
+        ON A.LEC_KEY = B.LEC_KEY
+        INNER JOIN T_GOODS C
+        ON B.G_KEY = C.G_KEY
+        WHERE C.G_KEY = 106446
+        ORDER BY A.POS ASC
+    </select>
+
+    <select id="selectAcademyLectureDetailInfo" resultType="AcademyLectureDetailVO">
+        SELECT
+            A.G_KEY, A.NAME as goodsName,
+           TRIM( TO_CHAR(C.POINT, '999,999,999,999,999') ) as point,
+           TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPriceName,
+           TRIM( TO_CHAR(C.PRICE, '999,999,999,999,999') ) as priceName,
+           C.SELL_PRICE,
+           C.PRICE,
+           CONCAT( CONCAT( TO_CHAR(B.STARTDATE, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR((B.STARTDATE + B.LIMIT_DAY), 'YYYY.MM.DD')) as lectureDate,
+           CONCAT( C.KIND, '개월') as month,
+           A.IMAGE_VIEW
+        FROM T_GOODS A
+        INNER JOIN T_LEC B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.TYPE = 2
+        AND A.G_KEY = #{gKey}
+    </select>
+
+    <select id="selectAcademyLectureTeacherList" resultType="TeacherInfoVO">
+        SELECT C.NAME as teacherName, B.IMAGE_LIST as teacherImage
+        FROM T_GOODS_TEACHER_LINK A
+        INNER JOIN T_TEACHER B
+        ON A.TEACHER_KEY = B.TEACHER_KEY
+        INNER JOIN T_USER C
+        ON B.USER_KEY = C.USER_KEY
+        WHERE G_KEY = #{gKey}
+        ORDER BY A.G_TEACHER_KEY ASC
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

@@ -9,4 +9,10 @@
         AND RES_TYPE = 100
         AND REQ_KEY = #{menuCtgKey}
     </select>
+
+    <select id="selectTCategoryByParentKey" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        WHERE PARENT_KEY = #{ctgKey}
+        ORDER BY POS ASC
+    </select>
 </mapper>
