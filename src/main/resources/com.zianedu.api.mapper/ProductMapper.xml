@@ -18,6 +18,21 @@
         <result property="pauseCnt" column="PAUSE_CNT"/>
     </resultMap>
 
+    <resultMap id="academyLectureListMap" type="AcademyLectureListVO">
+        <result property="stepCtgKey" column="stepCtgKey"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <collection property="lectureList" javaType="java.util.ArrayList" resultMap="academyLectureListDetailMap"/>
+    </resultMap>
+    <resultMap id="academyLectureListDetailMap" type="AcademyLectureListDetailVO">
+        <result property="gKey" column="G_KEY"/>
+        <result property="goodsName" column="goodsName"/>
+        <result property="lectureDate" column="lectureDate"/>
+        <result property="priceKey" column="PRICE_KEY"/>
+        <result property="sellPrice" column="SELL_PRICE"/>
+        <result property="month" column="month"/>
+        <result property="kind" column="kind"/>
+    </resultMap>
+
     <select id="selectAcademySignUp" resultType="AcademySignUpVO">
         SELECT
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
@@ -474,6 +489,38 @@
         ON B.USER_KEY = C.USER_KEY
         WHERE G_KEY = #{gKey}
         ORDER BY A.G_TEACHER_KEY ASC
+    </select>
+
+    <select id="selectAcademyLectureListFromCategoryMenu" resultMap="academyLectureListMap">
+        SELECT Z.*
+        FROM (
+                SELECT C.STEP_CTG_KEY as stepCtgKey, B.G_KEY,  D.NAME as ctgName, B.NAME as goodsName,
+                        CONCAT( CONCAT( TO_CHAR(C.STARTDATE, 'YYYY-MM-DD'), ' ~ '),  TO_CHAR(C.STARTDATE + C.LIMIT_DAY, 'YYYY-MM-DD')) as lectureDate,
+                        E.PRICE_KEY, TRIM ( TO_CHAR(E.SELL_PRICE, '999,999') ) as sellPrice,
+                        CONCAT( E.KIND, '개월') as month,
+                        E.KIND
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_GOODS_PRICE_OPTION E
+                ON B.G_KEY = E.G_KEY
+                WHERE 1=1
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL = 1
+                AND A.CTG_KEY = #{ctgKey}
+                ORDER BY  C.STEP_CTG_KEY ASC, B.G_KEY ASC
+            ) Z
+            WHERE 1=1
+            <if test="stepCtgKey > 0">
+                AND Z.STEP_CTG_KEY = #{stepCtgKey}
+            </if>
+            <if test="teacherKey > 0">
+                AND Z.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+            </if>
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

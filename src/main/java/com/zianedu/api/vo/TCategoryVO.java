@@ -2,6 +2,8 @@ package com.zianedu.api.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class TCategoryVO {
 
@@ -28,4 +30,8 @@ public class TCategoryVO {
     private int valueNumber;
 
     private int resKey;
+
+    private List<TCategoryVO> secondMenuList;
+
+    private List<TeacherVO> teacherList;
 }

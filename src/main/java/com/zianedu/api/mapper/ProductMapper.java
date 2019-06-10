@@ -51,6 +51,9 @@ public interface ProductMapper {
 
     List<TeacherInfoVO> selectAcademyLectureTeacherList(@Param("gKey") int gKey);
 
+    List<AcademyLectureListVO> selectAcademyLectureListFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey,
+                                                                        @Param("teacherKey") int teacherKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

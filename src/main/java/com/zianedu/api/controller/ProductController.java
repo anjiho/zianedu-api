@@ -1,5 +1,6 @@
 package com.zianedu.api.controller;
 
+import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.ProductService;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -34,6 +35,19 @@ public class ProductController {
     })
     public ApiResultObjectDTO getAcademyProductDetailInfo(@PathVariable("gKey") int gKey) {
         return productService.getAcademyProductDetailInfo(gKey);
+    }
+
+    @RequestMapping(value = "/getAcademyLectureListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원별 학원수강신청 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "과목 카테고리 값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키", dataType = "int", paramType = "query", required = false)
+    })
+    public ApiResultListDTO getAcademyLectureList(@PathVariable("ctgKey") int ctgKey,
+                                                  @RequestParam(value = "stepCtgKey", required = false, defaultValue = "0") int stepCtgKey,
+                                                  @RequestParam(value = "teacherKey", required = false, defaultValue = "0") int teacherKey) {
+        return productService.getAcademyLectureListFromCategoryMenu(ctgKey, stepCtgKey, teacherKey);
     }
 
 }

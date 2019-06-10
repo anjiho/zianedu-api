@@ -4,6 +4,7 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiPagingResultDTO;
+import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.dto.VideoProductDTO;
 import com.zianedu.api.mapper.ProductMapper;
@@ -103,5 +104,17 @@ public class ProductService {
         return new ApiResultObjectDTO(academyProductDTO, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getAcademyLectureListFromCategoryMenu(int ctgKey, int stepCtgKey, int teacherKey) {
+        int resultCode = OK.value();
+
+        List<AcademyLectureListVO> list = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            list = productMapper.selectAcademyLectureListFromCategoryMenu(ctgKey, stepCtgKey, teacherKey);
+        }
+        return new ApiResultListDTO(list, resultCode);
+    }
 
 }
