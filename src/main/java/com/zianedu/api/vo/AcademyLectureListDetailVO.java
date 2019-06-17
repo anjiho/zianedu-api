@@ -2,6 +2,8 @@ package com.zianedu.api.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AcademyLectureListDetailVO {
 
@@ -18,5 +20,7 @@ public class AcademyLectureListDetailVO {
     private String month;
 
     private int kind;
+
+    private List<LectureBookVO> lectureBook;
 
 }

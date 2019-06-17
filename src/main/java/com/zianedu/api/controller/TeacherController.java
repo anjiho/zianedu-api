@@ -135,4 +135,15 @@ public class TeacherController {
         return teacherService.getTeacherLearningQnaDetailInfo(bbsKey, teacherKey);
     }
 
+    @RequestMapping(value = "/getTeacherIntroduceList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("직렬별 교수소개 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "과목 키값(전체는 parentKey, 전체가 아니면 ctgKey)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "pos", value = "순서 번호", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherIntroduceList(@PathVariable("ctgKey") int ctgKey,
+                                                              @RequestParam("pos") int pos) {
+        return teacherService.getTeacherIntroduceList(ctgKey, pos);
+    }
+
 }

@@ -37,6 +37,18 @@
         <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
     </resultMap>
 
+    <resultMap id="teacherIntroduceMap" type="TeacherIntroduceVO">
+        <result property="ctgName" column="CTG_NAME"/>
+        <result property="ctgKey" column="ctgKey"/>
+        <collection property="teacherIntroduceList" javaType="java.util.ArrayList" resultMap="teacherIntroduceListMap"/>
+    </resultMap>
+    <resultMap id="teacherIntroduceListMap" type="TeacherIntroduceListVO">
+        <result property="teacherKey" column="TEACHER_KEY"/>
+        <result property="teacherName" column="TEACHER_NAME"/>
+        <result property="sampleVodFile" column="SAMPLE_VOD_FILE"/>
+        <result property="imageList" column="IMAGE_LIST"/>
+    </resultMap>
+
     <select id="selectTeacherInfo" resultType="TTeacherVO">
         SELECT * FROM T_TEACHER WHERE TEACHER_KEY = #{teacherKey}
     </select>
@@ -195,6 +207,34 @@
             AND Z.STEP_CTG_KEY = #{stepCtgKey}
         </if>
         ORDER BY Z.STEP_CTG_KEY ASC, Z.G_KEY DESC
+    </select>
+
+    <select id="selectTeacherIntroduce" resultMap="teacherIntroduceMap">
+        SELECT
+            A.REQ_KEY as ctgKey,
+            C.TEACHER_KEY,
+            D.NAME as teacherName,
+            B.NAME as ctgName,
+            C.SAMPLE_VOD_FILE,
+            C.IMAGE_LIST
+        FROM T_LINK_KEY A
+        INNER JOIN T_CATEGORY B
+        ON A.REQ_KEY = B.CTG_KEY
+        INNER JOIN T_TEACHER C
+        ON A.RES_KEY = C.TEACHER_KEY
+        INNER JOIN T_USER D
+        ON C.USER_KEY = D.USER_KEY
+        WHERE A.REQ_TYPE = 100
+        AND A.RES_TYPE = 200
+        <if test="pos == 0">
+            AND A.REQ_KEY IN (
+                SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{ctgKey}
+            )
+        </if>
+        <if test="pos > 0">
+            AND A.REQ_KEY = #{ctgKey}
+        </if>
+        ORDER BY A.REQ_KEY ASC, C.TEACHER_KEY ASC
     </select>
 
     <select id="selectTeacherVideoAcademyProductList" resultType="TeacherVideoAcademyProductVO">

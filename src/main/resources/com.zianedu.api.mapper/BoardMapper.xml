@@ -143,6 +143,148 @@
         WHERE T.BBS_KEY = #{bbsKey}
     </select>
 
+    <select id="selectNoticeList" resultType="NoticeListVO">
+        SELECT * FROM (
+            SELECT * FROM (
+                SELECT /*+index_desc (A PK_T_BBS_DATA) */
+                        BBS_KEY, TO_CHAR(INDATE, 'YYYY.MM.DD') as createDate, TITLE, 0 as commentCnt,
+                        A.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE
+                        FROM T_BBS_DATA A
+                        WHERE 1=1
+                        AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+                        AND A.IS_NOTICE = 1
+                )
+
+                UNION ALL
+
+                SELECT * FROM (
+                        SELECT  /*+index_desc (B PK_T_BBS_DATA) */
+                                BBS_KEY, TO_CHAR(INDATE, 'YYYY.MM.DD') as createDate, TITLE,
+                                (SELECT COUNT(T.BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = B.BBS_KEY) as commentCnt,
+                                B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE
+                        FROM T_BBS_DATA B
+                        WHERE 1=1
+                        AND B.BBS_MASTER_KEY = #{bbsMasterKey}
+                        AND B.IS_NOTICE = 0
+                )
+            ) Z
+        WHERE 1=1
+        <if test="searchType == 'title'">
+            AND Z.TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'name'">
+            AND Z.WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+        </if>
+        <if test="searchType == 'content'">
+            AND Z.BBS_KEY IN (
+                SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+            )
+        </if>
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectCommunityList" resultType="CommunityListVO">
+        SELECT * FROM (
+            SELECT * FROM (
+                SELECT
+                    A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as createDate,
+                    TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, 0 as level1,
+                    (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount,
+                    (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName, A.PWD, A.IS_NOTICE
+                FROM T_BBS_DATA A
+                WHERE A.IS_NOTICE = 1
+                AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+                <if test="searchType == 'title'">
+                    AND A.TITLE LIKE '%'||#{searchText}||'%'
+                </if>
+                <if test="searchType == 'name'">
+                    AND A.WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+                </if>
+                <if test="searchType == 'content'">
+                    AND A.BBS_KEY IN (
+                        SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+                    )
+                </if>
+            )
+
+            UNION ALL
+
+            SELECT * FROM (
+                SELECT
+                    A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as createDate,
+                    TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL,
+                    (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount,
+                    (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName, A.PWD, A.IS_NOTICE
+                FROM T_BBS_DATA A
+                WHERE A.IS_NOTICE = 0
+                AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+                <if test="searchType == 'title'">
+                    AND A.TITLE LIKE '%'||#{searchText}||'%'
+                </if>
+                <if test="searchType == 'name'">
+                    AND A.WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+                </if>
+                <if test="searchType == 'content'">
+                    AND A.BBS_KEY IN (
+                        SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+                    )
+                </if>
+                START WITH A.BBS_PARENT_KEY = 0
+                CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
+                ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
+                )
+            )
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectNoticeListCount" resultType="Integer">
+        SELECT COUNT (BBS_KEY)
+        FROM T_BBS_DATA
+        WHERE 1=1
+        AND BBS_MASTER_KEY = #{bbsMasterKey}
+        AND IS_NOTICE IN (0,1)
+        <if test="searchType == 'title'">
+            AND TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'name'">
+            AND WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+        </if>
+        <if test="searchType == 'content'">
+            AND BBS_KEY IN (
+                SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+            )
+        </if>
+    </select>
+
+    <select id="selectTBbsDataFileName" resultType="String">
+        SELECT FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    </select>
+
+    <select id="selectBoardDetailInfo" resultType="BoardDetailVO">
+        SELECT
+            A.BBS_KEY, A.TITLE, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as indate, A.READ_COUNT, B.FILENAME, A.CONTENTS,
+            (SELECT USER_ID FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userId,
+            (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName
+        FROM T_BBS_DATA A
+        LEFT JOIN T_BBS_DATA_FILE B
+        ON A.BBS_KEY = B.BBS_KEY
+        WHERE A.BBS_KEY = #{bbsKey}
+    </select>
+
+    <select id="selectBoardCommentList" resultType="CommentListVO">
+        SELECT
+            /*+index_asc (A PK_T_BBS_COMMENT) */
+            TO_CHAR(A.INDATE, 'YYYY.MM.DD') as indate, A.COMMENT_ as contents,
+            (SELECT USER_ID FROM T_USER T WHERE T.USER_KEY = A.USER_KEY) as userId,
+            (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.USER_KEY) as userName
+        FROM T_BBS_COMMENT A
+        WHERE BBS_KEY = #{bbsKey}
+    </select>
+
+    <select id="selectTBbsDataFile" resultType="TBbsDataFileVO">
+        SELECT * FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
@@ -157,4 +299,89 @@
         )
     </insert>
 
+    <insert id="insertTBbsComment" parameterType="TBbsCommentVO">
+        <selectKey resultType="Integer" keyProperty="bbsCommentKey" order="BEFORE">
+            SELECT T_BBS_COMMENT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_BBS_COMMENT
+        (
+            BBS_COMMNET_KEY, BBS_KEY, USER_KEY, INDATE, COMMENT_
+        )
+        VALUES
+        (
+            #{bbsCommentKey}, #{bbsKey}, #{userKey}, sysdate, #{comment_}
+        )
+    </insert>
+
+    <insert id="insertTBbsData" parameterType="TBbsDataVO">
+        <selectKey resultType="Integer" keyProperty="bbsKey" order="BEFORE">
+            SELECT T_BBS_DATA_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_BBS_DATA
+        (
+            BBS_KEY, BBS_MASTER_KEY, BBS_PARENT_KEY, INDATE, TITLE, WRITE_USER_KEY, CTG_KEY,
+            CTG_KEY_02, IS_NOTICE, PWD, CONTENTS, IS_HAVE_ANSWER, BBS_CUSTOM_KEY
+        )
+        VALUES
+        (
+            #{bbsKey}, #{bbsMasterKey}, #{bbsParentKey}, sysdate, #{title}, #{writeUserKey}, #{ctgKey},
+            #{ctgKey02}, #{isNotice}, #{pwd}, #{contents}, #{isHaveAnswer}, #{bbsCustomKey}
+        )
+    </insert>
+
+    <insert id="insertTBbsDataFile">
+        <selectKey resultType="Integer" keyProperty="bbsFileKey" order="BEFORE">
+            SELECT T_BBS_DATA_FILE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_BBS_DATA_FILE
+        (
+            BBS_FILE_KEY, BBS_KEY, FILENAME
+        )
+        VALUES
+        (
+            #{bbsFileKey}, #{bbsKey}, #{fileName}
+        )
+    </insert>
+
+    <update id="updateTBbsData" parameterType="TBbsDataVO">
+        UPDATE T_BBS_DATA
+        <set>
+            <if test="title != ''">TITLE = #{title},</if>
+            <if test="contents != ''">CONTENTS = #{contents},</if>
+            <if test="pwd != ''">PWD = #{pwd},</if>
+        </set>
+        WHERE BBS_KEY = #{bbsKey}
+    </update>
+
+    <update id="updateTBbsDataFile">
+        UPDATE T_BBS_DATA_FILE
+        <set>
+            <if test="fileName != ''">FILENAME = #{fileName}</if>
+        </set>
+        WHERE BBS_FILE_KEY = #{bbsFileKey}
+    </update>
+
+    <update id="updateTBbsComment">
+        UPDATE T_BBS_COMMENT
+        <set>
+            <if test="comment != ''">COMMENT_ = #{comment}</if>
+        </set>
+        WHERE BBS_COMMNET_KEY = #{bbsCommentKey}
+    </update>
+
+    <delete id="deleteTBbsData">
+        DELETE FROM T_BBS_DATA WHERE BBS_KEY = #{bbsKey}
+    </delete>
+
+    <delete id="deleteTBbsDataFile">
+        DELETE FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    </delete>
+
+    <delete id="deleteTBbsCommentFromBbsKey">
+        DELETE FROM T_BBS_COMMENT WHERE BBS_KEY = #{bbsKey}
+    </delete>
+
+    <delete id="deleteTBbsComment">
+        DELETE FROM T_BBS_COMMENT WHERE BBS_COMMNET_KEY = #{bbsCommentKey}
+    </delete>
 </mapper>

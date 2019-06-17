@@ -32,6 +32,45 @@ public interface BoardMapper {
 
     List<PrevNextVO> selectTeacherReferenceRoomPrevNext(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("bbsKey") int bbsKey);
 
+    List<NoticeListVO> selectNoticeList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                        @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    Integer selectNoticeListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<CommunityListVO> selectCommunityList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                              @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    String selectTBbsDataFileName(@Param("bbsKey") int bbsKey);
+
+    BoardDetailVO selectBoardDetailInfo(@Param("bbsKey") int bbsKey);
+
+    List<CommentListVO> selectBoardCommentList(@Param("bbsKey") int bbsKey);
+
+    TBbsDataFileVO selectTBbsDataFile(@Param("bbsKey") int bbsKey);
+
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
+
+    void insertTBbsComment(TBbsCommentVO tBbsCommentVO);
+
+    void insertTBbsData(TBbsDataVO tBbsDataVO);
+
+    void insertTBbsDataFile(@Param("bbsKey") int bbsKey, @Param("fileName") String fileName);
+
+    /** UPDATE **/
+    void updateTBbsData(TBbsDataVO tBbsDataVO);
+
+    void updateTBbsDataFile(@Param("bbsFileKey") int bbsFileKey, @Param("fileName") String fileName);
+
+    void updateTBbsComment(@Param("bbsCommentKey") int bbsCommentKey, @Param("comment") String comment);
+
+    /** DELETE **/
+    void deleteTBbsData(@Param("bbsKey") int bbsKey);
+
+    void deleteTBbsDataFile(@Param("bbsKey") int bbsKey);
+
+    void deleteTBbsCommentFromBbsKey(@Param("bbsKey") int bbsKey);
+
+    void deleteTBbsComment(@Param("bbsCommentKey") int bbsCommentKey);
 }

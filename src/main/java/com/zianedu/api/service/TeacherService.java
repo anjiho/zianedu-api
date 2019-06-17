@@ -293,6 +293,30 @@ public class TeacherService extends PagingSupport {
         return new ApiResultObjectDTO(detailDTO, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getTeacherIntroduceList(int ctgKey, int pos) {
+        int resultCode = OK.value();
+
+        List<TeacherIntroduceVO> teacherIntroduceInfo = new ArrayList<>();
+
+        if (ctgKey == 0 && pos < 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherIntroduceInfo = teacherMapper.selectTeacherIntroduce(ctgKey, pos);
+            if (teacherIntroduceInfo.size() > 0) {
+                for (TeacherIntroduceVO vo : teacherIntroduceInfo) {
+                    if (vo.getTeacherIntroduceList().size() > 0) {
+                        //강사 이미지 URL주입
+                        for (TeacherIntroduceListVO vo2 : vo.getTeacherIntroduceList()) {
+                            vo2.setImageListUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo2.getImageList()));
+                        }
+                    }
+                }
+            }
+        }
+        return new ApiResultObjectDTO(teacherIntroduceInfo, resultCode);
+    }
+
     /**
      * 강사정보 가져오기
      * @param teacherKey
@@ -310,4 +334,6 @@ public class TeacherService extends PagingSupport {
         }
         return teacherInfo;
     }
+
+
 }

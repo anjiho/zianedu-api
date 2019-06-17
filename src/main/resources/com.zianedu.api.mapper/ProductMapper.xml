@@ -33,6 +33,24 @@
         <result property="kind" column="kind"/>
     </resultMap>
 
+    <resultMap id="teacherHomeLectureMap" type="TeacherHomeLectureVO">
+        <result property="stepCtgKey" column="STEP_CTG_KEY"/>
+        <result property="ctgName" column="CTG_NAME"/>
+        <collection property="teacherLectureList" javaType="java.util.ArrayList" resultMap="teacherLectureListMap"/>
+    </resultMap>
+    <resultMap id="teacherLectureListMap" type="TeacherHomeLectureListVO">
+        <result property="gKey" column="G_KEY"/>
+        <result property="goodsName" column="goodsName"/>
+        <result property="price" column="PRICE"/>
+        <result property="sellPrice" column="SELL_PRICE"/>
+        <result property="lecCount" column="lecCount"/>
+        <result property="limitDay" column="LIMIT_DAY"/>
+        <result property="lowVideo" column="lowVideo"/>
+        <result property="highVideo" column="highVideo"/>
+        <result property="curriKey" column="curriKey"/>
+        <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
+    </resultMap>
+
     <select id="selectAcademySignUp" resultType="AcademySignUpVO">
         SELECT
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
@@ -456,7 +474,7 @@
         ON A.LEC_KEY = B.LEC_KEY
         INNER JOIN T_GOODS C
         ON B.G_KEY = C.G_KEY
-        WHERE C.G_KEY = 106446
+        WHERE C.G_KEY = #{gKey}
         ORDER BY A.POS ASC
     </select>
 
@@ -521,6 +539,147 @@
             <if test="teacherKey > 0">
                 AND Z.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
             </if>
+    </select>
+
+    <select id="selectVideoLectureListFromCategoryMenu" resultMap="teacherHomeLectureMap">
+        SELECT T.* FROM
+        (
+            SELECT
+                    A.G_KEY, C.STEP_CTG_KEY,D.NAME as ctgName, B.EMPHASIS, B.NAME as goodsName,
+                    (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, F.IMAGE_TEACHER_LIST,
+                     (
+                       SELECT * FROM (
+                            SELECT T.VOD_FILE_LOW
+                            FROM T_LEC_CURRI T
+                            WHERE T.LEC_KEY = C.LEC_KEY
+                            ORDER BY T.CURRI_KEY ASC
+                        ) WHERE ROWNUM = 1
+                    ) as lowVideo,
+                    (
+                       SELECT * FROM (
+                            SELECT T.VOD_FILE_HIGH
+                            FROM T_LEC_CURRI T
+                            WHERE T.LEC_KEY = C.LEC_KEY
+                            ORDER BY T.CURRI_KEY ASC
+                        ) WHERE ROWNUM = 1
+                    ) as highVideo,
+                     (
+                       SELECT * FROM (
+                            SELECT T.CURRI_KEY
+                            FROM T_LEC_CURRI T
+                            WHERE T.LEC_KEY = C.LEC_KEY
+                            ORDER BY T.CURRI_KEY ASC
+                        ) WHERE ROWNUM = 1
+                    ) as curriKey
+            FROM T_CATEGORY_GOODS A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            INNER JOIN T_LEC C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_CATEGORY D
+            ON C.STEP_CTG_KEY = D.CTG_KEY
+            INNER JOIN T_GOODS_TEACHER_LINK E
+            ON A.G_KEY = E.G_KEY
+            INNER JOIN T_TEACHER F
+            ON E.TEACHER_KEY = F.TEACHER_KEY
+            WHERE A.CTG_KEY = #{ctgKey}
+            <if test="stepCtgKey > 0">
+                AND C.STEP_CTG_KEY = #{stepCtgKey}
+            </if>
+            <if test="teacherKey > 0">
+                AND F.TEACHER_KEY = #{teacherKey}
+            </if>
+            AND B.TYPE = 1
+            AND B.IS_SHOW = 1
+            AND B.IS_SELL =1
+        )T
+        ORDER BY T.STEP_CTG_KEY ASC, T.G_KEY ASC
+    </select>
+
+    <select id="selectPromotionPackageList" resultType="SpecialPackageVO">
+        SELECT A.CTG_G_KEY, B.G_KEY, B.NAME as goodsName, C.EXAM_YEAR, C.LIMIT_DAY
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_PROMOTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE B.TYPE = 5
+        AND B.IS_SHOW = 1
+        AND B.IS_SELL =1
+        ORDER BY B.G_KEY DESC
+    </select>
+
+    <select id="selectPromotionPackageDetailInfo" resultType="SpecialPackageProductVO">
+        SELECT
+            A.CTG_G_KEY,
+            B.G_KEY,
+            B.NAME as goodsName,
+            C.EXAM_YEAR,
+            C.LIMIT_DAY,
+            (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 100) as pcPriceKey,
+            (SELECT PRICE FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 100) as pcPrice,
+            (SELECT SELL_PRICE FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 100) as pcSellPrice,
+            (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 101) as mobilePriceKey,
+            (SELECT PRICE FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 101) as mobilePrice,
+            (SELECT SELL_PRICE FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 101) as mobileSellPrice,
+            TRIM( (SELECT TO_CHAR(PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 100)) as pcPriceName,
+            TRIM( (SELECT TO_CHAR(SELL_PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 100)) as pcSellPriceName,
+            TRIM( (SELECT TO_CHAR(PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 101)) as mobilePriceName,
+            TRIM( (SELECT TO_CHAR(SELL_PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 101)) as mobileSellPriceName,
+            0 as point
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_PROMOTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE B.TYPE = 5
+        AND B.IS_SHOW = 1
+        AND B.IS_SELL = 1
+        AND B.G_KEY = #{gKey}
+    </select>
+
+    <select id="selectPromotionPackageTeacherList" resultMap="teacherHomeLectureMap">
+        SELECT
+            C.STEP_CTG_KEY, D.NAME as ctgName, B.G_KEY, B.EMPHASIS, B.NAME as goodsName, C.limit_day,
+            (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, F.IMAGE_TEACHER_LIST,
+            (
+               SELECT * FROM (
+                    SELECT T.VOD_FILE_LOW
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as lowVideo,
+            (
+               SELECT * FROM (
+                    SELECT T.VOD_FILE_HIGH
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as highVideo,
+             (
+               SELECT * FROM (
+                    SELECT T.CURRI_KEY
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as curriKey
+        FROM T_LINK_KEY A
+        INNER JOIN T_GOODS B
+        ON A.RES_KEY = B.G_KEY
+        INNER JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        INNER JOIN T_CATEGORY D
+        ON C.STEP_CTG_KEY = D.CTG_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK E
+        ON B.G_KEY = E.G_KEY
+        INNER JOIN T_TEACHER F
+        ON E.TEACHER_KEY = F.TEACHER_KEY
+        WHERE A.REQ_TYPE = 1
+        AND A.RES_TYPE = 1
+        AND A.REQ_KEY = #{gKey}
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

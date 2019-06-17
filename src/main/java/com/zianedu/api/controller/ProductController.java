@@ -50,4 +50,29 @@ public class ProductController {
         return productService.getAcademyLectureListFromCategoryMenu(ctgKey, stepCtgKey, teacherKey);
     }
 
+    @RequestMapping(value = "/getVideoLectureListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원별 동영상강의 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "과목 카테고리 값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키", dataType = "int", paramType = "query", required = false)
+    })
+    public ApiResultListDTO getVideoLectureList(@PathVariable("ctgKey") int ctgKey,
+                                                  @RequestParam(value = "stepCtgKey", required = false, defaultValue = "0") int stepCtgKey,
+                                                  @RequestParam(value = "teacherKey", required = false, defaultValue = "0") int teacherKey) {
+        return productService.getVideoLectureListFromCategoryMenu(ctgKey, stepCtgKey, teacherKey);
+    }
+
+    @RequestMapping(value = "/getSpecialPackageList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("특별 패키지 상품 리스트")
+    public ApiResultListDTO getSpecialPackageList() {
+        return productService.getSpecialPackageList();
+    }
+
+    @RequestMapping(value = "/getSpecialPackageDetailInfo/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("특별 패키지 상품 상세정보")
+    public ApiResultObjectDTO getSpecialPackageDetailInfo(@PathVariable("gKey") int gKey) {
+        return productService.getSpecialPackageDetailInfo(gKey);
+    }
+
 }

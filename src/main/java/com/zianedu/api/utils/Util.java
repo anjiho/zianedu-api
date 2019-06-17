@@ -1074,26 +1074,40 @@ public class Util {
 
     public static void main(String[] args) throws Exception {
 
-        String str = "http://www.zianedu.com/tt/t_branding/society.html";
-
-        if (str.contains("&")) {
-            System.out.println("T");
+        String str = "100\\bbs\\하프모의고사-14회(2019.03.28).pdf";
+        //String str2 = "100\bbs\하프모의고사-14회(2019.03.28).pdf";
+        if (str.contains("\\")) {
+            System.out.println("1");
         } else {
-            System.out.println("F");
+            System.out.println("2");
         }
-        //String[] splits = split(str, "?");
-        URL url = new URL(str);
-        Map<String, List<String>> map = splitQuery(url);
-        System.out.println(map.toString());
-        System.out.println(map.get("parent_mnk").get(0));
-        //System.out.println(getProductDiscountRate(160000, 90000));
 
-        List<Integer>arr = new ArrayList<>();
-        arr.add(1);
-        arr.add(2);
-        arr.add(3);
-        arr.add(4);
-        arr.add(5);
+        String[] strs = split(str, "\\");
+        System.out.println(strs[2]);
+//        for (String str1 : strs) {
+//            System.out.println(str1);
+//        }
+
+//        String str = "http://www.zianedu.com/tt/t_branding/society.html";
+//
+//        if (str.contains("&")) {
+//            System.out.println("T");
+//        } else {
+//            System.out.println("F");
+//        }
+//        //String[] splits = split(str, "?");
+//        URL url = new URL(str);
+//        Map<String, List<String>> map = splitQuery(url);
+//        System.out.println(map.toString());
+//        System.out.println(map.get("parent_mnk").get(0));
+//        //System.out.println(getProductDiscountRate(160000, 90000));
+//
+//        List<Integer>arr = new ArrayList<>();
+//        arr.add(1);
+//        arr.add(2);
+//        arr.add(3);
+//        arr.add(4);
+//        arr.add(5);
 
 
     }

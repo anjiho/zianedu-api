@@ -19,9 +19,15 @@ public class ConfigHolder {
     private String loggerName;
     @Value("#{config['file.domain.url']}")
     private String fileDomainUrl;
+    @Value("#{config['file.upload.path']}")
+    private String fileUploadPath;
 
     public static String getFileDomainUrl() {
         return configHolder.fileDomainUrl;
+    }
+
+    public static String getFileUploadPath() {
+        return configHolder.fileUploadPath;
     }
 
     @PostConstruct

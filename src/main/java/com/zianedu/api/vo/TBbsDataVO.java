@@ -1,5 +1,6 @@
 package com.zianedu.api.vo;
 
+import com.zianedu.api.utils.Util;
 import lombok.Data;
 
 @Data
@@ -57,19 +58,27 @@ public class TBbsDataVO {
 
     public TBbsDataVO() {}
 
-//    public TBbsDataVO(int bbsMasterKey, int bbsParentKey, String title, int teacherKey, int ctgKey02, String contents) {
-//        this.bbsMasterKey = bbsMasterKey;
-//        this.bbsParentKey = bbsParentKey;
-//        this.indate = Util.returnNow();
-//        this.title = title;
-//        this.writeUserKey = UserSession.get() == null ? 5 : UserSession.getUserKey();
-//        this.ctgKey = teacherKey;
-//        this.ctgKey02 = ctgKey02;
-//        this.readCount = 0;
-//        this.isNotice = 0;
-//        this.pwd = "";
-//        this.contents = contents;
-//        this.bbsCustomKey = 0;
-//    }
+    public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret) {
+        this.bbsMasterKey = bbsMasterKey;
+        this.bbsParentKey = 0;
+        this.title = Util.isNullValue(title, "");
+        this.writeUserKey = userKey;
+        this.ctgKey = 0;
+        this.ctgKey02 = 0;
+        this.readCount = 0;
+        this.isShow = 0;
+        this.isNotice = 0;
+        this.pwd = String.valueOf(isSecret);
+        this.contents = Util.isNullValue(contents, "");
+        this.isHaveAnswer = 0;
+        this.bbsCustomKey = 0;
+    }
+
+    public TBbsDataVO(int bbsKey, String title, String contents, int isSecret) {
+        this.bbsKey = bbsKey;
+        this.title = Util.isNullValue(title, "");
+        this.pwd = String.valueOf(isSecret);
+        this.contents = Util.isNullValue(contents, "");
+    }
 
 }

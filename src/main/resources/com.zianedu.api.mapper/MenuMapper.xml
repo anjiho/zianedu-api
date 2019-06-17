@@ -30,4 +30,5 @@
         AND A.REQ_KEY = #{ctgKey}
         ORDER BY C.TEACHER_KEY ASC
     </select>
+
 </mapper>

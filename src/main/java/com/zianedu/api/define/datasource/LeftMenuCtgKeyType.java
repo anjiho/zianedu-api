@@ -9,6 +9,7 @@ public enum LeftMenuCtgKeyType {
     PUBLIC_ACADEMY_LEFT_MENU(335, "행정직학원 > 학원수강신청 > 좌측 메뉴"),
     PUBLIC_ACADEMY_EXAM_LEFT_MENU(336, "행정직학원 > 모의고사 > 좌측 메뉴"),
     PUBLIC_ACADEMY_TEACHER_LEFT_MENU(337, "행정직학원 > 교수소개 > 좌측 과목 메뉴"),
+    PUBLIC_ACADEMY_NOTICE_LEFT_MENU(338, "행정직학원 > 공지사항 > 좌측 과목 메뉴"),
 
     PUBLIC_VOD_LECTURE_LEFT_MENU(234, "행정직동영상 > 동영상강좌 > 죄측 과목 메뉴"),
     PUBLIC_VOD_ZIANPASS_LEFT_MENU(239, "행정직동영상 > 365지안패스 > 죄측 메뉴"),
