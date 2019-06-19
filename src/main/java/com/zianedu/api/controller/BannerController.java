@@ -109,4 +109,16 @@ public class BannerController {
     public ApiResultListDTO getSearchKeywordList(@PathVariable("className") String className) {
         return bannerService.getSearchKeywordList(className);
     }
+
+    @RequestMapping(value = "/getBookStoreCenterBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인 서점 중앙 이벤트 베너")
+    public ApiResultListDTO getBookStoreCenterBanner() {
+        return bannerService.getBanner(837);
+    }
+
+    @RequestMapping(value = "/getBookStoreCenterRightBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인 서점 중앙 오른쪽 이벤트 베너")
+    public ApiResultListDTO getBookStoreCenterRightBanner() {
+        return bannerService.getBanner(838);
+    }
 }

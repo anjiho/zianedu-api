@@ -1,0 +1,30 @@
+package com.zianedu.api.controller;
+
+import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.service.BookStoreService;
+import com.zianedu.api.utils.ZianApiUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(value = "/bookStore")
+public class BookStoreController {
+
+    @Autowired
+    private BookStoreService bookStoreService;
+
+    @RequestMapping(value = "/getTopBannerList/{ctgKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인서점 상단 도서 배너 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값(841 : MD추천, 842 : 화제의도서, 843 : 행정직베스트도서, 844 : 기술직베스트도서, 845 : 계리직베스트도서, 839 : 새로나온책, 846 : 공통과목(BEST), 847 : 행정직(BEST), 848 : 기술직(BEST), 849 : 계리직(BEST), 850 : 자격증/가산점(BEST), 851 : 모의고사(BEST)",
+                                dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getTopBannerList(@PathVariable(value = "ctgKey") int ctgKey,
+                                             @RequestParam(value = "listLimit") int listLimit) {
+        return bookStoreService.getBookListFromOnlineStoreTopBanner(ctgKey, listLimit);
+    }
+}

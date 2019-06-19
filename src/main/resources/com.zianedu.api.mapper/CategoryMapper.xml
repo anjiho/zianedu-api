@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.CategoryMapper">
+
+    <select id="selectCtgKetListFromTCategoryGoods" resultType="Integer">
+        SELECT CTG_KEY FROM T_CATEGORY_GOODS WHERE G_KEY = #{gKey}
+    </select>
+
+    <select id="selectParentKeyFromCategory" resultType="Integer">
+        SELECT PARENT_KEY FROM T_CATEGORY WHERE CTG_KEY = #{ctgKey};
+    </select>
+
+    <select id="selectTCategoryInfoByCtgKey" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        <if test="ctgKey > 0">
+            WHERE CTG_KEY = #{ctgKey}
+        </if>
+    </select>
+
+</mapper>

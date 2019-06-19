@@ -221,8 +221,12 @@ public class ProductService {
         } else {
             specialPackageProductVO = productMapper.selectPromotionPackageDetailInfo(gKey);
             if (specialPackageProductVO != null) {
-                specialPackageProductVO.setPcDiscountPercent(Util.getProductDiscountRate(specialPackageProductVO.getPcPrice(), specialPackageProductVO.getPcSellPrice()));
-                specialPackageProductVO.setMobileDiscountPercent(Util.getProductDiscountRate(specialPackageProductVO.getMobilePrice(), specialPackageProductVO.getMobileSellPrice()));
+                if (specialPackageProductVO.getPcPrice() > 0 && specialPackageProductVO.getPcSellPrice() > 0) {
+                    specialPackageProductVO.setPcDiscountPercent(Util.getProductDiscountRate(specialPackageProductVO.getPcPrice(), specialPackageProductVO.getPcSellPrice()));
+                }
+                if (specialPackageProductVO.getMobilePrice() > 0 && specialPackageProductVO.getMobileSellPrice() > 0) {
+                    specialPackageProductVO.setMobileDiscountPercent(Util.getProductDiscountRate(specialPackageProductVO.getMobilePrice(), specialPackageProductVO.getMobileSellPrice()));
+                }
             }
 
             lectureList = productMapper.selectPromotionPackageTeacherList(gKey);
@@ -259,6 +263,19 @@ public class ProductService {
         }
         SpecialPackageDetailVO packageDetailVO = new SpecialPackageDetailVO(specialPackageProductVO, lectureList);
         return new ApiResultObjectDTO(packageDetailVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getMockExamProductList(int ctgKey) {
+        int resultCode = OK.value();
+
+        List<MockExamProductVO> mockExamProductList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            mockExamProductList = productMapper.selectMockExamProductList(ctgKey);
+        }
+        return new ApiResultListDTO(mockExamProductList, resultCode);
     }
 
 }

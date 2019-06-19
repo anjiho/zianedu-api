@@ -527,6 +527,7 @@
                 INNER JOIN T_GOODS_PRICE_OPTION E
                 ON B.G_KEY = E.G_KEY
                 WHERE 1=1
+                AND B.TYPE = 2
                 AND B.IS_SHOW = 1
                 AND B.IS_SELL = 1
                 AND A.CTG_KEY = #{ctgKey}
@@ -680,6 +681,23 @@
         WHERE A.REQ_TYPE = 1
         AND A.RES_TYPE = 1
         AND A.REQ_KEY = #{gKey}
+    </select>
+
+    <select id="selectMockExamProductList" resultType="MockExamProductVO">
+        SELECT
+            A.G_KEY, B.NAME as goodsName,
+            (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION T WHERE B.G_KEY = T.G_KEY AND T.KIND = 0) priceKey,
+            TRIM( (SELECT TO_CHAR(PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 0)) as price,
+            TRIM( (SELECT TO_CHAR(SELL_PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = B.G_KEY AND Z.KIND = 0)) as sellPrice,
+            CASE (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE B.G_KEY = TT.REQ_KEY) WHEN 2 THEN '온라인' WHEN 3 THEN '오프라인' END as isOnOff,
+            B.IS_SELL
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        WHERE A.CTG_KEY = #{ctgKey}
+        AND B.TYPE = 4
+        AND B.IS_SHOW = 1
+        ORDER BY A.G_KEY DESC
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

@@ -2380,7 +2380,7 @@ param > userKey : 5, gKeys : [106304,106321,....]
 
 
 ======================================================================================
-/                               TeacherController                                    /
+/                               ProductController                                    /
 ======================================================================================
 
 ==================================================================================================================================================
@@ -2499,7 +2499,177 @@ param > userKey : 5, gKeys : [106304,106321,....]
 }
 
 ==================================================================================================================================================
+/product/getAcademyLectureListFromCategoryMenu/{ctgKey} 학원별 학원수강신청 상품 리스트
+{
+  "result": [
+    {
+      "stepCtgKey": 204,
+      "ctgName": "단과",
+      "lectureList": [
+        {
+          "goodsName": "[학원실강] 2019 지방직 서울시 대비 파이널 안다 국어  문학사+문법특강  [접수중] ",
+          "lectureDate": "2019-06-05 ~ 2019-06-10",
+          "priceKey": 111161,
+          "sellPrice": "20,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 107027
+        },
+        {
+          "goodsName": "[1관학원실강] 2019 지방직 서울시 대비 파이널 안다 국어  문법특강  [6월7일 개강] ",
+          "lectureDate": "2019-06-07 ~ 2019-06-08",
+          "priceKey": 111162,
+          "sellPrice": "10,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 107028
+        },
+        {
+          "goodsName": "[1관학원실강] 2019 지방직 서울시 대비 파이널 안다 국어  문학사 특강  [6월5일 개강] ",
+          "lectureDate": "2019-06-05 ~ 2019-06-06",
+          "priceKey": 111163,
+          "sellPrice": "10,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 107029
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 207,
+      "ctgName": "단과특강",
+      "lectureList": [
+        {
+          "goodsName": "[무료특강] 2020 시험대비 얼리버드 안효선 한끝국어 특강 [5/14일 개강]",
+          "lectureDate": "2019-05-14 ~ 2019-06-13",
+          "priceKey": 111102,
+          "sellPrice": "0",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 106980
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 767,
+      "ctgName": "종합반",
+      "lectureList": [
+        {
+          "goodsName": "[1관학원실강] 2020 공통과목(국어+영어+한국사) 드림팀 기본이론반 [7월개강 예약접수중]",
+          "lectureDate": "2019-07-08 ~ 2019-09-06",
+          "priceKey": 111208,
+          "sellPrice": "290,000",
+          "month": "2개월",
+          "kind": 2,
+          "lectureBook": [
+            {
+              "bookKey": 11393,
+              "priceKey": 111231,
+              "writer": "정일영,강재순,조현준",
+              "bookName": "2019 정보보안기사&산업기사 실기편 최신개정 8판[10%할인+5%적립] ",
+              "publishDate": "2019.03.13",
+              "sellPrice": 33300,
+              "price": 37000,
+              "sellPriceName": "33,300",
+              "priceName": "37,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\(300) 2019 정보보안기사,산업기사 입체표지(8).png",
+              "imageList": "100\\book\\(300) 2019 정보보안기사,산업기사 입체표지(7).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106891
+            },
+            {
+              "bookKey": 11394,
+              "priceKey": 111223,
+              "writer": "김창훈",
+              "bookName": "최신판 건축시공학[10%할인+5%적립]",
+              "publishDate": "2019.03.15",
+              "sellPrice": 24300,
+              "price": 27000,
+              "sellPriceName": "24,300",
+              "priceName": "27,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\(300)건축시공학 입체표지(0).png",
+              "imageList": "100\\book\\(300)건축시공학 입체표지.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106896
+            },
+            {
+              "bookKey": 11394,
+              "priceKey": 111224,
+              "writer": "김창훈",
+              "bookName": "최신판 건축시공학[10%할인+5%적립]",
+              "publishDate": "2019.03.15",
+              "sellPrice": 22222,
+              "price": 22222,
+              "sellPriceName": "22,222",
+              "priceName": "22,222",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\(300)건축시공학 입체표지(0).png",
+              "imageList": "100\\book\\(300)건축시공학 입체표지.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106896
+            }
+          ],
+          "gkey": 107036
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 4266,
+      "ctgName": "모의고사",
+      "lectureList": [
+        {
+          "goodsName": "[학원실강] 2019 지방직대비 오선희 국어 실전 동형모의고사 문제풀이반 [4월개강 접수중]",
+          "lectureDate": "2019-04-16 ~ 2019-05-16",
+          "priceKey": 111024,
+          "sellPrice": "40,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 106918
+        },
+        {
+          "goodsName": "[학원실강] 2019 지방직대비 공통(오선희국어+영어+한국사) 실전 동형모의고사 문제풀이반[4월 접수중]",
+          "lectureDate": "2019-04-15 ~ 2019-05-25",
+          "priceKey": 111025,
+          "sellPrice": "100,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 106919
+        },
+        {
+          "goodsName": "[학원실강] 2019 지방직대비 공통(안효선국어+영어+한국사) 실전 동형모의고사 문제풀이반[4월 접수중]",
+          "lectureDate": "2019-04-15 ~ 2019-06-04",
+          "priceKey": 111037,
+          "sellPrice": "100,000",
+          "month": "1개월",
+          "kind": 1,
+          "lectureBook": [],
+          "gkey": 106932
+        }
+      ]
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
 
+==================================================================================================================================================
 /product/getAcademyProductDetail/{gKey} 학원수강 상품 상세정보
 
 {
@@ -2545,6 +2715,2567 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultMsg": "SUCCESS"
 }
 
+==================================================================================================================================================
+/product/getSpecialPackageList 특별 패키지 상품 리스트
+  "result": [
+    {
+      "ctgGKey": 10616,
+      "goodsName": "프로모션상품1",
+      "examYear": 2012,
+      "limitDay": 2,
+      "discountPercent": "90%할인",
+      "pcSellPriceName": null,
+      "mobileSellPriceName": null,
+      "pcMobileSellPriceName": null,
+      "videoLectureKindList": [
+        {
+          "priceKey": 111241,
+          "kind": 2,
+          "price": 11111,
+          "sellPrice": 1111,
+          "point": 1111,
+          "extendPercent": 2,
+          "discountPercent": null,
+          "gkey": 107048
+        },
+        {
+          "priceKey": 111242,
+          "kind": 7,
+          "price": 44444,
+          "sellPrice": 44444,
+          "point": 44444,
+          "extendPercent": 4,
+          "discountPercent": null,
+          "gkey": 107048
+        }
+      ],
+      "gkey": 107048
+    },
+    {
+      "ctgGKey": 10519,
+      "goodsName": "패키지상품등록테스트",
+      "examYear": 2011,
+      "limitDay": 3,
+      "discountPercent": "0%할인",
+      "pcSellPriceName": null,
+      "mobileSellPriceName": null,
+      "pcMobileSellPriceName": null,
+      "videoLectureKindList": [
+        {
+          "priceKey": 111178,
+          "kind": 2,
+          "price": 11111,
+          "sellPrice": 11111,
+          "point": 11111,
+          "extendPercent": 2,
+          "discountPercent": null,
+          "gkey": 107045
+        }
+      ],
+      "gkey": 107045
+    },
+    {
+      "ctgGKey": 10355,
+      "goodsName": "2019 전산직7급 전공 자구+소공+디비 기출 모의 문제풀이강의 패키지 [25%할인]",
+      "examYear": 2019,
+      "limitDay": 90,
+      "discountPercent": "26%할인",
+      "pcSellPriceName": "382,000원",
+      "mobileSellPriceName": "360,000원",
+      "pcMobileSellPriceName": null,
+      "videoLectureKindList": [
+        {
+          "priceKey": 111137,
+          "kind": 100,
+          "price": 510000,
+          "sellPrice": 382000,
+          "point": 0,
+          "extendPercent": 20,
+          "discountPercent": null,
+          "gkey": 107009
+        },
+        {
+          "priceKey": 111138,
+          "kind": 101,
+          "price": 480000,
+          "sellPrice": 360000,
+          "point": 0,
+          "extendPercent": 20,
+          "discountPercent": null,
+          "gkey": 107009
+        }
+      ],
+      "gkey": 107009
+    },
+    ....
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/product/getSpecialPackageDetailInfo/{gKey} 특별 패키지 상품 상세정보
+{
+  "result": {
+    "specialPackageProductInfo": {
+      "ctgGKey": 10355,
+      "goodsName": "2019 전산직7급 전공 자구+소공+디비 기출 모의 문제풀이강의 패키지 [25%할인]",
+      "examYear": 2019,
+      "limitDay": 90,
+      "pcPriceKey": 111137,
+      "pcPrice": 510000,
+      "pcPriceName": "510,000",
+      "pcSellPrice": 382000,
+      "pcSellPriceName": "382,000",
+      "mobilePriceKey": 111138,
+      "mobilePrice": 480000,
+      "mobilePriceName": "480,000",
+      "mobileSellPrice": 360000,
+      "mobileSellPriceName": "360,000",
+      "point": 0,
+      "pcDiscountPercent": "26%",
+      "mobileDiscountPercent": "25%",
+      "gkey": 107009
+    },
+    "lectureList": [
+      {
+        "stepCtgKey": 205,
+        "ctgName": "문제풀이",
+        "teacherLectureList": [
+          {
+            "ctgName": "문제풀이",
+            "emphasis": 2,
+            "emphasisName": "NEW",
+            "price": 0,
+            "sellPrice": 0,
+            "discountPercent": "23%할인",
+            "goodsName": "2019 국가직·지방직대비 조현준 자료구조론 기출+모의 문제풀이강의 [5%적립] ",
+            "lecCount": 28,
+            "limitDay": 90,
+            "lowVideo": "zian/data/structure/02_04/190417_106996_01_M.mp4",
+            "highVideo": "zian/data/structure/02_04/190417_106996_01_H.mp4",
+            "curriKey": 125438,
+            "pcSellPriceName": "170,000원",
+            "mobileSellPriceName": "160,000원",
+            "pcMobileSellPriceName": "280,000원",
+            "imageTeacherList": "100/teacher/조상진_중.png",
+            "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+            "videoLectureKindList": [
+              {
+                "priceKey": 111119,
+                "kind": 100,
+                "price": 180000,
+                "sellPrice": 170000,
+                "point": 8500,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106996
+              },
+              {
+                "priceKey": 111120,
+                "kind": 101,
+                "price": 180000,
+                "sellPrice": 160000,
+                "point": 8000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106996
+              },
+              {
+                "priceKey": 111121,
+                "kind": 102,
+                "price": 360000,
+                "sellPrice": 280000,
+                "point": 14000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106996
+              }
+            ],
+            "teacherLectureBook": null,
+            "gkey": 106996
+          },
+          {
+            "ctgName": "문제풀이",
+            "emphasis": 2,
+            "emphasisName": "NEW",
+            "price": 0,
+            "sellPrice": 0,
+            "discountPercent": "23%할인",
+            "goodsName": "2019 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이강의 [5%적립]\t",
+            "lecCount": 26,
+            "limitDay": 90,
+            "lowVideo": "zian/data/soft/02_04/190418_106978_01_M.mp4",
+            "highVideo": "zian/data/soft/02_04/190418_106978_01_H.mp4",
+            "curriKey": 125443,
+            "pcSellPriceName": "170,000원",
+            "mobileSellPriceName": "160,000원",
+            "pcMobileSellPriceName": "280,000원",
+            "imageTeacherList": "100/teacher/박태순_중.png",
+            "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+            "videoLectureKindList": [
+              {
+                "priceKey": 111092,
+                "kind": 100,
+                "price": 180000,
+                "sellPrice": 170000,
+                "point": 8500,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106978
+              },
+              {
+                "priceKey": 111093,
+                "kind": 101,
+                "price": 180000,
+                "sellPrice": 160000,
+                "point": 8000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106978
+              },
+              {
+                "priceKey": 111094,
+                "kind": 102,
+                "price": 360000,
+                "sellPrice": 280000,
+                "point": 14000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106978
+              }
+            ],
+            "teacherLectureBook": null,
+            "gkey": 106978
+          },
+          {
+            "ctgName": "문제풀이",
+            "emphasis": 2,
+            "emphasisName": "NEW",
+            "price": 0,
+            "sellPrice": 0,
+            "discountPercent": "23%할인",
+            "goodsName": "2019 국가직·지방직대비 오재우 데이터베이스론 기출+모의 문제풀이강의 [5%적립]",
+            "lecCount": 25,
+            "limitDay": 90,
+            "lowVideo": "zian/data/base/02_04/190415_106975_01_M.mp4",
+            "highVideo": "zian/data/base/02_04/190415_106975_01_H.mp4",
+            "curriKey": 125398,
+            "pcSellPriceName": "170,000원",
+            "mobileSellPriceName": "160,000원",
+            "pcMobileSellPriceName": "280,000원",
+            "imageTeacherList": "100/teacher/오재우_중.png",
+            "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+            "videoLectureKindList": [
+              {
+                "priceKey": 111087,
+                "kind": 100,
+                "price": 180000,
+                "sellPrice": 170000,
+                "point": 8500,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106975
+              },
+              {
+                "priceKey": 111088,
+                "kind": 101,
+                "price": 180000,
+                "sellPrice": 160000,
+                "point": 8000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106975
+              },
+              {
+                "priceKey": 111089,
+                "kind": 102,
+                "price": 360000,
+                "sellPrice": 280000,
+                "point": 14000,
+                "extendPercent": 20,
+                "discountPercent": null,
+                "gkey": 106975
+              }
+            ],
+            "teacherLectureBook": null,
+            "gkey": 106975
+          }
+        ]
+      }
+    ]
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/product/getVideoLectureListFromCategoryMenu/{ctgKey} 학원별 동영상강의 상품 리스트
+{
+  "result": [
+    {
+      "stepCtgKey": 203,
+      "ctgName": "이론",
+      "teacherLectureList": [
+        {
+          "ctgName": "이론",
+          "emphasis": 1,
+          "emphasisName": "BEST",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "22%할인",
+          "goodsName": "2018 시험대비 박태순 소프트웨어공학 기본이론강의[5%적립]",
+          "lecCount": 36,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201711박태순소프트웨어공학/201711박태순소프트웨어공학01_M.mp4",
+          "highVideo": "topspot4/201711박태순소프트웨어공학/201711박태순소프트웨어공학01_H.mp4",
+          "curriKey": 115722,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "250,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109566,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105780
+            },
+            {
+              "priceKey": 109567,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105780
+            },
+            {
+              "priceKey": 109568,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 250000,
+              "point": 12500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105780
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11307,
+              "priceKey": 109549,
+              "writer": "박태순",
+              "bookName": "2018 소프트웨어공학[10%할인+5%적립] ",
+              "publishDate": "2017.11.06",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\소프트웨어공학 입체표지 300픽셀(0).png",
+              "imageList": "100\\book\\소프트웨어공학 입체표지 300픽셀.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 105763
+            }
+          ],
+          "gkey": 105780
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 1,
+          "emphasisName": "BEST",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "22%할인",
+          "goodsName": "2018 시험대비 오재우 데이터베이스론 기본이론강의[5%적립]",
+          "lecCount": 28,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201711오재우데이터베이스/201711오재우데이터베이스01_M.mp4",
+          "highVideo": "topspot4/201711오재우데이터베이스/201711오재우데이터베이스01_H.mp4",
+          "curriKey": 115687,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "250,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109569,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105781
+            },
+            {
+              "priceKey": 109570,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105781
+            },
+            {
+              "priceKey": 109571,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 250000,
+              "point": 125000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105781
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11306,
+              "priceKey": 109548,
+              "writer": "오재우",
+              "bookName": "2018 데이터베이스론 [10%할인+5%적립] ",
+              "publishDate": "2017.11.06",
+              "sellPrice": 29700,
+              "price": 33000,
+              "sellPriceName": "29,700",
+              "priceName": "33,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\데이터베이스론 입체표지 300픽셀(2).png",
+              "imageList": "100\\book\\데이터베이스론 입체표지 300픽셀(1).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 105762
+            }
+          ],
+          "gkey": 105781
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 1,
+          "emphasisName": "BEST",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "22%할인",
+          "goodsName": "2018 시험대비 조현준 자료구조론 기본이론강의[5%적립]",
+          "lecCount": 34,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201711조현준자료구조론/201711조현준자료구조론01_M.mp4",
+          "highVideo": "topspot4/201711조현준자료구조론/201711조현준자료구조론01_H.mp4",
+          "curriKey": 115730,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "250,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109572,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105782
+            },
+            {
+              "priceKey": 109573,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105782
+            },
+            {
+              "priceKey": 109574,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 250000,
+              "point": 12500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105782
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11308,
+              "priceKey": 109550,
+              "writer": "조현준",
+              "bookName": "2018 자료구조론[10%할인+5%적립] ",
+              "publishDate": "2017.11.06",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\자료구조론 입체표지 300픽셀(0).png",
+              "imageList": "100\\book\\자료구조론 입체표지 300픽셀.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 105764
+            }
+          ],
+          "gkey": 105782
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "[빅데이터 1.0] 2019 시험대비 조현준 정보보호론 기본+심화 이론강의 [5%적립]",
+          "lecCount": 91,
+          "limitDay": 70,
+          "lowVideo": "zian/data/protect/01/180912_106456_05_M.mp4",
+          "highVideo": "zian/data/protect/01/180912_106456_05_H.mp4",
+          "curriKey": 120775,
+          "pcSellPriceName": "180,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110439,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 180000,
+              "point": 9000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106456
+            },
+            {
+              "priceKey": 110440,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106456
+            },
+            {
+              "priceKey": 110441,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106456
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11351,
+              "priceKey": 110514,
+              "writer": "조현준",
+              "bookName": "2019 정보보호론[10%할인+5%적립]\t",
+              "publishDate": "2018.09.04",
+              "sellPrice": 32400,
+              "price": 36000,
+              "sellPriceName": "32,400",
+              "priceName": "36,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\[300] 2019 조현준 정보보호론 입체표지(0).png",
+              "imageList": "100\\book\\[300] 2019 조현준 정보보호론 입체표지.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106488
+            }
+          ],
+          "gkey": 106456
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2019 전산 계리직 시험대비 박태순 컴퓨터일반 기본+심화이론강의 [5%적립]",
+          "lecCount": 122,
+          "limitDay": 70,
+          "lowVideo": "zian/data/com1/01/180904_106457_01_M.mp4",
+          "highVideo": "zian/data/com1/01/180904_106457_01_H.mp4",
+          "curriKey": 120565,
+          "pcSellPriceName": "180,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110442,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 180000,
+              "point": 9000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106457
+            },
+            {
+              "priceKey": 110443,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106457
+            },
+            {
+              "priceKey": 110444,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106457
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11338,
+              "priceKey": 110378,
+              "writer": "박태순.이성행 공저",
+              "bookName": "2019 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2018.08.10",
+              "sellPrice": 32400,
+              "price": 36000,
+              "sellPriceName": "32,400",
+              "priceName": "36,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\컴퓨터일반 입체표지 300픽셀(6).png",
+              "imageList": "100\\book\\컴퓨터일반 입체표지 300픽셀(5).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106415
+            }
+          ],
+          "gkey": 106457
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "2019 전산직7급 시험대비 오재우 데이터베이스론 기본+심화이론반 [5%적립]",
+          "lecCount": 29,
+          "limitDay": 60,
+          "lowVideo": "zian/data/base/01/180906_106458_01_M.mp4",
+          "highVideo": "zian/data/base/01/180906_106458_01_H.mp4",
+          "curriKey": 120630,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "240,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110445,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106458
+            },
+            {
+              "priceKey": 110446,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106458
+            },
+            {
+              "priceKey": 110447,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 240000,
+              "point": 12000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106458
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11359,
+              "priceKey": 110523,
+              "writer": "오재우",
+              "bookName": "2019 데이터베이스론[10%할인+5%적립] ",
+              "publishDate": "2018.09.07",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\입체표지제작2(0).png",
+              "imageList": "100\\book\\입체표지제작2.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106497
+            }
+          ],
+          "gkey": 106458
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "2019 전산직7급 시험대비 조현준 자료구조론 기본+심화이론반 [5%적립]",
+          "lecCount": 32,
+          "limitDay": 60,
+          "lowVideo": "zian/data/structure/01/180914_106459_04_M.mp4",
+          "highVideo": "zian/data/structure/01/180914_106459_04_H.mp4",
+          "curriKey": 120867,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "240,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110448,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106459
+            },
+            {
+              "priceKey": 110449,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106459
+            },
+            {
+              "priceKey": 110450,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 240000,
+              "point": 12000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106459
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11349,
+              "priceKey": 110512,
+              "writer": "조현준",
+              "bookName": "2019 자료구조론[10%할인+5%적립] ",
+              "publishDate": "2018.09.04",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\자료구조론 300(0).png",
+              "imageList": "100\\book\\자료구조론 300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106486
+            }
+          ],
+          "gkey": 106459
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "2019 전산직7급 시험대비 박태순 소프트웨어공학 기본+심화이론반 [5%적립]",
+          "lecCount": 37,
+          "limitDay": 60,
+          "lowVideo": "zian/data/soft/01/180903_106460_01_M.mp4",
+          "highVideo": "zian/data/soft/01/180903_106460_01_H.mp4",
+          "curriKey": 120547,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "240,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110451,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106460
+            },
+            {
+              "priceKey": 110452,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106460
+            },
+            {
+              "priceKey": 110453,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 240000,
+              "point": 12000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106460
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11346,
+              "priceKey": 110509,
+              "writer": "박태순",
+              "bookName": "2019 소프트웨어공학[10%할인+5%적립] ",
+              "publishDate": "2018.09.03",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\소프트웨어공학 300(0).png",
+              "imageList": "100\\book\\소프트웨어공학 300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106483
+            }
+          ],
+          "gkey": 106460
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "45%할인",
+          "goodsName": "2019 계리직 시험대비 이성행 컴퓨터일반 기본이론강의 [5%적립]",
+          "lecCount": 123,
+          "limitDay": 90,
+          "lowVideo": "zian/data/com1/lee/03/181030_106616_01_M.mp4",
+          "highVideo": "zian/data/com1/lee/03/181030_106616_01_H.mp4",
+          "curriKey": 122084,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": "200,000원",
+          "imageTeacherList": "100\\teacher\\전산_이성행(1).png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\전산_이성행(1).png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110660,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106623
+            },
+            {
+              "priceKey": 110681,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106623
+            },
+            {
+              "priceKey": 110682,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 200000,
+              "point": 10000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106623
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11338,
+              "priceKey": 110378,
+              "writer": "박태순.이성행 공저",
+              "bookName": "2019 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2018.08.10",
+              "sellPrice": 32400,
+              "price": 36000,
+              "sellPriceName": "32,400",
+              "priceName": "36,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\컴퓨터일반 입체표지 300픽셀(6).png",
+              "imageList": "100\\book\\컴퓨터일반 입체표지 300픽셀(5).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106415
+            }
+          ],
+          "gkey": 106623
+        },
+        {
+          "ctgName": "이론",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "50%할인",
+          "goodsName": "2019 계리직 시험대비 컴퓨터일반(엑셀파트) 1일 단과특강 [5%적립]",
+          "lecCount": 4,
+          "limitDay": 15,
+          "lowVideo": "zian/data/com1/lee/03_02/190216_106767_01_M.mp4",
+          "highVideo": "zian/data/com1/lee/03_02/190216_106767_01_H.mp4",
+          "curriKey": 124602,
+          "pcSellPriceName": null,
+          "mobileSellPriceName": null,
+          "pcMobileSellPriceName": "10,000원",
+          "imageTeacherList": null,
+          "teacherImageUrl": "http://www.zianedu.com/Upload",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110834,
+              "kind": 102,
+              "price": 20000,
+              "sellPrice": 10000,
+              "point": 500,
+              "extendPercent": 0,
+              "discountPercent": null,
+              "gkey": 106767
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106767
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 204,
+      "ctgName": "단과",
+      "teacherLectureList": [
+        {
+          "ctgName": "단과",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "40%할인",
+          "goodsName": "2019 전산 계리직 시험대비 프로그래밍언어론 1월이론특강 [5%적립] ",
+          "lecCount": 13,
+          "limitDay": 30,
+          "lowVideo": "zian/data/program/03_01/190115_106772_01_M.mp4",
+          "highVideo": "zian/data/program/03_01/190115_106772_01_H.mp4",
+          "curriKey": 123978,
+          "pcSellPriceName": null,
+          "mobileSellPriceName": null,
+          "pcMobileSellPriceName": "30,000원",
+          "imageTeacherList": "100\\teacher\\전산_이성행(1).png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\전산_이성행(1).png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110840,
+              "kind": 102,
+              "price": 50000,
+              "sellPrice": 30000,
+              "point": 1500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106772
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11338,
+              "priceKey": 110378,
+              "writer": "박태순.이성행 공저",
+              "bookName": "2019 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2018.08.10",
+              "sellPrice": 32400,
+              "price": 36000,
+              "sellPriceName": "32,400",
+              "priceName": "36,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\컴퓨터일반 입체표지 300픽셀(6).png",
+              "imageList": "100\\book\\컴퓨터일반 입체표지 300픽셀(5).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106415
+            }
+          ],
+          "gkey": 106772
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 205,
+      "ctgName": "문제풀이",
+      "teacherLectureList": [
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "[빅데이터 3.2] 조현준 정보보호론 연도별 기출문제풀이강의(6년간,전산 전직렬)",
+          "lecCount": 58,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201702조현준정보보호직/201702조현준정보보호직01_M.mp4",
+          "highVideo": "topspot4/201702조현준정보보호직/201702조현준정보보호직01_H.mp4",
+          "curriKey": 111954,
+          "pcSellPriceName": "150,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "240,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 108862,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 150000,
+              "point": 7500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105246
+            },
+            {
+              "priceKey": 108863,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105246
+            },
+            {
+              "priceKey": 108864,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 240000,
+              "point": 12500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105246
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 105246
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2018 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이 강의[5%적립]",
+          "lecCount": 53,
+          "limitDay": 90,
+          "lowVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀01_M.mp4",
+          "highVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀01_H.mp4",
+          "curriKey": 118764,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110025,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106109
+            },
+            {
+              "priceKey": 110026,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106109
+            },
+            {
+              "priceKey": 110027,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106109
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11328,
+              "priceKey": 109907,
+              "writer": "박태순",
+              "bookName": "2018 소프트웨어공학 기출문제집[10%할인+5%적립]",
+              "publishDate": "2018.03.09",
+              "sellPrice": 25200,
+              "price": 28000,
+              "sellPriceName": "25,200",
+              "priceName": "28,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\소프트웨어공학 기출 입체표지 300픽셀(0).png",
+              "imageList": "100\\book\\소프트웨어공학 기출 입체표지 300픽셀.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106027
+            }
+          ],
+          "gkey": 106109
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2018 국가직·지방직대비 오재우 데이터베이스론 기출+모의 문제풀이강의[5%적립]",
+          "lecCount": 47,
+          "limitDay": 90,
+          "lowVideo": "topspot4/201804오재우데이터베이스문풀/201804오재우데이터베이스문풀01_M.mp4",
+          "highVideo": "topspot4/201804오재우데이터베이스문풀/201804오재우데이터베이스문풀01_H.mp4",
+          "curriKey": 118783,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110028,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106110
+            },
+            {
+              "priceKey": 110029,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106110
+            },
+            {
+              "priceKey": 110030,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106110
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11326,
+              "priceKey": 109905,
+              "writer": "오재우",
+              "bookName": "2018 데이터베이스론 기출문제집 [10%할인+5%적립]\t",
+              "publishDate": "2018.03.09",
+              "sellPrice": 26100,
+              "price": 29000,
+              "sellPriceName": "26,100",
+              "priceName": "29,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\데이터베이스론 기출 입체표지 300픽셀(0).png",
+              "imageList": "100\\book\\데이터베이스론 기출 입체표지 300픽셀.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106025
+            }
+          ],
+          "gkey": 106110
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2018 국가직·지방직대비 조현준 자료구조론 기출+모의 문제풀이 강의[5%적립]",
+          "lecCount": 46,
+          "limitDay": 90,
+          "lowVideo": "topspot4/201804조현준자료구조론문풀/201804조현준자료구조론문제풀이01_M.mp4",
+          "highVideo": "topspot4/201804조현준자료구조론문풀/201804조현준자료구조론문제풀이01_H.mp4",
+          "curriKey": 118832,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110031,
+              "kind": 100,
+              "price": 200000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106111
+            },
+            {
+              "priceKey": 110032,
+              "kind": 101,
+              "price": 200000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106111
+            },
+            {
+              "priceKey": 110033,
+              "kind": 102,
+              "price": 400000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106111
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11327,
+              "priceKey": 109906,
+              "writer": "조현준",
+              "bookName": "2018 자료구조론 기출문제집 [10%할인+5%적립]",
+              "publishDate": "2018.03.09",
+              "sellPrice": 24300,
+              "price": 27000,
+              "sellPriceName": "24,300",
+              "priceName": "27,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\자료구조론 기출 입체표지 300픽셀(0).png",
+              "imageList": "100\\book\\자료구조론 기출 입체표지 300픽셀.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106026
+            }
+          ],
+          "gkey": 106111
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "31%할인",
+          "goodsName": "[빅데이터 3.1] 2019 시험대비 조현준 정보보호론 요약집+용어집+기출문제풀이 강의[5%적립] ",
+          "lecCount": 50,
+          "limitDay": 70,
+          "lowVideo": "zian/data/protect/02/181114_106622_01_M.mp4",
+          "highVideo": "zian/data/protect/02/181114_106622_01_H.mp4",
+          "curriKey": 122469,
+          "pcSellPriceName": "150,000원",
+          "mobileSellPriceName": "130,000원",
+          "pcMobileSellPriceName": "250,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110530,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 150000,
+              "point": 7500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106502
+            },
+            {
+              "priceKey": 110562,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106502
+            },
+            {
+              "priceKey": 110563,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 250000,
+              "point": 12500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106502
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11371,
+              "priceKey": 110690,
+              "writer": "조현준",
+              "bookName": "2019 정보보호론 핵심기출700제[10%할인+5% 적립] ",
+              "publishDate": "2018.11.13",
+              "sellPrice": 28800,
+              "price": 32000,
+              "sellPriceName": "28,800",
+              "priceName": "32,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\정보보호론 기출 300(0).png",
+              "imageList": "100\\book\\정보보호론 기출 300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106638
+            }
+          ],
+          "gkey": 106502
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "23%할인",
+          "goodsName": "[빅데이터 3.3] 2019 시험대비 정보보호론 조현준 최고수준 800제 강의 [5% 적립]",
+          "lecCount": 49,
+          "limitDay": 70,
+          "lowVideo": "zian/data/protect/02_01/190111_106521_04_M.mp4",
+          "highVideo": "zian/data/protect/02_01/190111_106521_04_H.mp4",
+          "curriKey": 121120,
+          "pcSellPriceName": "160,000원",
+          "mobileSellPriceName": "140,000원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110874,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106521
+            },
+            {
+              "priceKey": 110558,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106521
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11384,
+              "priceKey": 110870,
+              "writer": "조현준",
+              "bookName": "2019 정보보호론 최고수준800제[10%할인+5%적립] ",
+              "publishDate": "2019.01.09",
+              "sellPrice": 13500,
+              "price": 15000,
+              "sellPriceName": "13,500",
+              "priceName": "15,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\정보보호론800제300(0).png",
+              "imageList": "100\\book\\정보보호론800제300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106796
+            }
+          ],
+          "gkey": 106521
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "32%할인",
+          "goodsName": "2019 전산 계리직 시험대비 박태순 컴퓨터일반 핵심요약&기출문제풀이 강의 [5%적립]",
+          "lecCount": 64,
+          "limitDay": 70,
+          "lowVideo": "zian/data/com1/02/181106_106617_01_M.mp4",
+          "highVideo": "zian/data/com1/02/181106_106617_01_H.mp4",
+          "curriKey": 122181,
+          "pcSellPriceName": "130,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": "220,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110654,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 130000,
+              "point": 6500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106617
+            },
+            {
+              "priceKey": 110683,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106617
+            },
+            {
+              "priceKey": 110684,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 220000,
+              "point": 11000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106617
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11367,
+              "priceKey": 110639,
+              "writer": "박태순,이성행",
+              "bookName": "2019 컴퓨터일반 기출문제집[10%할인+5%적립] ",
+              "publishDate": "2018.11.01",
+              "sellPrice": 27000,
+              "price": 30000,
+              "sellPriceName": "27,000",
+              "priceName": "30,000",
+              "valueBit": 1,
+              "isMain": "주교재",
+              "imageView": "100\\book\\컴일기출 300(0).png",
+              "imageList": "100\\book\\컴일기출 300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106602
+            }
+          ],
+          "gkey": 106617
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "39%할인",
+          "goodsName": "2019 시험대비 박태순 컴퓨터일반 적중1000제 예상문제풀이강의[5%적립] ",
+          "lecCount": 62,
+          "limitDay": 60,
+          "lowVideo": "zian/data/com1/02_01/190108_106769_01_M.mp4",
+          "highVideo": "zian/data/com1/02_01/190108_106769_01_H.mp4",
+          "curriKey": 123808,
+          "pcSellPriceName": "160,000원",
+          "mobileSellPriceName": "140,000원",
+          "pcMobileSellPriceName": "220,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110836,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106769
+            },
+            {
+              "priceKey": 110879,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106769
+            },
+            {
+              "priceKey": 110880,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 220000,
+              "point": 11000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106769
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106769
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "23%할인",
+          "goodsName": "2019 국가직·지방직대비 오재우 데이터베이스론 기출+모의 문제풀이강의 [5%적립]",
+          "lecCount": 25,
+          "limitDay": 90,
+          "lowVideo": "zian/data/base/02_04/190415_106975_01_M.mp4",
+          "highVideo": "zian/data/base/02_04/190415_106975_01_H.mp4",
+          "curriKey": 125398,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111087,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106975
+            },
+            {
+              "priceKey": 111088,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106975
+            },
+            {
+              "priceKey": 111089,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106975
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11381,
+              "priceKey": 110824,
+              "writer": "오재우",
+              "bookName": "2019 데이터베이스론 기출문제집[10%할인+5%적립]\t",
+              "publishDate": "2018.12.21",
+              "sellPrice": 26100,
+              "price": 29000,
+              "sellPriceName": "26,100",
+              "priceName": "29,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\DB기출300(0).png",
+              "imageList": "100\\book\\DB기출300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106757
+            }
+          ],
+          "gkey": 106975
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "23%할인",
+          "goodsName": "2019 국가직·지방직대비 박태순 소프트웨어공학 기출+모의 문제풀이강의 [5%적립]\t",
+          "lecCount": 26,
+          "limitDay": 90,
+          "lowVideo": "zian/data/soft/02_04/190418_106978_01_M.mp4",
+          "highVideo": "zian/data/soft/02_04/190418_106978_01_H.mp4",
+          "curriKey": 125443,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111092,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106978
+            },
+            {
+              "priceKey": 111093,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106978
+            },
+            {
+              "priceKey": 111094,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106978
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11380,
+              "priceKey": 110823,
+              "writer": "박태순",
+              "bookName": "2019 소프트웨어공학 기출문제집[10%할인+5%적립]\t",
+              "publishDate": "2018.12.21",
+              "sellPrice": 25200,
+              "price": 28000,
+              "sellPriceName": "25,200",
+              "priceName": "28,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\소공기출300(0).png",
+              "imageList": "100\\book\\소공기출300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106756
+            }
+          ],
+          "gkey": 106978
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "23%할인",
+          "goodsName": "2019 국가직·지방직대비 조현준 자료구조론 기출+모의 문제풀이강의 [5%적립] ",
+          "lecCount": 28,
+          "limitDay": 90,
+          "lowVideo": "zian/data/structure/02_04/190417_106996_01_M.mp4",
+          "highVideo": "zian/data/structure/02_04/190417_106996_01_H.mp4",
+          "curriKey": 125438,
+          "pcSellPriceName": "170,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "280,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111119,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 170000,
+              "point": 8500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106996
+            },
+            {
+              "priceKey": 111120,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106996
+            },
+            {
+              "priceKey": 111121,
+              "kind": 102,
+              "price": 360000,
+              "sellPrice": 280000,
+              "point": 14000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106996
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11388,
+              "priceKey": 110899,
+              "writer": "조현준",
+              "bookName": "2019 자료구조론 기출문제집[10%할인+5%적립] ",
+              "publishDate": "2019.01.18",
+              "sellPrice": 24300,
+              "price": 27000,
+              "sellPriceName": "24,300",
+              "priceName": "27,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\자구기출300(0).png",
+              "imageList": "100\\book\\자구기출300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106815
+            }
+          ],
+          "gkey": 106996
+        },
+        {
+          "ctgName": "문제풀이",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "32%할인",
+          "goodsName": "2019 국가직·군무원대비 조현준 자료구조론 기출 문제풀이강의 [5%적립] ",
+          "lecCount": 27,
+          "limitDay": 60,
+          "lowVideo": "zian/data/structure/02_04/190417_106996_01_M.mp4",
+          "highVideo": "zian/data/structure/02_04/190417_106996_01_H.mp4",
+          "curriKey": 125912,
+          "pcSellPriceName": "120,000원",
+          "mobileSellPriceName": "110,000원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111159,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 107026
+            },
+            {
+              "priceKey": 111160,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 110000,
+              "point": 5500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 107026
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11388,
+              "priceKey": 110899,
+              "writer": "조현준",
+              "bookName": "2019 자료구조론 기출문제집[10%할인+5%적립] ",
+              "publishDate": "2019.01.18",
+              "sellPrice": 24300,
+              "price": 27000,
+              "sellPriceName": "24,300",
+              "priceName": "27,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\자구기출300(0).png",
+              "imageList": "100\\book\\자구기출300.png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 106815
+            }
+          ],
+          "gkey": 107026
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 207,
+      "ctgName": "단과특강",
+      "teacherLectureList": [
+        {
+          "ctgName": "단과특강",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "",
+          "goodsName": "[무료강의_A] 2019 전산직 합격전략 및 정보보호론 공부방법 안내",
+          "lecCount": 1,
+          "limitDay": 0,
+          "lowVideo": "topspot5/20180825설명회/20180825조현준설명회_M.mp4",
+          "highVideo": "topspot5/20180825설명회/20180825조현준설명회_H.mp4",
+          "curriKey": 120418,
+          "pcSellPriceName": "0원",
+          "mobileSellPriceName": "0원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109349,
+              "kind": 100,
+              "price": 0,
+              "sellPrice": 0,
+              "point": 0,
+              "extendPercent": 0,
+              "discountPercent": null,
+              "gkey": 105622
+            },
+            {
+              "priceKey": 109350,
+              "kind": 101,
+              "price": 0,
+              "sellPrice": 0,
+              "point": 0,
+              "extendPercent": 0,
+              "discountPercent": null,
+              "gkey": 105622
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 105622
+        },
+        {
+          "ctgName": "단과특강",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "50%할인",
+          "goodsName": "2018 전산직,계리직 시험대비 프로그래밍언어론 이론특강[5%적립] ",
+          "lecCount": 8,
+          "limitDay": 30,
+          "lowVideo": "topspot2/201711이성행프로그래밍/201711이성행프로그래밍특강01_M.mp4",
+          "highVideo": "topspot2/201711이성행프로그래밍/201711이성행프로그래밍특강01_H.mp4",
+          "curriKey": 115769,
+          "pcSellPriceName": "30,000원",
+          "mobileSellPriceName": "30,000원",
+          "pcMobileSellPriceName": "50,000원",
+          "imageTeacherList": "100\\teacher\\전산_이성행(1).png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\전산_이성행(1).png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109608,
+              "kind": 100,
+              "price": 50000,
+              "sellPrice": 30000,
+              "point": 1500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105796
+            },
+            {
+              "priceKey": 109609,
+              "kind": 101,
+              "price": 50000,
+              "sellPrice": 30000,
+              "point": 1500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105796
+            },
+            {
+              "priceKey": 109610,
+              "kind": 102,
+              "price": 100000,
+              "sellPrice": 50000,
+              "point": 2500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105796
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11284,
+              "priceKey": 109356,
+              "writer": "박태순,이성행 공저",
+              "bookName": "2018 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2017.09.04",
+              "sellPrice": 31500,
+              "price": 35000,
+              "sellPriceName": "31,500",
+              "priceName": "35,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\컴퓨터일반 입체표지 300픽셀(2).png",
+              "imageList": "100\\book\\컴퓨터일반 입체표지 300픽셀(1).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 105628
+            }
+          ],
+          "gkey": 105796
+        },
+        {
+          "ctgName": "단과특강",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "50%할인",
+          "goodsName": "2019 이성행 계리직 C언어 , 자바, 엑셀 파트 특강 [5%적립] -신규 강의",
+          "lecCount": 12,
+          "limitDay": 50,
+          "lowVideo": "topspot2/201804이성행C언어특강/201804이성행C언어특강01_M.mp4",
+          "highVideo": "topspot2/201804이성행C언어특강/201804이성행C언어특강01_H.mp4",
+          "curriKey": 118903,
+          "pcSellPriceName": "30,000원",
+          "mobileSellPriceName": "30,000원",
+          "pcMobileSellPriceName": "50,000원",
+          "imageTeacherList": "100\\teacher\\전산_이성행(1).png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\전산_이성행(1).png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110067,
+              "kind": 100,
+              "price": 50000,
+              "sellPrice": 30000,
+              "point": 1500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106127
+            },
+            {
+              "priceKey": 110068,
+              "kind": 101,
+              "price": 50000,
+              "sellPrice": 30000,
+              "point": 1500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106127
+            },
+            {
+              "priceKey": 110069,
+              "kind": 102,
+              "price": 100000,
+              "sellPrice": 50000,
+              "point": 2500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106127
+            }
+          ],
+          "teacherLectureBook": [
+            {
+              "bookKey": 11284,
+              "priceKey": 109356,
+              "writer": "박태순,이성행 공저",
+              "bookName": "2018 컴퓨터일반 [10%할인+5%적립]",
+              "publishDate": "2017.09.04",
+              "sellPrice": 31500,
+              "price": 35000,
+              "sellPriceName": "31,500",
+              "priceName": "35,000",
+              "valueBit": 0,
+              "isMain": "부교재",
+              "imageView": "100\\book\\컴퓨터일반 입체표지 300픽셀(2).png",
+              "imageList": "100\\book\\컴퓨터일반 입체표지 300픽셀(1).png",
+              "imageViewUrl": null,
+              "imageListUrl": null,
+              "discountPercent": null,
+              "gkey": 105628
+            }
+          ],
+          "gkey": 106127
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 4172,
+      "ctgName": "필기대비",
+      "teacherLectureList": [
+        {
+          "ctgName": "필기대비",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "53%할인",
+          "goodsName": "[빅데이터 7.1] 2019 정보보안(산업)기사 필기시험대비 이론강의 ",
+          "lecCount": 81,
+          "limitDay": 70,
+          "lowVideo": "algisa/201811정보보안기사필기/201811정보보안기사필기01_M.mp4",
+          "highVideo": "algisa/201811정보보안기사필기/201811정보보안기사필기01_H.mp4",
+          "curriKey": 122386,
+          "pcSellPriceName": "160,000원",
+          "mobileSellPriceName": "160,000원",
+          "pcMobileSellPriceName": "230,000원",
+          "imageTeacherList": "100\\teacher\\정보보호론_자료구조론_정보보안기사_조상진.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100\\teacher\\정보보호론_자료구조론_정보보안기사_조상진.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110697,
+              "kind": 101,
+              "price": 240000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106524
+            },
+            {
+              "priceKey": 110698,
+              "kind": 102,
+              "price": 480000,
+              "sellPrice": 230000,
+              "point": 11500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106524
+            },
+            {
+              "priceKey": 110561,
+              "kind": 100,
+              "price": 240000,
+              "sellPrice": 160000,
+              "point": 8000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106524
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106524
+        }
+      ]
+    },
+    {
+      "stepCtgKey": 4266,
+      "ctgName": "모의고사",
+      "teacherLectureList": [
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "40%할인",
+          "goodsName": "2017 국가직·지방직대비 오재우 데이터베이스론 동형모의고사강의[5%적립]",
+          "lecCount": 20,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201706오재우데이터베이스모의고사/201706오재우데이터베이스모의고사01_M.mp4",
+          "highVideo": "topspot4/201706오재우데이터베이스모의고사/201706오재우데이터베이스모의고사01_H.mp4",
+          "curriKey": 113517,
+          "pcSellPriceName": "80,000원",
+          "mobileSellPriceName": "70,000원",
+          "pcMobileSellPriceName": "120,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109167,
+              "kind": 100,
+              "price": 100000,
+              "sellPrice": 80000,
+              "point": 4000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105461
+            },
+            {
+              "priceKey": 109168,
+              "kind": 101,
+              "price": 100000,
+              "sellPrice": 70000,
+              "point": 3500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105461
+            },
+            {
+              "priceKey": 109169,
+              "kind": 102,
+              "price": 200000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 105461
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 105461
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "38%할인",
+          "goodsName": "2018 조현준 정보보호론 7급·9급 통합 동형모의고사강의(국가직·지방직·서울시·군무원) [5%적립]",
+          "lecCount": 50,
+          "limitDay": 90,
+          "lowVideo": "topspot4/201803조현준정보보호론모의고사/201803조현준정보보호론모의고사01_M.mp4",
+          "highVideo": "topspot4/201803조현준정보보호론모의고사/201803조현준정보보호론모의고사01_H.mp4",
+          "curriKey": 118153,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": "200,000원",
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 109942,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106048
+            },
+            {
+              "priceKey": 109944,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106048
+            },
+            {
+              "priceKey": 109945,
+              "kind": 102,
+              "price": 320000,
+              "sellPrice": 200000,
+              "point": 10000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106048
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106048
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "40%할인",
+          "goodsName": "2018 전산직7급 시험대비 박태순 소프트웨어공학 모의고사 강의[5% 적립]",
+          "lecCount": 22,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀32_M.mp4",
+          "highVideo": "topspot4/201804박태순소프트웨어문풀/201804박태순소프트웨어문풀32_H.mp4",
+          "curriKey": 119713,
+          "pcSellPriceName": "80,000원",
+          "mobileSellPriceName": "70,000원",
+          "pcMobileSellPriceName": "120,000원",
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110211,
+              "kind": 100,
+              "price": 100000,
+              "sellPrice": 80000,
+              "point": 4000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106256
+            },
+            {
+              "priceKey": 110212,
+              "kind": 101,
+              "price": 100000,
+              "sellPrice": 70000,
+              "point": 3500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106256
+            },
+            {
+              "priceKey": 110213,
+              "kind": 102,
+              "price": 200000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106256
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106256
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "40%할인",
+          "goodsName": "2018 전산직7급 시험대비 오재우 데이터베이스론 모의고사 강의[5% 적립]",
+          "lecCount": 21,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201804오재우데이터베이스문풀/201804오재우데이터베이스문풀27_M.mp4",
+          "highVideo": "topspot4/201804오재우데이터베이스문풀/201804오재우데이터베이스문풀27_H.mp4",
+          "curriKey": 119726,
+          "pcSellPriceName": "80,000원",
+          "mobileSellPriceName": "70,000원",
+          "pcMobileSellPriceName": "120,000원",
+          "imageTeacherList": "100/teacher/오재우_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/오재우_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110214,
+              "kind": 100,
+              "price": 100000,
+              "sellPrice": 80000,
+              "point": 4000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106257
+            },
+            {
+              "priceKey": 110215,
+              "kind": 101,
+              "price": 100000,
+              "sellPrice": 70000,
+              "point": 3500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106257
+            },
+            {
+              "priceKey": 110216,
+              "kind": 102,
+              "price": 200000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106257
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106257
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "34%할인",
+          "goodsName": "2019 국가직 지방직 대비  박태순 컴퓨터일반 동형모의고사 강의 [5%적립]",
+          "lecCount": 33,
+          "limitDay": 100,
+          "lowVideo": "zian/data/com1/02_03/190305_106869_01_M.mp4",
+          "highVideo": "zian/data/com1/02_03/190305_106869_01_H.mp4",
+          "curriKey": 124885,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/박태순_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/박태순_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110958,
+              "kind": 100,
+              "price": 180000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106869
+            },
+            {
+              "priceKey": 110976,
+              "kind": 101,
+              "price": 180000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106869
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106869
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 2,
+          "emphasisName": "NEW",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "25%할인",
+          "goodsName": "[빅데이터5.0 ] 2019 국가직 지방직 시험대비 정보보호론 조현준 모의고사강의 [5% 적립]",
+          "lecCount": 37,
+          "limitDay": 100,
+          "lowVideo": "zian/data/protect/02_03/190306_106870_01_M.mp4",
+          "highVideo": "zian/data/protect/02_03/190306_106870_01_H.mp4",
+          "curriKey": 124902,
+          "pcSellPriceName": "140,000원",
+          "mobileSellPriceName": "120,000원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 110959,
+              "kind": 100,
+              "price": 160000,
+              "sellPrice": 140000,
+              "point": 7000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106870
+            },
+            {
+              "priceKey": 110979,
+              "kind": 101,
+              "price": 160000,
+              "sellPrice": 120000,
+              "point": 6000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 106870
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 106870
+        },
+        {
+          "ctgName": "모의고사",
+          "emphasis": 0,
+          "emphasisName": "",
+          "price": 0,
+          "sellPrice": 0,
+          "discountPercent": "30%할인",
+          "goodsName": "2018 국가직·지방직·군무원대비 조현준 자료구조론 모의고사 문제풀이 강의 [5%적립]",
+          "lecCount": 20,
+          "limitDay": 60,
+          "lowVideo": "topspot4/201804조현준자료구조론문풀/201804조현준자료구조론문제풀이27_M.mp4",
+          "highVideo": "topspot4/201804조현준자료구조론문풀/201804조현준자료구조론문제풀이27_H.mp4",
+          "curriKey": 125514,
+          "pcSellPriceName": "80,000원",
+          "mobileSellPriceName": "70,000원",
+          "pcMobileSellPriceName": null,
+          "imageTeacherList": "100/teacher/조상진_중.png",
+          "teacherImageUrl": "http://www.zianedu.com/Upload/100/teacher/조상진_중.png",
+          "videoLectureKindList": [
+            {
+              "priceKey": 111128,
+              "kind": 100,
+              "price": 100000,
+              "sellPrice": 80000,
+              "point": 4000,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 107002
+            },
+            {
+              "priceKey": 111129,
+              "kind": 101,
+              "price": 100000,
+              "sellPrice": 70000,
+              "point": 3500,
+              "extendPercent": 20,
+              "discountPercent": null,
+              "gkey": 107002
+            }
+          ],
+          "teacherLectureBook": [],
+          "gkey": 107002
+        }
+      ]
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================
+/product/getMockExamListFromCategoryMenu/{ctgKey} 모의고사 상품 리스트
+{
+  "result": [
+    {
+      "goodsName": "[오프라인시험] 2019 제1회 계리직 전과목 모의고사(한국사+우금+컴일) 오프라인시험 6/22(토) 오전10시 [접수중]",
+      "priceKey": 111166,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "오프라인",
+      "isSell": 1,
+      "gkey": 107033
+    },
+    {
+      "goodsName": "[온라인시험] 2019 제1회 계리직 전과목 모의고사(한국사+우금+컴일) 온라인시험 6/22(토) 오전10시 [접수중]",
+      "priceKey": 111165,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "온라인",
+      "isSell": 1,
+      "gkey": 107032
+    },
+    {
+      "goodsName": "[오프라인시험] 2018 제3회 계리직 전과목 모의고사(한국사+우금+컴일) 오프라인시험 7/15(일) 오전10시 [접수완료]",
+      "priceKey": 110245,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "오프라인",
+      "isSell": 0,
+      "gkey": 106289
+    },
+    {
+      "goodsName": "[온라인시험] 2018 제3회 계리직 전과목 모의고사(한국사+우금+컴일) 온라인시험 7/15(일) 오전10시 [접수완료]",
+      "priceKey": 110244,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "온라인",
+      "isSell": 0,
+      "gkey": 106288
+    },
+    {
+      "goodsName": "[온라인시험] 2018 제2회 계리직 전과목 모의고사(한국사+우금+컴일) 온라인시험 6/24(일) 오전10시 [접수종료]",
+      "priceKey": 110143,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "온라인",
+      "isSell": 0,
+      "gkey": 106189
+    },
+    {
+      "goodsName": "[학원시험] 2018 제2회 계리직 전과목 모의고사(한국사+우금+컴일) 오프라인시험 6/24(일) 오전10시 [접수종료]",
+      "priceKey": 110142,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "오프라인",
+      "isSell": 0,
+      "gkey": 106188
+    },
+    {
+      "goodsName": "[학원시험] 2018 제1회 계리직 전과목 모의고사(한국사+우금+컴일) 오프라인시험 5/27(일) 오전10시 [접수종료]",
+      "priceKey": 110124,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "오프라인",
+      "isSell": 0,
+      "gkey": 106170
+    },
+    {
+      "goodsName": "[온라인시험] 2018 제1회 계리직 전과목 모의고사(한국사+우금+컴일) 온라인시험 5/27(일) 오전10시 [접수종료]",
+      "priceKey": 110123,
+      "price": "4,000",
+      "sellPrice": "4,000",
+      "isOnOff": "온라인",
+      "isSell": 0,
+      "gkey": 106169
+    }
+  ],
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
 
 ======================================================================================
 /                               BoardController                                    /

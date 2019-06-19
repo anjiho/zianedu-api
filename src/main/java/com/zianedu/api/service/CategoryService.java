@@ -2,8 +2,15 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.define.datasource.LeftMenuCtgKeyType;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.mapper.CategoryMapper;
+import com.zianedu.api.vo.TCategoryVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,9 +19,56 @@ import static org.springframework.http.HttpStatus.OK;
 @Service
 public class CategoryService {
 
+    protected static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
     public ApiResultListDTO getLeftMenuCtgKey() {
         int resultCode = OK.value();
         List<HashMap<String, String>> leftMenuCtgKeyList = LeftMenuCtgKeyType.getLeftMenuCtgKeyList();
         return new ApiResultListDTO(leftMenuCtgKeyList, resultCode);
+    }
+
+    /**
+     * 도서의 메뉴 링크 값 가져오기
+     * @param gKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public int getBookLinkCtgKey(int gKey) {
+        List<Integer> ctgKeyList = categoryMapper.selectCtgKetListFromTCategoryGoods(gKey);
+
+        List<List<TCategoryVO>> bookLinkCtgKeyList = new ArrayList<>();
+        List<TCategoryVO> list = new ArrayList<>();
+        for (Integer ctgKey : ctgKeyList) {
+            list = this.getSequentialCategoryList(ctgKey);
+            if (list.size() > 3) {
+                for (TCategoryVO vo : list) {
+                    if (vo.getCtgKey() == 688) {
+                        bookLinkCtgKeyList.add(list);
+                    }
+                }
+            }
+        }
+        return bookLinkCtgKeyList.get(0).get(0).getCtgKey();
+    }
+
+    public List<TCategoryVO> getSequentialCategoryList(int ctgKey) {
+        if (ctgKey == 0) return null;
+        List<TCategoryVO>list = new ArrayList<>();
+        int j = 0;
+        for (int i=0; i<4; i++) {
+            TCategoryVO tCategoryVO = new TCategoryVO();
+
+            if (i == 0) tCategoryVO = categoryMapper.selectTCategoryInfoByCtgKey(ctgKey);
+            else tCategoryVO = categoryMapper.selectTCategoryInfoByCtgKey(j);
+
+            j = tCategoryVO.getParentKey();
+            if (tCategoryVO.getParentKey() != 214) {
+                list.add(tCategoryVO);
+            }
+        }
+        return list;
     }
 }

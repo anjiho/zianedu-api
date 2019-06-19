@@ -63,6 +63,8 @@ public interface ProductMapper {
 
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
+    List<MockExamProductVO> selectMockExamProductList(@Param("ctgKey") int ctgKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

@@ -75,4 +75,13 @@ public class ProductController {
         return productService.getSpecialPackageDetailInfo(gKey);
     }
 
+    @RequestMapping(value = "/getMockExamListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("모의고사 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "메뉴 카테고리 값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getMockExamList(@PathVariable("ctgKey") int ctgKey) {
+        return productService.getMockExamProductList(ctgKey);
+    }
+
 }

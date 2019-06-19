@@ -113,7 +113,10 @@ public class OrderService {
             }
 
             if (bookCartInfo.size() > 0) {
+                int bookPrice = 0;
                 for (CartListVO bookList : bookCartInfo) {
+                    bookPrice += bookList.getSellPrice();
+
                     orderPrice += bookList.getSellPrice();
                     totalPoint += bookList.getPoint();
 
@@ -122,7 +125,9 @@ public class OrderService {
                     bookList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(bookList.getPoint())) + "점");
                 }
                 //배송비 추가
-                deliveryPrice = 2500;
+                if (bookPrice < 30000) {
+                    deliveryPrice = 2500;
+                }
             }
 
             if (examCartInfo.size() > 0) {
@@ -215,7 +220,9 @@ public class OrderService {
                     //도서 상품 합계
                     if (cartInfo.getType() == 3) {
                         bookPrice += cartInfo.getSellPrice();
-                        deliveryPrice += 2500;
+                        if (bookPrice < 30000) {
+                            deliveryPrice += 2500;
+                        }
                     }
                     //모의고사 상품 합계
                     if (cartInfo.getType() == 4) {

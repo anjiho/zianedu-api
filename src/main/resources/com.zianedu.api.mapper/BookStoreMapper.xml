@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.BookStoreMapper">
+
+    <select id="selectBookListFromMenuCtgKey" resultType="BookBannerVO">
+        SELECT B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        WHERE A.CTG_KEY = #{ctgKey}
+        AND B.TYPE = 3
+        AND B.IS_SHOW = 1
+        AND B.IS_SELL = 1
+        ORDER BY B.G_KEY DESC
+        OFFSET 0 ROWS FETCH NEXT #{listLimit} ROWS ONLY
+    </select>
+
+</mapper>
