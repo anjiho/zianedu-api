@@ -1,9 +1,5 @@
 package com.zianedu.api.utils;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -166,31 +162,6 @@ public class FileUtil {
 			buffer.append(path);
 		}
 		return buffer.toString();
-	}
-
-	/**
-	 * 엑셀파일을 읽어서 Workbook 객체에 리턴
-	 * XLS와 XLSX 확장자를 비교한다.
-	 * @param filePath
-	 * @return
-	 * @throws Exception
-	 */
-	public static Workbook getWorkbook(String filePath) throws Exception {
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(filePath);
-		} catch (FileNotFoundException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage(), e);
-		}
-		Workbook wb = null;
-
-		if (filePath.toUpperCase().endsWith(".XLS")) {
-			wb = new HSSFWorkbook(fis);
-		} else if (filePath.toUpperCase().endsWith(".XLSX")) {
-			wb = new XSSFWorkbook(fis);
-		}
-		return wb;
 	}
 
 	public static String removeFileExtension(String fileName) {

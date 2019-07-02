@@ -1,17 +1,8 @@
 package com.zianedu.api.utils;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -931,58 +922,6 @@ public class Util {
         return (df.format(cal.getTime()));
     }
 
-    public static HttpResponse http(String url, String body) {
-
-        try (CloseableHttpClient httpClient = HttpClientBuilder.create().build()) {
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("receipt-data", body);
-            System.out.println("json : " + jsonParam);
-            HttpPost request = new HttpPost(url);
-            StringEntity params = new StringEntity(jsonParam.toString());
-            request.addHeader("content-type", "application/json");
-            request.setEntity(params);
-            HttpResponse result = httpClient.execute(request);
-
-            String json = EntityUtils.toString(result.getEntity(), "UTF-8");
-            try {
-                JSONParser parser = new JSONParser();
-                Object resultObject = parser.parse(json);
-
-                if (resultObject instanceof JSONArray) {
-                    JSONArray array=(JSONArray)resultObject;
-                    for (Object object : array) {
-                        JSONObject obj =(JSONObject)object;
-                        System.out.println("status ::::" + obj.get("status"));
-                    }
-
-                } else if (resultObject instanceof JSONObject) {
-                    JSONObject obj =(JSONObject)resultObject;
-                    System.out.println("status :: " + obj.get("status"));
-                    System.out.println(obj.get("environment"));
-                    System.out.println( obj.get("receipt"));
-                    JSONObject obj2 =(JSONObject)obj.get("receipt");
-                    System.out.println(obj2.get("application_version"));
-                    System.out.println(obj2.get("bundle_id"));
-                    /*
-                    JSONArray array = (JSONArray)obj.get("receipt");
-                    for (Object object : array) {
-                        JSONObject obj2 =(JSONObject)object;
-                        System.out.println(obj2.get("transaction_id"));
-                    }
-                    */
-                }
-
-            } catch (Exception e) {
-                // TODO: handle exception
-                e.printStackTrace();
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
     public static int getCornRewardByPercent(int corn, int percent) {
         float calcPercent = percent * (float) 0.01;
         int rewardPopcorn = (int)((corn * 10 ) * Float.valueOf(String.format("%.2f", calcPercent)));
@@ -1057,6 +996,12 @@ public class Util {
         return discountRate + "%";
     }
 
+    public static String getAccrualRatePoint(int price, int point) {
+        int onePercentPrice = (int)( price * 0.01 );
+        int accrualRate = (point / onePercentPrice);
+        return accrualRate + "%";
+    }
+
     public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
         final Map<String, List<String>> query_pairs = new LinkedHashMap<>();
         final String[] pairs = url.getQuery().split("&");
@@ -1072,42 +1017,11 @@ public class Util {
         return query_pairs;
     }
 
+
+
     public static void main(String[] args) throws Exception {
 
-        String str = "100\\bbs\\하프모의고사-14회(2019.03.28).pdf";
-        //String str2 = "100\bbs\하프모의고사-14회(2019.03.28).pdf";
-        if (str.contains("\\")) {
-            System.out.println("1");
-        } else {
-            System.out.println("2");
-        }
-
-        String[] strs = split(str, "\\");
-        System.out.println(strs[2]);
-//        for (String str1 : strs) {
-//            System.out.println(str1);
-//        }
-
-//        String str = "http://www.zianedu.com/tt/t_branding/society.html";
-//
-//        if (str.contains("&")) {
-//            System.out.println("T");
-//        } else {
-//            System.out.println("F");
-//        }
-//        //String[] splits = split(str, "?");
-//        URL url = new URL(str);
-//        Map<String, List<String>> map = splitQuery(url);
-//        System.out.println(map.toString());
-//        System.out.println(map.get("parent_mnk").get(0));
-//        //System.out.println(getProductDiscountRate(160000, 90000));
-//
-//        List<Integer>arr = new ArrayList<>();
-//        arr.add(1);
-//        arr.add(2);
-//        arr.add(3);
-//        arr.add(4);
-//        arr.add(5);
+        System.out.println(getAccrualRatePoint(29700, 1485));
 
 
     }

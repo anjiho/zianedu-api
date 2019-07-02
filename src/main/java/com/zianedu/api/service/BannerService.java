@@ -1,6 +1,5 @@
 package com.zianedu.api.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.B;
 import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.NoticeMasterKeyType;
 import com.zianedu.api.define.err.ZianErrCode;
