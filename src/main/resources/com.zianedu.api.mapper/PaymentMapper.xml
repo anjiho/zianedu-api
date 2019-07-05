@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.PaymentMapper">
+
+    <insert id="insertTOrder" parameterType="com.zianedu.api.vo.TOrderVO">
+        <selectKey resultType="int" keyProperty="jKey" order="BEFORE">
+            SELECT T_ORDER_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER
+        (
+            J_KEY, C_KEY, USER_KEY, J_ID, INDATE, PRICE, PRICE_PAY, POINT, DC_WELFARE, DC_POINT, DC_COUPON,
+            DC_FREE, DELIVERY_PRICE, PAY_STATUS, PAY_DATE, PAY_TYPE, CANCEL_DATE, BANK, BANK_ACCOUNT, CARD_CODE,
+            DEPOSIT_USER, DEPOSIT_DATE, DELIVERY_NANE, DELIVERY_TELEPHONE, DELIVERY_TELEPHONE_MOBILE, DELIVERY_EMAIL,
+            DELIVERY_ZIPCODE, DELIVERY_ADDRESS, DELIVERY_ADDRESS_ROAD, DELIVERY_ADDRESS_ADD, UNIQUE_TYPE_LIST,
+            UNIQUE_EXTEND_DAY_LIST, PAY_KEY, OFFLINE_SERIAL, IS_MOBILE, IS_OFFLINE, TMP, G_NAME_LIST, IS_CANCEL_REQUEST,
+            CASH_RECEIPT_TYPE, CASH_RECEIPT_NUMBER, CANCEL_REQUEST_DATE
+        )
+        VALUES
+        (
+            #{jKey}, #{cKey}, #{userKey}, #{jId}, sysdate, #{price}, #{pricePay}, #{point}, #{dcWelfare}, #{dcPoint}, #{dcCoupon},
+            #{dcFree}, #{deliveryPrice}, #{payStatus}, TO_DATE(#{payDate}, 'YYYY-mm-dd hh24:mi:ss'), #{payType}, #{cancelDate}, #{bank}, #{bankAccount}, #{cardCode},
+            #{depositUser}, #{depositDate}, #{deliveryName}, #{deliveryTelephone}, #{deliveryTelephoneMobile}, #{deliveryEmail},
+            #{deliveryZipcode}, #{deliveryAddress}, #{deliveryAddressRoad}, #{deliveryAddressAdd}, #{uniqueTypeList},
+            #{uniqueExtendDayList}, #{payKey}, #{offlineSerial}, #{isMobile}, #{isOffline}, #{tmp}, #{gNameList}, #{isCancelRequest},
+            #{cashReceiptType}, #{cashReceiptNumber}, #{cancelRequestDate}
+        )
+    </insert>
+
+    <insert id="insertTOrderGoods" parameterType="com.zianedu.api.vo.TOrderGoodsVO">
+        <selectKey resultType="int" keyProperty="jGKey" order="BEFORE">
+            SELECT T_ORDER_GOODS_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_GOODS
+        (
+            J_G_KEY, J_KEY, C_KEY, USER_KEY, G_KEY, CART_KEY, PRICE_KEY, PRICE, SELL_PRICE, POINT, CNT, TYPE, PM_TYPE, KIND,
+            EXTEND_DAY, COUPON_ISSUE_KEY, COUPON_DC_PRICE, J_PM_KEY, FREEBIE_PARENT_CART_KEY, TMP, CTG_KEY, SITE_NAME, START_DATE, EXAM_YEAR,
+            CLASS_GROUP_CTG_KEY, SUBJECT_CTG_KEY, STEP_CTG_KEY, TEACHER_NAME_LIST, STS_CALC_PRICE, STS_TEACHER_LIST,
+            STS_SUBJECT_CTG_KEY, STS_STEP_CTG_KEY, STS_SITE_NAME, STS_AFFILIATION_CTG_KEY, G_NAME
+        )
+        VALUES
+        (
+            #{jGKey}, #{jKey}, #{cKey}, #{userKey}, #{gKey}, #{cartKey}, #{priceKey}, #{price}, #{sellPrice}, #{point}, #{cnt}, #{type}, #{pmType}, #{kind},
+            #{extendDay}, #{couponIssueKey}, #{couponDcPrice}, #{jPmKey}, #{freebieParentCartKey}, #{tmp}, #{ctgKey}, #{siteName}, TO_DATE(#{startDate}, 'YYYY-mm-dd'), #{examYear},
+            #{classGroupCtgKey}, #{subjectCtgKey}, #{stepCtgKey}, #{teacherNameList}, #{stsCalcPrice}, #{stsTeacherList},
+            #{stsSubjectCtgKey}, #{stsStepCtgKey}, #{stsSiteName}, #{stsAffiliationCtgKey}, #{gName}
+        )
+    </insert>
+
+</mapper>

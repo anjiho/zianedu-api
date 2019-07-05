@@ -17,7 +17,7 @@ public class BookStoreController {
     @Autowired
     private BookStoreService bookStoreService;
 
-    @RequestMapping(value = "/getBannerList/{ctgKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getBannerList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인서점 도서 배너 목록")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값(841 : MD추천, 842 : 화제의도서, 843 : 행정직베스트도서, 844 : 기술직베스트도서, 845 : 계리직베스트도서, 839 : 새로나온책, 846 : 공통과목(BEST), 847 : 행정직(BEST), 848 : 기술직(BEST), 849 : 계리직(BEST), 850 : 자격증/가산점(BEST), 851 : 모의고사(BEST)",
@@ -29,7 +29,7 @@ public class BookStoreController {
         return bookStoreService.getBookListFromOnlineStoreTopBanner(ctgKey, listLimit);
     }
 
-    @RequestMapping(value = "/getBookList/{leftMenuCtgKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getBookList/{leftMenuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인서점 도서 목록(페이징)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "leftMenuCtgKey", value = "( /menu/getLeftMenu/{ctgKey} ) 리턴값 정의", dataType = "int", paramType = "path", required = true),

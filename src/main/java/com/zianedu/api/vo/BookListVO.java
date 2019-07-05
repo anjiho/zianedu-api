@@ -28,4 +28,6 @@ public class BookListVO {
     private String discountPercent;
 
     private String accrualRate;
+
+    private int priceKey;
 }

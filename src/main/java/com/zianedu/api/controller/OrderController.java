@@ -33,7 +33,7 @@ public class OrderController {
         return orderService.getUserCartList(userKey);
     }
 
-    @RequestMapping(value = "/deleteCartInfo", method = RequestMethod.DELETE, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/deleteCartInfo", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("장바구니 리스트 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "cartKeys", value = "장바구니 키", dataType = "string", paramType = "query", required = true)
@@ -112,7 +112,7 @@ public class OrderController {
         return orderService.getUserPointList(userKey);
     }
 
-    @RequestMapping(value = "/saveCart", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/saveCart", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("장바구니 담기(자유패키지 외 상품)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "saveCartInfo", value = "저장할 카트 정보", dataType = "string", paramType = "query", required = true)
@@ -121,7 +121,7 @@ public class OrderController {
         return orderService.saveCart(saveCartInfo);
     }
 
-    @RequestMapping(value = "/saveCartFreePackage", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/saveCartFreePackage", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("장바구니 담기(자유패키지)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "query", required = true),

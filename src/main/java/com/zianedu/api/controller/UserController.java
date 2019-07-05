@@ -64,7 +64,7 @@ public class UserController {
         return userService.regUser(tUserVO);
     }
 
-    @RequestMapping(value = "/modify", method = {RequestMethod.PUT}, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/modify", method = {RequestMethod.POST}, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("회원정보 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
@@ -84,7 +84,7 @@ public class UserController {
         return userService.modifyUserInfo(tUserVO);
     }
 
-    @RequestMapping(value = "/modifyPwd", method = RequestMethod.PUT, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("회원 비밀번호 변경")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),

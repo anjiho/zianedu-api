@@ -153,6 +153,20 @@
         )
     </insert>
 
+    <insert id="insertTCartLinkGoods">
+        <selectKey resultType="Integer" keyProperty="cartLinkKey" order="BEFORE">
+            SELECT T_CART_LINK_GOODS_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_CART_LINK_GOODS
+        (
+            CART_LINK_KEY, CART_KEY, G_KEY, PRICE_KEY
+        )
+        VALUES
+        (
+            #{cartLinkKey}, #{cartKey}, #{gKey}, #{priceKey}
+        )
+    </insert>
+
     <delete id="deleteCartInfo">
         DELETE FROM T_CART WHERE CART_KEY = #{cartKey}
     </delete>

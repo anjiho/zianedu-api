@@ -31,7 +31,9 @@ public interface OrderMapper {
 
 
     /** INSERT **/
-    Integer insertTCart(TCartVO tCartVO);
+    void insertTCart(TCartVO tCartVO);
+
+    void insertTCartLinkGoods(@Param("cartKey") Long cartKey, @Param("gKey") int gKey, @Param("priceKey") int priceKey);
 
     /** UPDATE **/
 

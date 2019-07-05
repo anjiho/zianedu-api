@@ -1,6 +1,7 @@
 package com.zianedu.api.mapper;
 
 import com.zianedu.api.vo.*;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -64,6 +65,16 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
     List<MockExamProductVO> selectMockExamProductList(@Param("ctgKey") int ctgKey);
+
+    TGoodsPriceOptionVO selectGoodsPriceOptionByPriceKey(@Param("priceKey") int priceKey);
+
+    Integer selectGoodsType(@Param("gKey") int gKey);
+
+    List<String> selectTeacherNameListByVideoProduct(@Param("gKey") int gKey);
+
+    TLecVO selectTLecInfo(@Param("gKey") int gKey);
+
+    TGoodsVO selectTGoodsInfo(@Param("gKey") int gKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

@@ -1,10 +1,7 @@
 package com.zianedu.api.service;
 
 import com.google.gson.JsonArray;
-import com.zianedu.api.define.datasource.DeliveryStatusType;
-import com.zianedu.api.define.datasource.GoodsType;
-import com.zianedu.api.define.datasource.OrderPayStatusType;
-import com.zianedu.api.define.datasource.OrderPayType;
+import com.zianedu.api.define.datasource.*;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.OrderMapper;
@@ -186,8 +183,9 @@ public class OrderService {
                     //자유패키지
                     if (cartInfo.getKind() == 0) {
                         orderProductListDTO = new OrderProductListDTO(
+                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
                                 GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
-                                cartInfo.getCnt(), cartInfo.getLinkSellPrice(), cartInfo.getKind()
+                                cartInfo.getCnt(), cartInfo.getLinkSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay()
                         );
                         totalProductPrice += cartInfo.getLinkSellPrice();
                         totalPoint += cartInfo.getPoint();
@@ -195,8 +193,9 @@ public class OrderService {
                     //지안패스
                     } else if (cartInfo.getKind() == 12) {
                         orderProductListDTO = new OrderProductListDTO(
+                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
                                 GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
-                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind()
+                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay()
                         );
                         totalProductPrice += cartInfo.getSellPrice();
                         totalPoint += cartInfo.getPoint();
@@ -204,8 +203,9 @@ public class OrderService {
                     }
                 } else {
                     orderProductListDTO = new OrderProductListDTO(
+                            cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
                             GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
-                            cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind()
+                            cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay()
                     );
                     totalProductPrice += cartInfo.getSellPrice();
                     totalPoint += cartInfo.getPoint();
@@ -285,8 +285,9 @@ public class OrderService {
                 for (CartListVO product : buyProductList) {
 
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
+                            product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
                             GoodsType.getGoodsTypeStr(product.getType()), product.getGoodsName(),
-                            product.getCnt(), product.getSellPrice(), product.getKind()
+                            product.getCnt(), product.getSellPrice(), product.getKind(), -1
                     );
                     totalProductPrice += product.getSellPrice();
                     totalPoint += product.getPoint();
@@ -358,8 +359,18 @@ public class OrderService {
             List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuy(gKeyList);
 
             if (buyProductList.size() > 0) {
+                TCartVO cartVO = new TCartVO(
+                        userKey, ZianCoreCode.FREE_PACKAGE_GOODS_KEY, ZianCoreCode.FREE_PACKAGE_PRICE_KEY, 1
+                );
+                // T_CART 테이블에 저장
+                orderMapper.insertTCart(cartVO);
+                //저장된 카드 테이블 키값
+                Long cartKey = cartVO.getCartKey();
+
                 for (CartListVO product : buyProductList) {
                     totalProductPrice += product.getSellPrice();
+                    // T_CART_LINK_GOODS 테이블에 상품목록 저장
+                    orderMapper.insertTCartLinkGoods(cartKey, product.getGKey(), product.getPriceKey());
                 }
 
                 int calcTotalPrice = 0;
@@ -370,8 +381,8 @@ public class OrderService {
                 }
 
                 OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
-                        "프로모션", "자유패키지",
-                        1, calcTotalPrice, 0
+                        ZianCoreCode.FREE_PACKAGE_GOODS_KEY, ZianCoreCode.FREE_PACKAGE_PRICE_KEY, cartKey, ZianCoreCode.FREE_PACKAGE_GOODS_TYPE,
+                        "프로모션", "자유패키지", 1, calcTotalPrice, 0, -1
                 );
                 //상품총합
                 ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(

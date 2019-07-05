@@ -700,6 +700,32 @@
         ORDER BY A.G_KEY DESC
     </select>
 
+    <select id="selectGoodsPriceOptionByPriceKey" resultType="TGoodsPriceOptionVO">
+        SELECT * FROM T_GOODS_PRICE_OPTION WHERE PRICE_KEY = #{priceKey}
+    </select>
+
+    <select id="selectGoodsType" resultType="Integer">
+        SELECT TYPE FROM T_GOODS WEHRE G_KEY = #{gKey}
+    </select>
+
+    <select id="selectTeacherNameListByVideoProduct" resultType="String">
+		SELECT C.name
+		FROM t_goods_teacher_link A
+		INNER JOIN t_teacher B
+		ON A.teacher_key = B.teacher_key
+		INNER JOIN t_user C
+		ON B.user_key = C.user_key
+		WHERE A.g_key = #{gKey}
+	</select>
+
+    <select id="selectTLecInfo" parameterType="Integer" resultType="TLecVO">
+		SELECT * FROM T_LEC WHERE G_KEY = #{gKey}
+	</select>
+
+    <select id="selectTGoodsInfo" parameterType="Integer" resultType="TGoodsVO">
+		SELECT * FROM T_GOODS WHERE G_KEY = #{gKey}
+	</select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

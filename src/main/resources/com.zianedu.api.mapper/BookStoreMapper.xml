@@ -16,7 +16,9 @@
     </select>
 
     <select id="selectBookListFromLeftMenuCtgKey" resultType="BookListVO">
-        SELECT B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER, TO_CHAR(C.PUBLISH_DATE, 'YYYY-MM-DD') as publishDate, D.NAME, E.PRICE, E.SELL_PRICE, E.POINT
+        SELECT B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER, TO_CHAR(C.PUBLISH_DATE, 'YYYY-MM-DD') as publishDate,
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT,
+                (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION T WHERE T.G_KEY = B.G_KEY) as priceKey
         FROM T_CATEGORY_GOODS A
         INNER JOIN T_GOODS B
         ON A.G_KEY = B.G_KEY

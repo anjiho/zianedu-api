@@ -115,7 +115,7 @@ public class BoardController {
         return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, fileName);
     }
 
-    @RequestMapping(value = "/updateBoard", method = RequestMethod.PUT, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/updateBoard", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 글 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
@@ -133,7 +133,7 @@ public class BoardController {
         return boardService.updateBoardInfo(bbsKey, title, content, isSecret, fileName);
     }
 
-    @RequestMapping(value = "/updateBoardComment", method = RequestMethod.PUT, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/updateBoardComment", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 답글 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsCommentKey", value = "답글 키값", dataType = "int", paramType = "query", required = true),
@@ -145,7 +145,7 @@ public class BoardController {
         return boardService.updateBoardCommentInfo(bbsCommentKey, comment);
     }
 
-    @RequestMapping(value = "/deleteBoard", method = RequestMethod.DELETE, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/deleteBoard", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 글 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true)
@@ -154,7 +154,7 @@ public class BoardController {
         return boardService.deleteBoard(bbsKey);
     }
 
-    @RequestMapping(value = "/deleteBoardComment", method = RequestMethod.DELETE, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/deleteBoardComment", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 답글 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsCommentKey", value = "게시판 답글 키값", dataType = "int", paramType = "query", required = true)
