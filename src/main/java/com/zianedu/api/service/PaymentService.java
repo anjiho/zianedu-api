@@ -96,8 +96,9 @@ public class PaymentService {
                     }
 
                     TOrderGoodsVO tOrderGoodsVO = new TOrderGoodsVO(
-                            jKey, orderVO.getUserKey(), vo.getGKey(), vo.getPriceKey(), priceOptionVO.getPrice(),
-                            priceOptionVO.getKind(), tLecVO.getExamYear(), tLecVO.getClassGroupCtgKey(),
+                            jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
+                            priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                            tGoodsVO.getType(), 0, priceOptionVO.getKind(), vo.getExtendDay(), 0, tLecVO.getExamYear(), tLecVO.getClassGroupCtgKey(),
                             tLecVO.getSubjectCtgKey(), teacherName, tGoodsVO.getName()
                     );
                     //T_ORDER_GOODS 결제 상품 저장
@@ -109,9 +110,8 @@ public class PaymentService {
                                 jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
                         );
                     }
-                }
                 //학원상품일때
-                if (tGoodsVO.getType() == 2) {
+                } else if (tGoodsVO.getType() == 2) {
 
                 }
             }

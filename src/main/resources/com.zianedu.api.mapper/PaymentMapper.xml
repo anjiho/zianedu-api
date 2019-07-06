@@ -33,16 +33,16 @@
         INSERT INTO T_ORDER_GOODS
         (
             J_G_KEY, J_KEY, C_KEY, USER_KEY, G_KEY, CART_KEY, PRICE_KEY, PRICE, SELL_PRICE, POINT, CNT, TYPE, PM_TYPE, KIND,
-            EXTEND_DAY, COUPON_ISSUE_KEY, COUPON_DC_PRICE, J_PM_KEY, FREEBIE_PARENT_CART_KEY, TMP, CTG_KEY, SITE_NAME, START_DATE, EXAM_YEAR,
-            CLASS_GROUP_CTG_KEY, SUBJECT_CTG_KEY, STEP_CTG_KEY, TEACHER_NAME_LIST, STS_CALC_PRICE, STS_TEACHER_LIST,
-            STS_SUBJECT_CTG_KEY, STS_STEP_CTG_KEY, STS_SITE_NAME, STS_AFFILIATION_CTG_KEY, G_NAME
+            EXTEND_DAY, COUPON_ISSUE_KEY, COUPON_DC_PRICE, J_PM_KEY, FREEBIE_PARENT_CART_KEY, TMP, CTG_KEY, SITE_NAME,
+            <if test="startDate != ''">START_DATE,</if> EXAM_YEAR,
+            CLASS_GROUP_CTG_KEY, SUBJECT_CTG_KEY, STEP_CTG_KEY, TEACHER_NAME_LIST, G_NAME
         )
         VALUES
         (
             #{jGKey}, #{jKey}, #{cKey}, #{userKey}, #{gKey}, #{cartKey}, #{priceKey}, #{price}, #{sellPrice}, #{point}, #{cnt}, #{type}, #{pmType}, #{kind},
-            #{extendDay}, #{couponIssueKey}, #{couponDcPrice}, #{jPmKey}, #{freebieParentCartKey}, #{tmp}, #{ctgKey}, #{siteName}, TO_DATE(#{startDate}, 'YYYY-mm-dd'), #{examYear},
-            #{classGroupCtgKey}, #{subjectCtgKey}, #{stepCtgKey}, #{teacherNameList}, #{stsCalcPrice}, #{stsTeacherList},
-            #{stsSubjectCtgKey}, #{stsStepCtgKey}, #{stsSiteName}, #{stsAffiliationCtgKey}, #{gName}
+            #{extendDay}, #{couponIssueKey}, #{couponDcPrice}, #{jPmKey}, #{freebieParentCartKey}, #{tmp}, #{ctgKey}, #{siteName},
+            <if test="startDate != ''">TO_DATE(#{startDate}, 'YYYY-mm-dd'),</if> #{examYear},
+            #{classGroupCtgKey}, #{subjectCtgKey}, #{stepCtgKey}, #{teacherNameList}, #{gName}
         )
     </insert>
 

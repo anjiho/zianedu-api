@@ -378,4 +378,12 @@ public class StringUtils {
         return convertNumber;
     }
 
+    public static int convertLongToInt(Long l) {
+        Integer i = 0;
+        if (l != null) {
+            l.intValue();
+        }
+        return i;
+    }
+
 }

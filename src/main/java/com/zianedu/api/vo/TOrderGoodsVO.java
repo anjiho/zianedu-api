@@ -78,41 +78,36 @@ public class TOrderGoodsVO {
 
     public TOrderGoodsVO(){}
 
-    public TOrderGoodsVO(int jKey, int userKey, int gKey, int priceKey, int price, int kind, int examYear,
-                         int classGroupCtgKey, int subjectCtgKey, String teacherName, String goodsName) throws Exception {
+    public TOrderGoodsVO(int jKey, int userKey, int gKey, int cartKey, int priceKey, int price, int sellPrice, int point,
+                         int type, int pmType, int kind, int extendDay, int ctgKey, int examYear, int classGroupCtgKey,
+                         int subjectCtgKey, String teacherName, String goodsName) throws Exception {
         this.jKey = jKey;
         this.cKey = 100;
         this.userKey = userKey;
         this.gKey = gKey;
-        this.cartKey = 0;
+        this.cartKey = cartKey;
         this.priceKey = priceKey;
         this.price = price;
-        this.sellPrice = price;
-        this.point = 0;
+        this.sellPrice = sellPrice;
+        this.point = point;
         this.cnt = 1;
-        this.type = 2;
-        this.pmType = 0;
+        this.type = type;
+        this.pmType = pmType;
         this.kind = kind;
-        this.extendDay = -1;
+        this.extendDay = extendDay;
         this.couponIssueKey = 0;
         this.couponDcPrice = 0;
         this.jPmKey = 0;
         this.freebieParentCartKey = 0;
         this.tmp = 0;
-        this.ctgKey = 0;
+        this.ctgKey = ctgKey;
         this.siteName = "";
-        this.startDate = Util.plusDate(Util.returnNowDateByYYMMDD(), 7);
+        this.startDate = "";
         this.examYear = examYear;
         this.classGroupCtgKey = classGroupCtgKey;
         this.subjectCtgKey = subjectCtgKey;
         this.stepCtgKey = 0;
         this.teacherNameList = teacherName;
-        this.stsCalcPrice = 0;
-        this.stsTeacherList = "";
-        this.stsSubjectCtgKey = 0;
-        this.stsStepCtgKey = 0;
-        this.stsSiteName = "";
-        this.stsAffiliationCtgKey = 0;
         this.gName = goodsName;
     }
 
