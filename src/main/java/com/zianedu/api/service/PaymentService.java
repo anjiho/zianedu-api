@@ -75,6 +75,8 @@ public class PaymentService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int saveOrderGoodsList(int jKey, OrderVO orderVO, List<OrderGoodsListVO> orderGoodsList) throws Exception {
         if (jKey > 0) {
+            TOrderGoodsVO tOrderGoodsVO = null;
+            TOrderLecVO tOrderLecVO = null;
             /**
              * TODO T_ORDER_GOODS 테이블 저장하기
              */
@@ -95,24 +97,44 @@ public class PaymentService {
                         teacherName = StringUtils.implodeList(",", teacherNameList);
                     }
 
-                    TOrderGoodsVO tOrderGoodsVO = new TOrderGoodsVO(
+                    tOrderGoodsVO = new TOrderGoodsVO(
                             jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
                             priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
                             tGoodsVO.getType(), 0, priceOptionVO.getKind(), vo.getExtendDay(), 0, tLecVO.getExamYear(), tLecVO.getClassGroupCtgKey(),
                             tLecVO.getSubjectCtgKey(), teacherName, tGoodsVO.getName()
                     );
-                    //T_ORDER_GOODS 결제 상품 저장
-                    paymentMapper.insertTOrderGoods(tOrderGoodsVO);
                     //결제완료이면 T_ORDER_LEC 테이블에 정보 저장
                     if (orderVO.getPayStatus() == 2) {
                         int jGKey = tOrderGoodsVO.getJGKey();
-                        TOrderLecVO tOrderLecVO = new TOrderLecVO(
+                        tOrderLecVO = new TOrderLecVO(
                                 jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
                         );
                     }
                 //학원상품일때
                 } else if (tGoodsVO.getType() == 2) {
+                    /**
+                     * TODO 학원상품일때
+                     */
+                } else if (tGoodsVO.getType() == 3) {
+                    /**
+                     * TODO 도서 상품일때
+                     */
+                } else if (tGoodsVO.getType() == 4) {
+                    /**
+                     * TODO 모의고사 상품일때
+                     */
+                } else if (tGoodsVO.getType() == 5) {
+                    /**
+                     * TODO 패키지 상품일때
+                     */
+                }
+                //T_ORDER_GOODS 결제 상품 저장
+                paymentMapper.insertTOrderGoods(tOrderGoodsVO);
 
+                if (tOrderLecVO != null) {
+                    /**
+                     * TODO 동영상 상품이고 결제가 완료되었을때 T_ORDER_LEC 테이블에 정보 저장
+                     */
                 }
             }
         }
