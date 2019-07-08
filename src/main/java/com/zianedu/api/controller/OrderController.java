@@ -1,10 +1,13 @@
 package com.zianedu.api.controller;
 
+import com.google.gson.JsonArray;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.service.MyPageService;
 import com.zianedu.api.service.OrderService;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
+import com.zianedu.api.vo.GoodsInfoVO;
+import com.zianedu.api.vo.OrderGoodsListVO;
 import com.zianedu.api.vo.SaveCartVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -67,16 +70,26 @@ public class OrderController {
         return orderService.getOrderSheetFromImmediatelyBuy(userKey, gKeyArray);
     }
 
-    @RequestMapping(value = "/getOrderSheetInfoFromImmediatelyAtFree/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("주문서 작성 > 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때")
+    @RequestMapping(value = "/getOrderSheetInfoFromImmediatelyAtBasicPackage/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("주문서 작성 > 특별, 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "gKeys", value = "상품 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true)
+            @ApiImplicitParam(name = "goodsInfo", value = "상품정보 >> [{gKey:1234, priceKey:1234}, {gKey:1234, priceKey:1234},...]", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "packageType", value = "기본패키지 종류 >> 특별패키지 : 1, 자유패키지 : 2", dataType = "int", paramType = "query", required = true)
     })
-    public ApiResultObjectDTO getOrderSheetFromImmediatelyBuyAtFree(@PathVariable("userKey") int userKey,
-                                                              @RequestParam("gKeys") String gKeys) {
-        Integer[] gKeyArray = GsonUtil.convertToIntegerArrayFromString(gKeys);
-        return orderService.getOrderSheetFromImmediatelyBuyAtFree(userKey, gKeyArray);
+    public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtBasicPackage(@PathVariable("userKey") int userKey,
+                                                              @RequestParam("goodsInfo") String goodsInfo,
+                                                              @RequestParam("packageType") int packageType) {
+
+        JsonArray goodsInfoListJson = GsonUtil.convertStringToJsonArray(goodsInfo);
+        List<GoodsInfoVO> goodsInfoList = GsonUtil.getObjectFromJsonArray(goodsInfoListJson, GoodsInfoVO.class);
+
+        if (packageType == 1) {
+            return orderService.getOrderSheetInfoFromImmediatelyAtSpecialPackage(userKey, goodsInfoList);
+        } else if (packageType == 2) {
+            return orderService.getOrderSheetInfoFromImmediatelyAtFreePackage(userKey, goodsInfoList);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/getUserOrderDeliveryInfo/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

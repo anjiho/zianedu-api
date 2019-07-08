@@ -553,6 +553,210 @@ documents.txt file-encoding : UTF-8
   "resultMsg": "SUCCESS"
 }
 
+GET /order/getOrderSheetInfoFromImmediatelyAtBasicPackage/{userKey} 주문서 작성 > 특별, 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때
+
+goodsInfo 파라미터 정의
+
+[
+    {
+        gKey : 105930,
+        priceKey : 109782
+    },
+    {
+        gKey : 105969,
+        priceKey : 109834
+    },
+    .....
+]
+//자유패키지 리턴값
+{
+  "result": {
+    "orderProductList": null,
+    "orderProduct": {
+      "priceKey": 100924,
+      "cartKey": 388144,
+      "productType": "프로모션",
+      "productName": "자유패키지",
+      "count": 1,
+      "sellPriceName": "198,000원",
+      "kind": 0,
+      "type": 5,
+      "extendDay": -1,
+      "pmType": 0,
+      "gkey": 101400
+    },
+    "productTotalPrice": {
+      "productTotalPrice": 198000,
+      "totalPoint": 0,
+      "deliveryPrice": 0,
+      "productTotalPriceName": "198,000원",
+      "totalPointName": "0점",
+      "deliveryPriceName": "0원"
+    },
+    "productGroupPrice": {
+      "videoTotalPriceName": null,
+      "academyTotalPriceName": null,
+      "promotionTotalPriceName": "198,000원",
+      "bookTotalPriceName": null,
+      "examTotalPriceName": null,
+      "deliveryPriceName": null
+    },
+    "userPoint": 1087922,
+    "orderUserInfo": {
+      "userKey": 0,
+      "userId": "admin",
+      "indate": "2013-12-19 00:00:00.0",
+      "name": "지안에듀",
+      "authority": 0,
+      "status": 0,
+      "pwd": null,
+      "birth": "2013-12-19 00:00:00.0",
+      "lunar": "1",
+      "gender": 0,
+      "telephone": "02-6080-1725",
+      "telephoneMobile": "010-0000-0000",
+      "zipcode": "156050",
+      "addressRoad": null,
+      "addressNumber": null,
+      "address": "117-2 영빌딩2층",
+      "email": "topspot77@naver.com",
+      "snsFacebook": null,
+      "snsTwiter": null,
+      "snsGoogleplus": null,
+      "recvSms": 0,
+      "recvEmail": 1,
+      "recvSnsFacebook": null,
+      "recvSnsTwiter": null,
+      "recvSnsGoogleplus": null,
+      "welfareDcPercent": 0,
+      "certCode": null,
+      "grade": 0,
+      "interestCtgKey0": 3605,
+      "interestCtgKey1": 0,
+      "isMobileReg": 0,
+      "adminAuthorityKey": 0,
+      "gradeDate": null,
+      "gradeGKey": 0,
+      "gradePrice": 0,
+      "note": null,
+      "appPushKey": null,
+      "appDeviceType": null,
+      "userPwd": null,
+      "ckey": null
+    }
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+//특별패키지 리턴값
+{
+  "result": {
+    "orderProductList": [
+      {
+        "priceKey": 111137,
+        "cartKey": 388148,
+        "productType": "프로모션",
+        "productName": "2019 전산직7급 전공 자구+소공+디비 기출 모의 문제풀이강의 패키지 [25%할인]",
+        "count": 1,
+        "sellPriceName": "382,000원",
+        "kind": 100,
+        "type": 5,
+        "extendDay": -1,
+        "pmType": 1,
+        "gkey": 107009
+      },
+      {
+        "priceKey": 111130,
+        "cartKey": 388149,
+        "productType": "프로모션",
+        "productName": "[스페셜 이벤트] 2018 전산직 자료구조론+ 데이터베이스론 실전모의고사 문제풀이 강의\t",
+        "count": 1,
+        "sellPriceName": "128,000원",
+        "kind": 100,
+        "type": 5,
+        "extendDay": -1,
+        "pmType": 1,
+        "gkey": 107003
+      },
+      {
+        "priceKey": 111126,
+        "cartKey": 388150,
+        "productType": "프로모션",
+        "productName": "[스페셜 이벤트] 2019 조경직 전공 조경계획 생태관리+조경학 이윤진샘 문제풀이 패키지\t",
+        "count": 1,
+        "sellPriceName": "160,000원",
+        "kind": 100,
+        "type": 5,
+        "extendDay": -1,
+        "pmType": 1,
+        "gkey": 107001
+      }
+    ],
+    "orderProduct": null,
+    "productTotalPrice": {
+      "productTotalPrice": 670000,
+      "totalPoint": 0,
+      "deliveryPrice": 0,
+      "productTotalPriceName": "670,000원",
+      "totalPointName": "0점",
+      "deliveryPriceName": "0원"
+    },
+    "productGroupPrice": {
+      "videoTotalPriceName": null,
+      "academyTotalPriceName": null,
+      "promotionTotalPriceName": "670,000원",
+      "bookTotalPriceName": null,
+      "examTotalPriceName": null,
+      "deliveryPriceName": null
+    },
+    "userPoint": 1087922,
+    "orderUserInfo": {
+      "userKey": 0,
+      "userId": "admin",
+      "indate": "2013-12-19 00:00:00.0",
+      "name": "지안에듀",
+      "authority": 0,
+      "status": 0,
+      "pwd": null,
+      "birth": "2013-12-19 00:00:00.0",
+      "lunar": "1",
+      "gender": 0,
+      "telephone": "02-6080-1725",
+      "telephoneMobile": "010-0000-0000",
+      "zipcode": "156050",
+      "addressRoad": null,
+      "addressNumber": null,
+      "address": "117-2 영빌딩2층",
+      "email": "topspot77@naver.com",
+      "snsFacebook": null,
+      "snsTwiter": null,
+      "snsGoogleplus": null,
+      "recvSms": 0,
+      "recvEmail": 1,
+      "recvSnsFacebook": null,
+      "recvSnsTwiter": null,
+      "recvSnsGoogleplus": null,
+      "welfareDcPercent": 0,
+      "certCode": null,
+      "grade": 0,
+      "interestCtgKey0": 3605,
+      "interestCtgKey1": 0,
+      "isMobileReg": 0,
+      "adminAuthorityKey": 0,
+      "gradeDate": null,
+      "gradeGKey": 0,
+      "gradePrice": 0,
+      "note": null,
+      "appPushKey": null,
+      "appDeviceType": null,
+      "userPwd": null,
+      "ckey": null
+    }
+  },
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
 ==================================================================================================================================================
 /order/getUserOrderDeliveryInfo/{userKey} 주문배송조회 리스트 > param : (startDate: yyyy-mm-dd, endDate : yyyy-mm-dd)
 
@@ -5459,3 +5663,29 @@ param > userKey : 5, gKeys : [106304,106321,....]
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+======================================================================================
+/                               PaymentController                                    /
+======================================================================================
+/payment/savePaymentInfo 결제결과 저장하기
+
+orderGoodsList 데이터정의
+[
+      {
+        "priceKey": 110648,
+        "cartKey": null,
+        "kind": 102,
+        "gKey": 106611,
+        "extendDay": -1,
+	    "pmType":0
+      },
+      {
+        "priceKey": 110831,
+        "cartKey": null,
+        "kind": 102,
+        "gKey": 106764,
+        "extendDay": -1,
+	    "pmType":0
+      },
+      ......
+]

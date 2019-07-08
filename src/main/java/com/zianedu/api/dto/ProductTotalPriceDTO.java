@@ -24,6 +24,9 @@ public class ProductTotalPriceDTO {
     public ProductTotalPriceDTO(){}
 
     public ProductTotalPriceDTO(int productTotalPrice, int totalPoint, int deliveryPrice) {
+        this.productTotalPrice = productTotalPrice;
+        this.totalPoint = totalPoint;
+        this.deliveryPrice = deliveryPrice;
         this.productTotalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(productTotalPrice)) + "원";
         this.totalPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPoint)) + "점";
         this.deliveryPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice)) + "원";

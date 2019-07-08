@@ -13,7 +13,7 @@ public class OrderProductListDTO {
 
     private int priceKey;
 
-    private Long cartKey;
+    private int cartKey;
 
     private String productType;
 
@@ -29,10 +29,12 @@ public class OrderProductListDTO {
 
     private int extendDay;
 
+    private int pmType;
+
     public OrderProductListDTO(){}
 
-    public OrderProductListDTO(int gKey, int priceKey, Long cartKey, int type, String productType, String productName,
-                               int count, int sellPrice, int kind, int extendDay) {
+    public OrderProductListDTO(int gKey, int priceKey, int cartKey, int type, String productType, String productName,
+                               int count, int sellPrice, int kind, int extendDay, int pmType) {
         this.gKey = gKey;
         this.priceKey = priceKey;
         this.cartKey = cartKey;
@@ -43,5 +45,6 @@ public class OrderProductListDTO {
         this.sellPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(sellPrice)) + "원";
         this.kind = kind;
         this.extendDay = extendDay;
+        this.pmType = pmType;
     }
 }

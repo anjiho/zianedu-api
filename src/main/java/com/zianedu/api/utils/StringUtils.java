@@ -219,6 +219,11 @@ public class StringUtils {
         return arrayList.toArray(new Long[arrayList.size()]);
     }
 
+    public static Integer[] arrayIntegerListToStringArray(List<Integer> arrayList) {
+        if (arrayList.size() == 0) return null;
+        return arrayList.toArray(new Integer[arrayList.size()]);
+    }
+
     /**
      * String[] -> String 변환
      * @param arrayStr
@@ -381,7 +386,7 @@ public class StringUtils {
     public static int convertLongToInt(Long l) {
         Integer i = 0;
         if (l != null) {
-            l.intValue();
+            i = l.intValue();
         }
         return i;
     }

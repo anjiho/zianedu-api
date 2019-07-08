@@ -59,6 +59,18 @@
         </foreach>
     </select>
 
+    <select id="selectOrderListByImmediatelyBuyFromPriceKey" resultType="CartListVO">
+        SELECT
+        A.G_KEY, B.PRICE_KEY, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, A.NAME as goodsName,
+        A.TYPE, A.IS_FREEBIE_DELIVERY_FREE, 0 as PM_TYPE
+        FROM T_GOODS A
+        INNER JOIN T_GOODS_PRICE_OPTION B
+        ON A.G_KEY = B.G_KEY
+        WHERE 1=1
+        AND A.G_KEY = #{gKey}
+        AND B.PRICE_KEY = #{priceKey}
+    </select>
+
     <select id="selectOrderListByImmediatelyBuyAtFree" resultType="CartListVO">
         SELECT
             A.G_KEY, B.PRICE_KEY, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, A.NAME as goodsName,
@@ -137,8 +149,16 @@
         ORDER BY INDATE DESC
     </select>
 
+    <select id="selectCartInfoByCartKey" resultType="TCartVO">
+        SELECT G_KEY, PRICE_KEY, LINK_PRICE, LINK_SELL_PRICE, CTG_KEY FROM T_CART WHERE CART_KEY = #{cartKey}
+    </select>
+
+    <select id="selectCartLinkGoodsList" resultType="TCartLinkGoodsVO">
+        SELECT * FROM T_CART_LINK_GOODS WHERE CART_KEY = #{cartKey}
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
-        <selectKey resultType="Long" keyProperty="cartKey" order="BEFORE">
+        <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO T_CART
@@ -164,6 +184,20 @@
         VALUES
         (
             #{cartLinkKey}, #{cartKey}, #{gKey}, #{priceKey}
+        )
+    </insert>
+
+    <insert id="insertTOrderPromotion" >
+        <selectKey resultType="Integer" keyProperty="jPmKey" order="BEFORE">
+            SELECT T_ORDER_PROMOTION_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_PROMOTION
+        (
+            J_PM_KEY, J_G_KEY, INDATE, PM_TYPE, START_DT, END_DT
+        )
+        VALUES
+        (
+            #{jPmKey}, #{jGKey}, sysdate, #{pmType}, sysdate, sysdate
         )
     </insert>
 

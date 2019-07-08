@@ -14,6 +14,8 @@ public interface OrderMapper {
 
     List<CartListVO> selectOrderListByImmediatelyBuy(@Param("gKeys") List<Integer>gKeys);
 
+    CartListVO selectOrderListByImmediatelyBuyFromPriceKey(@Param("gKey") int gKey, @Param("priceKey") int priceKey);
+
     List<CartListVO> selectOrderListByImmediatelyBuyAtFree(@Param("ctgKey") int ctgKey);
 
     List<OrderDeliveryListVO> selectUserOrderDeliveryList(@Param("userKey") int userKey, @Param("startDate") String startDate,
@@ -29,11 +31,17 @@ public interface OrderMapper {
 
     List<PointListVO> selectUserPointListInfo(@Param("userKey") int userKey);
 
+    TCartVO selectCartInfoByCartKey(@Param("cartKey") int cartKey);
+
+    List<TCartLinkGoodsVO> selectCartLinkGoodsList(@Param("cartKey") int cartKey);
+
 
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);
 
-    void insertTCartLinkGoods(@Param("cartKey") Long cartKey, @Param("gKey") int gKey, @Param("priceKey") int priceKey);
+    void insertTCartLinkGoods(@Param("cartKey") int cartKey, @Param("gKey") int gKey, @Param("priceKey") int priceKey);
+
+    void insertTOrderPromotion(TOrderPromotionVO tOrderPromotionVO);
 
     /** UPDATE **/
 

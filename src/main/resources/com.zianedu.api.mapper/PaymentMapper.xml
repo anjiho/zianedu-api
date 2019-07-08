@@ -41,8 +41,24 @@
         (
             #{jGKey}, #{jKey}, #{cKey}, #{userKey}, #{gKey}, #{cartKey}, #{priceKey}, #{price}, #{sellPrice}, #{point}, #{cnt}, #{type}, #{pmType}, #{kind},
             #{extendDay}, #{couponIssueKey}, #{couponDcPrice}, #{jPmKey}, #{freebieParentCartKey}, #{tmp}, #{ctgKey}, #{siteName},
-            <if test="startDate != ''">TO_DATE(#{startDate}, 'YYYY-mm-dd'),</if> #{examYear},
+            <if test="startDate != ''">TO_DATE(#{startDate}, 'YYYY-mm-dd hh24:mi:ss'),</if> #{examYear},
             #{classGroupCtgKey}, #{subjectCtgKey}, #{stepCtgKey}, #{teacherNameList}, #{gName}
+        )
+    </insert>
+
+    <insert id="insertTOrderLec" parameterType="TOrderLecVO">
+        <selectKey resultType="int" keyProperty="jLecKey" order="BEFORE">
+            SELECT T_ORDER_LEC_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_LEC
+        (
+        J_LEC_KEY, J_G_KEY, INDATE, STATUS, <if test="startDt != ''">START_DT,</if> LIMIT_DAY, PAUSE_START_DT,
+        PAUSE_CNT, PAUSE_DAY, PAUSE_TOTAL_DAY, MULTIPLE, MAX_READ_COUNT
+        )
+        VALUES
+        (
+        #{jLecKey}, #{jGKey}, sysdate, #{status}, <if test="startDt != ''">TO_DATE(#{startDt}, 'YYYY-mm-dd hh24:mi:ss'),</if> #{limitDay}, #{pauseStartDt},
+        #{pauseCnt}, #{pauseDay}, #{pauseTotalDay}, #{multiple}, #{maxReadCount}
         )
     </insert>
 

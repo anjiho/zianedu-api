@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CartListVO {
 
-    private Long cartKey;
+    private int cartKey;
 
     private int gKey;
 

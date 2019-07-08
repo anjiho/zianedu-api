@@ -1,5 +1,6 @@
 package com.zianedu.api.utils;
 
+import com.zianedu.api.define.datasource.PromotionPmType;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -1021,7 +1022,7 @@ public class Util {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(getAccrualRatePoint(29700, 1485));
+        System.out.println(PromotionPmType.FREE_PACKAGE.getPromotionPmStr());
 
 
     }

@@ -14,4 +14,6 @@ public class OrderGoodsListVO {
     private int gKey;
 
     private int extendDay;
+
+    private int pmType;
 }

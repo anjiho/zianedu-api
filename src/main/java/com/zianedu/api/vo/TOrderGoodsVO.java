@@ -102,7 +102,40 @@ public class TOrderGoodsVO {
         this.tmp = 0;
         this.ctgKey = ctgKey;
         this.siteName = "";
-        this.startDate = "";
+        this.startDate = type == 2 ? Util.returnNow() : "";
+        this.examYear = examYear;
+        this.classGroupCtgKey = classGroupCtgKey;
+        this.subjectCtgKey = subjectCtgKey;
+        this.stepCtgKey = 0;
+        this.teacherNameList = teacherName;
+        this.gName = goodsName;
+    }
+
+    public TOrderGoodsVO(int jKey, int userKey, int gKey, int cartKey, int priceKey, int price, int sellPrice, int point,
+                         int type, int pmType, int kind, int extendDay, int ctgKey, int examYear, int classGroupCtgKey,
+                         int subjectCtgKey, String teacherName, String goodsName, int jPmKey) throws Exception {
+        this.jKey = jKey;
+        this.cKey = 100;
+        this.userKey = userKey;
+        this.gKey = gKey;
+        this.cartKey = cartKey;
+        this.priceKey = priceKey;
+        this.price = price;
+        this.sellPrice = sellPrice;
+        this.point = point;
+        this.cnt = 1;
+        this.type = type;
+        this.pmType = pmType;
+        this.kind = kind;
+        this.extendDay = extendDay;
+        this.couponIssueKey = 0;
+        this.couponDcPrice = 0;
+        this.jPmKey = jPmKey;
+        this.freebieParentCartKey = 0;
+        this.tmp = 0;
+        this.ctgKey = ctgKey;
+        this.siteName = "";
+        this.startDate = type == 2 ? Util.returnNow() : "";
         this.examYear = examYear;
         this.classGroupCtgKey = classGroupCtgKey;
         this.subjectCtgKey = subjectCtgKey;

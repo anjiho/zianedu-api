@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TCartVO {
 
-    private Long cartKey;
+    private int cartKey;
 
     private int cKey;
 
@@ -81,7 +81,27 @@ public class TCartVO {
         this.linkSellPrice = linkSellPrice;
         this.linkPoint = 0;
         this.extendDay = -1;
-        this.ctgKey = 0;
+        this.ctgKey = 834;
+        this.siteName = "";
+    }
+
+    public TCartVO(int userKey, int gKey, int priceKey, int gCount, int ctgKey) {
+        this.cKey = 100;
+        this.userKey = userKey;
+        this.gKey = gKey;
+        this.priceKey = priceKey;
+        this.groupId = "";
+        this.isDelete = 0;
+        this.isDirect = 0;
+        this.isMember = 1;
+        this.jId = "";
+        this.cnt = gCount;
+        this.freebieParentKey = 0;
+        this.linkPrice = 0;
+        this.linkSellPrice = 0;
+        this.linkPoint = 0;
+        this.extendDay = -1;
+        this.ctgKey = 833;
         this.siteName = "";
     }
 
