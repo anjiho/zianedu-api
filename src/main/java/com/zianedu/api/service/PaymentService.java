@@ -156,7 +156,9 @@ public class PaymentService {
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
                     }
-                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
+                } else if (orderVO.getPayStatus() == 2
+                            && tGoodsVO.getType() == 5
+                            && vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {    //결제완료이고 자유패키지상품이면
                     /**
                      * TODO 자유패키지 상품이 정상결제일때 필요한 정보 저장
                      */
