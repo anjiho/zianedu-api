@@ -70,6 +70,7 @@ public class PaymentService {
     }
 
     /**
+     * TODO =======> 특별패키지 결제 로직 (2019.07. 08)
      * T_ORDER_GOODS 테이블 정보 저장하기
      * @param jKey
      * @param orderVO
