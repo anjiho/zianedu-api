@@ -48,10 +48,12 @@
     <select id="selectOrderListByImmediatelyBuy" resultType="CartListVO">
         SELECT
             A.G_KEY, B.PRICE_KEY, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, A.NAME as goodsName,
-            A.TYPE, A.IS_FREEBIE_DELIVERY_FREE, 0 as PM_TYPE
+            A.TYPE, A.IS_FREEBIE_DELIVERY_FREE, C.PM_TYPE
         FROM T_GOODS A
         INNER JOIN T_GOODS_PRICE_OPTION B
         ON A.G_KEY = B.G_KEY
+        LEFT OUTER JOIN T_PROMOTION C
+        ON A.G_KEY = C.G_KEY
         WHERE 1=1
         AND A.G_KEY IN
         <foreach collection="gKeys" item="gKey" separator="," open="(" close=")">

@@ -9,11 +9,13 @@ import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.vo.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
@@ -70,7 +72,7 @@ public class PaymentService {
     }
 
     /**
-     * TODO =======> 특별패키지 결제 로직 (2019.07. 08)
+     * TODO =======> 연관회원제 결제 로직 해야함 (2019.07. 09)
      * T_ORDER_GOODS 테이블 정보 저장하기
      * @param jKey
      * @param orderVO
@@ -129,16 +131,37 @@ public class PaymentService {
                     /**
                      * TODO 패키지 상품일때
                      */
+                    cartGoodsLinkCartKey = StringUtils.convertLongToInt(vo.getCartKey());
                     //자유패키지일때
-                    if (vo.getPmType() == 2) {
-                        cartGoodsLinkCartKey = StringUtils.convertLongToInt(vo.getCartKey());
-                        TCartVO cartVO = orderMapper.selectCartInfoByCartKey(StringUtils.convertLongToInt(vo.getCartKey()));
+                    if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {
 
+                        TCartVO cartVO = orderMapper.selectCartInfoByCartKey(StringUtils.convertLongToInt(vo.getCartKey()));
                         tOrderGoodsVO = new TOrderGoodsVO(
                                 jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), cartVO.getLinkPrice(),
                                 cartVO.getLinkSellPrice(), priceOptionVO.getPoint(),
                                 tGoodsVO.getType(), vo.getPmType(), priceOptionVO.getKind(), vo.getExtendDay(), cartVO.getCtgKey(), 0, 0,
                                 0, "", PromotionPmType.FREE_PACKAGE.getPromotionPmStr()
+                        );
+                    //특별패키지일때
+                    } else if (vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()) {
+                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
+                        tOrderGoodsVO = new TOrderGoodsVO(
+                                jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
+                                priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                                tGoodsVO.getType(), vo.getPmType(), priceOptionVO.getKind(), vo.getExtendDay(), 833, promotionVO.getExamYear(), promotionVO.getClassGroupCtgKey(),
+                                0, "", tGoodsVO.getName()
+                        );
+                    //지안패스일때
+                    } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {
+                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
+                        int zianPassPageKey = productMapper.selectZianPassPageKeyFromGKey(vo.getGKey());
+                        TCategoryGoodsVO categoryGoodsVO = productMapper.selectTCategoryGoods(zianPassPageKey);
+
+                        tOrderGoodsVO = new TOrderGoodsVO(
+                                jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
+                                priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                                tGoodsVO.getType(), vo.getPmType(), priceOptionVO.getKind(), vo.getExtendDay(), categoryGoodsVO.getCtgKey(), promotionVO.getExamYear(), promotionVO.getClassGroupCtgKey(),
+                                0, "", tGoodsVO.getName()
                         );
                     }
                 }
@@ -157,34 +180,109 @@ public class PaymentService {
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
                     }
-                } else if (orderVO.getPayStatus() == 2
-                            && tGoodsVO.getType() == 5
-                            && vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {    //결제완료이고 자유패키지상품이면
+                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
                     /**
-                     * TODO 자유패키지 상품이 정상결제일때 필요한 정보 저장
+                     * TODO 자유패키지, 특별패키지 상품이 정상결제일때 필요한 동영상 강좌정보 저장
                      */
-                    TOrderPromotionVO promotionVO = new TOrderPromotionVO(jGKey, PromotionPmType.FREE_PACKAGE.getPromotionPmKey());
-                    orderMapper.insertTOrderPromotion(promotionVO);
+                    if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey() || vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()
+                        || vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {
 
-                    List<TCartLinkGoodsVO> cartLinkGoodsList = orderMapper.selectCartLinkGoodsList(cartGoodsLinkCartKey);
-                    if (cartLinkGoodsList.size() > 0) {
-                        for (TCartLinkGoodsVO linkGoodsVO : cartLinkGoodsList) {
-                            TGoodsPriceOptionVO optionVO = productMapper.selectGoodsPriceOptionByPriceKey(linkGoodsVO.getPriceKey());
+                        TOrderPromotionVO promotionVO = new TOrderPromotionVO(jGKey, vo.getPmType());
+                        orderMapper.insertTOrderPromotion(promotionVO);     //T_ORDER_PROMOTION 테이블 저장
 
-                            TOrderGoodsVO tOrderGoodsVO2 = new TOrderGoodsVO(
-                                    jKey, orderVO.getUserKey(), linkGoodsVO.getGKey(), 0, linkGoodsVO.getPriceKey(), 0,
-                                    0, 0, 1, 0, optionVO.getKind(), -1, 0, 0, 0,
-                                    0, "", "", promotionVO.getJPmKey()
-                            );
-                            //T_ORDER_GOODS 결제 상품 저장
-                            paymentMapper.insertTOrderGoods(tOrderGoodsVO2);
+                        List<TCartLinkGoodsVO> cartLinkGoodsList = new ArrayList<>();
+                        if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {   // 자유패키지일때
+                            cartLinkGoodsList = orderMapper.selectCartLinkGoodsList(cartGoodsLinkCartKey);
+                        } else if (vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()) {    //특별패키지
+                            cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(vo.getKind(), vo.getGKey());
+                        } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {    //지안패스일때
+                            //cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(0, vo.getGKey());
+                            cartLinkGoodsList = new ArrayList<>();
+                        }
 
-                            TLecVO lecVO = productMapper.selectTLecInfo(linkGoodsVO.getGKey());
-                            tOrderLecVO = new TOrderLecVO(
-                                    tOrderGoodsVO2.getJGKey(), 0, "", lecVO.getLimitDay(), lecVO.getMultiple()
-                            );
-                            paymentMapper.insertTOrderLec(tOrderLecVO);
+                        if (cartLinkGoodsList.size() > 0) {
+                            for (TCartLinkGoodsVO linkGoodsVO : cartLinkGoodsList) {
+                                TGoodsPriceOptionVO optionVO = productMapper.selectGoodsPriceOptionByPriceKey(linkGoodsVO.getPriceKey());
+                                TOrderGoodsVO tOrderGoodsVO2 = null;
 
+                                tOrderGoodsVO2 = new TOrderGoodsVO(
+                                        jKey, orderVO.getUserKey(), linkGoodsVO.getGKey(), 0, linkGoodsVO.getPriceKey(), 0,
+                                        0, 0, 1, 0, optionVO.getKind(), -1, 0, 0, 0,
+                                        0, "", "", promotionVO.getJPmKey()
+                                );
+                                //T_ORDER_GOODS 결제 상품 저장
+                                paymentMapper.insertTOrderGoods(tOrderGoodsVO2);
+
+                                TLecVO lecVO = productMapper.selectTLecInfo(linkGoodsVO.getGKey());
+                                tOrderLecVO = new TOrderLecVO(
+                                        tOrderGoodsVO2.getJGKey(), 0, "", lecVO.getLimitDay(), lecVO.getMultiple()
+                                );
+                                //T_ORDER_LEC 저장
+                                paymentMapper.insertTOrderLec(tOrderLecVO);
+
+                            }
+                        } else {
+                            //지안패스일때
+                            if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {
+                                List<Integer>gKeyList = productMapper.selectGoodsPriceOptionListByZianPass(vo.getGKey());
+
+                                for (Integer gKey : gKeyList) {
+                                    /**
+                                     *kind 102번은 안들어간다
+                                     */
+                                    int priceOptionCount = productMapper.selectTGoodsPriceOptionCount(gKey);
+                                    //T_GOODS_PRICE_OPTION 개수가 1개이상이고 3개 이하일때
+                                    if (priceOptionCount > 1 && priceOptionCount < 4) {
+                                        List<TGoodsPriceOptionVO> priceOptionList = productMapper.selectGoodsPriceOptionByGKey(gKey);
+                                        for (TGoodsPriceOptionVO optionVO : priceOptionList) {
+                                            // KIND는 100, 101의 상품가격만 저장
+                                            if (optionVO.getKind() == 100 || optionVO.getKind() == 101) {
+                                                TGoodsVO goodsInfo = productMapper.selectTGoodsInfo(optionVO.getGKey());
+                                                TOrderGoodsVO tOrderGoodsVO3  = new TOrderGoodsVO(
+                                                        jKey, orderVO.getUserKey(), optionVO.getGKey(), 0, optionVO.getPriceKey(), 0,
+                                                        0, 0, 1, 0, optionVO.getKind(), -1, 0, 0, 0,
+                                                        0, "", goodsInfo.getName(), promotionVO.getJPmKey()
+                                                );
+                                                paymentMapper.insertTOrderGoods(tOrderGoodsVO3);
+
+                                                int limitDay = (vo.getKind() * 31);
+                                                float multiple = 0.0f;
+                                                tOrderLecVO = new TOrderLecVO(
+                                                        tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
+                                                );
+                                                //T_ORDER_LEC 저장
+                                                paymentMapper.insertTOrderLec(tOrderLecVO);
+                                            }
+                                        }
+                                    //T_GOODS_PRICE_OPTION 개수가 1개일떄 (KIND 102만 있을떄)
+                                    } else if (priceOptionCount == 1) {
+                                        List<Integer>kindArr = new ArrayList<>();
+                                        kindArr.add(100);
+                                        kindArr.add(101);
+
+                                        for (Integer kind : kindArr) {
+                                            //priceKey는 KIND 102의 priceKey로  kind 100, 101 일괄 저장
+                                            TGoodsVO goodsInfo = productMapper.selectTGoodsInfo(gKey);
+                                            TGoodsPriceOptionVO tGoodsPriceOptionVO = productMapper.selectGoodsPriceOptionByGKeySingle(gKey);
+                                            TOrderGoodsVO tOrderGoodsVO3 = new TOrderGoodsVO(
+                                                    jKey, orderVO.getUserKey(), gKey, 0, tGoodsPriceOptionVO.getPriceKey(), 0,
+                                                    0, 0, 1, 0, kind, -1, 0, 0, 0,
+                                                    0, "", goodsInfo.getName(), promotionVO.getJPmKey()
+                                            );
+                                            paymentMapper.insertTOrderGoods(tOrderGoodsVO3);
+
+                                            int limitDay = (vo.getKind() * 31);
+                                            float multiple = 0.0f;
+                                            tOrderLecVO = new TOrderLecVO(
+                                                    tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
+                                            );
+                                            //T_ORDER_LEC 저장
+                                            paymentMapper.insertTOrderLec(tOrderLecVO);
+                                        }
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }

@@ -287,7 +287,7 @@ public class OrderService {
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                             product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
                             GoodsType.getGoodsTypeStr(product.getType()), product.getGoodsName(),
-                            product.getCnt(), product.getSellPrice(), product.getKind(), -1, 0
+                            product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
                     );
                     totalProductPrice += product.getSellPrice();
                     totalPoint += product.getPoint();
@@ -447,7 +447,7 @@ public class OrderService {
 
                 OrderProductListDTO dto = new OrderProductListDTO(
                     cartListVO.getGKey(), cartListVO.getPriceKey(), cartKey, ZianCoreCode.FREE_PACKAGE_GOODS_TYPE, "프로모션",
-                    cartListVO.getGoodsName(), 1, cartListVO.getSellPrice(), 100, -1, PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()
+                    cartListVO.getGoodsName(), 1, cartListVO.getSellPrice(), cartListVO.getKind(), -1, PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()
                 );
                 orderProductList.add(dto);
 

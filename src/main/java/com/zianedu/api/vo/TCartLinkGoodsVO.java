@@ -12,4 +12,6 @@ public class TCartLinkGoodsVO {
     private int gKey;
 
     private int priceKey;
+
+    private int kind;
 }

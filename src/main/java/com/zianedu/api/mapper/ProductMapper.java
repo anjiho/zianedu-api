@@ -68,6 +68,10 @@ public interface ProductMapper {
 
     TGoodsPriceOptionVO selectGoodsPriceOptionByPriceKey(@Param("priceKey") int priceKey);
 
+    List<TGoodsPriceOptionVO> selectGoodsPriceOptionByGKey(@Param("gKey") int gKey);
+
+    TGoodsPriceOptionVO selectGoodsPriceOptionByGKeySingle(@Param("gKey") int gKey);
+
     Integer selectGoodsType(@Param("gKey") int gKey);
 
     List<String> selectTeacherNameListByVideoProduct(@Param("gKey") int gKey);
@@ -75,6 +79,18 @@ public interface ProductMapper {
     TLecVO selectTLecInfo(@Param("gKey") int gKey);
 
     TGoodsVO selectTGoodsInfo(@Param("gKey") int gKey);
+
+    TPromotionVO selectTPromotionInfoByGKey(@Param("gKey") int gKey);
+
+    List<TCartLinkGoodsVO> selectGoodsPriceOptionListBySpecialPackage(@Param("kind") int kind, @Param("promotionGKey") int promotionGKey);
+
+    Integer selectZianPassPageKeyFromGKey(@Param("gKey") int gKey);
+
+    List<Integer> selectGoodsPriceOptionListByZianPass(@Param("gKey") int gKey);
+
+    TCategoryGoodsVO selectTCategoryGoods(@Param("gKey") int gKey);
+
+    Integer selectTGoodsPriceOptionCount(@Param("gKey") int gKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
