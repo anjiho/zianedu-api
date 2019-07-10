@@ -72,7 +72,6 @@ public class PaymentService {
     }
 
     /**
-     * TODO =======> 연관회원제 결제 로직 해야함 (2019.07. 09)
      * T_ORDER_GOODS 테이블 정보 저장하기
      * @param jKey
      * @param orderVO
@@ -81,7 +80,7 @@ public class PaymentService {
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public int saveOrderGoodsList(int jKey, OrderVO orderVO, List<OrderGoodsListVO> orderGoodsList) throws Exception {
+    public void saveOrderGoodsList(int jKey, OrderVO orderVO, List<OrderGoodsListVO> orderGoodsList) throws Exception {
         if (jKey > 0) {
             /**
              * TODO T_ORDER_GOODS 테이블 저장하기
@@ -163,6 +162,16 @@ public class PaymentService {
                                 tGoodsVO.getType(), vo.getPmType(), priceOptionVO.getKind(), vo.getExtendDay(), categoryGoodsVO.getCtgKey(), promotionVO.getExamYear(), promotionVO.getClassGroupCtgKey(),
                                 0, "", tGoodsVO.getName()
                         );
+                    //연간회원제일때
+                    } else if (vo.getPmType() == PromotionPmType.YEAR_MEMBER.getPromotionPmKey()) {
+                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
+
+                        tOrderGoodsVO = new TOrderGoodsVO(
+                                jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
+                                priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                                tGoodsVO.getType(), vo.getPmType(), priceOptionVO.getKind(), vo.getExtendDay(), 0, promotionVO.getExamYear(), promotionVO.getClassGroupCtgKey(),
+                                0, "", tGoodsVO.getName()
+                        );
                     }
                 }
                 //T_ORDER_GOODS 결제 상품 저장
@@ -185,7 +194,7 @@ public class PaymentService {
                      * TODO 자유패키지, 특별패키지 상품이 정상결제일때 필요한 동영상 강좌정보 저장
                      */
                     if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey() || vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()
-                        || vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {
+                        || vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey() || vo.getPmType() == PromotionPmType.YEAR_MEMBER.getPromotionPmKey()) {
 
                         TOrderPromotionVO promotionVO = new TOrderPromotionVO(jGKey, vo.getPmType());
                         orderMapper.insertTOrderPromotion(promotionVO);     //T_ORDER_PROMOTION 테이블 저장
@@ -195,7 +204,7 @@ public class PaymentService {
                             cartLinkGoodsList = orderMapper.selectCartLinkGoodsList(cartGoodsLinkCartKey);
                         } else if (vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()) {    //특별패키지
                             cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(vo.getKind(), vo.getGKey());
-                        } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {    //지안패스일때
+                        } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey() || vo.getPmType() == PromotionPmType.YEAR_MEMBER.getPromotionPmKey()) {    //지안패스, 연간회원제일때
                             //cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(0, vo.getGKey());
                             cartLinkGoodsList = new ArrayList<>();
                         }
@@ -281,13 +290,30 @@ public class PaymentService {
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
                 }
             }
         }
-        return 0;
+    }
+
+    /**
+     * 이니시스 결제 결과 저장하기
+     * @param tPayInipayVO
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveInipayResult(TPayInipayVO tPayInipayVO) {
+        int resultCode = OK.value();
+
+        int payKey = 0;
+        if (tPayInipayVO == null) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            paymentMapper.insertTPayInipay(tPayInipayVO);
+            payKey = tPayInipayVO.getPayKey();
+        }
+        return new ApiResultCodeDTO("PAY_KEY", payKey, resultCode);
     }
 }

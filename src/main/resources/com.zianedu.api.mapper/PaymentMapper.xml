@@ -62,4 +62,20 @@
         )
     </insert>
 
+    <insert id="insertTPayInipay" parameterType="TPayInipayVO">
+        <selectKey resultType="int" keyProperty="payKey" order="BEFORE">
+            SELECT T_PAY_INIPAY_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_PAY_INIPAY
+        (
+            PAY_KEY, C_KEY, INDATE, TID, RESULTCODE, RESULTMSG, PAYMETHOD, MOID, TOTPRICE, APPLDATE, APPLTIME, APPLNUM, CARD_QUOTA, CARD_INTEREST,
+            CARD_NUM, CARD_CODE, CARD_BANKCODE, EVENTCODE, CARD_APPLPRICE, OCB_PAYPRICE, ACCT_BANKCODE, RESULTERRORCODE, IS_MOBILE
+        )
+        VALUES
+        (
+            #{payKey}, #{cKey}, sysdate, #{tid}, #{resultcode}, #{resultmsg}, #{paymethod}, #{moid}, #{totprice}, #{appldate}, #{appltime}, #{applnum}, #{cardQuota}, #{cardInterest},
+            #{cardNum}, #{cardCode}, #{cardBankcode}, #{eventcode}, #{cardApplprice}, #{ocbPayprice}, #{acctBankcode}, #{resulterrorcode}, #{isMobile}
+        )
+    </insert>
+
 </mapper>

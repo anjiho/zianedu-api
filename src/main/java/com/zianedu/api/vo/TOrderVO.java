@@ -94,7 +94,7 @@ public class TOrderVO {
     public TOrderVO(OrderVO vo, String uniqueTypeList, String uniqueExtendDayList) {
         this.cKey = 100;
         this.userKey = vo.getUserKey();
-        this.jId = ZianUtils.getJId();
+        this.jId = vo.getJId();
         this.price = vo.getPrice();
         this.pricePay = vo.getPricePay();
         this.point = vo.getPoint();

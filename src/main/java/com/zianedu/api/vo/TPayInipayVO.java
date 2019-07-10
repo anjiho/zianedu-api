@@ -4,81 +4,73 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class OrderVO {
+public class TPayInipayVO {
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private int payKey;
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String jId;
+    private int cKey = 100;
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int userKey;
+    private String indate;
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int price;
+    private String tid = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int pricePay;
+    private String resultcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int point = 0;
+    private String resultmsg = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int discountPoint = 0;
+    private String paymethod = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int deliveryPrice = 0;
+    private String moid = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int payStatus;
+    private int totprice = 0;
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private int payType;
+    private String appldate = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String bank;
+    private String appltime = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String bankAccount;
+    private String applnum = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String cardQuota = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String cardInterest = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String cardNum = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
     private String cardCode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String depositUser = "";
+    private String cardBankcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryName = "";
+    private String eventcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryTelephone = "";
+    private String cardApplprice = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryTelephoneMobile = "";
+    private String ocbPayprice = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryEmail = "";
+    private String acctBankcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryZipcode = "";
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryAddress = "";
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryAddressRoad = "";
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private String deliveryAddressAdd = "";
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private String uniqueExtendDayList;
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private int payKey;
+    private String resulterrorcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
     private int isMobile = 0;
-
-    @ApiModelProperty(hidden = true, readOnly = true)
-    private String orderGoodsList;
-
 }

@@ -23,13 +23,11 @@ public class PaymentRepository {
     @Autowired
     private PaymentService paymentService;
 
-    @Autowired
-    private ProductMapper productMapper;
-
     @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO savePaymentResult(OrderVO orderVO) throws Exception {
         int resultCode = OK.value();
 
+        int jKey = 0;
         if (orderVO == null) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
@@ -37,7 +35,7 @@ public class PaymentRepository {
             List<OrderGoodsListVO> orderGoodsList = GsonUtil.getObjectFromJsonArray(orderGoodsListJson, OrderGoodsListVO.class);
 
             //T_ORDER 테이블 정보 저장하기
-            int jKey = paymentService.saveOrder(orderVO, orderGoodsList);
+            jKey = paymentService.saveOrder(orderVO, orderGoodsList);
             if (jKey > 0) {
                 /**
                  * TODO T_ORDER_GOODS 테이블 저장하기
@@ -46,7 +44,7 @@ public class PaymentRepository {
             }
 
         }
-        return null;
+        return new ApiResultCodeDTO("J_KEY", jKey, resultCode);
     }
 
 }

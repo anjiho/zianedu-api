@@ -13,4 +13,6 @@ public interface PaymentMapper {
 
     void insertTOrderLec(TOrderLecVO tOrderLecVO);
 
+    void insertTPayInipay(TPayInipayVO tPayInipayVO);
+
 }
