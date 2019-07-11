@@ -15,4 +15,6 @@ public interface PaymentMapper {
 
     void insertTPayInipay(TPayInipayVO tPayInipayVO);
 
+    void insertTPoint(TPointVO tPointVO);
+
 }

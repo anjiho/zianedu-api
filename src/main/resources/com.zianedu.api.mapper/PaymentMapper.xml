@@ -78,4 +78,20 @@
         )
     </insert>
 
+    <insert id="insertTPoint" parameterType="TPointVO">
+        <selectKey resultType="int" keyProperty="pointKey" order="BEFORE">
+            SELECT T_POINT_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_POINT
+        (
+            POINT_KEY, C_KEY, INDATE, USER_KEY,
+            TYPE, POINT, J_KEY, J_ID, DESC_TYPE, DESCRIPTION
+        )
+        VALUES
+        (
+            #{pointKey}, #{cKey}, sysdate, #{userKey},
+            #{type}, #{point}, #{jKey}, #{jId}, #{descType}, #{description}
+        )
+    </insert>
+
 </mapper>

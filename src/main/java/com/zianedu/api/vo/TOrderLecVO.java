@@ -50,14 +50,17 @@ public class TOrderLecVO {
         this.maxReadCount = 0;
     }
 
-    public TOrderLecVO(int jLecKey, int status, String startDt, int limitDay, String pauseStartDt, int pauseCnt, int pauseDay, int pauseTotalDay) {
-        this.jLecKey = jLecKey;
+    public TOrderLecVO(int pmTypeKey, int jGKey, int status, String startDt, int limitDay, float multiple) {
+        this.jGKey = jGKey;
+        this.indate = Util.returnNow();
         this.status = status;
-        this.startDt = startDt + "00:00:00";
+        this.startDt = pmTypeKey > 0 ? Util.returnNow() : startDt + " 00:00:00";
         this.limitDay = limitDay;
-        this.pauseStartDt = pauseStartDt + "00:00:00";
-        this.pauseCnt = pauseCnt;
-        this.pauseDay = pauseDay;
-        this.pauseTotalDay = pauseTotalDay;
+        this.pauseStartDt = "";
+        this.pauseCnt = 0;
+        this.pauseDay = 0;
+        this.pauseTotalDay = 0;
+        this.multiple = multiple;
+        this.maxReadCount = 0;
     }
 }

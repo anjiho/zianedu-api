@@ -1,5 +1,6 @@
 package com.zianedu.api.service;
 
+import com.zianedu.api.define.datasource.PointDescType;
 import com.zianedu.api.define.datasource.PromotionPmType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultCodeDTO;
@@ -67,6 +68,23 @@ public class PaymentService {
             TOrderVO tOrderVO = new TOrderVO(orderVO, uniqueTypeList, uniqueExtendDayList);
             paymentMapper.insertTOrder(tOrderVO);
             jKey = tOrderVO.getJKey();
+
+            /**
+             * TODO 포인트 적립과 사용내역 저장하기
+             */
+            if (jKey > 0 && !"".equals(orderVO.getJId())) {
+                if (orderVO.getPayStatus() == 2) {
+                    //물건을 사서 마일리지를 획득할때
+                    if (orderVO.getPoint() > 0) {
+                        this.injectUserPoint("P", orderVO.getUserKey(), orderVO.getPoint(), jKey, orderVO.getJId());
+                    }
+                    //물건을 사서 마일이지를 사용할때
+                    if (orderVO.getDiscountPoint() > 0) {
+                        this.injectUserPoint("M", orderVO.getUserKey(), orderVO.getDiscountPoint(), jKey, orderVO.getJId());
+                    }
+                }
+            }
+
         }
         return jKey;
     }
@@ -257,7 +275,7 @@ public class PaymentService {
                                                 int limitDay = (vo.getKind() * 31);
                                                 float multiple = 0.0f;
                                                 tOrderLecVO = new TOrderLecVO(
-                                                        tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
+                                                        PromotionPmType.ZIAN_PASS.getPromotionPmKey(), tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
                                                 );
                                                 //T_ORDER_LEC 저장
                                                 paymentMapper.insertTOrderLec(tOrderLecVO);
@@ -283,7 +301,7 @@ public class PaymentService {
                                             int limitDay = (vo.getKind() * 31);
                                             float multiple = 0.0f;
                                             tOrderLecVO = new TOrderLecVO(
-                                                    tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
+                                                    PromotionPmType.ZIAN_PASS.getPromotionPmKey(), tOrderGoodsVO3.getJGKey(), 0, "", limitDay, multiple
                                             );
                                             //T_ORDER_LEC 저장
                                             paymentMapper.insertTOrderLec(tOrderLecVO);
@@ -315,5 +333,32 @@ public class PaymentService {
             payKey = tPayInipayVO.getPayKey();
         }
         return new ApiResultCodeDTO("PAY_KEY", payKey, resultCode);
+    }
+
+    /**
+     * 마일리지 저장하기
+     * @param injectType
+     * @param userKey
+     * @param point
+     * @param jKey
+     * @param jId
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void injectUserPoint(String injectType, int userKey, int point, int jKey, String jId) {
+        if (userKey == 0 && "".equals(injectType) && point == 0) return;
+
+        int type = 0;
+        int descType = 0;
+        //상품구매일때 마일리지 사용
+        if ("M".equals(injectType)) {
+            point = -point;
+            descType = PointDescType.PRODUCT_BUY_USE.getPointDescTypeKey();
+        //상품구매일때 마일리지 획득
+        } else if ("P".equals(injectType)) {
+            type = 1;
+            descType = PointDescType.PRODUCT_BUY_GAIN.getPointDescTypeKey();
+        }
+        TPointVO tPointVO = new TPointVO(userKey, type, point, jKey, jId, descType);
+        paymentMapper.insertTPoint(tPointVO);
     }
 }
