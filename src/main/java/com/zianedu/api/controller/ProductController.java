@@ -84,4 +84,14 @@ public class ProductController {
         return productService.getMockExamProductList(ctgKey);
     }
 
+    @RequestMapping(value = "/getFreeVideoLectureListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원별 무료 동영상강의 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "메뉴 카테고리 값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "device", value = "디바이스 종류(PC, MOBILE)", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getFreeVideoLectureList(@PathVariable("ctgKey") int ctgKey, @RequestParam("device") String device) {
+        return productService.getFreeVideoLectureListFromCategoryMenu(ctgKey, device);
+    }
+
 }

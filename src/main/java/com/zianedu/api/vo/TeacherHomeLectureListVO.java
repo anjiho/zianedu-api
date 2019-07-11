@@ -43,7 +43,11 @@ public class TeacherHomeLectureListVO {
 
     private String teacherImageUrl;
 
+    private int lecKey;
+
     private List<TGoodsPriceOptionVO> videoLectureKindList;
 
     private List<LectureBookVO> teacherLectureBook;
+
+    private List<TLecCurriVO> lectureCurriList;
 }

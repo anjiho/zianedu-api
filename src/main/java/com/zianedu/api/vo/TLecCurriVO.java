@@ -7,6 +7,8 @@ public class TLecCurriVO {
 
     private int num;
 
+    private String numStr;
+
     private int curriKey;//강의 KEY
 
     private int lecKey;//강좌 Key
@@ -34,5 +36,7 @@ public class TLecCurriVO {
     private int unitCtgKey = 0;
 
     private int pos;//정렬
+
+    private String dataFileUrl;
 
 }

@@ -278,4 +278,39 @@ public class ProductService {
         return new ApiResultListDTO(mockExamProductList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getFreeVideoLectureListFromCategoryMenu(int ctgKey, String device) {
+        int resultCode = OK.value();
+
+        List<TeacherHomeLectureVO> teacherHomeLectureList = new ArrayList<>();
+
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherHomeLectureList = productMapper.selectFreeLectureListFromCategoryMenu(ctgKey);
+            if (teacherHomeLectureList.size() > 0) {
+                for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
+                    for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
+                        //NEW, BEST 주입
+                        vo2.setEmphasisName(EmphasisType.getEmphasisStr(vo2.getEmphasis()));
+                        //강사 이미지 URL
+                        vo2.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo2.getImageTeacherList()));
+                        List<TLecCurriVO> lectureCurriList = productMapper.selectTLecCurriList(vo2.getLecKey(), device);
+                        if (lectureCurriList.size() > 0) {
+                            int num = 1;
+                            for (TLecCurriVO curriVO : lectureCurriList) {
+                                curriVO.setNumStr("0" + num);
+                                curriVO.setDataFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), curriVO.getDataFile()));
+                                num++;
+                            }
+                        }
+                        //무료강의 리스트 주입
+                        vo2.setLectureCurriList(lectureCurriList);
+                    }
+                }
+            }
+        }
+        return new ApiResultListDTO(teacherHomeLectureList, resultCode);
+    }
+
 }

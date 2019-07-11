@@ -92,6 +92,10 @@ public interface ProductMapper {
 
     Integer selectTGoodsPriceOptionCount(@Param("gKey") int gKey);
 
+    List<TeacherHomeLectureVO> selectFreeLectureListFromCategoryMenu(@Param("ctgKey") int ctgKey);
+
+    List<TLecCurriVO> selectTLecCurriList(@Param("lecKey") int lecKey, @Param("device") String device);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

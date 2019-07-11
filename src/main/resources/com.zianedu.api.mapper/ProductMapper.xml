@@ -40,6 +40,7 @@
     </resultMap>
     <resultMap id="teacherLectureListMap" type="TeacherHomeLectureListVO">
         <result property="gKey" column="G_KEY"/>
+        <result property="lecKey" column="LEC_KEY"/>
         <result property="goodsName" column="goodsName"/>
         <result property="price" column="PRICE"/>
         <result property="sellPrice" column="SELL_PRICE"/>
@@ -780,6 +781,70 @@
 
     <select id="selectTGoodsPriceOptionCount" resultType="Integer">
         SELECT count(*) from t_goods_price_option where g_key = #{gKey}
+    </select>
+
+    <select id="selectFreeLectureListFromCategoryMenu" resultMap="teacherHomeLectureMap">
+        SELECT T.* FROM
+        (
+            SELECT
+            A.G_KEY, C.LEC_KEY, C.STEP_CTG_KEY,D.NAME as ctgName, B.EMPHASIS, B.NAME as goodsName,
+            (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, F.IMAGE_TEACHER_LIST,
+            (
+               SELECT * FROM (
+                    SELECT T.VOD_FILE_LOW
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as lowVideo,
+            (
+               SELECT * FROM (
+                    SELECT T.VOD_FILE_HIGH
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as highVideo,
+             (
+               SELECT * FROM (
+                    SELECT T.CURRI_KEY
+                    FROM T_LEC_CURRI T
+                    WHERE T.LEC_KEY = C.LEC_KEY
+                    ORDER BY T.CURRI_KEY ASC
+                ) WHERE ROWNUM = 1
+            ) as curriKey
+            FROM T_CATEGORY_GOODS A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            INNER JOIN T_LEC C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_CATEGORY D
+            ON C.STEP_CTG_KEY = D.CTG_KEY
+            INNER JOIN T_GOODS_TEACHER_LINK E
+            ON A.G_KEY = E.G_KEY
+            INNER JOIN T_TEACHER F
+            ON E.TEACHER_KEY = F.TEACHER_KEY
+            WHERE A.CTG_KEY = #{ctgKey}
+            AND B.TYPE = 1
+            AND B.IS_SHOW = 1
+            AND B.IS_FREE = 1
+        )T
+        ORDER BY T.STEP_CTG_KEY ASC, T.G_KEY ASC
+    </select>
+
+    <select id="selectTLecCurriList" resultType="TLecCurriVO">
+        SELECT
+            CURRI_KEY, NAME, VOD_TIME,
+            <if test="device == 'PC'">
+                VOD_FILE_LOW, VOD_FILE_HIGH,
+            </if>
+            <if test="device == 'MOBILE'">
+                VOD_FILE_MOBILE_LOW as VOD_FILE_LOW,
+                VOD_FILE_MOBILE_HIGH as VOD_FILE_HIGH,
+            </if>
+            DATA_FILE
+        FROM T_LEC_CURRI WHERE LEC_KEY = #{lecKey}
+        ORDER BY POS ASC
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

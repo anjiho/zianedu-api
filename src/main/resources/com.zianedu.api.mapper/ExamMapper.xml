@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.ExamMapper">
+
+    <select id="selectGiChulProblemList" resultType="TExamUserVO">
+        SELECT
+            A.EXAM_KEY, A.NAME, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
+           (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
+           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
+           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
+           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_GROUP_CTG_KEY) as groupCtgName
+        FROM T_EXAM_MASTER A
+        WHERE 1=1
+        AND IS_GICHUL = 1
+        <!-- 급수 검색 -->
+        <if test="groupCtgKey > 0">
+            AND A.CLASS_GROUP_CTG_KEY = #{groupCtgKey}
+        </if>
+        <!-- 직렬 검색 -->
+        <if test="classCtgKey > 0">
+            AND A.CLASS_CTG_KEY = #{classCtgKey}
+        </if>
+        <!-- 과목 검색 -->
+        <if test="subjectCtgKey > 0">
+            AND A.SUBJECT_CTG_KEY = #{subjectCtgKey}
+        </if>
+        ORDER BY EXAM_KEY ASC
+    </select>
+
+    <select id="selectGiChulProblemListByComplete" resultType="TExamUserVO">
+        SELECT T.*
+        FROM (
+            SELECT
+                A.EXAM_KEY, A.NAME, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
+                (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
+                (SELECT EXAM_USER_KEY FROM T_EXAM_USER WHERE USER_KEY = #{userKey} and isComplate = 1 AND EXAM_KEY = A.EXAM_KEY) AS examUserKey,
+                (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
+                (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
+                (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_GROUP_CTG_KEY) as groupCtgName
+            FROM T_EXAM_MASTER A
+            WHERE 1=1
+            AND IS_GICHUL = 1
+            <!-- 급수 검색 -->
+            <if test="groupCtgKey > 0">
+                AND A.CLASS_GROUP_CTG_KEY = #{groupCtgKey}
+            </if>
+            <!-- 직렬 검색 -->
+            <if test="classCtgKey > 0">
+                AND A.CLASS_CTG_KEY = #{classCtgKey}
+            </if>
+            <!-- 과목 검색 -->
+            <if test="subjectCtgKey > 0">
+                AND A.SUBJECT_CTG_KEY = #{subjectCtgKey}
+            </if>
+            ORDER BY EXAM_KEY ASC
+        ) T
+        WHERE T.isComplete = 1
+    </select>
+
+</mapper>
