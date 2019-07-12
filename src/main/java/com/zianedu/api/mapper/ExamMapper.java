@@ -14,6 +14,13 @@ public interface ExamMapper {
     List<TExamUserVO> selectGiChulProblemListByComplete(@Param("userKey") int userKey, @Param("groupCtgKey") int groupCtgKey,
                                               @Param("classCtgKey") int classCtgKey, @Param("subjectCtgKey") int subjectCtgKey);
 
+
+    List<TExamUserVO> selectDiagnosisEvaluationExamList(@Param("userKey") int userKey);
+
+    List<TExamUserVO> selectDiagnosisEvaluationCompleteList(@Param("userKey") int userKey);
+
+    List<TExamUserVO> selectWeekBigExamList(@Param("userKey") int userKey);
+
     /** INSERT **/
 
     /** UPDATE **/

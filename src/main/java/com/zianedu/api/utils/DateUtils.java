@@ -3,6 +3,7 @@ package com.zianedu.api.utils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -53,8 +54,41 @@ public class DateUtils {
         return to;
     }
 
+    public static String todayToStr() {
+        Date today = new Date();
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return transFormat.format(today);
+    }
+
+    /**
+     * 오늘이 두개 비교날짜 사이에 있거나 두날짜보다 작으면 true, 오늘이 두개 날짜보다 전부 크면 false
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static boolean isBetweenDateFromToday(String startDate, String endDate) throws Exception {
+        String today = todayToStr();    //현재날짜String
+        Date currentDate; //현재날짜 Date
+        Date date2; //시작일
+        Date date3; //종료일
+
+        DateFormat df1= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        date2 = df1.parse(startDate);
+        date3 = df1.parse(endDate);
+        currentDate = df1.parse(today);
+
+        int compare = currentDate.compareTo(date2);
+        int compare2 = currentDate.compareTo(date3);
+
+        if (compare == 1 && compare2 ==1) {
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(now());
+        System.out.println(isBetweenDateFromToday("2017-07-01 13:42:00", "2018-07-21 13:42:00"));
         //System.out.println(dateToStr(d));
     }
 }

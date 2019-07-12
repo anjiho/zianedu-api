@@ -17,7 +17,7 @@ public class ExamController {
     private ExamService examService;
 
     @RequestMapping(value = "/getGichulProblemList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("기출문제 리스트")
+    @ApiOperation("기출문제 > 기출문제 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "groupCtgKey", value = "급수 카테고리 키", dataType = "int", paramType = "query", required = false),
@@ -31,8 +31,8 @@ public class ExamController {
         return examService.getGichulProblemList(userKey, groupCtgKey, classCtgKey, subjectCtgKey);
     }
 
-    @RequestMapping(value = "/getAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("성적관리 리스트")
+    @RequestMapping(value = "/getGichulAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("기출문제 > 성적관리 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "groupCtgKey", value = "급수 카테고리 키", dataType = "int", paramType = "query", required = false),
@@ -44,5 +44,32 @@ public class ExamController {
                                                  @RequestParam(value = "classCtgKey", required = false, defaultValue = "0") int classCtgKey,
                                                  @RequestParam(value = "subjectCtgKey", required = false, defaultValue = "0") int subjectCtgKey) {
         return examService.getAchievementManagementList(userKey, groupCtgKey, classCtgKey, subjectCtgKey);
+    }
+
+    @RequestMapping(value = "/getDiagnosisEvaluationExamList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("진단평가 > 진단평가 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getDiagnosisEvaluationExamList(@PathVariable(value = "userKey") int userKey) {
+        return examService.getDiagnosisEvaluationExamList(userKey);
+    }
+
+    @RequestMapping(value = "/getDiagnosisAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("진단평가 > 성적관리 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getDiagnosisEvaluationCompleteList(@PathVariable(value = "userKey") int userKey) {
+        return examService.getDiagnosisEvaluationCompleteList(userKey);
+    }
+
+    @RequestMapping(value = "/getWeekBigExamList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("주간모의고사 > 빅모의고사(온라인) 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getWeekBigExamList(@PathVariable(value = "userKey") int userKey) throws Exception {
+        return examService.getWeekBigExamList(userKey);
     }
 }

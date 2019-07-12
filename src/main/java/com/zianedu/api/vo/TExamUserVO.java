@@ -26,4 +26,8 @@ public class TExamUserVO {
     private String groupCtgName;
 
     private int examUserKey;
+
+    private String acceptStartDate;
+
+    private String acceptEndDate;
 }

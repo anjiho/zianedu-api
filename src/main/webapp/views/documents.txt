@@ -5717,3 +5717,33 @@ return
   "resultCode": 200,
   "resultMsg": "SUCCESS"
 }
+
+
+======================================================================================
+/                               ExamController                                    /
+======================================================================================
+
+성적관리, 진단평가, 성적관리, 기출문제 리스트 동일
+{
+  "result": [
+    {
+      "examKey": 93,
+      "name": "2010_국가직_9급_영어기출문제",
+      "printQuestionFile": "100\\exam\\2010_국가직_9급_영어기출문제.pdf",
+      "printCommentaryFile": "100\\exam\\2010_국가직_9급_영어기출정답.pdf",
+      "printQuestionFileUrl": "http://52.79.40.214/Upload/100\\exam\\2010_국가직_9급_영어기출문제.pdf",
+      "printCommentaryFileUrl": "http://52.79.40.214/Upload/100\\exam\\2010_국가직_9급_영어기출정답.pdf",
+      "isComplete": 0,  // 0 : 시험응시가능, 1 : 응시완료, 2 : 종료
+      "classCtgName": "국가직",
+      "subjectCtgName": "영어",
+      "groupCtgName": "9급",
+      "examUserKey": 0,
+      "acceptStartDate": null,
+      "acceptEndDate": null
+    },
+    .....
+    ],
+    "resultCode": 200,
+    "resultMsg": "SUCCESS"
+
+}

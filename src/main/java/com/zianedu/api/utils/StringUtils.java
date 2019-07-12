@@ -4,7 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -333,13 +335,6 @@ public class StringUtils {
         return str.length();
     }
 
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        System.out.println(implodeList(",", list));
-    }
-
     String lottoNumbers() {
 
         List<Integer> lottoNum = new ArrayList<Integer>();
@@ -389,6 +384,20 @@ public class StringUtils {
             i = l.intValue();
         }
         return i;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String today = DateUtils.todayToStr();
+        String date1= "2019-07-01 12:12:00";
+        String date2= "2019-07-20 12:12:00";
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //Date compareDate1 = df.parse(today);
+        int result1 = today.compareTo(date1);
+        int result2 = today.compareTo(date2);
+
+        System.out.println(result1);
+        System.out.println(result2);
     }
 
 }
