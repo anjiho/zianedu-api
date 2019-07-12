@@ -89,14 +89,14 @@ public class BannerService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getTeacherBannerList(int ctgKey) throws Exception {
+    public ApiResultListDTO getTeacherBannerList(int ctgKey, int subjectType) throws Exception {
         int resultCode = OK.value();
 
         List<TeacherBannerVO>teacherBannerList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            teacherBannerList = bannerMapper.selectTeacherBannerList(ctgKey);
+            teacherBannerList = bannerMapper.selectTeacherBannerList(ctgKey, subjectType);
             if (teacherBannerList.size() > 0) {
                 for (TeacherBannerVO vo : teacherBannerList) {
                     if (vo.getTargetUrl().contains("&")) {

@@ -16,7 +16,7 @@ public interface BannerMapper {
 
     List<PopupVO> selectPopupList(@Param("ctgKey") int ctgKey);
 
-    List<TeacherBannerVO> selectTeacherBannerList(@Param("ctgKey") int ctgKey);
+    List<TeacherBannerVO> selectTeacherBannerList(@Param("ctgKey") int ctgKey, @Param("subjectType") int subjectType);
 
     List<PopulateLectureVO> selectPopulateAcademyLectureList(@Param("ctgKey") int ctgKey);
 

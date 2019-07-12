@@ -95,7 +95,7 @@ public class ExamService {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             examList = examMapper.selectWeekBigExamList(userKey);
-            //if (userKey != 5) {
+            if (userKey != 5) {
                 if (examList.size() > 0) {
                     for (TExamUserVO vo : examList) {
                         if (vo.getIsComplete() == 0) {
@@ -107,7 +107,7 @@ public class ExamService {
                         }
                     }
                 }
-            //}
+            }
         }
         return new ApiResultListDTO(examList, resultCode);
     }

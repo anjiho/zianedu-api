@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class TeacherBannerVO {
 
+    private String teacherTitle;
+
     private String targetUrl;
 
     private String teacherName;

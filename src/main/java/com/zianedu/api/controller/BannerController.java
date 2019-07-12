@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/banner")
@@ -62,10 +59,12 @@ public class BannerController {
     @RequestMapping(value = "/getTeacherBannerList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("강사(지안교수진) 배너 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키(228:지안에듀, 788:행정직학원, 794:행정직동영상, 823:기술직학원, 829:기술직동영상, 1080:계리직학원, 1086:계리직동영상)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "subjectType", value = "과목타입(0:공통과목, 1:전공과목) ", dataType = "int", paramType = "query", required = true)
     })
-    public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey) throws Exception {
-        return bannerService.getTeacherBannerList(ctgKey);
+    public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey,
+                                                 @RequestParam("subjectType") int subjectType) throws Exception {
+        return bannerService.getTeacherBannerList(ctgKey, subjectType);
     }
 
     @RequestMapping(value = "/getPopulateAcademyLectureList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

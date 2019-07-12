@@ -55,6 +55,7 @@
 
     <select id="selectTeacherBannerList" resultType="TeacherBannerVO">
         SELECT
+            A.VALUE_5 as teacherTitle,
             A.value_4 as targetUrl,
             D.NAME as teacherName,
             A.value_long_1 as subjectCode,
@@ -71,6 +72,14 @@
         ON B.USER_KEY = D.USER_KEY
         WHERE A.ctg_key = #{ctgKey}
         AND A.type = 1
+        <!-- 공통과목일떄 -->
+        <if test="subjectType == 0">
+            AND D.INTEREST_CTG_KEY_0 = 4256
+        </if>
+        <!-- 전공과목일떄 -->
+        <if test="subjectType == 1">
+            AND D.INTEREST_CTG_KEY_0 != 4256
+        </if>
         ORDER BY A.pos ASC
     </select>
 
