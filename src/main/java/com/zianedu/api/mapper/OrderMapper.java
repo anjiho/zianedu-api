@@ -35,6 +35,8 @@ public interface OrderMapper {
 
     List<TCartLinkGoodsVO> selectCartLinkGoodsList(@Param("cartKey") int cartKey);
 
+    Integer selectCartCountByUserKey(@Param("userKey") int userKey);
+
 
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);

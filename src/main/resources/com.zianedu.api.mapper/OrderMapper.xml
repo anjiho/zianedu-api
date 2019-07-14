@@ -159,6 +159,10 @@
         SELECT * FROM T_CART_LINK_GOODS WHERE CART_KEY = #{cartKey}
     </select>
 
+    <select id="selectCartCountByUserKey" resultType="Integer">
+        SELECT COUNT(CART_KEY) FROM T_CART WHERE USER_KEY = #{userKey}
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL

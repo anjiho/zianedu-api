@@ -131,6 +131,9 @@ public class TUserVO implements Serializable {
     @ApiModelProperty(hidden = true,readOnly = true)
     private String userPwd;
 
+    @ApiModelProperty(hidden = true,readOnly = true)
+    private int cartCount;
+
     public TUserVO() {}
 
     public TUserVO(TUserVO tUserVO) throws Exception {
