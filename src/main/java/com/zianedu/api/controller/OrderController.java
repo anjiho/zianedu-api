@@ -128,7 +128,7 @@ public class OrderController {
     @RequestMapping(value = "/saveCart", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("장바구니 담기(자유패키지 외 상품)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "saveCartInfo", value = "저장할 카트 정보", dataType = "string", paramType = "query", required = true)
+            @ApiImplicitParam(name = "saveCartInfo", value = "저장할 카트 정보 >> [{'userKey':5,'gKey':12345,'priceKey':12345,'gCount':1},...]", dataType = "string", paramType = "query", required = true)
     })
     public ApiResultCodeDTO saveCart(@RequestParam("saveCartInfo") String saveCartInfo) {
         return orderService.saveCart(saveCartInfo);
