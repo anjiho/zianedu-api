@@ -127,5 +127,23 @@
        WHERE T.isComplete = 1
        AND T.examUserKey IS NOT NULL
     </select>
+    <!-- 모의고사 성적보기 상세 화면 상단 정보 (응시번호, 이름 )-->
+    <select id="selectExamResultHeaderInfo" resultType="TExamUserVO">
+        SELECT
+            A.*,
+            (SELECT NAME FROM T_USER WHERE USER_KEY = A.USER_KEY) as userName
+        FROM T_EXAM_USER A
+        WHERE A.EXAM_USER_KEY = #{examUserKey}
+    </select>
+    <!-- 모의고사 성적보기 상세 화면 상단 응시과목 정보 -->
+    <select id="selectExamSubjectNameList" resultType="String">
+        SELECT C.NAME
+        FROM T_EXAM_SUBJECT_USER A
+        LEFT JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+        ON A.EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+        WHERE A.EXAM_USER_KEY = #{examUserKey}
+    </select>
 
 </mapper>

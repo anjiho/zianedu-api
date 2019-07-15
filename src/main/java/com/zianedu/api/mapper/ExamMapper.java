@@ -23,6 +23,10 @@ public interface ExamMapper {
 
     List<TExamUserVO> selectWeekBigExamAchievementManagementList(@Param("userKey") int userKey);
 
+    List<TExamUserVO> selectExamResultHeaderInfo(@Param("examUserKey") int examUserKey);
+
+    List<String> selectExamSubjectNameList(@Param("examUserKey") int examUserKey);
+
     /** INSERT **/
 
     /** UPDATE **/

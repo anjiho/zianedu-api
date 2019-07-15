@@ -30,4 +30,8 @@ public class TExamUserVO {
     private String acceptStartDate;
 
     private String acceptEndDate;
+
+    private String serial;
+
+    private String userName;
 }
