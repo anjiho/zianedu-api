@@ -72,4 +72,13 @@ public class ExamController {
     public ApiResultListDTO getWeekBigExamList(@PathVariable(value = "userKey") int userKey) throws Exception {
         return examService.getWeekBigExamList(userKey);
     }
+
+    @RequestMapping(value = "/getWeekBigExamAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("주간모의고사 > 성적관리 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getWeekBigExamAchievementManagementList(@PathVariable(value = "userKey") int userKey) {
+        return examService.getWeekBigExamAchievementManagementList(userKey);
+    }
 }

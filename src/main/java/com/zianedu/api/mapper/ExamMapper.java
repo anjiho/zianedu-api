@@ -21,6 +21,8 @@ public interface ExamMapper {
 
     List<TExamUserVO> selectWeekBigExamList(@Param("userKey") int userKey);
 
+    List<TExamUserVO> selectWeekBigExamAchievementManagementList(@Param("userKey") int userKey);
+
     /** INSERT **/
 
     /** UPDATE **/

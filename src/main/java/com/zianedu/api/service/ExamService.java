@@ -112,5 +112,19 @@ public class ExamService {
         return new ApiResultListDTO(examList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getWeekBigExamAchievementManagementList(int userKey) {
+        int resultCode = OK.value();
+
+        List<TExamUserVO> examList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examList = examMapper.selectWeekBigExamAchievementManagementList(userKey);
+        }
+        return new ApiResultListDTO(examList, resultCode);
+    }
+
+
 
 }

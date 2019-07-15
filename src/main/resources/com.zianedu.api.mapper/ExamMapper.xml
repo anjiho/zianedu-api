@@ -105,4 +105,27 @@
         ORDER BY EXAM_KEY ASC
     </select>
 
+    <select id="selectWeekBigExamAchievementManagementList" resultType="TExamUserVO">
+        SELECT T.*
+        FROM (
+            SELECT
+                A.EXAM_KEY, A.NAME, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
+                TO_CHAR(A.ACCEPT_START_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptStartDate,
+                TO_CHAR(A.ACCEPT_END_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptEndDate,
+               (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
+               (SELECT EXAM_USER_KEY FROM T_EXAM_USER WHERE USER_KEY =  #{userKey} and isComplate = 1 AND EXAM_KEY = A.EXAM_KEY) AS examUserKey,
+               (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
+               (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
+               (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_GROUP_CTG_KEY) as groupCtgName
+            FROM T_EXAM_MASTER A
+            WHERE 1=1
+            AND A.IS_REAL_FREE = 1
+            AND A.IS_GICHUL = 0
+            AND A.EXAM_KEY != 212
+            ORDER BY EXAM_KEY ASC
+         ) T
+       WHERE T.isComplete = 1
+       AND T.examUserKey IS NOT NULL
+    </select>
+
 </mapper>
