@@ -87,8 +87,21 @@ public class DateUtils {
         return true;
     }
 
+    public static String todayToStrKor() {
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        String yyyy =  sdf.format(today);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
+        String mm =  sdf2.format(today);
+        SimpleDateFormat sdf3 = new SimpleDateFormat("dd");
+        String dd =  sdf3.format(today);
+
+        System.out.println(yyyy);
+        return yyyy + "년 " + mm + "월 " + dd + "일";
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(isBetweenDateFromToday("2017-07-01 13:42:00", "2018-07-21 13:42:00"));
-        //System.out.println(dateToStr(d));
+        //System.out.println(isBetweenDateFromToday("2017-07-01 13:42:00", "2018-07-21 13:42:00"));
+        System.out.println(todayToStrKor());
     }
 }

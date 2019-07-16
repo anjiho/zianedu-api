@@ -1,6 +1,7 @@
 package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.ExamService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -80,5 +81,14 @@ public class ExamController {
     })
     public ApiResultListDTO getWeekBigExamAchievementManagementList(@PathVariable(value = "userKey") int userKey) {
         return examService.getWeekBigExamAchievementManagementList(userKey);
+    }
+
+    @RequestMapping(value = "/getAchievementManagementDetailInfo/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("성적전체 분석정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examUserKey", value = "시험 사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getAchievementManagementDetailInfo(@PathVariable(value = "examUserKey") int userKey) {
+        return examService.getAchievementManagementDetailInfo(userKey);
     }
 }

@@ -2,10 +2,15 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.err.ZianErrCode;
+import com.zianedu.api.dto.AchievementManagementDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.utils.DateUtils;
 import com.zianedu.api.utils.FileUtil;
+import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.vo.AchievementTopInfoVO;
+import com.zianedu.api.vo.ExamSubjectStaticsVO;
 import com.zianedu.api.vo.TExamUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,6 +130,42 @@ public class ExamService {
         return new ApiResultListDTO(examList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getAchievementManagementDetailInfo(int examUserKey) {
+        int resultCode = OK.value();
 
+        AchievementTopInfoVO achievementTopInfoVO = new AchievementTopInfoVO();
+        TExamUserVO examHeaderInfo = new TExamUserVO();
+        List<String> subjectNameList = new ArrayList<>();
+        List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
+
+        if (examUserKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+            subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+            String subjectName = "";
+
+            if (subjectNameList.size() > 0) {
+                 subjectName = StringUtils.implodeList(",", subjectNameList);
+            }
+            achievementTopInfoVO.setSerial(examHeaderInfo.getSerial());
+            achievementTopInfoVO.setSubjectName(subjectName);
+
+            examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
+            if (examSubjectStaticsList.size() > 0) {
+                for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
+                    vo.setAnswerScore(vo.getAnswerCnt() * 5);   //원점수 계산
+                    int userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
+                    vo.setUserGrade(userGrade); //석차 주입
+                    /**
+                     * TODO 상위누적 계산, 과락인지 개발
+                     */
+                }
+            }
+        }
+        AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(achievementTopInfoVO, examSubjectStaticsList);
+        return new ApiResultObjectDTO(achievementManagementDTO, resultCode);
+    }
 
 }

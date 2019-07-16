@@ -23,9 +23,13 @@ public interface ExamMapper {
 
     List<TExamUserVO> selectWeekBigExamAchievementManagementList(@Param("userKey") int userKey);
 
-    List<TExamUserVO> selectExamResultHeaderInfo(@Param("examUserKey") int examUserKey);
+    TExamUserVO selectExamResultHeaderInfo(@Param("examUserKey") int examUserKey);
 
     List<String> selectExamSubjectNameList(@Param("examUserKey") int examUserKey);
+
+    List<ExamSubjectStaticsVO> selectExamSubjectStaticsList(@Param("examUserKey") int examUserKey);
+
+    int selectExamSubjectGrade(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examKey") int examKey, @Param("userKey") int userKey);
 
     /** INSERT **/
 

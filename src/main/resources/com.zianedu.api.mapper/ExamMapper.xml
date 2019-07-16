@@ -146,4 +146,53 @@
         WHERE A.EXAM_USER_KEY = #{examUserKey}
     </select>
 
+    <select id="selectExamSubjectStaticsList" resultType="ExamSubjectStaticsVO">
+        SELECT C.NAME as subjectName,
+        (
+                SELECT count(BANK_SUBJECT_QUES_LINK_KEY)
+                FROM T_BANK_SUBJECT_QUES_LINK
+                WHERE EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        ) as questionCnt,
+
+        (
+                SELECT COUNT(TT.EXAM_QUESTION_USER_KEY)
+                FROM T_BANK_SUBJECT_QUES_LINK T
+                LEFT JOIN T_EXAM_QUESTION_USER TT
+                ON T.EXAM_QUES_BANK_KEY = TT.EXAM_QUESTION_BANK_KEY
+                WHERE T.EXAM_QUES_BANK_SUBJECT_KEY = A.EXAM_QUES_BANK_SUBJECT_KEY
+                AND TT.USER_KEY = A.USER_KEY
+                AND TT.SCORE = 1
+
+        ) as answerCnt,
+        (
+                SELECT COUNT(EXAM_USER_KEY) as cnt FROM T_EXAM_USER WHERE EXAM_KEY = A.EXAM_KEY
+                AND ISSTART = 1
+                AND T_EXAM_USER.ISCOMPLATE = 1
+        ) as totalAnswerCnt,
+        A.*, B.*
+        FROM T_EXAM_SUBJECT_USER A
+        LEFT JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+        ON A.EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+        WHERE A.EXAM_USER_KEY = #{examUserKey}
+    </select>
+
+    <select id="selectExamSubjectGrade" resultType="Integer">
+        SELECT ZZ.NUM FROM (
+            SELECT  ROW_NUMBER() OVER(ORDER BY Z.cnt desc) NUM, Z.* FROM (
+                SELECT COUNT(*) as cnt, TT.USER_KEY
+                FROM T_BANK_SUBJECT_QUES_LINK T
+                LEFT JOIN T_EXAM_QUESTION_USER TT
+                ON T.EXAM_QUES_BANK_KEY = TT.EXAM_QUESTION_BANK_KEY
+                WHERE T.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                AND TT.SCORE = 1
+                AND TT.USER_KEY IN ( SELECT USER_KEY FROM T_EXAM_USER WHERE EXAM_KEY = #{examKey} AND ISSTART = 1 AND T_EXAM_USER.ISCOMPLATE = 1 )
+                GROUP BY TT.USER_KEY
+            )Z
+            ORDER BY Z.cnt desc
+        )ZZ
+        WHERE ZZ.USER_KEY = #{userKey}
+    </select>
+
 </mapper>
