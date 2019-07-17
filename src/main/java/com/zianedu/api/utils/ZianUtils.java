@@ -32,7 +32,14 @@ public class ZianUtils {
         jId = yyyyMM + "-" + hhmm + "-" + ranNumber;
         return jId;
     }
+
+    public static String getTopAccumulatePercent(int totalAnswer, int userGrade) {
+        double totalAnswerOnePercent = totalAnswer * 0.01;
+        return String.format("%.1f", (userGrade / totalAnswerOnePercent));
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(getJId());
+        System.out.println(getTopAccumulatePercent(56, 46));
     }
 }

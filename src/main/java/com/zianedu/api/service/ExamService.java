@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
+import com.zianedu.api.define.datasource.ZianCoreCode;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.AchievementManagementDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
@@ -9,8 +10,10 @@ import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.utils.DateUtils;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.AchievementTopInfoVO;
 import com.zianedu.api.vo.ExamSubjectStaticsVO;
+import com.zianedu.api.vo.ExamSubjectTotalVO;
 import com.zianedu.api.vo.TExamUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,6 +141,7 @@ public class ExamService {
         TExamUserVO examHeaderInfo = new TExamUserVO();
         List<String> subjectNameList = new ArrayList<>();
         List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
+        ExamSubjectTotalVO examSubjectTotalVO = new ExamSubjectTotalVO();
 
         if (examUserKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -154,17 +158,34 @@ public class ExamService {
 
             examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
             if (examSubjectStaticsList.size() > 0) {
+                int staticsAnswerCnt = 0;
+                int staticsAnswerScore = 0;
+                int staticsUserGrade = 0;
+                int staticsTotalAnswerCnt = 0;
+
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
                     vo.setAnswerScore(vo.getAnswerCnt() * 5);   //원점수 계산
                     int userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
                     vo.setUserGrade(userGrade); //석차 주입
-                    /**
-                     * TODO 상위누적 계산, 과락인지 개발
-                     */
+                    //상위누적%
+                    vo.setTopAccumulatePercent(ZianUtils.getTopAccumulatePercent(vo.getTotalAnswerCnt(), vo.getUserGrade()));
+                    if (ZianCoreCode.IS_PASS_SCORE > vo.getAnswerScore()) vo.setIsPass("과락");
+                    else vo.setIsPass("합격");
+                    //평균 계산
+                    staticsAnswerCnt += vo.getAnswerCnt();
+                    staticsAnswerScore += vo.getAnswerScore();
+                    staticsUserGrade += vo.getUserGrade();
+                    staticsTotalAnswerCnt += vo.getTotalAnswerCnt();
                 }
+                //평균값 주입
+                examSubjectTotalVO.setStaticsAnswerCnt((staticsAnswerCnt / examSubjectStaticsList.size()));
+                examSubjectTotalVO.setStaticsAnswerScore((staticsAnswerScore / examSubjectStaticsList.size()));
+                examSubjectTotalVO.setStaticsUserGrade((staticsUserGrade / examSubjectStaticsList.size()));
+                examSubjectTotalVO.setStaticsTotalAnswerCnt((staticsTotalAnswerCnt / examSubjectStaticsList.size()));
+
             }
         }
-        AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(achievementTopInfoVO, examSubjectStaticsList);
+        AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(achievementTopInfoVO, examSubjectStaticsList, examSubjectTotalVO);
         return new ApiResultObjectDTO(achievementManagementDTO, resultCode);
     }
 

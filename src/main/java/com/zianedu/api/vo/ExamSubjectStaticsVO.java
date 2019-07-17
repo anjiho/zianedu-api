@@ -42,4 +42,8 @@ public class ExamSubjectStaticsVO {
     private String name;
 
     private int userGrade;
+
+    private String topAccumulatePercent;
+
+    private String isPass;
 }
