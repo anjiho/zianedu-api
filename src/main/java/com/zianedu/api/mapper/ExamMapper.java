@@ -31,6 +31,11 @@ public interface ExamMapper {
 
     int selectExamSubjectGrade(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examKey") int examKey, @Param("userKey") int userKey);
 
+    int selectSubjectStaticsSum(@Param("examKey") int examKey, @Param("examQuesBankSubjectKey") int examQuesBankSubjectKey);
+
+    int selectSubjectTopPercentScore(@Param("examUserKey") int examUserKey, @Param("examKey") int examKey,
+                                     @Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("percentType") int percentType);
+
     /** INSERT **/
 
     /** UPDATE **/

@@ -7,14 +7,8 @@ import com.zianedu.api.dto.AchievementManagementDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.ExamMapper;
-import com.zianedu.api.utils.DateUtils;
-import com.zianedu.api.utils.FileUtil;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.ZianUtils;
-import com.zianedu.api.vo.AchievementTopInfoVO;
-import com.zianedu.api.vo.ExamSubjectStaticsVO;
-import com.zianedu.api.vo.ExamSubjectTotalVO;
-import com.zianedu.api.vo.TExamUserVO;
+import com.zianedu.api.utils.*;
+import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,6 +136,21 @@ public class ExamService {
         List<String> subjectNameList = new ArrayList<>();
         List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
         ExamSubjectTotalVO examSubjectTotalVO = new ExamSubjectTotalVO();
+        List<ExamCompareTotalStaticsVO> examCompareTotalStaticsList = new ArrayList<>();
+        List<SubjectStaticsVO> subjectStaticsList = new ArrayList<>();
+        StaticsGraphVO subjectStaticsGraphVO = new StaticsGraphVO();
+        StaticsGraphVO compareScoreStaticsGraphVO = new StaticsGraphVO();
+
+        int totalStaticsScore = 0;
+        int topTenSumScore = 0;
+        int topThirtySumScore = 0;
+        int totalMySumScore = 0;
+        int totalSumScore = 0;
+
+        List<String> subjectStaticsGraphCategoryNameList = new ArrayList<>();
+        List<Integer> subjectStaticsGraphTopTenDataList = new ArrayList<>();
+        List<Integer> subjectStaticsGraphTopThirtyDataList = new ArrayList<>();
+        List<Double> subjectStaticsGraphMyDataList = new ArrayList<>();
 
         if (examUserKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -176,16 +185,76 @@ public class ExamService {
                     staticsAnswerScore += vo.getAnswerScore();
                     staticsUserGrade += vo.getUserGrade();
                     staticsTotalAnswerCnt += vo.getTotalAnswerCnt();
-                }
-                //평균값 주입
-                examSubjectTotalVO.setStaticsAnswerCnt((staticsAnswerCnt / examSubjectStaticsList.size()));
-                examSubjectTotalVO.setStaticsAnswerScore((staticsAnswerScore / examSubjectStaticsList.size()));
-                examSubjectTotalVO.setStaticsUserGrade((staticsUserGrade / examSubjectStaticsList.size()));
-                examSubjectTotalVO.setStaticsTotalAnswerCnt((staticsTotalAnswerCnt / examSubjectStaticsList.size()));
+                    //전체평균과 본인성적 비교 그래프값
+                    int subjectStaticsSum = examMapper.selectSubjectStaticsSum(vo.getExamKey(), vo.getExamQuesBankSubjectKey());
+                    ExamCompareTotalStaticsVO examCompareTotalStaticsVO = new ExamCompareTotalStaticsVO(vo.getSubjectName(), vo.getAnswerScore(), subjectStaticsSum, vo.getTotalAnswerCnt());
+                    examCompareTotalStaticsList.add(examCompareTotalStaticsVO);
 
+                    totalStaticsScore += examCompareTotalStaticsVO.getTotalSubjectScore();
+
+                    //과목별 평균
+                    int tenPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 10);
+                    int thirtyPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 30);
+                    SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
+                        vo.getSubjectName(), tenPercentScore, thirtyPercentScore, vo.getAnswerScore(), examCompareTotalStaticsVO.getTotalSubjectScore()
+                    );
+                    //과목별 평군의 '전체'합
+                    topTenSumScore += tenPercentScore;
+                    topThirtySumScore += thirtyPercentScore;
+                    totalMySumScore += vo.getAnswerScore();
+                    totalSumScore += examCompareTotalStaticsVO.getTotalSubjectScore();
+
+                    subjectStaticsList.add(subjectStaticsVO);
+
+                    //
+                    subjectStaticsGraphCategoryNameList.add(vo.getSubjectName());
+                    subjectStaticsGraphTopTenDataList.add(tenPercentScore);
+                    subjectStaticsGraphTopThirtyDataList.add(thirtyPercentScore);
+                    subjectStaticsGraphMyDataList.add(examCompareTotalStaticsVO.getTotalSubjectScore());
+
+                }
+                //과목별 평군의 '전체' 주입
+                SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
+                        "총점", topTenSumScore, topThirtySumScore, totalMySumScore, totalSumScore
+                );
+                subjectStaticsList.add(subjectStaticsVO);
+                //평균값 주입
+                examSubjectTotalVO = new ExamSubjectTotalVO(
+                        (staticsAnswerCnt / examSubjectStaticsList.size()),
+                        (staticsAnswerScore / examSubjectStaticsList.size()),
+                        (staticsUserGrade / examSubjectStaticsList.size()),
+                        (staticsTotalAnswerCnt / examSubjectStaticsList.size())
+                );
+                //과목별 평균 그래프 (과목별 평균 옆 그래프)
+                String[] subjectStaticsGraphCategoryNames = StringUtils.arrayListToStringArray(subjectStaticsGraphCategoryNameList);
+                Integer[] subjectStaticsGraphTopTenData = StringUtils.arrayIntegerListToStringArray(subjectStaticsGraphTopTenDataList);
+                Integer[] subjectStaticsGraphTopThirtyData = StringUtils.arrayIntegerListToStringArray(subjectStaticsGraphTopThirtyDataList);
+                double[] subjectStaticsGraphMyData = StringUtils.arrayListToDoubleArray(subjectStaticsGraphMyDataList);
+                subjectStaticsGraphVO = new StaticsGraphVO(
+                        subjectStaticsGraphCategoryNames, subjectStaticsGraphTopTenData, subjectStaticsGraphTopThirtyData, subjectStaticsGraphMyData
+                );
+                //점수비교 그래프
+                Integer[] scoreCompareGraphTopTenData = {topTenSumScore / examSubjectStaticsList.size()};
+                Integer[] scoreCompareGraphStaticsData = {totalStaticsScore / examSubjectStaticsList.size()};
+                double[] scoreCompareGraphMyData = {examSubjectTotalVO.getStaticsAnswerScore()};
+                compareScoreStaticsGraphVO = new StaticsGraphVO(
+                        scoreCompareGraphTopTenData, scoreCompareGraphStaticsData, scoreCompareGraphMyData
+                );
             }
         }
-        AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(achievementTopInfoVO, examSubjectStaticsList, examSubjectTotalVO);
+        AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(
+                achievementTopInfoVO,
+                examSubjectStaticsList,
+                examSubjectTotalVO,
+                examCompareTotalStaticsList,
+                subjectStaticsList,
+                subjectStaticsGraphVO,
+                compareScoreStaticsGraphVO
+        );
+        //본인관 평균성적 비교 값 주입
+        achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());
+        achievementManagementDTO.setTotalStaticsScore(totalStaticsScore / examSubjectStaticsList.size());
+
         return new ApiResultObjectDTO(achievementManagementDTO, resultCode);
     }
 

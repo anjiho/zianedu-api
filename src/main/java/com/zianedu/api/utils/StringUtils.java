@@ -226,6 +226,24 @@ public class StringUtils {
         return arrayList.toArray(new Integer[arrayList.size()]);
     }
 
+    public static int[] arrayListToIntArray(List<Integer> arrayList) {
+        if (arrayList.size() == 0) return null;
+        int[] ret = new int[arrayList.size()];
+        for (int i=0; i<ret.length; i++) {
+            ret[i] = arrayList.get(i).intValue();
+        }
+        return ret;
+    }
+
+    public static double[] arrayListToDoubleArray(List<Double> arrayList) {
+        if (arrayList.size() == 0) return null;
+        double[] ret = new double[arrayList.size()];
+        for (int i=0; i<ret.length; i++) {
+            ret[i] = arrayList.get(i).intValue();
+        }
+        return ret;
+    }
+
     /**
      * String[] -> String 변환
      * @param arrayStr

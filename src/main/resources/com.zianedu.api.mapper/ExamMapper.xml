@@ -195,4 +195,66 @@
         WHERE ZZ.USER_KEY = #{userKey}
     </select>
 
+    <select id="selectSubjectStaticsSum" resultType="Integer">
+        SELECT SUM(T.subjectSum) as subjectStaticsSum
+        FROM (
+                SELECT (COUNT(*) * 5) as subjectSum
+                FROM T_EXAM_USER A
+                LEFT JOIN T_EXAM_QUESTION_USER B
+                ON A.EXAM_USER_KEY = B.EXAM_USER_KEY
+                LEFT JOIN T_BANK_SUBJECT_QUES_LINK C
+                ON B.EXAM_QUESTION_BANK_KEY = C.EXAM_QUES_BANK_KEY
+                WHERE A.EXAM_KEY = #{examKey}
+                AND C.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                AND A.ISSTART = 1
+                AND A.ISCOMPLATE = 1
+                AND B.SCORE = 1
+                GROUP BY A.USER_KEY
+            )T
+    </select>
+
+    <select id="selectSubjectTopPercentScore" resultType="Integer">
+        SELECT
+                (
+                    SELECT ( (SUM(score)) / COUNT(*)) as cnt
+                    FROM (
+                        SELECT T.*, (T.cnt * 5) as score,
+                        PERCENT_RANK() OVER (ORDER BY T.cnt DESC) as per_rank
+                        FROM (
+                            SELECT COUNT(*) cnt, A.USER_KEY
+                            FROM T_EXAM_USER A
+                            LEFT JOIN T_EXAM_QUESTION_USER B
+                            ON A.EXAM_USER_KEY = B.EXAM_USER_KEY
+                            LEFT JOIN T_BANK_SUBJECT_QUES_LINK C
+                            ON B.EXAM_QUESTION_BANK_KEY = C.EXAM_QUES_BANK_KEY
+                            WHERE A.EXAM_KEY = #{examKey}
+                            AND C.EXAM_QUES_BANK_SUBJECT_KEY = A.EXAM_QUES_BANK_SUBJECT_KEY
+                            AND A.ISSTART = 1
+                            AND A.ISCOMPLATE = 1
+                            AND B.SCORE = 1
+                            AND A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                            GROUP BY A.USER_KEY
+                        )T
+                        ORDER BY T.cnt DESC
+                    )TT
+                    <if test="percentType == 10">
+                        <![CDATA[
+                        WHERE TT.per_rank <= 0.1
+                        ]]>
+                    </if>
+                    <if test="percentType == 30">
+                        <![CDATA[
+                        WHERE TT.per_rank <= 0.3
+                        ]]>
+                    </if>
+                ) as topTenPercent
+        FROM T_EXAM_SUBJECT_USER A
+        LEFT JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+        ON A.EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+        WHERE A.EXAM_USER_KEY = #{examUserKey}
+        AND A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+    </select>
+
 </mapper>
