@@ -32,13 +32,16 @@ public class AchievementManagementDTO {
     //대단원별 정답률
     private List<ScoreRateGraphVO> scoreRateByUnitInfo;
 
+    private List<ScoreRateDTO> scoreRateInfo;
+
     public AchievementManagementDTO() {}
 
     public AchievementManagementDTO(AchievementTopInfoVO achievementTopInfo, List<ExamSubjectStaticsVO> examSubjectStaticsInfo,
                                     ExamSubjectTotalVO examSubjectTotalInfo, List<ExamCompareTotalStaticsVO> examCompareTotalStaticsInfo,
                                     List<SubjectStaticsVO> subjectStaticsInfo, StaticsGraphVO subjectStaticsGraphInfo,
                                     StaticsGraphVO compareScoreGraphInfo, List<ScoreRateGraphVO> scoreRateByTypeInfo,
-                                    List<ScoreRateGraphVO> scoreRateByPatternInfo, List<ScoreRateGraphVO> scoreRateByUnitInfo) {
+                                    List<ScoreRateGraphVO> scoreRateByPatternInfo, List<ScoreRateGraphVO> scoreRateByUnitInfo,
+                                    List<ScoreRateDTO> scoreRateInfo) {
         this.achievementTopInfo = achievementTopInfo;
         this.examSubjectStaticsInfo = examSubjectStaticsInfo;
         this.examSubjectTotalInfo = examSubjectTotalInfo;
@@ -49,6 +52,7 @@ public class AchievementManagementDTO {
         this.scoreRateByTypeInfo = scoreRateByTypeInfo;
         this.scoreRateByPatternInfo = scoreRateByPatternInfo;
         this.scoreRateByUnitInfo = scoreRateByUnitInfo;
+        this.scoreRateInfo = scoreRateInfo;
     }
 
 }

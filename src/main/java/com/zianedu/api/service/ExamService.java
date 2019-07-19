@@ -6,6 +6,7 @@ import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.AchievementManagementDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.ScoreRateDTO;
 import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
@@ -143,6 +144,7 @@ public class ExamService {
         List<ScoreRateGraphVO> scoreRateByTypeInfo = new ArrayList<>();
         List<ScoreRateGraphVO> scoreRateByPatternInfo = new ArrayList<>();
         List<ScoreRateGraphVO> scoreRateByUnitInfo = new ArrayList<>();
+        List<ScoreRateDTO>scoreRateInfo = new ArrayList<>();
 
         int totalStaticsScore = 0;
         int topTenSumScore = 0;
@@ -176,6 +178,11 @@ public class ExamService {
                 int staticsTotalAnswerCnt = 0;
 
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
+                    ScoreRateDTO scoreRateDTO = new ScoreRateDTO();
+                    ScoreRateGraphVO scoreRateByTypeVo = new ScoreRateGraphVO();
+                    ScoreRateGraphVO scoreRateByPatternVo = new ScoreRateGraphVO();
+                    ScoreRateGraphVO scoreRateByUnitVo = new ScoreRateGraphVO();
+
                     vo.setAnswerScore(vo.getAnswerCnt() * 5);   //원점수 계산
                     int userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
                     vo.setUserGrade(userGrade); //석차 주입
@@ -232,6 +239,9 @@ public class ExamService {
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                         scoreRateByTypeInfo.add(scoreRateGraphVO);
+
+                        scoreRateByTypeVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+
                     }
                     //패턴별 정답률
                     List<ScoreRateGraphVO> scoreRateByPatternList = examMapper.selectScoreRateByPatternCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
@@ -250,6 +260,8 @@ public class ExamService {
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                         scoreRateByPatternInfo.add(scoreRateGraphVO);
+
+                        scoreRateByPatternVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                     }
                     //대단원별 정답률
                     List<ScoreRateGraphVO> scoreRateByUnitList = examMapper.selectScoreRateByUnitCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
@@ -268,8 +280,12 @@ public class ExamService {
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                         scoreRateByUnitInfo.add(scoreRateGraphVO);
-                    }
 
+                        scoreRateByUnitVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                    }
+                    //과목별 유형별, 패턴별, 대단원별 주입
+                    scoreRateDTO = new ScoreRateDTO(scoreRateByTypeVo, scoreRateByPatternVo, scoreRateByUnitVo);
+                    scoreRateInfo.add(scoreRateDTO);
                 }
                 //과목별 평군의 '전체' 주입
                 SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
@@ -311,7 +327,8 @@ public class ExamService {
                 compareScoreStaticsGraphVO,
                 scoreRateByTypeInfo,
                 scoreRateByPatternInfo,
-                scoreRateByUnitInfo
+                scoreRateByUnitInfo,
+                scoreRateInfo
         );
         //본인관 평균성적 비교 값 주입
         achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());
