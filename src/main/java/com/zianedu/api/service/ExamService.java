@@ -140,6 +140,9 @@ public class ExamService {
         List<SubjectStaticsVO> subjectStaticsList = new ArrayList<>();
         StaticsGraphVO subjectStaticsGraphVO = new StaticsGraphVO();
         StaticsGraphVO compareScoreStaticsGraphVO = new StaticsGraphVO();
+        List<ScoreRateGraphVO> scoreRateByTypeInfo = new ArrayList<>();
+        List<ScoreRateGraphVO> scoreRateByPatternInfo = new ArrayList<>();
+        List<ScoreRateGraphVO> scoreRateByUnitInfo = new ArrayList<>();
 
         int totalStaticsScore = 0;
         int topTenSumScore = 0;
@@ -212,6 +215,61 @@ public class ExamService {
                     subjectStaticsGraphTopThirtyDataList.add(thirtyPercentScore);
                     subjectStaticsGraphMyDataList.add(examCompareTotalStaticsVO.getTotalSubjectScore());
 
+                    //유형별 정답률
+                    List<ScoreRateGraphVO> scoreRateByTypeList = examMapper.selectScoreRateByStepCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
+                    if (scoreRateByTypeList.size() > 0) {
+                        List<String> scoreRateByTypeNameList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
+                        for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByTypeList) {
+                            scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
+                            scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
+                        }
+
+                        String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
+                        Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
+                        ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        scoreRateByTypeInfo.add(scoreRateGraphVO);
+                    }
+                    //패턴별 정답률
+                    List<ScoreRateGraphVO> scoreRateByPatternList = examMapper.selectScoreRateByPatternCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
+                    if (scoreRateByPatternList.size() > 0) {
+                        List<String> scoreRateByTypeNameList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
+                        for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByPatternList) {
+                            scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
+                            scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
+                        }
+
+                        String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
+                        Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
+                        ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        scoreRateByPatternInfo.add(scoreRateGraphVO);
+                    }
+                    //대단원별 정답률
+                    List<ScoreRateGraphVO> scoreRateByUnitList = examMapper.selectScoreRateByUnitCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
+                    if (scoreRateByUnitList.size() > 0) {
+                        List<String> scoreRateByTypeNameList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
+                        for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByUnitList) {
+                            scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
+                            scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
+                        }
+
+                        String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
+                        Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
+                        ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        scoreRateByUnitInfo.add(scoreRateGraphVO);
+                    }
+
                 }
                 //과목별 평군의 '전체' 주입
                 SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
@@ -240,6 +298,7 @@ public class ExamService {
                 compareScoreStaticsGraphVO = new StaticsGraphVO(
                         scoreCompareGraphTopTenData, scoreCompareGraphStaticsData, scoreCompareGraphMyData
                 );
+
             }
         }
         AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(
@@ -249,7 +308,10 @@ public class ExamService {
                 examCompareTotalStaticsList,
                 subjectStaticsList,
                 subjectStaticsGraphVO,
-                compareScoreStaticsGraphVO
+                compareScoreStaticsGraphVO,
+                scoreRateByTypeInfo,
+                scoreRateByPatternInfo,
+                scoreRateByUnitInfo
         );
         //본인관 평균성적 비교 값 주입
         achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());

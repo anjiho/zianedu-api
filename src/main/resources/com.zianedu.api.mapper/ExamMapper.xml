@@ -257,4 +257,115 @@
         AND A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
     </select>
 
+    <!-- 유형별 정답률 -->
+    <select id="selectScoreRateByStepCtgKey" resultType="ScoreRateGraphVO">
+        SELECT Z.ctgName, Z.problemCnt, NVL(ZZ.scoreCnt, 0) as scoreCnt
+        FROM
+        (
+            SELECT  T.*, (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = T.STEP_CTG_KEY) as ctgName
+            FROM (
+                    SELECT COUNT(B.STEP_CTG_KEY) as problemCnt , B.STEP_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                    GROUP BY B.STEP_CTG_KEY
+                )T
+            ORDER BY T.STEP_CTG_KEY ASC
+        ) Z
+        LEFT OUTER JOIN
+        (
+            SELECT T.*
+            FROM (
+                    SELECT COUNT(B.STEP_CTG_KEY) as scoreCnt ,B.STEP_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    LEFT JOIN T_EXAM_QUESTION_USER C
+                    ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                    AND C.USER_KEY = #{userKey}
+                    AND C.SCORE = 1
+                    GROUP BY B.STEP_CTG_KEY
+                )T
+
+        ) ZZ
+        ON Z.STEP_CTG_KEY = ZZ.STEP_CTG_KEY
+        ORDER BY Z.STEP_CTG_KEY ASC
+    </select>
+
+    <!-- 패턴별 정답률 -->
+    <select id="selectScoreRateByPatternCtgKey" resultType="ScoreRateGraphVO">
+        SELECT Z.ctgName, Z.problemCnt, NVL(ZZ.scoreCnt, 0) as scoreCnt
+        FROM
+        (
+            SELECT  T.*, (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = T.PATTERN_CTG_KEY) as ctgName
+            FROM (
+                    SELECT COUNT(B.PATTERN_CTG_KEY) as problemCnt , B.PATTERN_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY =  #{examQuesBankSubjectKey}
+                    GROUP BY B.PATTERN_CTG_KEY
+                )T
+            ORDER BY T.PATTERN_CTG_KEY ASC
+        ) Z
+        LEFT OUTER JOIN
+        (
+            SELECT T.*
+            FROM (
+                    SELECT COUNT(B.PATTERN_CTG_KEY) as scoreCnt ,B.PATTERN_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    LEFT JOIN T_EXAM_QUESTION_USER C
+                    ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY =  #{examQuesBankSubjectKey}
+                    AND C.USER_KEY = #{userKey}
+                    AND C.SCORE = 1
+                    GROUP BY B.PATTERN_CTG_KEY
+                )T
+
+        ) ZZ
+        ON Z.PATTERN_CTG_KEY = ZZ.PATTERN_CTG_KEY
+        ORDER BY Z.PATTERN_CTG_KEY ASC
+    </select>
+
+    <!-- 대단원별 정답률 -->
+    <select id="selectScoreRateByUnitCtgKey" resultType="ScoreRateGraphVO">
+        SELECT Z.ctgName, Z.problemCnt, NVL(ZZ.scoreCnt, 0) as scoreCnt
+        FROM
+        (
+            SELECT  T.*, (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = T.UNIT_CTG_KEY) as ctgName
+            FROM (
+                    SELECT COUNT(B.UNIT_CTG_KEY) as problemCnt , B.UNIT_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                    GROUP BY B.UNIT_CTG_KEY
+                )T
+            ORDER BY T.UNIT_CTG_KEY ASC
+        ) Z
+        LEFT OUTER JOIN
+        (
+            SELECT T.*
+            FROM (
+                    SELECT COUNT(B.UNIT_CTG_KEY) as scoreCnt ,B.UNIT_CTG_KEY
+                    FROM T_BANK_SUBJECT_QUES_LINK A
+                    LEFT JOIN T_EXAM_QUESTION_BANK B
+                    ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                    LEFT JOIN T_EXAM_QUESTION_USER C
+                    ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                    WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                    AND C.USER_KEY = #{userKey}
+                    AND C.SCORE = 1
+                    GROUP BY B.UNIT_CTG_KEY
+                )T
+
+        ) ZZ
+        ON Z.UNIT_CTG_KEY = ZZ.UNIT_CTG_KEY
+        ORDER BY Z.UNIT_CTG_KEY ASC
+    </select>
+
 </mapper>

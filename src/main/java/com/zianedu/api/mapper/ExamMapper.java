@@ -36,6 +36,12 @@ public interface ExamMapper {
     int selectSubjectTopPercentScore(@Param("examUserKey") int examUserKey, @Param("examKey") int examKey,
                                      @Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("percentType") int percentType);
 
+    List<ScoreRateGraphVO> selectScoreRateByStepCtgKey(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
+
+    List<ScoreRateGraphVO> selectScoreRateByPatternCtgKey(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
+
+    List<ScoreRateGraphVO> selectScoreRateByUnitCtgKey(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
+
     /** INSERT **/
 
     /** UPDATE **/
