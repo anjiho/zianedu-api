@@ -91,4 +91,13 @@ public class ExamController {
     public ApiResultObjectDTO getAchievementManagementDetailInfo(@PathVariable(value = "examUserKey") int userKey) {
         return examService.getAchievementManagementDetailInfo(userKey);
     }
+
+    @RequestMapping(value = "/getAchievementManagementDetailInfoBySubject/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("과목별 성적 상세 정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examUserKey", value = "시험 사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getAchievementManagementDetailInfoBySubject(@PathVariable(value = "examUserKey") int userKey) {
+        return examService.getAchievementManagementDetailInfoBySubject(userKey);
+    }
 }

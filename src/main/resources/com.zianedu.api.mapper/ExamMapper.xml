@@ -351,7 +351,7 @@
         (
             SELECT T.*
             FROM (
-                    SELECT COUNT(B.UNIT_CTG_KEY) as scoreCnt ,B.UNIT_CTG_KEY
+                    SELECT COUNT(B.UNIT_CTG_KEY) as scoreCnt, B.UNIT_CTG_KEY
                     FROM T_BANK_SUBJECT_QUES_LINK A
                     LEFT JOIN T_EXAM_QUESTION_BANK B
                     ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
@@ -366,6 +366,140 @@
         ) ZZ
         ON Z.UNIT_CTG_KEY = ZZ.UNIT_CTG_KEY
         ORDER BY Z.UNIT_CTG_KEY ASC
+    </select>
+
+    <select id="selectExamStaticsDetailInfoBySubject" resultType="ExamStaticsDetailSubjectVO">
+    SELECT  ROW_NUMBER() OVER(ORDER BY Z.POS ASC) NUM,  Z.*
+    FROM(
+            SELECT
+                T.EXAM_QUES_BANK_KEY,
+                T.BANK_SUBJECT_QUES_LINK_KEY,
+                TT.POS,
+                T.answer, TT.USER_ANSWER, T.EXAM_LEVEL,
+
+               CASE TT.USER_ANSWER
+                   WHEN 1 THEN T.ANSWER_1_REASON
+                   WHEN 2 THEN T.ANSWER_2_REASON
+                   WHEN 3 THEN T.ANSWER_3_REASON
+                   WHEN 4 THEN T.ANSWER_4_REASON
+                   ELSE T.ANSWER_1_REASON
+                   END as answer_comment,
+
+               CASE TT.EXAM_LEVEL
+                   WHEN 0 THEN '상'
+                   WHEN 1 THEN '중'
+                   WHEN 2 THEN '하'
+                   ELSE ''
+                   END as examLevelName,
+
+               (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = TT.STEP_CTG_KEY) as stepName,
+               TT.UNIT_CTG_KEY,
+               (
+                   SELECT COUNT(A.BANK_SUBJECT_QUES_LINK_KEY)
+                   FROM T_BANK_SUBJECT_QUES_LINK A
+                   LEFT JOIN T_EXAM_QUESTION_BANK B
+                   ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                   LEFT JOIN T_EXAM_QUESTION_USER C
+                   ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                   WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                   AND A.EXAM_QUES_BANK_KEY = T.EXAM_QUES_BANK_KEY
+               ) as totalCnt,
+               (
+                   SELECT COUNT(A.BANK_SUBJECT_QUES_LINK_KEY)
+                   FROM T_BANK_SUBJECT_QUES_LINK A
+                   LEFT JOIN T_EXAM_QUESTION_BANK B
+                   ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                   LEFT JOIN T_EXAM_QUESTION_USER C
+                   ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                   WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                   AND A.EXAM_QUES_BANK_KEY = T.EXAM_QUES_BANK_KEY
+                   AND C.SCORE = 1
+               ) as totalScoreCnt,
+               (
+                   SELECT COUNT(A.BANK_SUBJECT_QUES_LINK_KEY)
+                   FROM T_BANK_SUBJECT_QUES_LINK A
+                   LEFT JOIN T_EXAM_QUESTION_BANK B
+                   ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                   LEFT JOIN T_EXAM_QUESTION_USER C
+                   ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                   WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                   AND A.EXAM_QUES_BANK_KEY = T.EXAM_QUES_BANK_KEY
+                   AND C.SCORE = 0
+               ) as totalWrongCnt
+            FROM
+            (
+                 SELECT
+                     A.BANK_SUBJECT_QUES_LINK_KEY, A.EXAM_QUES_BANK_KEY,
+                     SUBSTR(B.ANSWER, 1, 1) as answer,
+                     B.ANSWER_1_REASON, B.ANSWER_2_REASON, B.ANSWER_3_REASON, B.ANSWER_4_REASON,
+                     B.EXAM_LEVEL
+                 FROM T_BANK_SUBJECT_QUES_LINK A
+                 LEFT JOIN T_EXAM_QUESTION_BANK B
+                 ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                 WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                 ORDER BY A.POS ASC
+             ) T
+                 LEFT OUTER JOIN
+             (
+                 SELECT *
+                 FROM T_BANK_SUBJECT_QUES_LINK A
+                 LEFT JOIN T_EXAM_QUESTION_BANK B
+                 ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                 LEFT JOIN T_EXAM_QUESTION_USER C
+                 ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+                 WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                 AND C.USER_KEY = #{userKey}
+             ) TT
+             ON T.BANK_SUBJECT_QUES_LINK_KEY = TT.BANK_SUBJECT_QUES_LINK_KEY
+         ) Z
+    </select>
+
+    <select id="selectProblemNumberScoreList" resultType="ProblemNumberScoreVO">
+        SELECT '1' AS problemNumber, COUNT(*) as scoreCnt
+        FROM T_BANK_SUBJECT_QUES_LINK A
+        LEFT OUTER JOIN T_EXAM_QUESTION_BANK B
+        ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+        LEFT OUTER JOIN T_EXAM_QUESTION_USER C
+        ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND A.EXAM_QUES_BANK_KEY = #{examQuesBankKey}
+        AND C.USER_ANSWER = 1
+
+        UNION ALL
+
+        SELECT '2' AS problemNumber, COUNT(*) as scoreCnt
+        FROM T_BANK_SUBJECT_QUES_LINK A
+        LEFT OUTER JOIN T_EXAM_QUESTION_BANK B
+        ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+        LEFT OUTER JOIN T_EXAM_QUESTION_USER C
+        ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND A.EXAM_QUES_BANK_KEY = #{examQuesBankKey}
+        AND C.USER_ANSWER = 2
+
+        UNION ALL
+
+        SELECT '3' AS problemNumber, COUNT(*) as scoreCnt
+        FROM T_BANK_SUBJECT_QUES_LINK A
+        LEFT OUTER JOIN T_EXAM_QUESTION_BANK B
+        ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+        LEFT OUTER JOIN T_EXAM_QUESTION_USER C
+        ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND A.EXAM_QUES_BANK_KEY = #{examQuesBankKey}
+        AND C.USER_ANSWER = 3
+
+        UNION ALL
+
+        SELECT '4' AS problemNumber, COUNT(*) as scoreCnt
+        FROM T_BANK_SUBJECT_QUES_LINK A
+        LEFT OUTER JOIN T_EXAM_QUESTION_BANK B
+        ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+        LEFT OUTER JOIN T_EXAM_QUESTION_USER C
+        ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND A.EXAM_QUES_BANK_KEY = #{examQuesBankKey}
+        AND C.USER_ANSWER = 4
     </select>
 
 </mapper>

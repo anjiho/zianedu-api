@@ -3,10 +3,7 @@ package com.zianedu.api.service;
 import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.ZianCoreCode;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.AchievementManagementDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.ScoreRateDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
@@ -24,6 +21,9 @@ public class ExamService {
 
     @Autowired
     private ExamMapper examMapper;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Transactional(readOnly = true)
     public ApiResultListDTO getGichulProblemList(int userKey, int groupCtgKey, int classCtgKey, int subjectCtgKey) {
@@ -335,6 +335,55 @@ public class ExamService {
         achievementManagementDTO.setTotalStaticsScore(totalStaticsScore / examSubjectStaticsList.size());
 
         return new ApiResultObjectDTO(achievementManagementDTO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getAchievementManagementDetailInfoBySubject(int examUserKey) {
+        int resultCode = OK.value();
+
+        List<AchievementSubjectDTO> resultList = new ArrayList<>();
+        TExamUserVO examHeaderInfo = new TExamUserVO();
+        List<String> subjectNameList = new ArrayList<>();
+        List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
+        List<ExamStaticsDetailSubjectVO> examStaticsDetailSubjectList = new ArrayList<>();
+
+        if (examUserKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+            subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+            String subjectName = "";
+
+            if (subjectNameList.size() > 0) {
+                subjectName = StringUtils.implodeList(",", subjectNameList);
+            }
+
+            examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
+            if (examSubjectStaticsList.size() > 0) {
+                //과목별 리스트
+                for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
+                    AchievementSubjectDTO achievementSubjectDTO = new AchievementSubjectDTO();
+                    achievementSubjectDTO.setSubjectName(vo.getSubjectName());
+
+                    examStaticsDetailSubjectList = examMapper.selectExamStaticsDetailInfoBySubject(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
+                    //시험문제 개수만큼
+                    for (ExamStaticsDetailSubjectVO subjectVO : examStaticsDetailSubjectList) {
+                        String unitName = categoryService.getMakeUnitName(subjectVO.getUnitCtgKey());
+                        subjectVO.setUnitName(unitName);
+                        subjectVO.setScorePercent(ZianUtils.getTopAccumulatePercent(subjectVO.getTotalCnt(), subjectVO.getTotalScoreCnt()));
+                        //보기별 정답률
+                        List<ProblemNumberScoreVO> problemNumberScoreList = examMapper.selectProblemNumberScoreList(vo.getExamQuesBankSubjectKey(), subjectVO.getExamQuesBankKey());
+                        for (ProblemNumberScoreVO numberScoreVO : problemNumberScoreList) {
+                            numberScoreVO.setScorePercent(ZianUtils.getTopAccumulatePercent(subjectVO.getTotalCnt(), numberScoreVO.getScoreCnt()));
+                        }
+                        subjectVO.setProblemScoreList(problemNumberScoreList);
+                    }
+                    achievementSubjectDTO.setResultList(examStaticsDetailSubjectList);
+                    resultList.add(achievementSubjectDTO);
+                }
+            }
+        }
+        return new ApiResultObjectDTO(resultList, resultCode);
     }
 
 }

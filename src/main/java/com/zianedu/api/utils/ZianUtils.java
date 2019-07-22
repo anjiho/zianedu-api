@@ -40,6 +40,6 @@ public class ZianUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(getTopAccumulatePercent(56, 46));
+        System.out.println(getTopAccumulatePercent(113, 29));
     }
 }

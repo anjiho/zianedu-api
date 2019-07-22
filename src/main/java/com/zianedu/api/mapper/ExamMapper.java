@@ -42,6 +42,9 @@ public interface ExamMapper {
 
     List<ScoreRateGraphVO> selectScoreRateByUnitCtgKey(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
 
+    List<ExamStaticsDetailSubjectVO> selectExamStaticsDetailInfoBySubject(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
+
+    List<ProblemNumberScoreVO> selectProblemNumberScoreList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examQuesBankKey") int examQuesBankKey);
     /** INSERT **/
 
     /** UPDATE **/
