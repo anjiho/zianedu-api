@@ -1,13 +1,13 @@
 package com.zianedu.api.dto;
 
-import com.zianedu.api.vo.ExamStaticsDetailSubjectVO;
+import com.zianedu.api.vo.ExamWrongAnswerVO;
 import com.zianedu.api.vo.TExamUserVO;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class AchievementSubjectDTO {
+public class WrongNoteDTO {
 
     private TExamUserVO examHeaderInfo;
 
@@ -15,5 +15,5 @@ public class AchievementSubjectDTO {
 
     private String subjectName;
 
-    private List<ExamStaticsDetailSubjectVO> resultList;
+    private List<ExamWrongAnswerVO> resultList;
 }

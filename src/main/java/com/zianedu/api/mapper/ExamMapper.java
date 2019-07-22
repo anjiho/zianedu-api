@@ -45,6 +45,9 @@ public interface ExamMapper {
     List<ExamStaticsDetailSubjectVO> selectExamStaticsDetailInfoBySubject(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);
 
     List<ProblemNumberScoreVO> selectProblemNumberScoreList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examQuesBankKey") int examQuesBankKey);
+
+    List<ExamWrongAnswerVO> selectWrongAnswerList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey,
+                                                  @Param("isScore") int isScore, @Param("isInterest") int isInterest);
     /** INSERT **/
 
     /** UPDATE **/

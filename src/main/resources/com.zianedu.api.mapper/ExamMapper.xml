@@ -502,4 +502,70 @@
         AND C.USER_ANSWER = 4
     </select>
 
+    <select id="selectWrongAnswerList" resultType="ExamWrongAnswerVO">
+        SELECT ROW_NUMBER() OVER(ORDER BY Z.POS ASC) NUM, Z.*
+        FROM
+        (
+            SELECT
+            A.EXAM_QUES_BANK_KEY,
+            A.BANK_SUBJECT_QUES_LINK_KEY,
+            B.QUESTION_IMAGE, B.COMMENTARY_IMAGE, B.REVIEW, A.POS,
+            B.UNIT_CTG_KEY,
+            C.SCORE,
+            B.COMMENTARY_URL,
+            CASE B.EXAM_LEVEL
+               WHEN 0 THEN '상'
+               WHEN 1 THEN '중'
+               WHEN 2 THEN '하'
+               ELSE ''
+               END as examLevelName,
+            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = B.STEP_CTG_KEY) as stepName,
+            CASE C.USER_ANSWER
+               WHEN 1 THEN B.ANSWER_1_REASON
+               WHEN 2 THEN B.ANSWER_2_REASON
+               WHEN 3 THEN B.ANSWER_3_REASON
+               WHEN 4 THEN B.ANSWER_4_REASON
+               ELSE B.ANSWER_1_REASON
+               END as answer_comment,
+            C.USER_ANSWER,
+            NVL(C.IS_INTEREST, 0) as isInterest,
+
+            (
+                SELECT COUNT(T.BANK_SUBJECT_QUES_LINK_KEY)
+                FROM T_BANK_SUBJECT_QUES_LINK T
+                LEFT JOIN T_EXAM_QUESTION_BANK TT
+                ON T.EXAM_QUES_BANK_KEY = TT.EXAM_QUESTION_BANK_KEY
+                LEFT JOIN T_EXAM_QUESTION_USER TTT
+                ON T.EXAM_QUES_BANK_KEY = TTT.EXAM_QUESTION_BANK_KEY
+                WHERE T.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                AND T.EXAM_QUES_BANK_KEY = A.EXAM_QUES_BANK_KEY
+            ) as totalCnt,
+            (
+                SELECT COUNT(T.BANK_SUBJECT_QUES_LINK_KEY)
+                FROM T_BANK_SUBJECT_QUES_LINK T
+                LEFT JOIN T_EXAM_QUESTION_BANK TT
+                ON T.EXAM_QUES_BANK_KEY = TT.EXAM_QUESTION_BANK_KEY
+                LEFT JOIN T_EXAM_QUESTION_USER TTT
+                ON T.EXAM_QUES_BANK_KEY = TTT.EXAM_QUESTION_BANK_KEY
+                WHERE T.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                AND T.EXAM_QUES_BANK_KEY = A.EXAM_QUES_BANK_KEY
+                AND TTT.SCORE = 1
+            ) as totalScoreCnt
+        FROM T_BANK_SUBJECT_QUES_LINK A
+        LEFT JOIN T_EXAM_QUESTION_BANK B
+        ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+        LEFT JOIN T_EXAM_QUESTION_USER C
+        ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND C.USER_KEY = #{userKey}
+        <if test="isScore > -1">
+            AND C.SCORE = #{isScore}
+        </if>
+        <if test="isInterest > -1">
+            AND C.IS_INTEREST = #{isInterest}
+        </if>
+        ORDER BY A.POS ASC
+        ) Z
+    </select>
+
 </mapper>

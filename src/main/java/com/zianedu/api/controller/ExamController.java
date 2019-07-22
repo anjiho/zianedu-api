@@ -100,4 +100,17 @@ public class ExamController {
     public ApiResultObjectDTO getAchievementManagementDetailInfoBySubject(@PathVariable(value = "examUserKey") int userKey) {
         return examService.getAchievementManagementDetailInfoBySubject(userKey);
     }
+
+    @RequestMapping(value = "/getWrongNote/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("오답노트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examUserKey", value = "시험 사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "isScore", value = "정답여부(-1:전체, 0:오답, 1:정답)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isInterest", value = "관심문제여부(-1:전체, 0:비관심, 1:관심)", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getWrongNote(@PathVariable(value = "examUserKey") int examUserKey,
+                                           @RequestParam(value = "isScore") int isScore,
+                                           @RequestParam(value = "isInterest") int isInterest) {
+        return examService.getExamWrongNoteList(examUserKey, isScore, isInterest);
+    }
 }

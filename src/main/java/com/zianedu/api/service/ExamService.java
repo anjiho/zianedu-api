@@ -363,7 +363,10 @@ public class ExamService {
                 //과목별 리스트
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
                     AchievementSubjectDTO achievementSubjectDTO = new AchievementSubjectDTO();
+                    achievementSubjectDTO.setExamHeaderInfo(examHeaderInfo);
+                    achievementSubjectDTO.setSubjectNameList(subjectName);
                     achievementSubjectDTO.setSubjectName(vo.getSubjectName());
+
 
                     examStaticsDetailSubjectList = examMapper.selectExamStaticsDetailInfoBySubject(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
                     //시험문제 개수만큼
@@ -380,6 +383,60 @@ public class ExamService {
                     }
                     achievementSubjectDTO.setResultList(examStaticsDetailSubjectList);
                     resultList.add(achievementSubjectDTO);
+                }
+            }
+        }
+        return new ApiResultObjectDTO(resultList, resultCode);
+    }
+
+    /**
+     * TODO 배열안에 아닌 값을 빼기
+     * @param examUserKey
+     * @param isScore
+     * @param isInterest
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getExamWrongNoteList(int examUserKey, int isScore, int isInterest) {
+        int resultCode = OK.value();
+
+        List<WrongNoteDTO> resultList = new ArrayList<>();
+        TExamUserVO examHeaderInfo = new TExamUserVO();
+        List<String> subjectNameList = new ArrayList<>();
+        List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
+        List<ExamWrongAnswerVO> examWrongAnswerList = new ArrayList<>();
+
+        if (examUserKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+            subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+            String subjectName = "";
+
+            if (subjectNameList.size() > 0) {
+                subjectName = StringUtils.implodeList(",", subjectNameList);
+            }
+
+            examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
+            if (examSubjectStaticsList.size() > 0) {
+                //과목별 리스트
+                for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
+                    WrongNoteDTO wrongNoteDTO = new WrongNoteDTO();
+                    wrongNoteDTO.setExamHeaderInfo(examHeaderInfo);
+                    wrongNoteDTO.setSubjectNameList(subjectName);
+                    wrongNoteDTO.setSubjectName(vo.getSubjectName());
+
+                    examWrongAnswerList = examMapper.selectWrongAnswerList(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), isScore, isInterest);
+                    //시험문제 개수만큼
+                    for (ExamWrongAnswerVO wrongAnswerVO : examWrongAnswerList) {
+                        String unitName = categoryService.getMakeUnitName(wrongAnswerVO.getUnitCtgKey());
+                        wrongAnswerVO.setUnitName(unitName);
+                        wrongAnswerVO.setScorePercent(ZianUtils.getTopAccumulatePercent(wrongAnswerVO.getTotalCnt(), wrongAnswerVO.getTotalScoreCnt()));
+                        wrongAnswerVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getQuestionImage()));
+                        wrongAnswerVO.setCommentaryImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getCommentaryImage()));
+                    }
+                    wrongNoteDTO.setResultList(examWrongAnswerList);
+                    resultList.add(wrongNoteDTO);
                 }
             }
         }
