@@ -5747,3 +5747,35 @@ return
     "resultMsg": "SUCCESS"
 
 }
+
+==================================================================================================================================================
+/exam/saveExamResult 시험 결과 저장
+param :
+[
+	{
+
+	          "examUserKey": 41188,
+	          "userKey":5,
+	          "examSbjUserKey": 78776,
+	          "examQuestionBankKey": 3419,
+	          "userAnswer": 2
+	},
+	{
+
+	          "examUserKey": 41188,
+	          "userKey":5,
+	          "examSbjUserKey": 78776,
+	          "examQuestionBankKey": 3453,
+	          "userAnswer": 2
+	},
+	....
+]
+result :
+{
+  "keyCd": "EXAM_USER_KEY",
+  "keyValue": 41188,
+  "resultCode": 200,
+  "resultMsg": "SUCCESS"
+}
+
+==================================================================================================================================================

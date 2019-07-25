@@ -48,7 +48,22 @@ public interface ExamMapper {
 
     List<ExamWrongAnswerVO> selectWrongAnswerList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey,
                                                   @Param("isScore") int isScore, @Param("isInterest") int isInterest);
+
+    TExamMasterVO selectExamMasterInfo(@Param("examKey") int examKey);
+
+    List<TBankSubjectExamLinkVO> selectExamMasterSubjectList(@Param("examKey") int examKey);
+
+    TExamUserVO selectTExamUserInfo(@Param("examKey") int examKey, @Param("userKey") int userKey);
+
+    List<ExamListVO> selectExamList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey);
+
+    List<TExamSubjectUserVO> selectTExamSubjectUserList(@Param("examKey") int examKey, @Param("userKey") int userKey);
+
     /** INSERT **/
+    void insertTExamUser(TExamUserVO tExamUserVO);
+
+    void insertTExamSubjectUser(TExamSubjectUserVO tExamSubjectUserVO);
 
     /** UPDATE **/
+    void updateTExamUser(TExamUserVO tExamUserVO);
 }

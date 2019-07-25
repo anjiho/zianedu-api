@@ -8,9 +8,14 @@ import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,9 @@ public class ExamService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Transactional(readOnly = true)
     public ApiResultListDTO getGichulProblemList(int userKey, int groupCtgKey, int classCtgKey, int subjectCtgKey) {
@@ -101,11 +109,11 @@ public class ExamService {
             if (userKey != 5) {
                 if (examList.size() > 0) {
                     for (TExamUserVO vo : examList) {
-                        if (vo.getIsComplete() == 0) {
+                        if (vo.getIscomplete() == 0) {
                             //시험 날짜가 오늘기준 이전이면 2로 변경('종료')
                             boolean isBetweenDate = DateUtils.isBetweenDateFromToday(vo.getAcceptStartDate(), vo.getAcceptEndDate());
                             if (!isBetweenDate) {
-                                vo.setIsComplete(2);
+                                vo.setIscomplete(2);
                             }
                         }
                     }
@@ -167,7 +175,7 @@ public class ExamService {
             if (subjectNameList.size() > 0) {
                  subjectName = StringUtils.implodeList(",", subjectNameList);
             }
-            achievementTopInfoVO.setSerial(examHeaderInfo.getSerial());
+            achievementTopInfoVO.setSerial(String.valueOf(examHeaderInfo.getSerial()));
             achievementTopInfoVO.setSubjectName(subjectName);
 
             examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
@@ -434,6 +442,7 @@ public class ExamService {
                         wrongAnswerVO.setScorePercent(ZianUtils.getTopAccumulatePercent(wrongAnswerVO.getTotalCnt(), wrongAnswerVO.getTotalScoreCnt()));
                         wrongAnswerVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getQuestionImage()));
                         wrongAnswerVO.setCommentaryImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getCommentaryImage()));
+                        wrongAnswerVO.setTheoryLearningUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getTheoryLearningUrl()));
                     }
                     wrongNoteDTO.setResultList(examWrongAnswerList);
                     resultList.add(wrongNoteDTO);
@@ -441,6 +450,132 @@ public class ExamService {
             }
         }
         return new ApiResultObjectDTO(resultList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getExamMasterGateInfo(int examKey, int userKey) {
+        int resultCode = OK.value();
+
+        TExamMasterVO tExamMasterVO = new TExamMasterVO();
+        List<TBankSubjectExamLinkVO> subjectExamLinkList = new ArrayList<>();
+        if (examKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            Integer examUserKey = this.injectUserExamInfo(examKey, userKey);
+            if (examUserKey != null) {
+                tExamMasterVO = examMapper.selectExamMasterInfo(examKey);
+                subjectExamLinkList = examMapper.selectExamMasterSubjectList(examKey);
+            }
+        }
+        ExamGateDTO examGateDTO = new ExamGateDTO(tExamMasterVO, subjectExamLinkList);
+        return new ApiResultObjectDTO(examGateDTO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserExamList(int examKey, int userKey) {
+        int resultCode = OK.value();
+
+        List<ExamListDTO> examDTOList = new ArrayList<>();
+        List<TExamSubjectUserVO> examSubjectUserList = new ArrayList<>();
+        if (examKey == 0 && userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examSubjectUserList = examMapper.selectTExamSubjectUserList(examKey, userKey);
+            if (examSubjectUserList.size() > 0) {
+                //시험시작 상태로 업데이트
+                int examUserKey = examSubjectUserList.get(0).getExamUserKey();
+                this.updateExamResultStatus(examUserKey, 0, 0, 1);
+
+                for (TExamSubjectUserVO subjectUserVO : examSubjectUserList) {
+                    List<ExamListVO> examList = examMapper.selectExamList(subjectUserVO.getExamQuesBankSubjectKey());
+                    for (ExamListVO examListVO : examList) {
+                        examListVO.setExamUserKey(subjectUserVO.getExamUserKey());
+                        examListVO.setExamSbjUserKey(subjectUserVO.getExamSbjUserKey());
+                        examListVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examListVO.getQuestionImage()));
+                    }
+                    ExamListDTO examListDTO = new ExamListDTO(subjectUserVO.getSubjectName(), examList);
+                    examDTOList.add(examListDTO);
+                }
+            }
+        }
+        return new ApiResultObjectDTO(examDTOList, resultCode);
+    }
+
+    /**
+     * 모의고사 시험을 보기위한 정보 저장
+     * @param examKey
+     * @param userKey
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Integer injectUserExamInfo(int examKey, int userKey) {
+        if (examKey == 0 && userKey == 0) return null;
+        Integer examUserKey = null;
+        TExamUserVO tExamUserVO = examMapper.selectTExamUserInfo(examKey, userKey);
+        //'응시하기'를 한번도 안했을때 시험정보 저장하기
+        if (tExamUserVO == null) {
+            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey);
+            examMapper.insertTExamUser(examUserVO);
+            examUserKey = examUserVO.getExamUserKey();
+
+            if (examUserKey > 0) {
+                List<TBankSubjectExamLinkVO> examMasterSubjectList = examMapper.selectExamMasterSubjectList(examKey);
+                if (examMasterSubjectList.size() > 0) {
+                    for (TBankSubjectExamLinkVO vo : examMasterSubjectList) {
+                        TExamSubjectUserVO tExamSubjectUserVO = new TExamSubjectUserVO(
+                                examUserKey, examKey, vo.getBankSubjectExamLinkKey(), vo.getExamQuestionBankSubjectKey(), userKey
+                        );
+                        examMapper.insertTExamSubjectUser(tExamSubjectUserVO);
+                    }
+                }
+            }
+        } else {
+            examUserKey = tExamUserVO.getExamUserKey();
+        }
+        return examUserKey;
+    }
+
+    /**
+     * 사용자 시험 결과 정보 저장
+     * @param examResultDTOList
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO injectUserExamResult(int playTime, List<ExamResultDTO>examResultDTOList) {
+        int resultCode = OK.value();
+
+        int examUserKey = 0;
+        String sql = "";
+        if (examResultDTOList.size() == 0) {
+            resultCode = ZianErrCode.CUSTOM_DATA_SIZE_ZERO.code();
+        } else {
+             sql = "INSERT INTO T_EXAM_QUESTION_USER (EXAM_QUESTION_USER_KEY, EXAM_USER_KEY, USER_KEY, EXAM_SBJ_USER_KEY, EXAM_QUESTION_KEY, EXAM_QUESTION_BANK_KEY, USER_ANSWER, UPDATEDT, SCORE)" +
+                    "VALUES (T_EXAM_QUESTION_USER_SEQ.nextval, ?, ?, ?, 0, ?, ?, sysdate, ?)";
+            jdbcTemplate.batchUpdate(
+                    sql,
+                    examResultDTOList,
+                    5,
+                    new ParameterizedPreparedStatementSetter<ExamResultDTO>() {
+                        @Override
+                        public void setValues(PreparedStatement ps, ExamResultDTO dto) throws SQLException {
+                            ps.setInt(1, dto.getExamUserKey());
+                            ps.setInt(2, dto.getUserKey());
+                            ps.setInt(3, dto.getExamSbjUserKey());
+                            ps.setInt(4, dto.getExamQuestionBankKey());
+                            ps.setInt(5, dto.getUserAnswer());
+                            ps.setInt(6, dto.getScore());
+                        }
+                    });
+            examUserKey = examResultDTOList.get(0).getExamUserKey();
+            this.updateExamResultStatus(examUserKey, 1, playTime, 0);
+        }
+        return new ApiResultCodeDTO("EXAM_USER_KEY", examUserKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateExamResultStatus(int examUserKey, int isComplete, int playTime, int isStart) {
+        TExamUserVO tExamUserVO = new TExamUserVO(examUserKey, isComplete, playTime, isStart);
+        examMapper.updateTExamUser(tExamUserVO);
     }
 
 }

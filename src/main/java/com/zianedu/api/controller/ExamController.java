@@ -1,14 +1,21 @@
 package com.zianedu.api.controller;
 
+import com.google.gson.JsonArray;
+import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.ExamResultDTO;
 import com.zianedu.api.service.ExamService;
+import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
+import com.zianedu.api.vo.SaveCartVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/exam")
@@ -112,5 +119,39 @@ public class ExamController {
                                            @RequestParam(value = "isScore") int isScore,
                                            @RequestParam(value = "isInterest") int isInterest) {
         return examService.getExamWrongNoteList(examUserKey, isScore, isInterest);
+    }
+
+    @RequestMapping(value = "/getExamMasterGateInfo/{examKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("시험 시작 입구 페이지 정보 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examKey", value = "시험 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getExamMasterGateInfo(@PathVariable(value = "examKey") int examKey,
+                                                    @RequestParam(value = "userKey") int userKey) {
+        return examService.getExamMasterGateInfo(examKey, userKey);
+    }
+
+    @RequestMapping(value = "/getUserExamList/{examKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("시험 시작 버튼 후 시험정보 리스트 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examKey", value = "시험 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getUserExamList(@PathVariable(value = "examKey") int examKey,
+                                              @RequestParam(value = "userKey") int userKey) {
+        return examService.getUserExamList(examKey, userKey);
+    }
+
+    @RequestMapping(value = "/saveExamResult", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("시험 결과 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "playTime", value = "시험을 본 시간정보", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveExamResult(@RequestParam int playTime,
+                                           @RequestParam String examResultInfo) {
+        JsonArray saveExamResultInfoJson = GsonUtil.convertStringToJsonArray(examResultInfo);
+        List<ExamResultDTO>examResultList = GsonUtil.getObjectFromJsonArray(saveExamResultInfoJson, ExamResultDTO.class);
+        return examService.injectUserExamResult(playTime, examResultList);
     }
 }

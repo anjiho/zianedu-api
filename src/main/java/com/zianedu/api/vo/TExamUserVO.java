@@ -1,5 +1,6 @@
 package com.zianedu.api.vo;
 
+import com.zianedu.api.utils.ZianUtils;
 import lombok.Data;
 
 @Data
@@ -17,7 +18,7 @@ public class TExamUserVO {
 
     private String printCommentaryFileUrl;
 
-    private int isComplete;
+    private int iscomplete;
 
     private String classCtgName;
 
@@ -31,7 +32,28 @@ public class TExamUserVO {
 
     private String acceptEndDate;
 
-    private String serial;
+    private Integer serial;
 
     private String userName;
+
+    private int userKey;
+
+    private int playTime;
+
+    private int isstart;
+
+    public TExamUserVO(){}
+
+    public TExamUserVO(int examKey, int userKey) {
+        this.examKey = examKey;
+        this.userKey = userKey;
+        this.serial = ZianUtils.getExamSerialNumber();
+    }
+
+    public TExamUserVO(int examUserKey, int isComplete, int playTime, int isStart) {
+        this.examUserKey = examUserKey;
+        this.iscomplete = isComplete;
+        this.playTime = playTime;
+        this.isstart = isStart;
+    }
 }

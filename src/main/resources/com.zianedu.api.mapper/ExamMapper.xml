@@ -550,12 +550,15 @@
                 WHERE T.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
                 AND T.EXAM_QUES_BANK_KEY = A.EXAM_QUES_BANK_KEY
                 AND TTT.SCORE = 1
-            ) as totalScoreCnt
+            ) as totalScoreCnt,
+            D.VALUE as theoryLearningUrl
         FROM T_BANK_SUBJECT_QUES_LINK A
         LEFT JOIN T_EXAM_QUESTION_BANK B
         ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
         LEFT JOIN T_EXAM_QUESTION_USER C
         ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
+        LEFT OUTER JOIN T_RES D
+        ON B.UNIT_CTG_KEY = D.KEY_00
         WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
         AND C.USER_KEY = #{userKey}
         <if test="isScore > -1">
@@ -567,5 +570,94 @@
         ORDER BY A.POS ASC
         ) Z
     </select>
+
+    <select id="selectExamMasterInfo" resultType="TExamMasterVO">
+        SELECT * FROM T_EXAM_MASTER WHERE EXAM_KEY = #{examKey}
+    </select>
+
+    <select id="selectExamMasterSubjectList" resultType="TBankSubjectExamLinkVO">
+        SELECT A.*, B.name, C.name as CTG_NAME,
+        (
+            SELECT count(T_BANK_SUBJECT_QUES_LINK.BANK_SUBJECT_QUES_LINK_KEY)
+            FROM T_BANK_SUBJECT_QUES_LINK
+            WHERE EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        ) as QUESTION_NUMBER
+        FROM T_BANK_SUBJECT_EXAM_LINK A
+        INNER JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+        ON A.EXAM_QUESTION_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+        WHERE A.exam_key = #{examKey}
+        ORDER BY A.BANK_SUBJECT_EXAM_LINK_KEY ASC
+    </select>
+
+    <select id="selectTExamUserInfo" resultType="TExamUserVO">
+        SELECT * FROM T_EXAM_USER WHERE EXAM_KEY = #{examKey} AND USER_KEY = #{userKey}
+    </select>
+
+    <select id="selectExamList" resultType="ExamListVO">
+        SELECT ROW_NUMBER() OVER(ORDER BY Z.POS ASC) NUM, Z.*
+        FROM (
+                SELECT A.POS, B.EXAM_QUESTION_BANK_KEY, B.QUESTION_IMAGE, SUBSTR(B.ANSWER, 1, 1) as answer
+                FROM T_BANK_SUBJECT_QUES_LINK A
+                LEFT JOIN T_EXAM_QUESTION_BANK B
+                ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
+                WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                ORDER BY A.POS ASC
+             ) Z
+    </select>
+
+    <select id="selectTExamSubjectUserList" resultType="TExamSubjectUserVO">
+        SELECT T.*,
+                (
+                    SELECT A.NAME
+                    FROM T_CATEGORY A
+                    INNER JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+                    ON A.CTG_KEY = B.SUBJECT_CTG_KEY
+                    WHERE B.EXAM_QUESTION_BANK_SUBJECT_KEY = T.EXAM_QUES_BANK_SUBJECT_KEY
+                )as subjectName
+        FROM T_EXAM_SUBJECT_USER T
+        WHERE T.EXAM_KEY = #{examKey} AND T.USER_KEY = #{userKey}
+    </select>
+
+    <insert id="insertTExamUser" parameterType="TExamUserVO">
+        <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
+            SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_EXAM_USER
+        (
+            EXAM_USER_KEY, EXAM_KEY, USER_KEY, J_G_KEY, J_CURRI_KEY, INDATE, ISCOMPLATE, SERIAL, PLAY_TIME, ISONLINE
+        )
+        VALUES
+        (
+            #{examUserKey}, #{examKey}, #{userKey}, 0, 0, sysdate, 0, 0, 0, 1
+        )
+    </insert>
+
+    <insert id="insertTExamSubjectUser" parameterType="TExamSubjectUserVO">
+        <selectKey resultType="Integer" keyProperty="examSbjUserKey" order="BEFORE">
+            SELECT T_EXAM_SUBJECT_USER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_EXAM_SUBJECT_USER
+        (
+            EXAM_SBJ_USER_KEY, EXAM_USER_KEY, EXAM_SBJ_KEY, EXAM_KEY, BANK_SUBJECT_EXAM_LINK_KEY,
+            EXAM_QUES_BANK_SUBJECT_KEY, USER_KEY, INDATE, REQUIRED_TYPE, IS_SELECTED
+        )
+        VALUES
+        (
+            #{examSbjUserKey}, #{examUserKey}, 0, #{examKey}, #{bankSubjectExamLinkKey},
+            #{examQuesBankSubjectKey}, #{userKey}, sysdate, 1, 1
+        )
+    </insert>
+
+    <update id="updateTExamUser" parameterType="TExamUserVO">
+        UPDATE T_EXAM_USER
+        <set>
+            <if test="isstart > 0">ISSTART = #{isstart},</if>
+            <if test="iscomplete > 0">ISCOMPLATE = #{iscomplete}, COMPLATEDATE = sysdate,</if>
+            <if test="playTime > 0">PLAY_TIME = #{playTime},</if>
+        </set>
+        WHERE EXAM_USER_KEY = #{examUserKey}
+    </update>
 
 </mapper>

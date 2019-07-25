@@ -47,4 +47,6 @@ public class ExamWrongAnswerVO {
 
     private String commentaryUrl;
 
+    private String theoryLearningUrl;
+
 }

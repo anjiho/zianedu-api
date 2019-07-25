@@ -6,6 +6,7 @@ import org.joda.time.DateTimeZone;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtils {
 
@@ -100,8 +101,14 @@ public class DateUtils {
         return yyyy + "년 " + mm + "월 " + dd + "일";
     }
 
+    public static String getYearLastTwo(){
+        Date date = new Date();
+        SimpleDateFormat formatter =new SimpleDateFormat("yy", Locale.KOREA);
+        return formatter.format(date);
+    }
+
     public static void main(String[] args) throws Exception {
         //System.out.println(isBetweenDateFromToday("2017-07-01 13:42:00", "2018-07-21 13:42:00"));
-        System.out.println(todayToStrKor());
+        System.out.println(getYearLastTwo());
     }
 }

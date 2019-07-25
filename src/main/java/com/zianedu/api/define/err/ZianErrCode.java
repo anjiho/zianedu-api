@@ -10,7 +10,8 @@ public enum ZianErrCode {
     CUSTOM_DUPLICATED_USER_ID(902, "CUSTOM :: 아이디 중복"),
     CUSTOM_SHORT_USER_PASSWORD(903, "CUSTOM :: 비밀번호 길이가 4개이하"),
     CUSTOM_DIFFERENT_CURRENT_USER_PASSWORD(904, "CUSTOM :: 현재 비밀번호가 다름"),
-    CUSTOM_PAUSE_LIMIT_OVER_VIDEO(905, "CUSTOM :: 강좌 일시정지 횟수 3회 초과")
+    CUSTOM_PAUSE_LIMIT_OVER_VIDEO(905, "CUSTOM :: 강좌 일시정지 횟수 3회 초과"),
+    CUSTOM_DATA_SIZE_ZERO(906, "CUSTOP :: 데이터의 길이가 0")
     ;
 
     int code;

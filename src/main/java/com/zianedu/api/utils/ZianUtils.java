@@ -38,8 +38,13 @@ public class ZianUtils {
         return String.format("%.1f", (userGrade / totalAnswerOnePercent));
     }
 
+    public static Integer getExamSerialNumber() {
+        String yy = DateUtils.getYearLastTwo();
+        String ranNumber = RandomUtil.getRandomNumber(5);
+        return Integer.parseInt(yy + ranNumber);
+    }
 
     public static void main(String[] args) {
-        System.out.println(getTopAccumulatePercent(113, 29));
+        System.out.println(getExamSerialNumber());
     }
 }
