@@ -58,14 +58,14 @@ public class BannerService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getBanner(int ctgKey) {
+    public ApiResultListDTO getBanner(int ctgKey, int listNumber) {
         int resultCode = OK.value();
 
         List<BannerVO> bannerList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            bannerList = bannerMapper.selectBannerList(ctgKey);
+            bannerList = bannerMapper.selectBannerList(ctgKey, listNumber);
             for (BannerVO vo : bannerList) {
                 if (!"".equals(vo.getFileUrl())) {
                     vo.setFullFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFileUrl()));

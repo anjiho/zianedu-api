@@ -32,11 +32,16 @@
             VALUE_1 as fileUrl,
             VALUE_3 as colorCode,
             VALUE_4 as targetUrl,
-            TYPE
+            VALUE_5 as title,
+            TYPE,
+            POS as num
         FROM T_CATEGORY_OTHER_INFO
         WHERE ctg_key = #{ctgKey}
         AND TYPE = 1
         ORDER BY POS ASC
+        <if test="listNumber > 0">
+            OFFSET 0 ROWS FETCH NEXT #{listNumber} ROWS ONLY
+        </if>
     </select>
 
     <select id="selectPopupList" resultType="PopupVO">

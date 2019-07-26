@@ -32,19 +32,24 @@ public class BannerController {
         return bannerService.getMainPageTopBanner(222);
     }
 
-    @RequestMapping(value = "/getMainBigBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getMainBigBanner/{listNumber}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("메인 대 배너")
-    public ApiResultListDTO getMainBigBanner() {
-        return bannerService.getBanner(223);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "listNumber", value = "배너 개수", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getMainBigBanner(@PathVariable(value = "listNumber") int listNumber) {
+        return bannerService.getBanner(223, listNumber);
     }
 
     @RequestMapping(value = "/getMainMiniBanner/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("대 배너 밑 미니 배너")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "listNumber", value = "배너 개수", dataType = "int", paramType = "query", required = true)
     })
-    public ApiResultListDTO getMainMiniBanner(@PathVariable("ctgKey") int ctgKey) {
-        return bannerService.getBanner(ctgKey);
+    public ApiResultListDTO getMainMiniBanner(@PathVariable("ctgKey") int ctgKey,
+                                              @RequestParam("listNumber") int listNumber) {
+        return bannerService.getBanner(ctgKey, listNumber);
     }
 
     @RequestMapping(value = "/getPopupList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
@@ -109,15 +114,15 @@ public class BannerController {
         return bannerService.getSearchKeywordList(className);
     }
 
-    @RequestMapping(value = "/getBookStoreCenterBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getBookStoreCenterBanner/{listNumber}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인 서점 중앙 이벤트 베너")
-    public ApiResultListDTO getBookStoreCenterBanner() {
-        return bannerService.getBanner(837);
+    public ApiResultListDTO getBookStoreCenterBanner(@PathVariable(value = "listNumber") int listNumber) {
+        return bannerService.getBanner(837, listNumber);
     }
 
-    @RequestMapping(value = "/getBookStoreCenterRightBanner", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getBookStoreCenterRightBanner/{listNumber}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인 서점 중앙 오른쪽 이벤트 베너")
-    public ApiResultListDTO getBookStoreCenterRightBanner() {
-        return bannerService.getBanner(838);
+    public ApiResultListDTO getBookStoreCenterRightBanner(@PathVariable(value = "listNumber") int listNumber) {
+        return bannerService.getBanner(838, listNumber);
     }
 }

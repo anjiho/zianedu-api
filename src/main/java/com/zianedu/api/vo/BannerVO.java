@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class BannerVO {
 
+    private int num;
+
     private String fileUrl;
 
     private String colorCode;
@@ -14,4 +16,6 @@ public class BannerVO {
     private int type;
 
     private String fullFileUrl;
+
+    private String title;
 }

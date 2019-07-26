@@ -285,6 +285,38 @@
         SELECT * FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
     </select>
 
+    <select id="selectPassReviewList" resultType="NoticeListVO">
+        SELECT Z.*
+        FROM (
+              SELECT  /*+index_desc (B PK_T_BBS_DATA) */
+                  BBS_KEY, TO_CHAR(INDATE, 'YYYY.MM.DD') as createDate, TITLE,
+                  (SELECT COUNT(T.BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = B.BBS_KEY) as commentCnt,
+                  B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE
+              FROM T_BBS_DATA B
+              WHERE 1=1
+              AND B.BBS_MASTER_KEY IN (10013,10032,10048)
+              AND B.IS_NOTICE = 0
+              )Z
+        ORDER BY Z.BBS_KEY DESC
+        OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectSignUpReviewList" resultType="NoticeListVO">
+        SELECT Z.*
+        FROM (
+              SELECT  /*+index_desc (B PK_T_BBS_DATA) */
+                  BBS_KEY, TO_CHAR(INDATE, 'YYYY.MM.DD') as createDate, TITLE,
+                  (SELECT COUNT(T.BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = B.BBS_KEY) as commentCnt,
+                  B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE
+              FROM T_BBS_DATA B
+              WHERE 1=1
+              AND B.BBS_MASTER_KEY IN (10014,10033,10056)
+              AND B.IS_NOTICE = 0
+              )Z
+        ORDER BY Z.BBS_KEY DESC
+        OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

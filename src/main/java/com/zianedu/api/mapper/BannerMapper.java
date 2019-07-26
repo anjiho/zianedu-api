@@ -12,7 +12,7 @@ public interface BannerMapper {
 
     BannerVO selectBannerInfoBySingle(@Param("ctgKey") int ctgKey);
 
-    List<BannerVO> selectBannerList(@Param("ctgKey") int ctgKey);
+    List<BannerVO> selectBannerList(@Param("ctgKey") int ctgKey, @Param("listNumber") int listNumber);
 
     List<PopupVO> selectPopupList(@Param("ctgKey") int ctgKey);
 

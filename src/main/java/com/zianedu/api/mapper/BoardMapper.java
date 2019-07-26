@@ -48,6 +48,10 @@ public interface BoardMapper {
 
     TBbsDataFileVO selectTBbsDataFile(@Param("bbsKey") int bbsKey);
 
+    List<NoticeListVO> selectPassReviewList(@Param("listLimitNumber") int listLimitNumber);
+
+    List<NoticeListVO> selectSignUpReviewList(@Param("listLimitNumber") int listLimitNumber);
+
 
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);

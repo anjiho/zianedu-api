@@ -2,10 +2,7 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultCodeDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.BoardDetailDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
@@ -131,6 +128,26 @@ public class BoardService extends PagingSupport {
             boardDetailDTO = new BoardDetailDTO(boardDetailVO, commentList);
         }
         return new ApiResultObjectDTO(boardDetailDTO, resultCode);
+    }
+
+    /**
+     * 랜딩페이지 합격 수기, 수강후기 가져오기
+     * @return
+     */
+    public ApiResultListDTO getReviewList(String reviewType, int listLimit) {
+        int resultCode = OK.value();
+
+        List<NoticeListVO> reviewList = new ArrayList<>();
+        if ("".equals(reviewType) && listLimit == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            if ("PASS".equals(reviewType)) {
+                reviewList = boardMapper.selectPassReviewList(listLimit);
+            } else if ("SIGN".equals(reviewType)) {
+                reviewList = boardMapper.selectSignUpReviewList(listLimit);
+            }
+        }
+        return new ApiResultListDTO(reviewList, resultCode);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

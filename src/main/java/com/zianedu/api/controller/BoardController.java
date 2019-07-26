@@ -2,6 +2,7 @@ package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
+import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.BoardService;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -161,5 +162,16 @@ public class BoardController {
     })
     public ApiResultCodeDTO deleteBoardComment(@RequestParam("bbsCommentKey") int bbsCommentKey) {
         return boardService.deleteBoardComment(bbsCommentKey);
+    }
+
+    @RequestMapping(value = "/getReviewList/{reviewType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격수기, 수강후기 리스트 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "reviewType", value = "후기 종류(PASS : 합격수기, SIGN : 수강후기)", dataType = "string", paramType = "path", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getReviewList(@PathVariable("reviewType") String reviewType,
+                                          @RequestParam("listLimit") int listLimit) {
+        return boardService.getReviewList(reviewType, listLimit);
     }
 }
