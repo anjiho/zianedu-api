@@ -125,4 +125,10 @@ public class BannerController {
     public ApiResultListDTO getBookStoreCenterRightBanner() {
         return bannerService.getBanner(838, 0);
     }
+
+    @RequestMapping(value = "/getExamScheduleList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("시험 일정 리스트 가져오기")
+    public ApiResultListDTO getExamScheduleList() {
+        return bannerService.getExamScheduleList();
+    }
 }

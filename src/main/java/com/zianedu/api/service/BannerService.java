@@ -240,4 +240,11 @@ public class BannerService {
         return new ApiResultListDTO(searchKeywordList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getExamScheduleList() {
+        int resultCode = OK.value();
+        List<TScheduleVO> examScheduleList = bannerMapper.selectTScheduleList();
+        return new ApiResultListDTO(examScheduleList, resultCode);
+    }
+
 }

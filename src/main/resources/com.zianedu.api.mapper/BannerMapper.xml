@@ -197,4 +197,16 @@
 		ORDER BY POS ASC
     </select>
 
+    <select id="selectTScheduleList" resultType="TScheduleVO">
+        SELECT
+            TITLE,
+            TO_CHAR(START_DATE, 'YYYY-MM-DD') as startDate,
+            TO_CHAR(START_DATE - sysdate) as dDay
+        FROM T_SCHEDULE
+        <![CDATA[
+            WHERE TO_CHAR(sysdate, 'YYYY-MM-DD')  < TO_CHAR(START_DATE, 'YYYY-MM-DD')
+        ]]>
+        ORDER BY START_DATE ASC
+    </select>
+
 </mapper>

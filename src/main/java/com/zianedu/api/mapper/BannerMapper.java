@@ -34,6 +34,8 @@ public interface BannerMapper {
 
     List<TSearchKeywordVO> selectSearchKeywordList(@Param("className") String className);
 
+    List<TScheduleVO> selectTScheduleList();
+
     /** INSERT **/
 
     /** UPDATE **/
