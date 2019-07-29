@@ -244,6 +244,9 @@ public class BannerService {
     public ApiResultListDTO getExamScheduleList() {
         int resultCode = OK.value();
         List<TScheduleVO> examScheduleList = bannerMapper.selectTScheduleList();
+        for (TScheduleVO scheduleVO : examScheduleList) {
+            scheduleVO.setDDay("D-" + scheduleVO.getDay());
+        }
         return new ApiResultListDTO(examScheduleList, resultCode);
     }
 

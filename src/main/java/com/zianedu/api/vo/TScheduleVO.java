@@ -23,7 +23,9 @@ public class TScheduleVO {
 
     private String link;
 
-    private int dDay;
+    private int day;
+
+    private String dDay;
 
     public TScheduleVO() {}
 

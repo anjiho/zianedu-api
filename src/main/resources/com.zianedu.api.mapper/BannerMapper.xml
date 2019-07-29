@@ -201,7 +201,7 @@
         SELECT
             TITLE,
             TO_CHAR(START_DATE, 'YYYY-MM-DD') as startDate,
-            TO_CHAR(START_DATE - sysdate) as dDay
+            TO_CHAR(START_DATE - sysdate) as day
         FROM T_SCHEDULE
         <![CDATA[
             WHERE TO_CHAR(sysdate, 'YYYY-MM-DD')  < TO_CHAR(START_DATE, 'YYYY-MM-DD')
