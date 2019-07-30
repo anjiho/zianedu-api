@@ -1000,7 +1000,7 @@ public class Util {
     public static String getAccrualRatePoint(int price, int point) {
         int onePercentPrice = (int)( price * 0.01 );
         int accrualRate = (point / onePercentPrice);
-        return accrualRate + "%";
+        return accrualRate + "% off";
     }
 
     public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
