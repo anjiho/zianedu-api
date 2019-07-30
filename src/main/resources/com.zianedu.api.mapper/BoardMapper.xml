@@ -183,6 +183,22 @@
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
+    <select id="selectBannerNoticeList" resultType="NoticeListVO">
+        SELECT * FROM (
+            SELECT * FROM (
+            SELECT  /*+index_desc (B PK_T_BBS_DATA) */
+            BBS_KEY, TO_CHAR(INDATE, 'YYYY.MM.DD') as createDate, TITLE,
+            (SELECT COUNT(T.BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = B.BBS_KEY) as commentCnt,
+            B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE
+            FROM T_BBS_DATA B
+            WHERE 1=1
+            AND B.BBS_MASTER_KEY = #{bbsMasterKey}
+            AND B.IS_NOTICE = 0
+            )
+        ) Z
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
     <select id="selectCommunityList" resultType="CommunityListVO">
         SELECT * FROM (
             SELECT * FROM (

@@ -76,6 +76,33 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
+    public ApiResultListDTO getBannerNoticeList(int bbsMasterKey, int sPage, int listLimit) throws Exception {
+        int resultCode = OK.value();
+
+        List<NoticeListVO> noticeList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (bbsMasterKey == 0 && sPage == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            noticeList = boardMapper.selectBannerNoticeList(bbsMasterKey, startNumber, listLimit);
+
+            if (noticeList.size() > 0) {
+                String standardDate = Util.plusDate(Util.returnNow(), -10);
+                for (NoticeListVO vo : noticeList) {
+                    int diffDayCnt = Util.getDiffDayCount(Util.convertDateFormat3(standardDate), Util.convertDateFormat3(vo.getIndate()));
+
+                    if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
+                    else vo.setNew(false);
+                }
+            }
+        }
+        return new ApiResultListDTO(noticeList, resultCode);
+    }
+
+
+
+    @Transactional(readOnly = true)
     public ApiPagingResultDTO getCommunityList(int bbsMasterKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
         int resultCode = OK.value();
 

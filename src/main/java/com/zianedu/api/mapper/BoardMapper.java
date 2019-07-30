@@ -35,6 +35,8 @@ public interface BoardMapper {
     List<NoticeListVO> selectNoticeList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
                                         @Param("searchType") String searchType, @Param("searchText") String searchText);
 
+    List<NoticeListVO> selectBannerNoticeList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
     Integer selectNoticeListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
     List<CommunityListVO> selectCommunityList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,

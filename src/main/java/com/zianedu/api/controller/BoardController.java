@@ -174,4 +174,17 @@ public class BoardController {
                                           @RequestParam("listLimit") int listLimit) {
         return boardService.getReviewList(reviewType, listLimit);
     }
+
+    @RequestMapping(value = "/getBannerNoticeList/{bbsMasterKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("배너 공지사항 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getNoticeList(@PathVariable("bbsMasterKey") int bbsMasterKey,
+                                            @RequestParam("sPage") int sPage,
+                                            @RequestParam("listLimit") int listLimit) throws Exception {
+        return boardService.getBannerNoticeList(bbsMasterKey, sPage, listLimit);
+    }
 }
