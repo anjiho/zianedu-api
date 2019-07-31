@@ -42,25 +42,27 @@ public class UserController {
     @RequestMapping(value = "/reg", method = {RequestMethod.POST}, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("회원가입")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "이름", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "gender", value = "성별(0:남, 1:여)", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "userId", value = "아이디", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "pwd", value = "비밀번호", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "name", value = "이름", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "birth", value = "생년월일", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "lunar", value = "양/음력여부", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "email", value = "이메일", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "telephone", value = "일반전화", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "telephoneMobile", value = "휴대전화", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "recvSms", value = "SMS 수신여부", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "recvEmail", value = "메일링 수신여부", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "zipcode", value = "우편번호", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "addressRoad", value = "신주소 명", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "addressNumber", value = "구주소명", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "address", value = "상세주소", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "interestCtgKey0", value = "준비직렬", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "isMobileReg", value = "모바일여부", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "certCode", value = "개인인증코드", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "interestCtgKey0", value = "준비직렬", dataType = "int", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "birth", value = "생년월일", dataType = "String", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "lunar", value = "양/음력여부", dataType = "int", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "telephone", value = "일반전화", dataType = "String", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "recvSms", value = "SMS 수신여부", dataType = "int", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "recvEmail", value = "메일링 수신여부", dataType = "int", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "isMobileReg", value = "모바일여부", dataType = "int", paramType = "query", required = false),
+
     })
-    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) throws Exception {
+    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) {
         return userService.regUser(tUserVO);
     }
 

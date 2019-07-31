@@ -73,17 +73,17 @@
         </selectKey>
         INSERT INTO T_USER
         (
-            USER_KEY, C_KEY, USER_ID, INDATE, NAME, AUTHORITY, STATUS, PWD, BIRTH, LUNAR, GENDER, TELEPHONE,
-            TELEPHONE_MOBILE, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, EMAIL, RECV_SMS, RECV_EMAIL,
-            WELFARE_DC_PERCENT, GRADE, INTEREST_CTG_KEY_0, INTEREST_CTG_KEY_1, IS_MOBILE_REG,
-            ADMIN_AUTHORITY_KEY, GRADE_G_KEY, GRADE_PRICE, NOTE, USER_PWD, CERT_CODE
+            USER_KEY, C_KEY, USER_ID, INDATE, NAME, AUTHORITY, STATUS, PWD, GENDER,
+            TELEPHONE_MOBILE, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, EMAIL, RECV_EMAIL,
+            WELFARE_DC_PERCENT, GRADE, INTEREST_CTG_KEY_0, INTEREST_CTG_KEY_1,
+            ADMIN_AUTHORITY_KEY, GRADE_G_KEY, GRADE_PRICE, USER_PWD, CERT_CODE
         )
         VALUES
         (
-            #{userKey}, 100, #{userId}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'), #{name}, #{authority}, 10, #{pwd}, #{birth}, #{lunar}, #{gender}, #{telephone},
-            #{telephoneMobile}, #{zipcode}, #{addressRoad}, #{addressNumber}, #{address}, #{email}, #{recvSms}, #{recvEmail},
-            0, #{grade}, #{interestCtgKey0}, 0, #{isMobileReg},
-            #{adminAuthorityKey}, 0, #{gradePrice}, #{note}, #{userPwd}, #{certCode}
+            #{userKey}, 100, #{userId}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'), #{name}, #{authority}, 10, #{pwd}, #{gender},
+            #{telephoneMobile}, #{zipcode}, #{addressRoad}, #{addressNumber}, #{address}, #{email}, #{recvEmail},
+            0, #{grade}, #{interestCtgKey0}, 0,
+            #{adminAuthorityKey}, 0, #{gradePrice}, #{userPwd}, #{certCode}
         )
     </insert>
 

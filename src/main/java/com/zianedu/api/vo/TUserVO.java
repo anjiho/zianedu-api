@@ -136,32 +136,26 @@ public class TUserVO implements Serializable {
 
     public TUserVO() {}
 
-    public TUserVO(TUserVO tUserVO) throws Exception {
+    public TUserVO(TUserVO tUserVO) {
         this.userKey = tUserVO.getUserKey();
         this.userId = tUserVO.getUserId();
         this.indate = Util.returnNow();
         this.name = tUserVO.getName();
         this.authority = 10;
         this.pwd = tUserVO.getPwd();
-        this.birth = Util.isNullValue(tUserVO.getBirth(), "");
-        this.lunar = tUserVO.getLunar();
-        this.gender = 0;
-        this.telephone = Util.isNullValue(tUserVO.getTelephone(), "");
+        this.gender = tUserVO.getGender();
         this.telephoneMobile = Util.isNullValue(tUserVO.getTelephoneMobile(), "");
         this.zipcode = Util.isNullValue(tUserVO.getZipcode(), "");
         this.addressRoad = tUserVO.getAddressRoad();
         this.addressNumber = tUserVO.getAddressNumber();
         this.address = Util.isNullValue(tUserVO.getAddress(), "");
         this.email = Util.isNullValue(tUserVO.getEmail(), "");
-        this.recvSms = tUserVO.getRecvSms();
-        this.recvEmail = tUserVO.getRecvEmail();
+        this.recvEmail = 1;
         this.certCode = tUserVO.getCertCode();
         this.grade = 0;
         this.interestCtgKey0 = tUserVO.getInterestCtgKey0();
         this.adminAuthorityKey = 0;
-        this.isMobileReg = tUserVO.getIsMobileReg();
         this.gradePrice = 0;
-        this.note = Util.isNullValue(tUserVO.getNote(), "");
         this.userPwd = !"".equals(Util.isNullValue(tUserVO.getPwd(), "")) ? SecurityUtil.encryptSHA256(tUserVO.getPwd()) : "";
     }
 }

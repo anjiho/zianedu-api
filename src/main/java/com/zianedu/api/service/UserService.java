@@ -75,7 +75,7 @@ public class UserService extends ApiResultKeyCode {
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO regUser(TUserVO tUserVO) throws Exception {
+    public ApiResultCodeDTO regUser(TUserVO tUserVO) {
         int resultCode = OK.value();
         int userKey = 0;
         if (tUserVO == null) resultCode = ZianErrCode.BAD_REQUEST.code();
