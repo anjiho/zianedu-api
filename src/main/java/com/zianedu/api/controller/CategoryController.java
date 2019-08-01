@@ -21,4 +21,10 @@ public class CategoryController {
     public ApiResultListDTO getLeftMenuCtgKey() {
         return categoryService.getLeftMenuCtgKey();
     }
+
+    @RequestMapping(value = "/getUserRegSerialList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("회원가입 준비직렬 셀렉트박스 리스트")
+    public ApiResultListDTO getUserRegSerialList() {
+        return categoryService.getTCategoryListByParentKey(133);
+    }
 }

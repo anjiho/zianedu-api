@@ -17,4 +17,12 @@
         </if>
     </select>
 
+    <select id="selectTCategoryListByParentKey" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        <if test="parentKey > 0">
+            WHERE PARENT_KEY = #{parentKey}
+        </if>
+        ORDER BY POS ASC
+    </select>
+
 </mapper>

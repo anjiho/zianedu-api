@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.define.datasource.LeftMenuCtgKeyType;
+import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.vo.TCategoryVO;
@@ -95,4 +96,18 @@ public class CategoryService {
         unitName = list.get(2).getName() + " > " + list.get(1).getName() + " > " + list.get(0).getName();
         return unitName;
     }
+
+    public ApiResultListDTO getTCategoryListByParentKey(int parentKey) {
+        int resultCode = OK.value();
+
+        List<TCategoryVO> categoryList = new ArrayList<>();
+
+        if (parentKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            categoryList = categoryMapper.selectTCategoryListByParentKey(parentKey);
+        }
+        return new ApiResultListDTO(categoryList, resultCode);
+    }
+
 }

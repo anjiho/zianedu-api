@@ -12,4 +12,6 @@ public interface CategoryMapper {
     Integer selectParentKeyFromCategory(@Param("ctgKey") int ctgKey);
 
     TCategoryVO selectTCategoryInfoByCtgKey(@Param("ctgKey") int ctgKey);
+
+    List<TCategoryVO> selectTCategoryListByParentKey(@Param("parentKey") int parentKey);
 }
