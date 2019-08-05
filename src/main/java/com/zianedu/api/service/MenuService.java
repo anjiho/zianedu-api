@@ -2,6 +2,10 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.LeftMenuSubDepthDTO;
+import com.zianedu.api.dto.LeftMenuSubDethListDTO;
+import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.vo.TCategoryVO;
 
@@ -20,6 +24,9 @@ public class MenuService {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Transactional(readOnly = true)
     public ApiResultListDTO getLeftMenuList(int ctgKey) {
@@ -58,7 +65,6 @@ public class MenuService {
     public ApiResultListDTO getTeacherIntroduceLeftMenu(int ctgKey) {
         int resultCode = OK.value();
 
-
         List<TCategoryVO> teacherMenuList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -72,5 +78,31 @@ public class MenuService {
             }
         }
         return new ApiResultListDTO(teacherMenuList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getZianPassMenu(int ctgKey) {
+        int resultCode = OK.value();
+
+        List<LeftMenuSubDethListDTO> leftMenuSubDethList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<TCategoryVO> firstMenu = categoryMapper.selectTCategoryListByParentKey(ctgKey);
+            if (firstMenu.size() > 0) {
+                int i = 0;
+                for (TCategoryVO categoryVO : firstMenu) {
+                    LeftMenuSubDethListDTO leftMenuSubDethListDTO = new LeftMenuSubDethListDTO();
+                    leftMenuSubDethListDTO.setCtgKey(categoryVO.getCtgKey());
+                    leftMenuSubDethListDTO.setMenuName(categoryVO.getName());
+
+                    List<TCategoryVO> secondMenu = categoryMapper.selectTCategoryListByParentKey(categoryVO.getCtgKey());
+                    leftMenuSubDethListDTO.setSubMenuList(secondMenu);
+
+                    leftMenuSubDethList.add(leftMenuSubDethListDTO);
+                }
+            }
+        }
+        return new ApiResultListDTO(leftMenuSubDethList, resultCode);
     }
 }

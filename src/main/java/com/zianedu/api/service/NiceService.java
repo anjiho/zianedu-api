@@ -11,11 +11,11 @@ import static org.springframework.http.HttpStatus.OK;
 @Service
 public class NiceService {
 
-    public ApiResultObjectDTO getNiceSEncData() {
-        NiceID.Check.CPClient niceCheck = new NiceID.Check.CPClient();
+    protected static final String sSiteCode = "G4528";  // NICE로부터 부여받은 사이트 코드
+    protected static final String sSitePassword = "H9NGAJRFE6WF";		// NICE로부터 부여받은 사이트 패스워드
 
-        String sSiteCode = "G4528";			// NICE로부터 부여받은 사이트 코드
-        String sSitePassword = "H9NGAJRFE6WF";		// NICE로부터 부여받은 사이트 패스워드
+    public ApiResultObjectDTO getNiceSEncData(String sReturnUrl, String sErrorUrl) {
+        NiceID.Check.CPClient niceCheck = new NiceID.Check.CPClient();
 
         String sRequestNumber = "REQ0000000001";        	// 요청 번호, 이는 성공/실패후에 같은 값으로 되돌려주게 되므로
         // 업체에서 적절하게 변경하여 쓰거나, 아래와 같이 생성한다.
@@ -31,8 +31,8 @@ public class NiceService {
 
         // CheckPlus(본인인증) 처리 후, 결과 데이타를 리턴 받기위해 다음예제와 같이 http부터 입력합니다.
         //리턴url은 인증 전 인증페이지를 호출하기 전 url과 동일해야 합니다. ex) 인증 전 url : http://www.~ 리턴 url : http://www.~
-        String sReturnUrl = "http://localhost:9090/nice/checkPlusSuccess";      // 성공시 이동될 URL
-        String sErrorUrl = "http://localhost:9090/nice/checkPlusFail";          // 실패시 이동될 URL
+        //String sReturnUrl = "http://15.164.7.237/user?page_gbn=joinForm";      // 성공시 이동될 URL
+        //String sErrorUrl = "http://localhost:9090/nice/checkPlusFail";          // 실패시 이동될 URL
 
         // 입력될 plain 데이타를 만든다.
         String sPlainData = "7:REQ_SEQ" + sRequestNumber.getBytes().length + ":" + sRequestNumber +
@@ -80,13 +80,10 @@ public class NiceService {
     }
 
     public ApiResultObjectDTO resultUserIdentify(HttpServletRequest request) {
-//인증 후 결과값이 null로 나오는 부분은 관리담당자에게 문의 바랍니다.
+        //인증 후 결과값이 null로 나오는 부분은 관리담당자에게 문의 바랍니다.
         NiceID.Check.CPClient niceCheck = new  NiceID.Check.CPClient();
 
         String sEncodeData = requestReplace(request.getParameter("EncodeData"), "encodeData");
-
-        String sSiteCode = "G4528";				// NICE로부터 부여받은 사이트 코드
-        String sSitePassword = "H9NGAJRFE6WF";			// NICE로부터 부여받은 사이트 패스워드
 
         String sCipherTime = "";			// 복호화한 시간
         String sRequestNumber = "";			// 요청 번호
@@ -104,7 +101,7 @@ public class NiceService {
         String sPlainData = "";
 
         int iReturn = niceCheck.fnDecode(sSiteCode, sSitePassword, sEncodeData);
-        System.out.println("iReturn >>");
+        //System.out.println("iReturn >>");
         if( iReturn == 0 )
         {
             sPlainData = niceCheck.getPlainData();

@@ -2,6 +2,7 @@ package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.service.CategoryService;
 import com.zianedu.api.service.MenuService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +20,9 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/getLeftMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("좌측 메뉴 리스트 가져오기")
@@ -42,5 +46,14 @@ public class MenuController {
     })
     public ApiResultListDTO getTeacherIntroduceLeftMenu(@PathVariable("ctgKey") int ctgKey) {
         return menuService.getTeacherIntroduceLeftMenu(ctgKey);
+    }
+
+    @RequestMapping(value = "/getZianPassMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("지안패스 메뉴 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키(239 : 행정직동영상 지안패스, 454 : 기술직동영상 지안패스, 587 : 계리직동영상 지안패스)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getZianPassMenu(@PathVariable("ctgKey") int ctgKey) {
+        return menuService.getZianPassMenu(ctgKey);
     }
 }

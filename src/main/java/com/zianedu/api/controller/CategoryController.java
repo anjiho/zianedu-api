@@ -27,4 +27,6 @@ public class CategoryController {
     public ApiResultListDTO getUserRegSerialList() {
         return categoryService.getTCategoryListByParentKey(133);
     }
+
+
 }
