@@ -93,7 +93,7 @@ public class MenuService {
                     leftMenuSubDepthListDTO.setCtgKey(categoryVO.getCtgKey());
                     leftMenuSubDepthListDTO.setMenuName(categoryVO.getName());
 
-                    leftMenuSubDepthList.add(leftMenuSubDepthListDTO);
+                    leftMenuSubDepthList.add(leftMenuSubDepthListDTO); 
                 }
             }
         }
