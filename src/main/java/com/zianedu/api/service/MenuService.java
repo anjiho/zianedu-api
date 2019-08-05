@@ -2,9 +2,7 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.LeftMenuSubDepthDTO;
-import com.zianedu.api.dto.LeftMenuSubDethListDTO;
+import com.zianedu.api.dto.LeftMenuSubDepthListDTO;
 import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.vo.TCategoryVO;
@@ -84,25 +82,21 @@ public class MenuService {
     public ApiResultListDTO getZianPassMenu(int ctgKey) {
         int resultCode = OK.value();
 
-        List<LeftMenuSubDethListDTO> leftMenuSubDethList = new ArrayList<>();
+        List<LeftMenuSubDepthListDTO> leftMenuSubDepthList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             List<TCategoryVO> firstMenu = categoryMapper.selectTCategoryListByParentKey(ctgKey);
             if (firstMenu.size() > 0) {
-                int i = 0;
                 for (TCategoryVO categoryVO : firstMenu) {
-                    LeftMenuSubDethListDTO leftMenuSubDethListDTO = new LeftMenuSubDethListDTO();
-                    leftMenuSubDethListDTO.setCtgKey(categoryVO.getCtgKey());
-                    leftMenuSubDethListDTO.setMenuName(categoryVO.getName());
+                    LeftMenuSubDepthListDTO leftMenuSubDepthListDTO = new LeftMenuSubDepthListDTO();
+                    leftMenuSubDepthListDTO.setCtgKey(categoryVO.getCtgKey());
+                    leftMenuSubDepthListDTO.setMenuName(categoryVO.getName());
 
-                    List<TCategoryVO> secondMenu = categoryMapper.selectTCategoryListByParentKey(categoryVO.getCtgKey());
-                    leftMenuSubDethListDTO.setSubMenuList(secondMenu);
-
-                    leftMenuSubDethList.add(leftMenuSubDethListDTO);
+                    leftMenuSubDepthList.add(leftMenuSubDepthListDTO);
                 }
             }
         }
-        return new ApiResultListDTO(leftMenuSubDethList, resultCode);
+        return new ApiResultListDTO(leftMenuSubDepthList, resultCode);
     }
 }

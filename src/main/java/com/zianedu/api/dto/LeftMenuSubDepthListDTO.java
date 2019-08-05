@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class LeftMenuSubDethListDTO {
+public class LeftMenuSubDepthListDTO {
 
     private int ctgKey;
 
