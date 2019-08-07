@@ -323,7 +323,7 @@ public class ProductService {
                 for (ZianPassProductDTO productDTO : zianPassProductDTOList) {
                     if (productDTO.getZianPassProductList().size() > 0) {
                         for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
-                            String fileName = "zianPass_" + productListVO.getGKey() + ".html";
+                            String fileName = "zianpass_" + productListVO.getGKey() + ".html";
                             productListVO.setTargetUrl("http://52.79.40.214/views/zianPass/" + fileName);
                         }
                     }
