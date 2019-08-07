@@ -52,6 +52,19 @@
         <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
     </resultMap>
 
+    <resultMap id="zianPassProductMap" type="com.zianedu.api.dto.ZianPassProductDTO">
+        <result property="affiliationCtgKey" column="AFFILIATION_CTG_KEY"/>
+        <result property="affiliationName" column="AFFILIATION_NAME"/>
+        <collection property="zianPassProductList" javaType="java.util.ArrayList" resultMap="zianPassProductListMap"/>
+    </resultMap>
+    <resultMap id="zianPassProductListMap" type="ZianPassProductListVO">
+        <result property="gKey" column="G_KEY"/>
+        <result property="name" column="NAME"/>
+        <result property="sellPrice" column="sellPrice"/>
+        <result property="type" column="type"/>
+        <result property="pmType" column="pmType"/>
+    </resultMap>
+
     <select id="selectAcademySignUp" resultType="AcademySignUpVO">
         SELECT
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
@@ -845,6 +858,24 @@
             DATA_FILE
         FROM T_LEC_CURRI WHERE LEC_KEY = #{lecKey}
         ORDER BY POS ASC
+    </select>
+
+    <select id="selectZianPassProductList" resultMap="zianPassProductMap">
+        SELECT A.G_KEY, A.NAME, C.SELL_PRICE,
+               B.AFFILIATION_CTG_KEY,
+               (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.AFFILIATION_CTG_KEY ) as affiliationName,
+               TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPrice,
+               '5' as type,
+               '100' as pmType
+        FROM T_GOODS A
+        LEFT JOIN T_PROMOTION B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.PARENT_KEY = #{parentKey}
+        AND A.TYPE = 5
+        AND A.IS_SELL = 1
+        ORDER BY AFFILIATION_CTG_KEY ASC
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

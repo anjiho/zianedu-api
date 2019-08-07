@@ -94,4 +94,13 @@ public class ProductController {
         return productService.getFreeVideoLectureListFromCategoryMenu(ctgKey, device);
     }
 
+    @RequestMapping(value = "/getZianPassProductList/{parentKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("지안패스 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentKey", value = "카테고리 부모키 값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getZianPassProductList(@PathVariable("parentKey") int parentKey) {
+        return productService.getZianPassProductList(parentKey);
+    }
+
 }

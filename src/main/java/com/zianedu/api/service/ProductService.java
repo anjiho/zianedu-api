@@ -4,10 +4,7 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.EmphasisType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.VideoProductDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.StringUtils;
@@ -311,6 +308,29 @@ public class ProductService {
             }
         }
         return new ApiResultListDTO(teacherHomeLectureList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getZianPassProductList(int parentKey) {
+        int resultCode = OK.value();
+
+        List<ZianPassProductDTO> zianPassProductDTOList = new ArrayList<>();
+        if (parentKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassProductDTOList = productMapper.selectZianPassProductList(parentKey);
+            if (zianPassProductDTOList.size() > 0) {
+                for (ZianPassProductDTO productDTO : zianPassProductDTOList) {
+                    if (productDTO.getZianPassProductList().size() > 0) {
+                        for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
+                            String fileName = "zianPass_" + productListVO.getGKey() + ".html";
+                            productListVO.setTargetUrl("http://52.79.40.214/views/zianPass/" + fileName);
+                        }
+                    }
+                }
+            }
+        }
+        return new ApiResultListDTO(zianPassProductDTOList, resultCode);
     }
 
 }

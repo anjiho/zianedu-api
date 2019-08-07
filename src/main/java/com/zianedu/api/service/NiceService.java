@@ -22,7 +22,7 @@ public class NiceService {
         sRequestNumber = niceCheck.getRequestNO(sSiteCode);
         //session.setAttribute("REQ_SEQ" , sRequestNumber);	// 해킹등의 방지를 위하여 세션을 쓴다면, 세션에 요청번호를 넣는다.
 
-        String sAuthType = "";      	// 없으면 기본 선택화면, M: 핸드폰, C: 신용카드, X: 공인인증서
+        String sAuthType = "M";      	// 없으면 기본 선택화면, M: 핸드폰, C: 신용카드, X: 공인인증서
 
         String popgubun 	= "N";		//Y : 취소버튼 있음 / N : 취소버튼 없음
         String customize 	= "";		//없으면 기본 웹페이지 / Mobile : 모바일페이지

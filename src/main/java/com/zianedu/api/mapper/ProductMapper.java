@@ -1,5 +1,6 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
@@ -95,6 +96,8 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectFreeLectureListFromCategoryMenu(@Param("ctgKey") int ctgKey);
 
     List<TLecCurriVO> selectTLecCurriList(@Param("lecKey") int lecKey, @Param("device") String device);
+
+    List<ZianPassProductDTO> selectZianPassProductList(@Param("parentKey") int parentKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
