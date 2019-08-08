@@ -878,6 +878,52 @@
         ORDER BY AFFILIATION_CTG_KEY ASC
     </select>
 
+    <select id="selectZianPassSubjectSingleProductList" resultMap="zianPassProductMap">
+        SELECT A.G_KEY, A.NAME, C.SELL_PRICE,
+               '단과지안패스' as affiliationName,
+               TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPrice,
+               '5' as type,
+               '100' as pmType
+        FROM T_GOODS A
+        LEFT JOIN T_PROMOTION B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.PARENT_KEY = #{parentKey}
+        AND A.TYPE = 5
+        AND A.IS_SELL = 1
+    </select>
+    <!-- 지안패스 직렬별 그룹 서브 메뉴 리스트 -->
+    <select id="selectZianPassSubMenuList" resultType="ZianPassSubMenuVO">
+        SELECT
+            B.AFFILIATION_CTG_KEY as menuKey,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.AFFILIATION_CTG_KEY ) as name
+        FROM T_GOODS A
+                 LEFT JOIN T_PROMOTION B
+                           ON A.G_KEY = B.G_KEY
+                 LEFT JOIN T_GOODS_PRICE_OPTION C
+                           ON A.G_KEY = C.G_KEY
+        WHERE A.PARENT_KEY = #{parentKey}
+          AND A.TYPE = 5
+          AND A.IS_SELL = 1
+        GROUP BY B.AFFILIATION_CTG_KEY
+        ORDER BY B.AFFILIATION_CTG_KEY ASC
+    </select>
+
+    <!-- 단과 지안패스 메뉴 상세 항목을 만들기 위한 쿼리 -->
+    <select id="selectZianPassSingleSubjectMenuList" resultType="ZianPassSubMenuVO">
+        SELECT A.G_KEY as menuKey, A.NAME
+        FROM T_GOODS A
+        LEFT JOIN T_PROMOTION B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.PARENT_KEY = #{parentKey}
+        AND A.TYPE = 5
+        AND A.IS_SELL = 1
+        ORDER BY AFFILIATION_CTG_KEY ASC
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

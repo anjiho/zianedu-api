@@ -3,11 +3,14 @@ package com.zianedu.api.service;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.LeftMenuSubDepthListDTO;
+import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.mapper.MenuMapper;
+import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.vo.TCategoryVO;
 
 import com.zianedu.api.vo.TeacherVO;
+import com.zianedu.api.vo.ZianPassSubMenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,9 @@ public class MenuService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Transactional(readOnly = true)
     public ApiResultListDTO getLeftMenuList(int ctgKey) {
@@ -89,10 +95,18 @@ public class MenuService {
             List<TCategoryVO> firstMenu = categoryMapper.selectTCategoryListByParentKey(ctgKey);
             if (firstMenu.size() > 0) {
                 for (TCategoryVO categoryVO : firstMenu) {
+
                     LeftMenuSubDepthListDTO leftMenuSubDepthListDTO = new LeftMenuSubDepthListDTO();
                     leftMenuSubDepthListDTO.setCtgKey(categoryVO.getCtgKey());
                     leftMenuSubDepthListDTO.setMenuName(categoryVO.getName());
-
+                    /**
+                     * 지안패스일때 직렬별 그룹 서브메뉴 추가
+                     */
+                    if (categoryVO.getCtgKey() == 7026 || categoryVO.getCtgKey() == 7172 || categoryVO.getCtgKey() == 7176) {
+                        leftMenuSubDepthListDTO.setIsSingle(0);
+                        List<ZianPassSubMenuVO> subMenuList = productMapper.selectZianPassSubMenuList(categoryVO.getCtgKey());
+                        leftMenuSubDepthListDTO.setZianPassSubMenuList(subMenuList);
+                    }
                     leftMenuSubDepthList.add(leftMenuSubDepthListDTO);
                 }
             }

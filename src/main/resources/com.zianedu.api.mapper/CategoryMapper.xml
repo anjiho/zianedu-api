@@ -22,6 +22,7 @@
         <if test="parentKey > 0">
             WHERE PARENT_KEY = #{parentKey}
         </if>
+        AND CTG_KEY NOT IN (7027, 7028, 7163, 7152, 7138, 7142, 7143, 7111, 7113, 7144)
         ORDER BY POS ASC
     </select>
 

@@ -21,9 +21,6 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @RequestMapping(value = "/getLeftMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("좌측 메뉴 리스트 가져오기")
     @ApiImplicitParams({

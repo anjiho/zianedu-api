@@ -99,6 +99,12 @@ public interface ProductMapper {
 
     List<ZianPassProductDTO> selectZianPassProductList(@Param("parentKey") int parentKey);
 
+    List<ZianPassProductDTO> selectZianPassSubjectSingleProductList(@Param("parentKey") int parentKey);
+
+    List<ZianPassSubMenuVO> selectZianPassSubMenuList(@Param("parentKey") int parentKey);
+
+    List<ZianPassSubMenuVO> selectZianPassSingleSubjectMenuList(@Param("parentKey") int parentKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
