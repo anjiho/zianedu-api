@@ -18,4 +18,8 @@ public class NoticeListVO {
     private boolean isNew;
 
     private int isNotice;
+
+    private String fileName;
+
+    private String contents;
 }

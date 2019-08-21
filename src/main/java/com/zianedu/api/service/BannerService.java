@@ -28,6 +28,9 @@ public class BannerService {
     @Autowired
     private BannerMapper bannerMapper;
 
+    @Autowired
+    private TeacherService teacherService;
+
     @Transactional(readOnly = true)
     public ApiResultListDTO getMainPageCtgKeyInfo(int ctgKey) {
         int resultCode = OK.value();
@@ -107,6 +110,8 @@ public class BannerService {
                     }
                     vo.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getTeacherImage()));
 
+                    TTeacherVO teacherInfo = teacherService.getTeacherInfo(vo.getTeacherKey());
+                    vo.setTeacherInfo(teacherInfo);
                 }
             }
         }

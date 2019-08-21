@@ -22,6 +22,8 @@ import static org.springframework.http.HttpStatus.OK;
 @Service
 public class ProductService {
 
+    protected final String ZIAN_PASS_HTML_URL = "http://52.79.40.214/views/zianPass/";
+
     @Autowired
     private ProductMapper productMapper;
 
@@ -324,7 +326,7 @@ public class ProductService {
                     if (productDTO.getZianPassProductList().size() > 0) {
                         for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
                             String fileName = "zianpass_" + productListVO.getGKey() + ".html";
-                            productListVO.setTargetUrl("http://52.79.40.214/views/zianPass/" + fileName);
+                            productListVO.setTargetUrl(ZIAN_PASS_HTML_URL + fileName);
                         }
                     }
                 }

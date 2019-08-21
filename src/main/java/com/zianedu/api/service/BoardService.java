@@ -69,6 +69,10 @@ public class BoardService extends PagingSupport {
 
                     if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
                     else vo.setNew(false);
+
+                    if (!"".equals(vo.getFileName())) {
+                        vo.setFileName(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFileName()));
+                    }
                 }
             }
         }
