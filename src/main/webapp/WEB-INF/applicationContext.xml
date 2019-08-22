@@ -108,4 +108,7 @@
         <property name="dataSource" ref="zianOracleDataSource"></property>
     </bean>
 
+    <!-- SPRING JAVA MAIL -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
+
 </beans>
