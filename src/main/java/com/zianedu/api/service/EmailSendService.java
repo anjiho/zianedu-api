@@ -60,7 +60,7 @@ public class EmailSendService {
 
 		session.setDebug(false); //for debug
 		Message mimeMessage = new MimeMessage(session); //MimeMessage 생성
-		mimeMessage.setFrom(new InternetAddress(ConfigHolder.getMailSendAddress())); //발신자 셋팅 , 보내는 사람의 이메일주소
+		mimeMessage.setFrom(new InternetAddress(ConfigHolder.getMailSendAddress(), "지안에듀 관리자", "UTF-8")); //발신자 셋팅 , 보내는 사람의 이메일주소
 		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); //수신자셋팅
 
 		mimeMessage.setSubject(subject); //제목셋팅
