@@ -26,9 +26,9 @@ public class EmailSendController {
             @ApiImplicitParam(name = "subject", value = "제목", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "body", value = "내용", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultCodeDTO sendEmail(@RequestParam(value = "recipient") String recipient,
-                                      @RequestParam(value = "subject") String subject,
-                                      @RequestParam(value = "body") String body) throws Exception {
+    public ApiResultCodeDTO sendEmail(@RequestParam("recipient") String recipient,
+                                      @RequestParam("subject") String subject,
+                                      @RequestParam("body") String body) throws Exception {
         emailSendService.sendEmail(recipient, subject, body);
         return null;
     }
