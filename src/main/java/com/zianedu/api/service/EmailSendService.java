@@ -1,18 +1,15 @@
 package com.zianedu.api.service;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.zianedu.api.config.ConfigHolder;
-import com.zianedu.api.dto.EmailSendDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +34,7 @@ public class EmailSendService {
 	public void sendEmail(String recipient, String subject, String body) throws Exception {
 		logger.info("이메일 발송 시작");
 		String host = ConfigHolder.getMailSmtpHost();
-		final String username = ConfigHolder.getMailUserId(); //네이버 아이디를 입력해주세요. @nave.com은 입력하지 마시구요.
+		final String username = ConfigHolder.getMailUserId(); //메일 아이디를 입력해주세요. @nave.com은 입력하지 마시구요.
 		final String password = ConfigHolder.getMailUserPass(); //네이버 이메일 비밀번호를 입력해주세요.
 		int port = ConfigHolder.getMailSmtpPort(); //포트번호
 
@@ -65,6 +62,7 @@ public class EmailSendService {
 
 		mimeMessage.setSubject(subject); //제목셋팅
 		mimeMessage.setText(body); //내용셋팅
+
 		Transport.send(mimeMessage); //javax.mail.Transport.send() 이용
 	}
 

@@ -109,6 +109,6 @@
     </bean>
 
     <!-- SPRING JAVA MAIL -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" p:defaultEncoding="UTF-8"/>
 
 </beans>
