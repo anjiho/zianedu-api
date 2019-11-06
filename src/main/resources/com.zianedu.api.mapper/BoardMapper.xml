@@ -148,12 +148,15 @@
                 SELECT * FROM (
                     SELECT /*+index_desc (A PK_T_BBS_DATA) */
                     A.BBS_KEY, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as createDate, A.TITLE, 0 as commentCnt,
-                    A.WRITE_USER_KEY, TO_CHAR(A.INDATE, 'YYYY-MM-DD') as indate, A.IS_NOTICE, B.FILENAME
+                    A.WRITE_USER_KEY, TO_CHAR(A.INDATE, 'YYYY-MM-DD') as indate, A.IS_NOTICE, B.FILENAME,
+                    (SELECT NAME FROM T_USER TU WHERE TU.USER_KEY = A.WRITE_USER_KEY) as writerName,
+                    A.READ_COUNT
                     FROM T_BBS_DATA A
                     LEFT OUTER JOIN T_BBS_DATA_FILE B
                     ON A.BBS_KEY = B.BBS_KEY
                     WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
                     AND A.IS_NOTICE = 1
+                    ORDER BY A.INDATE ASC
                 )
 
                 UNION ALL
@@ -162,12 +165,15 @@
                     SELECT  /*+index_desc (B PK_T_BBS_DATA) */
                     B.BBS_KEY, TO_CHAR(B.INDATE, 'YYYY.MM.DD') as createDate, B.TITLE,
                     (SELECT COUNT(T.BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = B.BBS_KEY) as commentCnt,
-                    B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE, C.FILENAME
+                    B.WRITE_USER_KEY, TO_CHAR(INDATE, 'YYYY-MM-DD') as indate, IS_NOTICE, C.FILENAME,
+                    (SELECT NAME FROM T_USER TU WHERE TU.USER_KEY = B.WRITE_USER_KEY) as writerName,
+                    B.READ_COUNT
                     FROM T_BBS_DATA B
                     LEFT OUTER JOIN T_BBS_DATA_FILE C
                     ON B.BBS_KEY = C.BBS_KEY
                     WHERE B.BBS_MASTER_KEY = #{bbsMasterKey}
                     AND B.IS_NOTICE = 0
+                    ORDER BY B.INDATE DESC
                 )
             ) Z
         WHERE 1=1

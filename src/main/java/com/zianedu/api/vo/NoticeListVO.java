@@ -22,4 +22,8 @@ public class NoticeListVO {
     private String fileName;
 
     private String contents;
+
+    private String writerName;
+
+    private int readCount;
 }
