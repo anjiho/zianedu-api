@@ -266,7 +266,7 @@
         FROM T_BBS_DATA
         WHERE 1=1
         AND BBS_MASTER_KEY = #{bbsMasterKey}
-        AND IS_NOTICE IN (0,1)
+        AND IS_NOTICE IN (0)
         <if test="searchType == 'title'">
             AND TITLE LIKE '%'||#{searchText}||'%'
         </if>
