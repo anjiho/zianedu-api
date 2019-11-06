@@ -341,6 +341,30 @@
         OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
+    <select id="selectNoticePrevNextInfo" resultType="PrevNextVO">
+        SELECT T.* FROM (
+            SELECT
+                A.BBS_KEY,
+                LEAD (A.TITLE,1,'이전글') OVER (ORDER BY A.BBS_KEY) prevTitle,
+                LEAD (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) prevBbsKey,
+                LEAD (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) prevWriteUserKey,
+                LEAD (A.PWD,1) OVER (ORDER BY A.BBS_KEY) prevPwd,
+                TO_CHAR(LEAD (A.INDATE, 1) OVER (ORDER BY A.BBS_KEY), 'YYYY.MM.DD') prevCreateDate,
+
+                LAG  (A.TITLE,1,'다음글') OVER (ORDER BY A.BBS_KEY) nextTitle,
+                LAG  (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) nextBbsKey,
+                LAG  (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) nextWriteUserKey,
+                LAG  (A.PWD,1)  OVER (ORDER BY A.BBS_KEY) nextPwd,
+                TO_CHAR(LAG (A.INDATE, 1) OVER (ORDER BY A.BBS_KEY), 'YYYY.MM.DD') nextCreateDate
+
+            FROM T_BBS_DATA A
+            INNER JOIN T_USER B
+            ON A.WRITE_USER_KEY = B.USER_KEY
+            WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
+        ) T
+        WHERE T.BBS_KEY = #{bbsKey}
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

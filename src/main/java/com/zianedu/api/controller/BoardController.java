@@ -72,14 +72,15 @@ public class BoardController {
         return boardService.getCommunityList(bbsMasterKey, sPage, listLimit, searchType, searchText);
     }
 
-    @RequestMapping(value = "/getBoardDetailInfo/{bbsKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getBoardDetailInfo/{bbsMasterKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 상세정보(공지, 커뮤니티)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "path", required = true)
-
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true)
     })
-    public ApiResultObjectDTO getBoardDetailInfo(@PathVariable("bbsKey") int bbsKey) {
-        return boardService.getBoardDetailInfo(bbsKey);
+    public ApiResultObjectDTO getBoardDetailInfo(@PathVariable("bbsMasterKey") int bbsMasterKey,
+                                                 @RequestParam("bbsKey") int bbsKey) {
+        return boardService.getBoardDetailInfo(bbsMasterKey, bbsKey);
     }
 
     @RequestMapping(value = "/saveBoardComment", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)

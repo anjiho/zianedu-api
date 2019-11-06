@@ -13,6 +13,8 @@ public class PrevNextVO {
 
     private int prevPwd;
 
+    private String prevCreateDate;
+
     private int nextBbsKey;
 
     private String nextTitle;
@@ -20,4 +22,6 @@ public class PrevNextVO {
     private int nextWriteUserKey;
 
     private int nextPwd;
+
+    private String nextCreateDate;
 }

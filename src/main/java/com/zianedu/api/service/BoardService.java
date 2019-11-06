@@ -139,7 +139,7 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getBoardDetailInfo(int bbsKey) {
+    public ApiResultObjectDTO getBoardDetailInfo(int bbsMasterKey, int bbsKey) {
         int resultCode = OK.value();
 
         BoardDetailDTO boardDetailDTO = null;
@@ -155,8 +155,10 @@ public class BoardService extends PagingSupport {
             }
             //답글 리스트
             commentList = boardMapper.selectBoardCommentList(bbsKey);
+            //이전,다음글 정보
+            PrevNextVO prevNextVO = boardMapper.selectNoticePrevNextInfo(bbsMasterKey, bbsKey);
 
-            boardDetailDTO = new BoardDetailDTO(boardDetailVO, commentList);
+            boardDetailDTO = new BoardDetailDTO(boardDetailVO, commentList, prevNextVO);
         }
         return new ApiResultObjectDTO(boardDetailDTO, resultCode);
     }

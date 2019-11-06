@@ -54,6 +54,8 @@ public interface BoardMapper {
 
     List<NoticeListVO> selectSignUpReviewList(@Param("listLimitNumber") int listLimitNumber);
 
+    PrevNextVO selectNoticePrevNextInfo(@Param("bbsMasterKey") int bbsMasterKey, @Param("bbsKey") int bbsKey);
+
 
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
