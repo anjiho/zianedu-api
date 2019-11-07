@@ -365,6 +365,13 @@
         WHERE T.BBS_KEY = #{bbsKey}
     </select>
 
+    <select id="selectLectureRoomTableList" resultType="LectureRoomTableVO">
+        SELECT ACADEMY_NUMBER, TO_CHAR(LECTURE_DATE, 'YYYY-mm-dd') as lectureDate, FILE_NAME
+         FROM T_LECTURE_ROOM_TABLE
+        WHERE LECTURE_DATE = #{lectureDate}
+        ORDER BY ACADEMY_NUMBER ASC
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
@@ -423,6 +430,13 @@
         )
     </insert>
 
+    <insert id="insertTLectureRoomTable" parameterType="LectureRoomTableVO">
+        INSERT INTO T_LECTURE_ROOM_TABLE
+        ( LECTURE_DATE, ACADEMY_NUMBER, FILE_NAME )
+        VALUES
+        ( #{lectureDate}, #{academyNumber}, #{fileName} )
+    </insert>
+
     <update id="updateTBbsData" parameterType="TBbsDataVO">
         UPDATE T_BBS_DATA
         <set>
@@ -463,5 +477,11 @@
 
     <delete id="deleteTBbsComment">
         DELETE FROM T_BBS_COMMENT WHERE BBS_COMMNET_KEY = #{bbsCommentKey}
+    </delete>
+
+    <delete id="deleteTLectureRoomTable">
+        DELETE FROM T_LECTURE_ROOM_TABLE
+        WHERE LECTURE_DATE = #{lectureDate}
+        AND ACADEMY_NUMBER = #{academyNumber}
     </delete>
 </mapper>

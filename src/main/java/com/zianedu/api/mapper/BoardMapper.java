@@ -56,6 +56,8 @@ public interface BoardMapper {
 
     PrevNextVO selectNoticePrevNextInfo(@Param("bbsMasterKey") int bbsMasterKey, @Param("bbsKey") int bbsKey);
 
+    List<LectureRoomTableVO> selectLectureRoomTableList(@Param("lectureDate") String lectureDate);
+
 
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
@@ -65,6 +67,8 @@ public interface BoardMapper {
     void insertTBbsData(TBbsDataVO tBbsDataVO);
 
     void insertTBbsDataFile(@Param("bbsKey") int bbsKey, @Param("fileName") String fileName);
+
+    void insertTLectureRoomTable(LectureRoomTableVO lectureRoomTableVO);
 
     /** UPDATE **/
     void updateTBbsData(TBbsDataVO tBbsDataVO);
@@ -81,4 +85,6 @@ public interface BoardMapper {
     void deleteTBbsCommentFromBbsKey(@Param("bbsKey") int bbsKey);
 
     void deleteTBbsComment(@Param("bbsCommentKey") int bbsCommentKey);
+
+    void deleteTLectureRoomTable(@Param("lectureDate") String lectureDate, @Param("academyNumber") int academyNumber);
 }

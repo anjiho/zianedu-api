@@ -188,4 +188,26 @@ public class BoardController {
                                             @RequestParam("listLimit") int listLimit) throws Exception {
         return boardService.getBannerNoticeList(bbsMasterKey, sPage, listLimit);
     }
+
+    @RequestMapping(value = "/getLectureRoomTableList/{lectureDate}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강의실 배정표 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "lectureDate", value = "조회할 날짜(YYYY-MM-DD)", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getLectureRoomTableList(@PathVariable("lectureDate") String lectureDate) {
+        return boardService.getLectureRoomTableList(lectureDate);
+    }
+
+    @RequestMapping(value = "/saveLectureRoomTable", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강의실 배정표 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "lectureDate", value = "입력 날짜(YYYY-MM-DD)", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "academyNumber", value = "학원관 번호(1관 : 1, 2관 : 2)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "fileName", value = "배정표 파일명", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveLectureRoomTable(@RequestParam("lectureDate") String lectureDate,
+                                                 @RequestParam("academyNumber") int academyNumber,
+                                                 @RequestParam("fileName") String fileName) {
+        return boardService.saveLectureRoomTable(lectureDate, academyNumber, fileName);
+    }
 }

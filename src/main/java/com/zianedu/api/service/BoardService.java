@@ -24,6 +24,8 @@ public class BoardService extends PagingSupport {
     @Autowired
     private BoardMapper boardMapper;
 
+    protected int resultCode = OK.value();
+
     /**
      * 리뷰 저장
      * @param gKey
@@ -167,6 +169,7 @@ public class BoardService extends PagingSupport {
      * 랜딩페이지 합격 수기, 수강후기 가져오기
      * @return
      */
+    @Transactional(readOnly = true)
     public ApiResultListDTO getReviewList(String reviewType, int listLimit) {
         int resultCode = OK.value();
 
@@ -181,6 +184,23 @@ public class BoardService extends PagingSupport {
             }
         }
         return new ApiResultListDTO(reviewList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getLectureRoomTableList(String lectureDate) {
+        List<LectureRoomTableVO> roomTableList = new ArrayList<>();
+
+        if ("".equals(lectureDate)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            roomTableList = boardMapper.selectLectureRoomTableList(lectureDate);
+            if (roomTableList.size() > 0) {
+                for (LectureRoomTableVO vo : roomTableList) {
+                    vo.setFileName(ConfigHolder.getFileDomainUrl() + "/100/bbs/" + vo.getFileName());
+                }
+            }
+        }
+        return new ApiResultListDTO(roomTableList, resultCode);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -215,6 +235,18 @@ public class BoardService extends PagingSupport {
             }
         }
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveLectureRoomTable(String lectureDate, int academyNumber, String fileName) {
+        if ("".equals(lectureDate) && academyNumber == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            LectureRoomTableVO lectureRoomTableVO = new LectureRoomTableVO(lectureDate, academyNumber, fileName);
+            boardMapper.deleteTLectureRoomTable(lectureDate, academyNumber);
+            boardMapper.insertTLectureRoomTable(lectureRoomTableVO);
+        }
+        return new ApiResultCodeDTO("lectureDate", lectureDate, resultCode);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
