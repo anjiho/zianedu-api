@@ -140,7 +140,7 @@ public class BoardService extends PagingSupport {
         return new ApiPagingResultDTO(totalCount, communityList, resultCode);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultObjectDTO getBoardDetailInfo(int bbsMasterKey, int bbsKey) {
         int resultCode = OK.value();
 
@@ -159,6 +159,8 @@ public class BoardService extends PagingSupport {
             commentList = boardMapper.selectBoardCommentList(bbsKey);
             //이전,다음글 정보
             PrevNextVO prevNextVO = boardMapper.selectNoticePrevNextInfo(bbsMasterKey, bbsKey);
+            //ReadCount 증가
+            boardMapper.updateTBbsReadCount(bbsKey);
 
             boardDetailDTO = new BoardDetailDTO(boardDetailVO, commentList, prevNextVO);
         }

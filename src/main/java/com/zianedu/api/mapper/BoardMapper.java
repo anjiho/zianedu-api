@@ -77,6 +77,8 @@ public interface BoardMapper {
 
     void updateTBbsComment(@Param("bbsCommentKey") int bbsCommentKey, @Param("comment") String comment);
 
+    void updateTBbsReadCount(@Param("bbsKey") int bbsKey);
+
     /** DELETE **/
     void deleteTBbsData(@Param("bbsKey") int bbsKey);
 

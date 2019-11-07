@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,5 +32,16 @@ public class FileUploadController {
         String savePath = ConfigHolder.getFileUploadPath() + "/100/bbs";
         Map<String, String> resultMap = fileUploadService.boardFileUpload(request, savePath);
         return new ApiResultCodeDTO("fileName", resultMap.get("file_name"), 200);
+    }
+
+    @RequestMapping(value = "/boardFileList", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("게시판 파일 다중 업로드")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "files", value = "게시판 파일", dataType = "file", paramType = "form", required = true)
+    })
+    public ApiResultCodeDTO boardFileListUpload(MultipartHttpServletRequest request) throws Exception {
+        String savePath = ConfigHolder.getFileUploadPath() + "/100/bbs";
+        List<String> resultList  = fileUploadService.boardFileListUpload(request, savePath);
+        return new ApiResultCodeDTO("fileNameList", resultList, 200);
     }
 }

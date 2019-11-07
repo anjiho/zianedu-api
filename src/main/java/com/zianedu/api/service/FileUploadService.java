@@ -11,9 +11,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FileUploadService {
@@ -93,6 +91,41 @@ public class FileUploadService {
             e.printStackTrace();
         }
         return resultMap;
+    }
 
+    public List<String> boardFileListUpload(MultipartHttpServletRequest request, String savePath) throws Exception {
+        List<String>resultList = new ArrayList<>();
+
+        List<MultipartFile> fileList = request.getFiles("files");
+        if (fileList.size() > 0) {
+            for (MultipartFile mf : fileList ) {
+                String originFileName = mf.getOriginalFilename();
+                long fileSize = mf.getSize();
+
+                logger.info("originFileName >> " + originFileName);
+                logger.info("fileSize >> " + fileSize);
+
+                String makeFileName = originFileName.substring( 0, originFileName.lastIndexOf(".") );
+                int filePos = originFileName.lastIndexOf(".");
+                String fileExtension = originFileName.substring(filePos+1);
+
+                String finalFileName = makeFileName + "_" + Util.returnNowDateByYyyymmddhhmmss() + "." + fileExtension;
+                //디렉토리 존재 확인
+                File uploadDirectory = new File(savePath);
+                if (!uploadDirectory.isDirectory()) {
+                    uploadDirectory.mkdirs();
+                }
+                File serverFile = new File(FileUtil.concatPath(uploadDirectory.toString(), finalFileName));
+                logger.info("serverFile ---------------> " + serverFile);
+                mf.transferTo(serverFile);
+                //root경로 파일 삭제
+                FileUtil.fileDelete(finalFileName);
+                FileUtil.fileDelete(originFileName);
+                logger.info("originalFileName ---------------> " + originFileName);
+
+                resultList.add(serverFile.getName());
+            }
+        }
+        return resultList;
     }
 }

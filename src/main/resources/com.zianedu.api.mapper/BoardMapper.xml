@@ -463,6 +463,12 @@
         WHERE BBS_COMMNET_KEY = #{bbsCommentKey}
     </update>
 
+    <update id="updateTBbsReadCount" parameterType="int">
+        UPDATE T_BBS_DATA
+        SET READ_COUNT = READ_COUNT + 1
+        WHERE BBS_KEY = #{bbsKey}
+    </update>
+
     <delete id="deleteTBbsData">
         DELETE FROM T_BBS_DATA WHERE BBS_KEY = #{bbsKey}
     </delete>
