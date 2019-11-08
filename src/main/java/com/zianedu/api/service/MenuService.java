@@ -1,5 +1,6 @@
 package com.zianedu.api.service;
 
+import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.LeftMenuSubDepthListDTO;
@@ -7,6 +8,7 @@ import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
+import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.vo.TCategoryVO;
 
 import com.zianedu.api.vo.TeacherVO;
@@ -73,10 +75,15 @@ public class MenuService {
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            teacherMenuList = menuMapper.selectTCategoryByParentKey(ctgKey);
+            teacherMenuList = menuMapper.selectTCategoryByCtgKey(ctgKey);
             if (teacherMenuList.size() > 0) {
                 for (TCategoryVO vo : teacherMenuList) {
                     List<TeacherVO> teacherInfo = menuMapper.selectTeacherListFromTeacherIntroduce(vo.getCtgKey());
+                    if (teacherInfo.size() > 0) {
+                        for (TeacherVO teacherVO : teacherInfo) {
+                            teacherVO.setTeacherImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherVO.getTeacherImage()));
+                        }
+                    }
                     vo.setTeacherList(teacherInfo);
                 }
             }

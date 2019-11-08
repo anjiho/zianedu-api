@@ -10,4 +10,8 @@ public class TeacherVO {
     private int teacherKey;
 
     private String teacherName;
+
+    private String subjectName;
+
+    private String teacherImage;
 }

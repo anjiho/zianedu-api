@@ -16,8 +16,14 @@
         ORDER BY POS ASC
     </select>
 
+    <select id="selectTCategoryByCtgKey" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        WHERE CTG_KEY = #{ctgKey}
+        ORDER BY POS ASC
+    </select>
+
     <select id="selectTeacherListFromTeacherIntroduce" resultType="TeacherVO">
-        SELECT A.REQ_KEY, C.TEACHER_KEY, D.NAME as teacherName
+        SELECT A.REQ_KEY, C.TEACHER_KEY, D.NAME as teacherName, B.NAME as subjectName, C.IMAGE_LIST as teacherImage
         FROM T_LINK_KEY A
         INNER JOIN T_CATEGORY B
         ON A.REQ_KEY = B.CTG_KEY

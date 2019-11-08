@@ -11,7 +11,7 @@ public class PrevNextVO {
 
     private int prevWriteUserKey;
 
-    private int prevPwd;
+    private Integer prevPwd;
 
     private String prevCreateDate;
 
@@ -21,7 +21,7 @@ public class PrevNextVO {
 
     private int nextWriteUserKey;
 
-    private int nextPwd;
+    private Integer nextPwd;
 
     private String nextCreateDate;
 }

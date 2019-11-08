@@ -100,11 +100,6 @@ public class FileUploadService {
         if (fileList.size() > 0) {
             for (MultipartFile mf : fileList ) {
                 String originFileName = mf.getOriginalFilename();
-                long fileSize = mf.getSize();
-
-                logger.info("originFileName >> " + originFileName);
-                logger.info("fileSize >> " + fileSize);
-
                 String makeFileName = originFileName.substring( 0, originFileName.lastIndexOf(".") );
                 int filePos = originFileName.lastIndexOf(".");
                 String fileExtension = originFileName.substring(filePos+1);
