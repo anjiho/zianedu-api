@@ -109,6 +109,8 @@ public class TeacherService extends PagingSupport {
                         vo2.setVideoLectureKindList(videoLectureKindList);
                         //동영상 종류별 금액 주입하기
                         for (TGoodsPriceOptionVO priceOptionVO : videoLectureKindList) {
+                            String discountPercentName = Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice());
+                            priceOptionVO.setDiscountPercent(discountPercentName);
                             if (priceOptionVO.getKind() == 100) {
                                 vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
                             } else if (priceOptionVO.getKind() == 101) {

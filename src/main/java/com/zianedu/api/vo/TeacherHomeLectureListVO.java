@@ -45,6 +45,8 @@ public class TeacherHomeLectureListVO {
 
     private int lecKey;
 
+    private String discountPercentName;
+
     private List<TGoodsPriceOptionVO> videoLectureKindList;
 
     private List<LectureBookVO> teacherLectureBook;
