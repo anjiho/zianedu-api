@@ -38,11 +38,13 @@ public class TeacherController {
     @ApiOperation("강사소개 > 동영상 강좌 정보")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 키값(전체는 0) ", dataType = "int", paramType = "query", required = true)
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 키값(전체는 0) ", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "device", value = "디바이스 종류(데스크탑 : 1, 모바일 : 3)", dataType = "int", paramType = "query", required = true)
     })
     public ApiResultListDTO getTeacherVideoLecture(@PathVariable("teacherKey") int teacherKey,
-                                                   @RequestParam("stepCtgKey") int stepCtgKey) {
-        return teacherService.getTeacherLectureList(teacherKey, stepCtgKey);
+                                                   @RequestParam("stepCtgKey") int stepCtgKey,
+                                                   @RequestParam("device") int device) {
+        return teacherService.getTeacherLectureList(teacherKey, stepCtgKey, device);
     }
 
     @RequestMapping(value = "/getTeacherAcademyLecture/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

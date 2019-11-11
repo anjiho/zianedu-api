@@ -87,13 +87,14 @@ public class TeacherService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getTeacherLectureList(int teacherKey, int stepCtgKey) {
+    public ApiResultListDTO getTeacherLectureList(int teacherKey, int stepCtgKey, int device) {
         int resultCode = OK.value();
 
         List<TeacherHomeLectureVO> teacherHomeLectureList = new ArrayList<>();
         if (teacherKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            List<TLecCurriVO> lectureList = new ArrayList<>();
             teacherHomeLectureList = teacherMapper.selectTeacherVideoLectureList(teacherKey, stepCtgKey);
             if (teacherHomeLectureList.size() > 0) {
                 for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
@@ -124,6 +125,9 @@ public class TeacherService extends PagingSupport {
                         //강좌책 주입
                         List<LectureBookVO> teacherBookList = productMapper.selectTeacherBookListFromVideoLectureLink(vo2.getGKey());
                         vo2.setTeacherLectureBook(teacherBookList);
+
+                        lectureList = productMapper.selectLectureListFromVideoProduct(vo2.getGKey(), device);
+                        vo.setLectureList(lectureList);
                     }
                 }
             }
