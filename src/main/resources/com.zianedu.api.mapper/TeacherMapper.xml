@@ -50,10 +50,7 @@
     </resultMap>
 
     <select id="selectTeacherInfo" resultType="TTeacherVO">
-        SELECT T.*,
-                (SELECT A.NAME FROM T_USER A WHERE A.USER_KEY = T.USER_KEY AND T.TEACHER_KEY = #{teacherKey}) as teacherName
-        FROM T_TEACHER T
-        WHERE TEACHER_KEY = #{teacherKey};
+        SELECT * FROM T_TEACHER WHERE TEACHER_KEY = #{teacherKey};
     </select>
 
     <select id="selectTeacherNameSubjectName" resultType="TeacherNameSubjectVO">
