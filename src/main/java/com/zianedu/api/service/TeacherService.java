@@ -350,5 +350,18 @@ public class TeacherService extends PagingSupport {
         return new ApiResultStringDTO(teacherCurriculum, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getTeacherNameSubjectName(int teacherKey, int reqKey) {
+        int resultCode = OK.value();
+
+        TeacherNameSubjectVO teacherNameSubjectVO = new TeacherNameSubjectVO();
+
+        if (teacherKey == 0 && reqKey < 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherNameSubjectVO = teacherMapper.selectTeacherNameSubjectName(teacherKey, reqKey);
+        }
+        return new ApiResultObjectDTO(teacherNameSubjectVO, resultCode);
+    }
 
 }

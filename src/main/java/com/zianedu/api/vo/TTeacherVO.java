@@ -42,4 +42,6 @@ public class TTeacherVO {
     private String introduce;
 
     private String youtubeUrl;
+
+    private String teacherName;
 }

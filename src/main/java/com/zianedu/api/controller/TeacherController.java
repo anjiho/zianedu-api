@@ -161,5 +161,16 @@ public class TeacherController {
         return teacherService.getTeacherCurriculum(teacherKey, device, menuCtgKey);
     }
 
+    @RequestMapping(value = "/getTeacherNameSubjectName/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("교수 이름, 과목명 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "reqKey", value = "reqKey", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherNameSubjectName(@PathVariable("teacherKey") int teacherKey,
+                                                      @RequestParam("reqKey") int reqKey) {
+        return teacherService.getTeacherNameSubjectName(teacherKey, reqKey);
+    }
+
 
 }

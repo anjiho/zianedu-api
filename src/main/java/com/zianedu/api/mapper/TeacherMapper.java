@@ -24,6 +24,8 @@ public interface TeacherMapper {
 
     List<TeacherIntroduceVO> selectTeacherIntroduce(@Param("ctgKey") int ctgKey, @Param("pos") int pos);
 
+    TeacherNameSubjectVO selectTeacherNameSubjectName(@Param("teacherKey") int teacherKey, @Param("reqKey") int reqKey);
+
 
     /** INSERT **/
 
