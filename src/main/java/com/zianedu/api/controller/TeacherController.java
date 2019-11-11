@@ -3,6 +3,7 @@ package com.zianedu.api.controller;
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.ApiResultStringDTO;
 import com.zianedu.api.service.TeacherService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -145,5 +146,20 @@ public class TeacherController {
                                                               @RequestParam("pos") int pos) {
         return teacherService.getTeacherIntroduceList(ctgKey, pos);
     }
+
+    //teacherKey, device, menuCtgKey
+    @RequestMapping(value = "/getTeacherCurriculum/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사 커리큘럼 정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "device", value = "디바이스 종류(데스크탑 : 1, 모바일 : 3) ", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "menuCtgKey", value = "과목의 CTG_KEY (parent_mnk의 값) ", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultStringDTO getTeacherCurriculum(@PathVariable("teacherKey") int teacherKey,
+                                                   @RequestParam("device") int device,
+                                                   @RequestParam("menuCtgKey") int menuCtgKey) {
+        return teacherService.getTeacherCurriculum(teacherKey, device, menuCtgKey);
+    }
+
 
 }

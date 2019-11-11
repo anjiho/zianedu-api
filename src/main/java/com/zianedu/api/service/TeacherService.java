@@ -4,10 +4,7 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.BbsMasterKeyType;
 import com.zianedu.api.define.datasource.EmphasisType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.ReferenceRoomDetailDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
@@ -37,6 +34,8 @@ public class TeacherService extends PagingSupport {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    protected int resultCode = OK.value();
 
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getTeacherHomeInfo(int teacherKey, int listLimit, int device, int menuCtgKey) {
@@ -333,6 +332,19 @@ public class TeacherService extends PagingSupport {
             teacherInfo.setImageTeacherViewUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherInfo.getImageTeacherView()));
         }
         return teacherInfo;
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultStringDTO getTeacherCurriculum(int teacherKey, int device, int menuCtgKey) {
+        String teacherCurriculum = "";
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //강사 상세설명 정보
+            teacherCurriculum = teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey);
+        }
+        return new ApiResultStringDTO(teacherCurriculum, resultCode);
     }
 
 
