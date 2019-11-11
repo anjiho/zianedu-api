@@ -40,4 +40,6 @@ public class TTeacherVO {
     private String imageTeacherViewUrl;
 
     private String introduce;
+
+    private String youtubeUrl;
 }

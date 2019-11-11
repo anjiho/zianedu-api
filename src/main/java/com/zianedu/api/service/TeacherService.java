@@ -65,7 +65,10 @@ public class TeacherService extends PagingSupport {
                 for (GoodsListVO vo : videoLecture) {
                     //할인률 주입(상품이 여러개면 할인률이 제일 큰값으로 가져온다)
                     CalcPriceVO calcPrice = productMapper.selectTopCalcPrice(vo.getGKey());
-                    String discountPercent = Util.getProductDiscountRate(calcPrice.getPrice(), calcPrice.getSellPrice());
+                    String discountPercent = "";
+                    if (calcPrice.getPrice() > 0 && calcPrice.getSellPrice() > 0) {
+                        discountPercent = Util.getProductDiscountRate(calcPrice.getPrice(), calcPrice.getSellPrice());
+                    }
                     vo.setDiscountPercent("[" + discountPercent + "할인]");
                 }
             }
