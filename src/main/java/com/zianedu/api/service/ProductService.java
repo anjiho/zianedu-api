@@ -304,7 +304,7 @@ public class ProductService {
                             }
                         }
                         //무료강의 리스트 주입
-                        vo2.setLectureCurriList(lectureCurriList);
+                        vo2.setLectureList(lectureCurriList);
                     }
                 }
             }

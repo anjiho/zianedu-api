@@ -51,5 +51,5 @@ public class TeacherHomeLectureListVO {
 
     private List<LectureBookVO> teacherLectureBook;
 
-    private List<TLecCurriVO> lectureCurriList;
+    private List<TLecCurriVO> lectureList;
 }

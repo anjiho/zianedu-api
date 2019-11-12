@@ -15,6 +15,4 @@ public class TeacherHomeLectureVO {
     @JsonProperty(value = "teacherLectureList")
     private List<TeacherHomeLectureListVO> teacherLectureList;
 
-    private List<TLecCurriVO> lectureList;
-
 }
