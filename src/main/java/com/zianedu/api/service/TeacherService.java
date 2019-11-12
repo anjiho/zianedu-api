@@ -149,7 +149,7 @@ public class TeacherService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getTeacherLearningQna(int teacherKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
+    public ApiPagingResultDTO getTeacherLearningQna(int teacherKey, int sPage, int listLimit, String searchType, String searchText, int isNotice) throws Exception {
         int resultCode = OK.value();
 
         List<ReferenceRoomVO> learningQnaList = new ArrayList<>();
@@ -163,7 +163,8 @@ public class TeacherService extends PagingSupport {
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
                     teacherKey,
                     Util.isNullValue(searchType, ""),
-                    Util.isNullValue(searchText, "")
+                    Util.isNullValue(searchText, ""),
+                    isNotice
             );
             learningQnaList = boardMapper.selectTBbsDataListBySearch(
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
@@ -171,7 +172,8 @@ public class TeacherService extends PagingSupport {
                     startNumber,
                     listLimit,
                     Util.isNullValue(searchType, ""),
-                    Util.isNullValue(searchText, "")
+                    Util.isNullValue(searchText, ""),
+                    isNotice
             );
             if (learningQnaList.size() > 0) {
                 String standardDate = Util.plusDate(Util.returnNow(), -10);
@@ -187,7 +189,7 @@ public class TeacherService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getReferenceRoomList(int teacherKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
+    public ApiPagingResultDTO getReferenceRoomList(int teacherKey, int sPage, int listLimit, String searchType, String searchText, int isNotice) throws Exception {
         int resultCode = OK.value();
 
         List<ReferenceRoomVO> referenceRoomList = new ArrayList<>();
@@ -201,7 +203,8 @@ public class TeacherService extends PagingSupport {
                     BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
                     teacherKey,
                     Util.isNullValue(searchType, ""),
-                    Util.isNullValue(searchText, "")
+                    Util.isNullValue(searchText, ""),
+                    isNotice
             );
             referenceRoomList = boardMapper.selectTBbsDataListBySearch(
                     BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(),
@@ -209,7 +212,8 @@ public class TeacherService extends PagingSupport {
                     startNumber,
                     listLimit,
                     Util.isNullValue(searchType, ""),
-                    Util.isNullValue(searchText, "")
+                    Util.isNullValue(searchText, ""),
+                    isNotice
             );
             if (referenceRoomList.size() > 0) {
                 String standardDate = Util.plusDate(Util.returnNow(), -10);

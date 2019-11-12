@@ -19,9 +19,10 @@
         SELECT * FROM (
             SELECT
                 A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL, CONTENTS,
-                (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD
+                (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD, A.IS_NOTICE
             FROM T_BBS_DATA A
-            WHERE A.IS_NOTICE = 0
+            WHERE 1=1
+            AND A.IS_NOTICE = #{isNotice}
             AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
             START WITH A.BBS_PARENT_KEY = 0
@@ -38,6 +39,7 @@
         <if test="searchType == 'user'">
             AND Z.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
         </if>
+        ORDER BY Z.IS_NOTICE DESC
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
@@ -45,7 +47,8 @@
         SELECT * FROM (
             SELECT COUNT(A.BBS_KEY)
             FROM T_BBS_DATA A
-            WHERE A.IS_NOTICE = 0
+            WHERE 1=1
+            AND A.IS_NOTICE = #{isNotice}
             AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
         ) Z

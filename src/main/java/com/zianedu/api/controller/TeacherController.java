@@ -66,13 +66,15 @@ public class TeacherController {
             @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "searchType", value = "검색 타입(제목 : 'title', 작성자 : 'name', 내용 : 'contents'", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(name = "searchText", value = "검색 내용", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "isNotice", value = "공지 여부(0 : 일반, 1 : 공지)", dataType = "int", paramType = "query", required = true),
     })
     public ApiPagingResultDTO getTeacherReferenceRoom(@PathVariable("teacherKey") int teacherKey,
                                                       @RequestParam("sPage") int sPage,
                                                       @RequestParam("listLimit") int listLimit,
                                                       @RequestParam(value = "searchType", required = false) String searchType,
-                                                      @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
-        return teacherService.getReferenceRoomList(teacherKey, sPage, listLimit, searchType, searchText);
+                                                      @RequestParam(value = "searchText", required = false) String searchText,
+                                                      @RequestParam(value = "isNotice", required = false) int isNotice) throws Exception {
+        return teacherService.getReferenceRoomList(teacherKey, sPage, listLimit, searchType, searchText, isNotice);
     }
 
     @RequestMapping(value = "/getTeacherLearningQna/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
@@ -89,7 +91,7 @@ public class TeacherController {
                                                       @RequestParam("listLimit") int listLimit,
                                                       @RequestParam(value = "searchType", required = false) String searchType,
                                                       @RequestParam(value = "searchText", required = false) String searchText) throws Exception {
-        return teacherService.getTeacherLearningQna(teacherKey, sPage, listLimit, searchType, searchText);
+        return teacherService.getTeacherLearningQna(teacherKey, sPage, listLimit, searchType, searchText, 0);
     }
 
     @RequestMapping(value = "/getTeacherLectureReview/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

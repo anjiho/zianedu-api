@@ -31,4 +31,6 @@ public class ReferenceRoomVO {
 
     private boolean isNew;
 
+    private int isNotice;
+
 }

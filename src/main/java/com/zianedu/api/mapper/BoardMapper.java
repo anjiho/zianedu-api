@@ -14,10 +14,12 @@ public interface BoardMapper {
 
     List<ReferenceRoomVO> selectTBbsDataListBySearch(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey,
                                                      @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
-                                                     @Param("searchType") String searchType, @Param("searchText") String searchText);
+                                                     @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                                     @Param("isNotice") int isNotice);
 
     int selectTBbsDataListBySearchCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey,
-                                        @Param("searchType") String searchType, @Param("searchText") String searchText);
+                                        @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                        @Param("isNotice") int isNotice);
 
     List<GoodsReviewVO> selectGoodsReviewList(@Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                            @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
