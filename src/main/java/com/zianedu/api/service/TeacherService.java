@@ -104,7 +104,7 @@ public class TeacherService extends PagingSupport {
                         //vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo2.getSellPrice())) + "원");
                         //할인률 주입
                         CalcPriceVO calcPriceVO = productMapper.selectTopCalcPrice(vo2.getGKey());
-                        vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()) + "할인");
+                        vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()));
                         //동영상, 모바일, 동영상+모바일 리스트 주입
                         List<TGoodsPriceOptionVO> videoLectureKindList = productMapper.selectGoodsPriceOptionList(vo2.getGKey());
                         vo2.setVideoLectureKindList(videoLectureKindList);
@@ -112,6 +112,7 @@ public class TeacherService extends PagingSupport {
                         for (TGoodsPriceOptionVO priceOptionVO : videoLectureKindList) {
                             String discountPercentName = Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice());
                             priceOptionVO.setDiscountPercent(discountPercentName);
+                            priceOptionVO.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())));
                             if (priceOptionVO.getKind() == 100) {
                                 vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
                             } else if (priceOptionVO.getKind() == 101) {

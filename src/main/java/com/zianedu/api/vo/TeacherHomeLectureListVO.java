@@ -17,7 +17,7 @@ public class TeacherHomeLectureListVO {
 
     private int price;
 
-    private int sellPrice;
+    private String sellPrice;
 
     private String discountPercent;
 
