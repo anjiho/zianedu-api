@@ -29,11 +29,15 @@ public class TeacherHomeAcademyListVO {
 
     private int priceKey;
 
-    private String sellPrice;
+    private String sellPriceName;
 
     private String lectureDate;
 
     private String imageTeacherList;
 
     private String imageTeacherUrl;
+
+    private int sellPrice;
+
+    private List<LectureBookVO> teacherLectureBook;
 }

@@ -148,6 +148,24 @@ public class TeacherService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             teacherHomeAcademyList = teacherMapper.selectTeacherAcademyLectureList(teacherKey, stepCtgKey);
+            if (teacherHomeAcademyList.size() > 0) {
+                for (TeacherHomeAcademyVO vo : teacherHomeAcademyList) {
+                    if (vo.getTeacherAcademyList().size() > 0) {
+                        for (TeacherHomeAcademyListVO academyListVO : vo.getTeacherAcademyList()) {
+                            //할인률 주입
+                            if (academyListVO.getPrice() > 0 && academyListVO.getSellPrice() > 0 ) {
+                                String discountPercentName = Util.getProductDiscountRate(academyListVO.getPrice(), academyListVO.getSellPrice());
+                                academyListVO.setDiscountPercent(discountPercentName);
+                            }
+                            //강좌책 주입
+                            List<LectureBookVO> teacherBookList = productMapper.selectTeacherAcademyLectureBookList(academyListVO.getGKey());
+                            academyListVO.setTeacherLectureBook(teacherBookList);
+                        }
+                    }
+                }
+
+            }
+
         }
         return new ApiResultListDTO(teacherHomeAcademyList, resultCode);
     }

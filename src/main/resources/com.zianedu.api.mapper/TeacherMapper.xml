@@ -30,11 +30,13 @@
         <result property="ctgName" column="CTG_NAME"/>
         <result property="emphasis" column="EMPHASIS"/>
         <result property="goodsName" column="goodsName"/>
-        <result property="sellPrice" column="SELL_PRICE"/>
+        <result property="sellPriceName" column="sellPriceName"/>
         <result property="kind" column="KIND"/>
         <result property="priceKey" column="PRICE_KEY"/>
         <result property="lectureDate" column="lectureDate"/>
         <result property="imageTeacherList" column="IMAGE_TEACHER_LIST"/>
+        <result property="price" column="PRICE"/>
+        <result property="sellPrice" column="SELL_PRICE"/>
     </resultMap>
 
     <resultMap id="teacherIntroduceMap" type="TeacherIntroduceVO">
@@ -199,7 +201,7 @@
                 SELECT A.G_KEY, C.STEP_CTG_KEY, D.NAME as ctgName, A.EMPHASIS, A.NAME as goodsName,
                        (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, E.IMAGE_TEACHER_LIST, G.KIND, G.PRICE_KEY,
                         CONCAT( CONCAT( TO_CHAR(C.STARTDATE, 'YYYY-MM-DD'), ' ~ '),  TO_CHAR(C.STARTDATE + C.LIMIT_DAY, 'YYYY-MM-DD')) as lectureDate,
-                       TRIM ( TO_CHAR(G.SELL_PRICE, '999,999') ) as sellPrice
+                       TRIM ( TO_CHAR(G.SELL_PRICE, '999,999') ) as sellPriceName, G.PRICE, G.SELL_PRICE
                 FROM T_GOODS A
                 INNER JOIN T_GOODS_TEACHER_LINK B
                 ON A.G_KEY = B.G_KEY

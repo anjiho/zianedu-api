@@ -409,6 +409,24 @@
         AND A.REQ_KEY = #{gKey}
     </select>
 
+    <select id="selectTeacherAcademyLectureBookList" resultType="LectureBookVO">
+        SELECT
+            A.LINK_KEY, C.G_KEY, B.NAME as bookName,
+            TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPriceName,
+            TRIM( TO_CHAR(C.PRICE, '999,999,999,999,999') ) as priceName,
+            C.SELL_PRICE,
+            C.PRICE,
+            B.IMAGE_VIEW, B.IMAGE_LIST,
+            A.VALUE_BIT, C.PRICE_KEY, CASE A.VALUE_BIT WHEN '1' THEN '주교재' WHEN '0' THEN '부교재' END as isMain
+        FROM T_LINK_KEY A
+        INNER JOIN T_GOODS B
+        ON A.RES_KEY = B.G_KEY
+        INNER JOIN T_GOODS_PRICE_OPTION C
+        ON B.G_KEY = C.G_KEY
+        WHERE A.RES_TYPE = 5
+        AND A.REQ_KEY = 107168
+    </select>
+
     <select id="selectOnlineVideoLectureDetailInfo" resultType="VideoLectureDetailVO">
         SELECT A.G_KEY, A.NAME as goodsName, B.STATUS, B.LIMIT_DAY,
                 (SELECT COUNT(Z.LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = B.LEC_KEY) as lectureCount,
