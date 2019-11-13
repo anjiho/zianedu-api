@@ -159,6 +159,14 @@ public class TeacherService extends PagingSupport {
                             }
                             //강좌책 주입
                             List<LectureBookVO> teacherBookList = productMapper.selectTeacherAcademyLectureBookList(academyListVO.getGKey());
+                            if (teacherBookList.size() > 0) {
+                                for (LectureBookVO bookVO : teacherBookList) {
+                                    if (bookVO.getPrice() > 0 && bookVO.getSellPrice() > 0 ) {
+                                        String discountPercentName = Util.getProductDiscountRate(bookVO.getPrice(), bookVO.getSellPrice());
+                                        bookVO.setDiscountPercent(discountPercentName);
+                                    }
+                                }
+                            }
                             academyListVO.setTeacherLectureBook(teacherBookList);
                         }
                     }
