@@ -51,17 +51,18 @@
             AND A.IS_NOTICE = #{isNotice}
             AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
+            <if test="searchType == 'title'">
+                AND A.TITLE LIKE '%'||#{searchText}||'%'
+            </if>
+            <if test="searchType == 'contents'">
+                AND A.CONTENTS LIKE '%'||#{searchText}||'%'
+            </if>
+            <if test="searchType == 'user'">
+                AND A.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
+            </if>
         ) Z
         WHERE 1=1
-        <if test="searchType == 'title'">
-            AND Z.TITLE LIKE '%'||#{searchText}||'%'
-        </if>
-        <if test="searchType == 'contents'">
-            AND Z.CONTENTS LIKE '%'||#{searchText}||'%'
-        </if>
-        <if test="searchType == 'user'">
-            AND Z.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
-        </if>
+
     </select>
 
     <select id="selectGoodsReviewList" resultType="GoodsReviewVO">
