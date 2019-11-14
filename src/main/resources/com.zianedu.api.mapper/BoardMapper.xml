@@ -378,19 +378,19 @@
         SELECT TTT.* FROM (
             SELECT
                 TT.BBS_KEY,
-                LEAD (TT.TITLE,1,'이전글') OVER (ORDER BY TT.BBS_KEY) prevTitle,
-                LEAD (TT.BBS_KEY,1) OVER (ORDER BY TT.BBS_KEY) prevBbsKey,
-                LEAD (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.BBS_KEY) prevWriteUserKey,
-                LEAD (TT.PWD,1) OVER (ORDER BY TT.BBS_KEY) prevPwd,
+                LEAD (TT.TITLE,1,'이전글') OVER (ORDER BY TT.num) prevTitle,
+                LEAD (TT.BBS_KEY,1) OVER (ORDER BY TT.num) prevBbsKey,
+                LEAD (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) prevWriteUserKey,
+                LEAD (TT.PWD,1) OVER (ORDER BY TT.num) prevPwd,
 
-                LAG  (TT.TITLE,1,'다음글') OVER (ORDER BY TT.BBS_KEY) nextTitle,
-                LAG  (TT.BBS_KEY,1) OVER (ORDER BY TT.BBS_KEY) nextBbsKey,
-                LAG  (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.BBS_KEY) nextWriteUserKey,
-                LAG  (TT.PWD,1)  OVER (ORDER BY TT.BBS_KEY) nextPwd
+                LAG  (TT.TITLE,1,'다음글') OVER (ORDER BY TT.num) nextTitle,
+                LAG  (TT.BBS_KEY,1) OVER (ORDER BY TT.num) nextBbsKey,
+                LAG  (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) nextWriteUserKey,
+                LAG  (TT.PWD,1)  OVER (ORDER BY TT.num) nextPwd
             FROM (
                 SELECT * FROM (
                     SELECT
-                        A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL, CONTENTS,
+                        ROWNUM as num, A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL, CONTENTS,
                         (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD, A.IS_NOTICE,
                         (SELECT NAME FROM T_USER WHERE USER_KEY = A.WRITE_USER_KEY) as writeUserName,
                         TO_CHAR(A.INDATE,'YYYY.MM.DD') as indate2
