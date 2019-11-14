@@ -309,4 +309,21 @@ public class BoardService extends PagingSupport {
         return new ApiResultCodeDTO("bbsCommentKey", bbsCommentKey, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveTeacherBoardInfo(int bbsMasterKey, int teacherKey, int userKey, String title, String content, int isNotice, String fileName) {
+        int bbsKey = 0;
+        if (bbsMasterKey == 0 && teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, teacherKey, userKey, title, content, 0, isNotice);
+            boardMapper.insertTBbsData(bbsDataVO);
+            bbsKey = bbsDataVO.getBbsKey();
+            //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
+            if (!"".equals(fileName)) {
+                boardMapper.insertTBbsDataFile(bbsKey, fileName);
+            }
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
 }

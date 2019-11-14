@@ -210,4 +210,25 @@ public class BoardController {
                                                  @RequestParam("fileName") String fileName) {
         return boardService.saveLectureRoomTable(lectureDate, academyNumber, fileName);
     }
+
+    @RequestMapping(value = "/saveTeacherBoard", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사 게시판 글 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isNotice", value = "공지여부(0 : 일반, 1 : 공지)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false)
+    })
+    public ApiResultCodeDTO saveTeacherBoard(@RequestParam("bbsMasterKey") int bbsMasterKey,
+                                        @RequestParam("teacherKey") int teacherKey,
+                                        @RequestParam("userKey") int userKey,
+                                        @RequestParam("title") String title,
+                                        @RequestParam("content") String content,
+                                        @RequestParam("isNotice") int isNotice,
+                                        @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
+        return boardService.saveTeacherBoardInfo(bbsMasterKey, teacherKey, userKey, title, content, isNotice, fileName);
+    }
 }
