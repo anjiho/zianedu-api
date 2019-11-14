@@ -329,7 +329,7 @@ public class TeacherService extends PagingSupport {
                     referenceRoomDetailVO,
                     //하단 이전글, 다음글
                     boardMapper.selectTeacherReferenceRoomPrevNext(
-                            BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey)
+                            BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
             );
             //ReadCount 증가
             boardMapper.updateTBbsReadCount(bbsKey);
@@ -370,7 +370,7 @@ public class TeacherService extends PagingSupport {
                     referenceRoomDetailVO,
                     //하단 이전글, 다음글
                     boardMapper.selectTeacherReferenceRoomPrevNext(
-                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey)
+                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
             );
             //ReadCount 증가
             boardMapper.updateTBbsReadCount(bbsKey);

@@ -22,5 +22,7 @@ public class ReferenceRoomDetailVO {
 
     private String contents;
 
+    private int isNotice;
+
     private List<FileInfoDTO> fileInfo;
 }

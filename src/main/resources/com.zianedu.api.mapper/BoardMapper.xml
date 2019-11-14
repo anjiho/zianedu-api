@@ -118,7 +118,7 @@
     <select id="selectTeacherReferenceRoomDetailInfo" resultType="ReferenceRoomDetailVO">
         SELECT
             A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as indate, A.TITLE, A.READ_COUNT,
-            B.NAME as userName, B.USER_ID, A.CONTENTS
+            B.NAME as userName, B.USER_ID, A.CONTENTS, A.IS_NOTICE
         FROM T_BBS_DATA A
         INNER JOIN T_USER B
         ON A.WRITE_USER_KEY = B.USER_KEY
@@ -143,6 +143,7 @@
             ON A.WRITE_USER_KEY = B.USER_KEY
             WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
+            AND A.IS_NOTICE = #{isNotice}
         ) T
         WHERE T.BBS_KEY = #{bbsKey}
     </select>
@@ -398,7 +399,7 @@
         <selectKey resultType="Integer" keyProperty="bbsCommentKey" order="BEFORE">
             SELECT T_BBS_COMMENT_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO T_BBS_COMMENT
+        INSERT INTO T_BBS_COMMENTw
         (
             BBS_COMMNET_KEY, BBS_KEY, USER_KEY, INDATE, COMMENT_
         )

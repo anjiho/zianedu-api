@@ -220,6 +220,7 @@ public class BoardController {
             @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "isNotice", value = "공지여부(0 : 일반, 1 : 공지)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isSecret", value = "비밀여부(0 : 공개, 1 : 비밀글)", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false)
     })
     public ApiResultCodeDTO saveTeacherBoard(@RequestParam("bbsMasterKey") int bbsMasterKey,
@@ -228,8 +229,9 @@ public class BoardController {
                                         @RequestParam("title") String title,
                                         @RequestParam("content") String content,
                                         @RequestParam("isNotice") int isNotice,
+                                         @RequestParam("isSecret") int isSecret,
                                         @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
-        return boardService.saveTeacherBoardInfo(bbsMasterKey, teacherKey, userKey, title, content, isNotice, fileName);
+        return boardService.saveTeacherBoardInfo(bbsMasterKey, teacherKey, userKey, title, content, isNotice, isSecret, fileName);
     }
 
     @RequestMapping(value = "/saveBoardFileList", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
