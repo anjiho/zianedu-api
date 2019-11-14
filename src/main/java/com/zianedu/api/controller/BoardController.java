@@ -1,16 +1,16 @@
 package com.zianedu.api.controller;
 
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultCodeDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.service.BoardService;
+import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/board")
@@ -230,5 +230,17 @@ public class BoardController {
                                         @RequestParam("isNotice") int isNotice,
                                         @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
         return boardService.saveTeacherBoardInfo(bbsMasterKey, teacherKey, userKey, title, content, isNotice, fileName);
+    }
+
+    @RequestMapping(value = "/saveBoardFileList", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("게시판 파일 다중 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "fileName", value = "파일명 리스트", dataType = "object", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveBoardFileList(@RequestParam("bbsKey") int bbsKey,
+                                              @RequestParam("fileName") String fileName) {
+        String[] fileNames = GsonUtil.convertToStringArrayFromString(fileName);
+        return boardService.saveBoardFileList(bbsKey, fileNames);
     }
 }

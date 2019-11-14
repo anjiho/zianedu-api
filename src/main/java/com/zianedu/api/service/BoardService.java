@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -321,6 +322,21 @@ public class BoardService extends PagingSupport {
             //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
             if (!"".equals(fileName)) {
                 boardMapper.insertTBbsDataFile(bbsKey, fileName);
+            }
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveBoardFileList(int bbsKey, String[] fileNames) {
+        if (bbsKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            if (fileNames.length > 0) {
+                List<String>fileNameList = Arrays.asList(fileNames);
+                for (String fileName : fileNameList) {
+                    boardMapper.insertTBbsDataFile(bbsKey, fileName);
+                }
             }
         }
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);

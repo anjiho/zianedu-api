@@ -33,6 +33,12 @@ public class GsonUtil {
         return arr;
     }
 
+    public static String[] convertToStringArrayFromString(String fromStr) {
+        Gson gson = new Gson();
+        String[] arr = gson.fromJson(fromStr, String[].class);
+        return arr;
+    }
+
     public static void main(String[] args) {
         String str = "[1,2]";
 

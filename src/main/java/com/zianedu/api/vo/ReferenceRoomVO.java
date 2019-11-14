@@ -33,4 +33,6 @@ public class ReferenceRoomVO {
 
     private int isNotice;
 
+    private String writeUserName;
+
 }
