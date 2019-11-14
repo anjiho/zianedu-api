@@ -378,15 +378,16 @@
         SELECT TTT.* FROM (
             SELECT
                 TT.BBS_KEY,
-                LEAD (TT.TITLE,1,'이전글') OVER (ORDER BY TT.num) prevTitle,
-                LEAD (TT.BBS_KEY,1) OVER (ORDER BY TT.num) prevBbsKey,
-                LEAD (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) prevWriteUserKey,
-                LEAD (TT.PWD,1) OVER (ORDER BY TT.num) prevPwd,
+                LEAD (TT.TITLE,1,'이전글') OVER (ORDER BY TT.num) nextTitle,
+                LEAD (TT.BBS_KEY,1) OVER (ORDER BY TT.num) nextBbsKey,
+                LEAD (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) nextWriteUserKey,
+                LEAD (TT.PWD,1) OVER (ORDER BY TT.num) nextPwd,
 
-                LAG  (TT.TITLE,1,'다음글') OVER (ORDER BY TT.num) nextTitle,
-                LAG  (TT.BBS_KEY,1) OVER (ORDER BY TT.num) nextBbsKey,
-                LAG  (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) nextWriteUserKey,
-                LAG  (TT.PWD,1)  OVER (ORDER BY TT.num) nextPwd
+                LAG  (TT.TITLE,1,'다음글') OVER (ORDER BY TT.num) prevTitle,
+                LAG  (TT.BBS_KEY,1) OVER (ORDER BY TT.num) prevBbsKey,
+                LAG  (TT.WRITE_USER_KEY,1) OVER (ORDER BY TT.num) prevWriteUserKey,
+                LAG  (TT.PWD,1)  OVER (ORDER BY TT.num) prevPwd
+
             FROM (
                 SELECT * FROM (
                     SELECT
@@ -434,7 +435,7 @@
         <selectKey resultType="Integer" keyProperty="bbsCommentKey" order="BEFORE">
             SELECT T_BBS_COMMENT_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO T_BBS_COMMENTw
+        INSERT INTO T_BBS_COMMENT
         (
             BBS_COMMNET_KEY, BBS_KEY, USER_KEY, INDATE, COMMENT_
         )
