@@ -60,6 +60,8 @@ public interface BoardMapper {
 
     PrevNextVO selectNoticePrevNextInfo(@Param("bbsMasterKey") int bbsMasterKey, @Param("bbsKey") int bbsKey);
 
+    List<PrevNextVO> selectBoardPrevNextInfoByReply(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey, @Param("bbsKey") int bbsKey, @Param("isNotice") int isNotice);
+
     List<LectureRoomTableVO> selectLectureRoomTableList(@Param("lectureDate") String lectureDate);
 
 

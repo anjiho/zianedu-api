@@ -369,8 +369,11 @@ public class TeacherService extends PagingSupport {
                     //학습자료실 상세정보
                     referenceRoomDetailVO,
                     //하단 이전글, 다음글
-                    boardMapper.selectTeacherReferenceRoomPrevNext(
-                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
+//                    boardMapper.selectTeacherReferenceRoomPrevNext(
+//                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
+                    boardMapper.selectBoardPrevNextInfoByReply(
+                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice()
+                    )
             );
             //ReadCount 증가
             boardMapper.updateTBbsReadCount(bbsKey);
