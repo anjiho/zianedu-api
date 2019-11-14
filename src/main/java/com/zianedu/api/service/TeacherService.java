@@ -13,6 +13,7 @@ import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -295,7 +296,7 @@ public class TeacherService extends PagingSupport {
         return new ApiResultListDTO(teacherVideoAcademyProductList, resultCode);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultObjectDTO getTeacherReferenceRoomDetailInfo(int bbsKey, int teacherKey) {
         int resultCode = OK.value();
 
@@ -311,11 +312,13 @@ public class TeacherService extends PagingSupport {
                     boardMapper.selectTeacherReferenceRoomPrevNext(
                             BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey)
             );
+            //ReadCount 증가
+            boardMapper.updateTBbsReadCount(bbsKey);
         }
         return new ApiResultObjectDTO(detailDTO, resultCode);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultObjectDTO getTeacherLearningQnaDetailInfo(int bbsKey, int teacherKey) {
         int resultCode = OK.value();
 
@@ -331,6 +334,8 @@ public class TeacherService extends PagingSupport {
                     boardMapper.selectTeacherReferenceRoomPrevNext(
                             BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey)
             );
+            //ReadCount 증가
+            boardMapper.updateTBbsReadCount(bbsKey);
         }
         return new ApiResultObjectDTO(detailDTO, resultCode);
     }
