@@ -24,5 +24,7 @@ public class ReferenceRoomDetailVO {
 
     private int isNotice;
 
+    private int pwd;
+
     private List<FileInfoDTO> fileInfo;
 }
