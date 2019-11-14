@@ -1,6 +1,9 @@
 package com.zianedu.api.vo;
 
+import com.zianedu.api.dto.FileInfoDTO;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ReferenceRoomDetailVO {
@@ -19,5 +22,5 @@ public class ReferenceRoomDetailVO {
 
     private String contents;
 
-    private String fileName;
+    private List<FileInfoDTO> fileInfo;
 }

@@ -305,9 +305,26 @@ public class TeacherService extends PagingSupport {
         if (teacherKey == 0 && bbsKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            ReferenceRoomDetailVO referenceRoomDetailVO = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
+            if (referenceRoomDetailVO != null) {
+                List<String> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
+                if (fileNameList.size() > 0) {
+                    List<FileInfoDTO> fileInfoList = new ArrayList<>();
+                    for (String file : fileNameList) {
+                        FileInfoDTO fileInfoDTO = new FileInfoDTO();
+                        String fileName = ZianUtils.getSplitFileName(file);
+                        String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), file);
+                        fileInfoDTO.setFileName(fileName);
+                        fileInfoDTO.setFileUrl(fileUrl);
+
+                        fileInfoList.add(fileInfoDTO);
+                    }
+                    referenceRoomDetailVO.setFileInfo(fileInfoList);
+                }
+            }
             detailDTO = new ReferenceRoomDetailDTO(
                     //학습자료실 상세정보
-                    boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey),
+                    referenceRoomDetailVO,
                     //하단 이전글, 다음글
                     boardMapper.selectTeacherReferenceRoomPrevNext(
                             BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey)

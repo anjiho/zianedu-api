@@ -116,12 +116,10 @@
     <select id="selectTeacherReferenceRoomDetailInfo" resultType="ReferenceRoomDetailVO">
         SELECT
             A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as indate, A.TITLE, A.READ_COUNT,
-            B.NAME as userName, B.USER_ID, A.CONTENTS, C.FILENAME as fileName
+            B.NAME as userName, B.USER_ID, A.CONTENTS
         FROM T_BBS_DATA A
         INNER JOIN T_USER B
         ON A.WRITE_USER_KEY = B.USER_KEY
-        LEFT OUTER JOIN T_BBS_DATA_FILE C
-        ON A.BBS_KEY = C.BBS_KEY
         WHERE A.BBS_KEY = #{bbsKey}
     </select>
 
@@ -285,6 +283,10 @@
     </select>
 
     <select id="selectTBbsDataFileName" resultType="String">
+        SELECT FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    </select>
+
+    <select id="selectTBbsDataFileNameList" resultType="String">
         SELECT FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
     </select>
 

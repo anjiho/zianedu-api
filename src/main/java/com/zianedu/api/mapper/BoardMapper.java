@@ -46,6 +46,8 @@ public interface BoardMapper {
 
     String selectTBbsDataFileName(@Param("bbsKey") int bbsKey);
 
+    List<String> selectTBbsDataFileNameList(@Param("bbsKey") int bbsKey);
+
     BoardDetailVO selectBoardDetailInfo(@Param("bbsKey") int bbsKey);
 
     List<CommentListVO> selectBoardCommentList(@Param("bbsKey") int bbsKey);
