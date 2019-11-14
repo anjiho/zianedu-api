@@ -29,6 +29,8 @@ public class ReferenceRoomVO {
 
     private String indate;
 
+    private String indate2;
+
     private boolean isNew;
 
     private int isNotice;

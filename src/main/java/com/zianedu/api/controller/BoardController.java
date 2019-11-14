@@ -236,7 +236,7 @@ public class BoardController {
     @ApiOperation("게시판 파일 다중 저장")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "fileName", value = "파일명 리스트", dataType = "object", paramType = "query", required = true)
+            @ApiImplicitParam(name = "fileName", value = "파일명 리스트 >> ['파일명','파일명',...]", dataType = "object", paramType = "query", required = true)
     })
     public ApiResultCodeDTO saveBoardFileList(@RequestParam("bbsKey") int bbsKey,
                                               @RequestParam("fileName") String fileName) {
