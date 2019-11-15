@@ -24,4 +24,6 @@ public class BoardDetailVO {
     private String fileUrl;
 
     private String fileDetailName;
+
+    private int ctgKey;
 }

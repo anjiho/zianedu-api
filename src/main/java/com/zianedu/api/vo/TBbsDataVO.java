@@ -97,5 +97,21 @@ public class TBbsDataVO {
         this.bbsCustomKey = 0;
     }
 
+    public TBbsDataVO(int bbsMasterKey, int bbsParentKey, int teacherKey, int userKey, String title, String contents, int isSecret, int isNotice) {
+        this.bbsMasterKey = bbsMasterKey;
+        this.bbsParentKey = bbsParentKey;
+        this.title = Util.isNullValue(title, "");
+        this.writeUserKey = userKey;
+        this.ctgKey = teacherKey;
+        this.ctgKey02 = 0;
+        this.readCount = 0;
+        this.isShow = 0;
+        this.isNotice = isNotice;
+        this.pwd = String.valueOf(isSecret);
+        this.contents = Util.isNullValue(contents, "");
+        this.isHaveAnswer = 0;
+        this.bbsCustomKey = 0;
+    }
+
 
 }

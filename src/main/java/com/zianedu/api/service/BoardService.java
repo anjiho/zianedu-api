@@ -342,4 +342,18 @@ public class BoardService extends PagingSupport {
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveBoardReply(int bbsMasterKey, int bbsParentKey, int userKey, String title, String content, int isSecret) {
+        int bbsKey = 0;
+        if (bbsParentKey == 0 && userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            BoardDetailVO vo = boardMapper.selectBoardDetailInfo(bbsParentKey);
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, bbsParentKey, vo.getCtgKey(), userKey, title, content, isSecret, 0);
+            boardMapper.insertTBbsData(bbsDataVO);
+            bbsKey = bbsDataVO.getBbsKey();
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
 }

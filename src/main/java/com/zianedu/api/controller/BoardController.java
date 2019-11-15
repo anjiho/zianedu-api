@@ -117,6 +117,25 @@ public class BoardController {
         return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, fileName);
     }
 
+    @RequestMapping(value = "/saveBoardReply", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("게시판 답글 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "bbsParentKey", value = "답글의 부모글 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveBoardReply(@RequestParam("bbsMasterKey") int bbsMasterKey,
+                                      @RequestParam("bbsParentKey") int bbsParentKey,
+                                      @RequestParam("userKey") int userKey,
+                                      @RequestParam("title") String title,
+                                      @RequestParam("content") String content,
+                                      @RequestParam("isSecret") int isSecret) {
+        return boardService.saveBoardReply(bbsMasterKey, bbsParentKey, userKey, title, content, isSecret);
+    }
+
     @RequestMapping(value = "/updateBoard", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 글 수정")
     @ApiImplicitParams({
