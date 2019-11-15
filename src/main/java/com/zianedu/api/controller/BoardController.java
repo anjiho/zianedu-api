@@ -84,7 +84,7 @@ public class BoardController {
     }
 
     @RequestMapping(value = "/saveBoardComment", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("게시판 답글 저장")
+    @ApiOperation("게시판 댓글 저장")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
