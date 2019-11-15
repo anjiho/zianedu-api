@@ -7,6 +7,7 @@ import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -153,9 +154,31 @@ public class BoardService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             boardDetailVO = boardMapper.selectBoardDetailInfo(bbsKey);
-            if (!"".equals(Util.isNullValue(boardDetailVO.getFileName(), ""))) {
-                boardDetailVO.setFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), boardDetailVO.getFileName()));
+
+            //ReferenceRoomDetailVO referenceRoomDetailVO = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
+            if (boardDetailVO != null) {
+                //파일정보 주입 시작
+                List<String> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
+                if (fileNameList.size() > 0) {
+                    List<FileInfoDTO> fileInfoList = new ArrayList<>();
+                    for (String file : fileNameList) {
+                        FileInfoDTO fileInfoDTO = new FileInfoDTO();
+                        String fileName = ZianUtils.getSplitFileName(file);
+                        String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), file);
+                        fileInfoDTO.setFileName(fileName);
+                        fileInfoDTO.setFileUrl(fileUrl);
+
+                        fileInfoList.add(fileInfoDTO);
+                    }
+                    boardDetailVO.setFileInfo(fileInfoList);
+                    //파일정보 주입 끝
+                }
             }
+
+//            if (!"".equals(Util.isNullValue(boardDetailVO.getFileName(), ""))) {
+//                boardDetailVO.setFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), boardDetailVO.getFileName()));
+//            }
+
             //답글 리스트
             commentList = boardMapper.selectBoardCommentList(bbsKey);
             //이전,다음글 정보

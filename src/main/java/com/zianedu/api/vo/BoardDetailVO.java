@@ -1,6 +1,9 @@
 package com.zianedu.api.vo;
 
+import com.zianedu.api.dto.FileInfoDTO;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class BoardDetailVO {
@@ -26,4 +29,6 @@ public class BoardDetailVO {
     private String fileDetailName;
 
     private int ctgKey;
+
+    private List<FileInfoDTO> fileInfo;
 }

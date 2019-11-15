@@ -295,13 +295,11 @@
 
     <select id="selectBoardDetailInfo" resultType="BoardDetailVO">
         SELECT
-            A.BBS_KEY, A.TITLE, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as indate, A.READ_COUNT, B.FILENAME, TRIM(A.CONTENTS) as contents,
+            A.BBS_KEY, A.TITLE, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as indate, A.READ_COUNT, TRIM(A.CONTENTS) as contents,
             (SELECT USER_ID FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userId,
             (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName,
             A.CTG_KEY
         FROM T_BBS_DATA A
-        LEFT JOIN T_BBS_DATA_FILE B
-        ON A.BBS_KEY = B.BBS_KEY
         WHERE A.BBS_KEY = #{bbsKey}
     </select>
 
@@ -358,13 +356,13 @@
                 LEAD (A.TITLE,1,'이전글') OVER (ORDER BY A.BBS_KEY) prevTitle,
                 LEAD (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) prevBbsKey,
                 LEAD (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) prevWriteUserKey,
-                --LEAD (A.PWD,1) OVER (ORDER BY A.BBS_KEY) prevPwd,
+                LEAD (A.PWD,1) OVER (ORDER BY A.BBS_KEY) prevPwd,
                 TO_CHAR(LEAD (A.INDATE, 1) OVER (ORDER BY A.BBS_KEY), 'YYYY.MM.DD') prevCreateDate,
 
                 LAG  (A.TITLE,1,'다음글') OVER (ORDER BY A.BBS_KEY) nextTitle,
                 LAG  (A.BBS_KEY,1) OVER (ORDER BY A.BBS_KEY) nextBbsKey,
                 LAG  (A.WRITE_USER_KEY,1) OVER (ORDER BY A.BBS_KEY) nextWriteUserKey,
-                --LAG  (A.PWD,1)  OVER (ORDER BY A.BBS_KEY) nextPwd,
+                LAG  (A.PWD,1)  OVER (ORDER BY A.BBS_KEY) nextPwd,
                 TO_CHAR(LAG (A.INDATE, 1) OVER (ORDER BY A.BBS_KEY), 'YYYY.MM.DD') nextCreateDate
 
             FROM T_BBS_DATA A
