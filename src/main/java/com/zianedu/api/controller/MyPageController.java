@@ -43,10 +43,10 @@ public class MyPageController {
     @RequestMapping(value = "/getVideoSignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강중인강좌(동영상)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키 (86942)", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultListDTO getUserVideoOnlineSignUpList(@PathVariable("userKey") int userKey,
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(@PathVariable("userKey") int userKey,
                                                              @RequestParam("deviceType") String deviceType) {
         return myPageService.getUserVideoOnlineSignUpList(userKey, deviceType);
     }

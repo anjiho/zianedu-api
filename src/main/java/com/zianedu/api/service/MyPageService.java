@@ -4,10 +4,7 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.GoodsKindType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultCodeDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
@@ -72,23 +69,29 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getUserVideoOnlineSignUpList(int userKey, String deviceType) {
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(int userKey, String deviceType) {
         int resultCode = OK.value();
+        OnlineSignUpDTO onlineSignUpDTO = new OnlineSignUpDTO();
         List<OnlineSignUpVO>resultList = new ArrayList<>();
 
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             resultList = productMapper.selectVideoOnlineSignUp(userKey, deviceType);
-
+            //과목 리스트 주입
+            List<SubjectDTO> subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
+            if (resultList.size() > 0) {
+                onlineSignUpDTO.setSubjectInfo(subjectList);
+            }
             for (OnlineSignUpVO onlineSignUpVO : resultList) {
                 if (onlineSignUpVO.getOnlineSignUpSubjectList() != null && onlineSignUpVO.getOnlineSignUpSubjectList().size() > 0) {
                     //강의진도률 주입
                     lectureProgressRateRepository.injectLectureProgressRateAny(onlineSignUpVO.getOnlineSignUpSubjectList());
                 }
             }
+            onlineSignUpDTO.setOnlineSignUpList(resultList);
         }
-        return new ApiResultListDTO(resultList, resultCode);
+        return new ApiResultObjectDTO(onlineSignUpDTO, resultCode);
     }
 
     /**

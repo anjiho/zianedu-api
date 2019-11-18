@@ -117,6 +117,19 @@ public class BoardController {
         return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, fileName);
     }
 
+    @RequestMapping(value = "/saveBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("제휴 문의 게시글 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveBoardByAlliance(@RequestParam("bbsMasterKey") int bbsMasterKey,
+                                      @RequestParam("title") String title,
+                                      @RequestParam("content") String content) {
+        return boardService.saveBoardInfoAtNoUser(bbsMasterKey, 0, title, content, 0, "");
+    }
+
     @RequestMapping(value = "/saveBoardReply", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("게시판 답글 저장")
     @ApiImplicitParams({
@@ -152,6 +165,19 @@ public class BoardController {
                                         @RequestParam("isSecret") int isSecret,
                                         @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
         return boardService.updateBoardInfo(bbsKey, title, content, isSecret, fileName);
+    }
+
+    @RequestMapping(value = "/updateBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("제휴 문의 게시글 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO updateBoardByAlliance(@RequestParam("bbsKey") int bbsKey,
+                                        @RequestParam("title") String title,
+                                        @RequestParam("content") String content) {
+        return boardService.updateBoardInfo(bbsKey, title, content, 0, "");
     }
 
     @RequestMapping(value = "/updateBoardComment", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)

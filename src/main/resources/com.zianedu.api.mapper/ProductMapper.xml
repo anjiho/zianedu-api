@@ -12,6 +12,8 @@
         <result property="jGKey" column="J_G_KEY"/>
         <result property="gKey" column="G_KEY"/>
         <result property="ctgName" column="CTG_NAME"/>
+        <result property="ctgKey" column="CTG_KEY"/>
+        <result property="subjectCtgKey" column="SUBJECT_CTG_KEY"/>
         <result property="startDate" column="START_DATE"/>
         <result property="endDate" column="END_DATE"/>
         <result property="name" column="NAME"/>
@@ -157,7 +159,9 @@
             A.G_KEY,
             TO_CHAR(E.start_dt, 'YYYY-MM-DD') as startDate,
             TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') as endDate,
+            ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            D.SUBJECT_CTG_KEY,
             C.NAME,
             A.KIND,
             E.J_LEC_KEY,
@@ -943,6 +947,40 @@
         AND A.TYPE = 5
         AND A.IS_SELL = 1
         ORDER BY AFFILIATION_CTG_KEY ASC
+    </select>
+
+    <!-- 수강중인 동영상 강좌 과목 리스트 -->
+    <select id="selectVideoOnlineSignUpSubjectList" resultType="com.zianedu.api.dto.SubjectDTO">
+        SELECT D.SUBJECT_CTG_KEY, F.NAME as subjectName
+        FROM T_ORDER_GOODS A
+        LEFT JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        LEFT JOIN T_LEC D
+        ON A.G_KEY = D.G_KEY
+        LEFT JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        LEFT JOIN T_CATEGORY F
+        ON F.CTG_KEY = D.SUBJECT_CTG_KEY
+        WHERE 1=1
+        AND B.USER_KEY= #{userKey}
+        AND B.pay_status = 2
+        AND A.j_pm_key = 0
+        AND E.PAUSE_DAY = 0
+        <![CDATA[
+            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <![CDATA[
+            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <if test="deviceType != '' and deviceType != null">
+            <if test="deviceType == 'PC'">
+                AND A.KIND IN (100, 102)
+            </if>
+            <if test="deviceType == 'MOBILE'">
+                AND A.KIND IN (101, 102)
+            </if>
+        </if>
+        GROUP BY D.SUBJECT_CTG_KEY, F.NAME
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

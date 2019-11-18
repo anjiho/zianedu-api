@@ -264,6 +264,20 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveBoardInfoAtNoUser(int bbsMasterKey, int userKey, String title, String content, int isSecret, String fileName) {
+        int bbsKey = 0;
+
+        TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret);
+        boardMapper.insertTBbsData(bbsDataVO);
+        bbsKey = bbsDataVO.getBbsKey();
+        //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
+        if (!"".equals(fileName)) {
+            boardMapper.insertTBbsDataFile(bbsKey, fileName);
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO saveLectureRoomTable(String lectureDate, int academyNumber, String fileName) {
         if ("".equals(lectureDate) && academyNumber == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();

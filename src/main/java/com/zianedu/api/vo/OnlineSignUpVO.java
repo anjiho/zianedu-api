@@ -1,6 +1,7 @@
 package com.zianedu.api.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zianedu.api.dto.SubjectDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public class OnlineSignUpVO {
     private int stepCtgKey;
 
     private String ctgName;
+
+    private List<SubjectDTO> subjectList;
 
     @JsonProperty(value = "onlineSignUpSubjectList")
     private List<OnlineSubjectListVO> onlineSignUpSubjectList;

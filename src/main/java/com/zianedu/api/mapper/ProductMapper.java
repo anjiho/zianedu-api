@@ -1,5 +1,6 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.dto.SubjectDTO;
 import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
@@ -106,6 +107,8 @@ public interface ProductMapper {
     List<ZianPassSubMenuVO> selectZianPassSubMenuList(@Param("parentKey") int parentKey);
 
     List<ZianPassSubMenuVO> selectZianPassSingleSubjectMenuList(@Param("parentKey") int parentKey);
+
+    List<SubjectDTO> selectVideoOnlineSignUpSubjectList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
