@@ -181,10 +181,12 @@
         AND A.j_pm_key = 0
         AND E.PAUSE_DAY = 0
         <![CDATA[
-            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
         ]]>
         <![CDATA[
-            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
         ]]>
         <if test="deviceType != '' and deviceType != null">
             <if test="deviceType == 'PC'">
@@ -967,10 +969,12 @@
         AND A.j_pm_key = 0
         AND E.PAUSE_DAY = 0
         <![CDATA[
-            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
         ]]>
         <![CDATA[
-            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
         ]]>
         <if test="deviceType != '' and deviceType != null">
             <if test="deviceType == 'PC'">
