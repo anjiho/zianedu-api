@@ -366,8 +366,6 @@
                 TO_CHAR(LAG (A.INDATE, 1) OVER (ORDER BY A.BBS_KEY), 'YYYY.MM.DD') nextCreateDate
 
             FROM T_BBS_DATA A
-            INNER JOIN T_USER B
-            ON A.WRITE_USER_KEY = B.USER_KEY
             WHERE A.BBS_MASTER_KEY = #{bbsMasterKey}
         ) T
         WHERE T.BBS_KEY = #{bbsKey}
