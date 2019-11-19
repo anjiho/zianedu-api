@@ -1099,8 +1099,12 @@
         AND B.pay_status = 2
         AND A.j_pm_key = 0
         AND E.PAUSE_DAY = 0
-        AND D.subject_ctg_key = #{subjectCtgKey}
-        AND D.step_ctg_key = #{stepCtgKey}
+        <if test="subjectCtgKey > 0">
+            AND D.subject_ctg_key = #{subjectCtgKey}
+        </if>
+        <if test="stepCtgKey > 0">
+            AND D.step_ctg_key = #{stepCtgKey}
+        </if>
         <![CDATA[
                 --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
                 AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
