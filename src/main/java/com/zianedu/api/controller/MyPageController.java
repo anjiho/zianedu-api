@@ -166,4 +166,27 @@ public class MyPageController {
         return myPageService.getZianPassProductList(userKey);
     }
 
+    @RequestMapping(value = "/getSignUpZianPassTypeList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 지안패스 유형 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jKey", value = "주문 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getSignUpZianPassTypeList(@PathVariable("jKey") int jKey, @RequestParam("deviceType") String deviceType) {
+        return myPageService.getSignUpZianPassTypeList(jKey, deviceType);
+    }
+
+    @RequestMapping(value = "/getSignUpZianPassSubjectNameList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 자안패스 > 강좌명 리스트 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jKey", value = "주문 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getSignUpZianPassSubjectNameList(@PathVariable("jKey") int jKey,
+                                                         @RequestParam("deviceType") String deviceType,
+                                                         @RequestParam("stepCtgKey") int stepCtgKey) {
+        return myPageService.getSinUpZianPassLectureNameList(jKey, deviceType, stepCtgKey);
+    }
+
 }
