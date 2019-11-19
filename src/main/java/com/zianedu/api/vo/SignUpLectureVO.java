@@ -11,5 +11,7 @@ public class SignUpLectureVO {
 
     private int gKey;
 
+    private int jLecKey;
+
     private String name;
 }

@@ -1068,7 +1068,8 @@
             B.J_KEY,
             A.J_G_KEY,
             A.G_KEY,
-            C.NAME
+            C.NAME,
+            E.J_LEC_KEY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
