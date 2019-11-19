@@ -537,6 +537,8 @@
     <select id="selectLectureListFromVideoProduct" resultType="TLecCurriVO">
         SELECT
             ROW_NUMBER() OVER(ORDER BY A.CURRI_KEY) NUM, A.NAME,
+            A.CURRI_KEY,
+            A.LEC_KEY,
             <if test="device == 1">
                 A.VOD_FILE_LOW as vodFileLow,
                 A.VOD_FILE_HIGH as vodFileHigh,
@@ -554,6 +556,16 @@
         ON B.G_KEY = C.G_KEY
         WHERE C.G_KEY = #{gKey}
         ORDER BY A.POS ASC
+    </select>
+
+    <select id="selectLectureListFromVideoProductCount" resultType="int">
+        SELECT COUNT (A.LEC_KEY) as cnt
+        FROM T_LEC_CURRI A
+        INNER JOIN T_LEC B
+        ON A.LEC_KEY = B.LEC_KEY
+        INNER JOIN T_GOODS C
+        ON B.G_KEY = C.G_KEY
+        WHERE C.G_KEY = #{gKey}
     </select>
 
     <select id="selectAcademyLectureDetailInfo" resultType="AcademyLectureDetailVO">

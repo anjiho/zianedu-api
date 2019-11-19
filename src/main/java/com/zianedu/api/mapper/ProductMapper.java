@@ -56,6 +56,8 @@ public interface ProductMapper {
 
     List<TLecCurriVO> selectLectureListFromVideoProduct(@Param("gKey") int gKey, @Param("device") int device);
 
+    int selectLectureListFromVideoProductCount(@Param("gKey") int gKey);
+
     AcademyLectureDetailVO selectAcademyLectureDetailInfo(@Param("gKey") int gKey);
 
     List<TeacherInfoVO> selectAcademyLectureTeacherList(@Param("gKey") int gKey);

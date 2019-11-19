@@ -103,4 +103,14 @@ public class ProductController {
         return productService.getZianPassProductList(parentKey);
     }
 
+    @RequestMapping(value = "/getLectureList/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강의 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "gKey", value = "상품키 값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "device", value = "디바이스 종류(PC, MOBILE)", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getVideoLectureList(@PathVariable("gKey") int gKey, @RequestParam("device") String device) {
+        return productService.getVideoLectureList(gKey, device);
+    }
+
 }

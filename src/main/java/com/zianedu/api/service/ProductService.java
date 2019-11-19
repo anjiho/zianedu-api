@@ -335,4 +335,23 @@ public class ProductService {
         return new ApiResultListDTO(zianPassProductDTOList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getVideoLectureList(int gKey, String device) {
+        int resultCode = OK.value();
+
+        MyLectureListDTO dto = null;
+        if (gKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int deviceCode = 1;
+            if ("MOBILE".equals(device)) deviceCode = 3;
+
+            int totalCnt = productMapper.selectLectureListFromVideoProductCount(gKey);
+            List<TLecCurriVO>lectureList = productMapper.selectLectureListFromVideoProduct(gKey, deviceCode);
+
+            dto = new MyLectureListDTO(totalCnt, lectureList);
+        }
+        return new ApiResultObjectDTO(dto, resultCode);
+    }
+
 }
