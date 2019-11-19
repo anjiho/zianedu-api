@@ -348,7 +348,11 @@ public class ProductService {
 
             int totalCnt = productMapper.selectLectureListFromVideoProductCount(gKey);
             List<TLecCurriVO>lectureList = productMapper.selectLectureListFromVideoProduct(gKey, deviceCode);
-
+            if (lectureList.size() > 0) {
+                for (TLecCurriVO vo : lectureList) {
+                    vo.setNumStr(StringUtils.addZeroTwoDigitUnder(vo.getNum()));
+                }
+            }
             dto = new MyLectureListDTO(totalCnt, lectureList);
         }
         return new ApiResultObjectDTO(dto, resultCode);

@@ -1018,19 +1018,9 @@ public class Util {
         return query_pairs;
     }
 
-
-
     public static void main(String[] args) throws Exception {
-        String str = "100\\bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf";
-        String sts[] = str.split("\\\\");
+        System.out.println(String.format("%02d", 8));
 
-        String s = "";
-        if (str.contains("\\")) {
-            s = "1";
-        } else {
-            s = "2";
-        }
-        System.out.println(s);
 
     }
 }
