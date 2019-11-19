@@ -44,15 +44,35 @@ public class MyPageController {
     @ApiOperation("내 강의실 > 수강중인강좌(동영상)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키 (86942)", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 키값", dataType = "int", paramType = "query", required =  false),
-            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = false)
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getUserVideoOnlineSignUpList(@PathVariable("userKey") int userKey,
+                                                           @RequestParam("deviceType") String deviceType) {
+        return myPageService.getUserVideoOnlineSignUpList(userKey, deviceType);
+    }
+
+    @RequestMapping(value = "/getVideoSignUpLectureNameList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강중인강좌(동영상) 강좌명 리스트 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키 (86942)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getUserVideoOnlineSignUpList(@PathVariable("userKey") int userKey,
                                                            @RequestParam("deviceType") String deviceType,
                                                            @RequestParam("subjectCtgKey") int subjectCtgKey,
                                                            @RequestParam("stepCtgKey") int stepCtgKey) {
-        return myPageService.getUserVideoOnlineSignUpList(userKey, deviceType, subjectCtgKey, stepCtgKey);
+        return myPageService.getUserSignUpLectureNameList(userKey, deviceType, subjectCtgKey, stepCtgKey);
+    }
+
+    @RequestMapping(value = "/getVideoSignUpDetailInfo/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강중인강좌 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(@PathVariable("jLecKey") int jLecKey) {
+        return myPageService.getUserVideoOnlineSignUpLectureList(jLecKey);
     }
 
     @RequestMapping(value = "/getOnlineLectureDetail/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

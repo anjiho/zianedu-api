@@ -25,6 +25,8 @@ public class OnlineSubjectListVO implements LectureProgressRateContain {
 
     private int progressRate;
 
+    private String progressRateName;
+
     private int ctgKey;
 
     private int subjectCtgKey;
@@ -32,6 +34,8 @@ public class OnlineSubjectListVO implements LectureProgressRateContain {
     private int limitDay;
 
     private int kind;
+
+    private int isPause;
 
     @Override
     public Integer jLecKey() {

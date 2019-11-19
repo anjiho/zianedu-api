@@ -21,6 +21,8 @@ public interface ProductMapper {
     List<OnlineSignUpVO> selectVideoOnlineSignUp(@Param("userKey") int userKey, @Param("deviceType") String deviceType,
                                                  @Param("subjectCtgKey") int subjectCtgKey, @Param("stepCtgKey") int stepCtgKey);
 
+    OnlineSubjectListVO selectLectureDetailInfoByJLecKey(@Param("jLecKey") int jLecKey);
+
     OnlineLectureDetailVO selectOnlineLectureDetailInfo(@Param("jLecKey") int jLecKey);
 
     List<OnlineLectureSubjectListVO> selectOnlineLectureSubjectList(@Param("jLecKey") int jLecKey);
@@ -113,6 +115,9 @@ public interface ProductMapper {
     List<SubjectDTO> selectVideoOnlineSignUpSubjectList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
 
     List<TypeDTO> selectVideoOnlineSignUpTypeList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
+
+    List<SignUpLectureVO> selectSignUpLectureList(@Param("userKey") int userKey, @Param("deviceType") String deviceType,
+                                                  @Param("subjectCtgKey") int subjectCtgKey, @Param("stepCtgKey") int stepCtgKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

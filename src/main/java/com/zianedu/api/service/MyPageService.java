@@ -69,7 +69,7 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getUserVideoOnlineSignUpList(int userKey, String deviceType, int subjectCtgKey, int stepCtgKey) {
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(int userKey, String deviceType) {
         int resultCode = OK.value();
         OnlineSignUpDTO onlineSignUpDTO = new OnlineSignUpDTO();
         List<OnlineSignUpVO>resultList = new ArrayList<>();
@@ -82,20 +82,42 @@ public class MyPageService extends PagingSupport {
             //유형 리스트 주입
             List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
 
-            resultList = productMapper.selectVideoOnlineSignUp(userKey, deviceType, subjectCtgKey, stepCtgKey);
-            if (resultList.size() > 0) {
-                onlineSignUpDTO.setSubjectInfo(subjectList);
-                onlineSignUpDTO.setTypeInfo(typeList);
-            }
-            for (OnlineSignUpVO onlineSignUpVO : resultList) {
-                if (onlineSignUpVO.getOnlineSignUpSubjectList() != null && onlineSignUpVO.getOnlineSignUpSubjectList().size() > 0) {
-                    //강의진도률 주입
-                    lectureProgressRateRepository.injectLectureProgressRateAny(onlineSignUpVO.getOnlineSignUpSubjectList());
-                }
-            }
+            onlineSignUpDTO.setSubjectInfo(subjectList);
+            onlineSignUpDTO.setTypeInfo(typeList);
+
             onlineSignUpDTO.setOnlineSignUpList(resultList);
         }
         return new ApiResultObjectDTO(onlineSignUpDTO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserVideoOnlineSignUpLectureList(int jLecKey) {
+        int resultCode = OK.value();
+        OnlineSubjectListVO onlineSubjectListVO = new OnlineSubjectListVO();
+
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            onlineSubjectListVO = productMapper.selectLectureDetailInfoByJLecKey(jLecKey);
+            if (onlineSubjectListVO != null) {
+                Integer progressRate = productMapper.selectOnlineLectureProgressRate(jLecKey);
+                onlineSubjectListVO.setProgressRateName(progressRate + "%");
+            }
+        }
+        return new ApiResultObjectDTO(onlineSubjectListVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getUserSignUpLectureNameList(int userKey, String deviceType, int subjectCtgKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (userKey == 0 && "".equals(deviceType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectSignUpLectureList(userKey, deviceType, subjectCtgKey, stepCtgKey);
+        }
+        return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }
 
     /**
