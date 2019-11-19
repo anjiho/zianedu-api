@@ -1204,6 +1204,40 @@
         GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
     </select>
 
+    <select id="selectVideoLectureListByJLecKey" resultType="TLecCurriVO">
+        SELECT ROW_NUMBER() OVER(ORDER BY TT.CURRI_KEY) NUM, TT.*
+        FROM (
+            SELECT
+            ROW_NUMBER() OVER(ORDER BY Z.CURRI_KEY) NUM,
+            Z.CURRI_KEY, Z.NAME, Z.VOD_TIME, Z.LEC_KEY,
+            <if test="deviceType == 'PC'">Z.VOD_FILE_LOW as vodFileLow,
+                Z.VOD_FILE_HIGH
+                as vodFileHigh,
+            </if>
+                    <if test="deviceType == 'MOBILE'">
+                        Z.VOD_FILE_MOBILE_LOW as vodFileLow,
+                        Z.VOD_FILE_MOBILE_HIGH as vodFileHigh,
+                    </if>
+            Z.DATA_FILE,
+            NVL((SELECT J_CURRI_KEY FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0)
+            as J_CURRI_KEY,
+            NVL((SELECT TIME FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0)
+            as REMAIN_TIME
+            FROM T_LEC_CURRI Z
+            WHERE Z.LEC_KEY = (
+            SELECT C.LEC_KEY
+            FROM T_ORDER_LEC A
+            INNER JOIN T_ORDER_GOODS B
+            ON A.J_G_KEY = B.J_G_KEY
+            INNER JOIN T_LEC C
+            ON B.G_KEY = C.G_KEY
+            WHERE A.J_LEC_KEY = #{jLecKey}
+            )
+            AND Z.IS_SHOW = 1
+            ORDER BY Z.CURRI_KEY ASC
+        )TT
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
