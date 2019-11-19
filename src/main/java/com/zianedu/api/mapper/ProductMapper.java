@@ -1,6 +1,7 @@
 package com.zianedu.api.mapper;
 
 import com.zianedu.api.dto.SubjectDTO;
+import com.zianedu.api.dto.TypeDTO;
 import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
@@ -17,7 +18,8 @@ public interface ProductMapper {
 
     Integer selectOnlineLectureProgressRate(@Param("jLecKey") int jLecKey);
 
-    List<OnlineSignUpVO> selectVideoOnlineSignUp(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
+    List<OnlineSignUpVO> selectVideoOnlineSignUp(@Param("userKey") int userKey, @Param("deviceType") String deviceType,
+                                                 @Param("subjectCtgKey") int subjectCtgKey, @Param("stepCtgKey") int stepCtgKey);
 
     OnlineLectureDetailVO selectOnlineLectureDetailInfo(@Param("jLecKey") int jLecKey);
 
@@ -109,6 +111,8 @@ public interface ProductMapper {
     List<ZianPassSubMenuVO> selectZianPassSingleSubjectMenuList(@Param("parentKey") int parentKey);
 
     List<SubjectDTO> selectVideoOnlineSignUpSubjectList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
+
+    List<TypeDTO> selectVideoOnlineSignUpTypeList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

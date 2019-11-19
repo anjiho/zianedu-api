@@ -18,6 +18,7 @@
         <result property="endDate" column="END_DATE"/>
         <result property="name" column="NAME"/>
         <result property="pauseCnt" column="PAUSE_CNT"/>
+        <result property="limitDay" column="LIMIT_DAY"/>
     </resultMap>
 
     <resultMap id="academyLectureListMap" type="AcademyLectureListVO">
@@ -157,15 +158,16 @@
             B.J_KEY,
             A.J_G_KEY,
             A.G_KEY,
-            TO_CHAR(E.start_dt, 'YYYY-MM-DD') as startDate,
-            TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') as endDate,
+            TO_CHAR(E.start_dt, 'YYYY.MM.DD') as startDate,
+            TO_CHAR((E.start_dt + E.limit_day), 'YYYY.MM.DD') as endDate,
             ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
             D.SUBJECT_CTG_KEY,
             C.NAME,
             A.KIND,
             E.J_LEC_KEY,
-            E.PAUSE_CNT
+            E.PAUSE_CNT,
+            E.LIMIT_DAY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
@@ -180,6 +182,12 @@
         AND B.pay_status = 2
         AND A.j_pm_key = 0
         AND E.PAUSE_DAY = 0
+        <if test="subjectCtgKey > 0">
+            AND D.subject_ctg_key = #{subjectCtgKey}
+        </if>
+        <if test="stepCtgKey > 0">
+            AND D.step_ctg_key = #{stepCtgKey}
+        </if>
         <![CDATA[
             --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
             AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
@@ -985,6 +993,45 @@
             </if>
         </if>
         GROUP BY D.SUBJECT_CTG_KEY, F.NAME
+    </select>
+
+    <select id="selectVideoOnlineSignUpTypeList" resultType="com.zianedu.api.dto.TypeDTO">
+        SELECT * FROM (
+            SELECT
+                ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
+                ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_LEC D
+            ON C.G_KEY = D.G_KEY
+            INNER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            WHERE 1=1
+            AND B.user_key = 86942
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            <![CDATA[
+                --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            ]]>
+            <![CDATA[
+                --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            ]]>
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
+            </if>
+            ) Z
+        GROUP BY Z.ctgKey, Z.ctgName
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

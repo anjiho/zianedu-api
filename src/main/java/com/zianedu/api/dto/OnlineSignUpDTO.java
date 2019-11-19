@@ -10,5 +10,7 @@ public class OnlineSignUpDTO {
 
     private List<SubjectDTO> subjectInfo;
 
+    private List<TypeDTO> typeInfo;
+
     private List<OnlineSignUpVO> onlineSignUpList;
 }

@@ -69,7 +69,7 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getUserVideoOnlineSignUpList(int userKey, String deviceType) {
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(int userKey, String deviceType, int subjectCtgKey, int stepCtgKey) {
         int resultCode = OK.value();
         OnlineSignUpDTO onlineSignUpDTO = new OnlineSignUpDTO();
         List<OnlineSignUpVO>resultList = new ArrayList<>();
@@ -77,11 +77,15 @@ public class MyPageService extends PagingSupport {
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            resultList = productMapper.selectVideoOnlineSignUp(userKey, deviceType);
             //과목 리스트 주입
-            List<SubjectDTO> subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
+            List<SubjectDTO>subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
+            //유형 리스트 주입
+            List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
+
+            resultList = productMapper.selectVideoOnlineSignUp(userKey, deviceType, subjectCtgKey, stepCtgKey);
             if (resultList.size() > 0) {
                 onlineSignUpDTO.setSubjectInfo(subjectList);
+                onlineSignUpDTO.setTypeInfo(typeList);
             }
             for (OnlineSignUpVO onlineSignUpVO : resultList) {
                 if (onlineSignUpVO.getOnlineSignUpSubjectList() != null && onlineSignUpVO.getOnlineSignUpSubjectList().size() > 0) {
