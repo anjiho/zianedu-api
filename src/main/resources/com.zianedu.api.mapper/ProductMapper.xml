@@ -1102,7 +1102,7 @@
                 AND A.KIND IN (101, 102)
             </if>
         </if>
-        GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME
+        GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
