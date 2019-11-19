@@ -110,7 +110,7 @@
         INNER JOIN T_ORDER_LEC E
         ON A.J_G_KEY = E.J_G_KEY
         WHERE 1=1
-        AND A.J_KEY = (
+        AND A.J_KEY IN (
                 SELECT A.J_KEY
                 FROM T_ORDER A
                 INNER JOIN T_ORDER_GOODS B
@@ -1122,6 +1122,25 @@
             </if>
         </if>
         GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
+    </select>
+
+    <select id="selectSignUpZianPassList" resultType="ZianPassSignUpVO">
+        SELECT A.J_G_KEY, A.J_KEY, A.G_KEY, A.G_NAME
+        FROM T_ORDER_GOODS A
+        LEFT OUTER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        LEFT OUTER JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.type = 5
+        AND A.pm_type = 100
+        AND B.PAY_STATUS = 2
+        AND B.USER_KEY = #{userKey}
+         <![CDATA[
+            AND B.PAY_DATE <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+            AND (B.pay_date + (C.KIND * 31)) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

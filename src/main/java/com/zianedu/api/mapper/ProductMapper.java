@@ -6,6 +6,7 @@ import com.zianedu.api.dto.ZianPassProductDTO;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -120,6 +121,8 @@ public interface ProductMapper {
 
     List<SignUpLectureVO> selectSignUpLectureList(@Param("userKey") int userKey, @Param("deviceType") String deviceType,
                                                   @Param("subjectCtgKey") int subjectCtgKey, @Param("stepCtgKey") int stepCtgKey);
+
+    List<ZianPassSignUpVO> selectSignUpZianPassList(@Param("userKey") int userKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

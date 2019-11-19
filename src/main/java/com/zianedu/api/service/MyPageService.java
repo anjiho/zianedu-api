@@ -312,4 +312,17 @@ public class MyPageService extends PagingSupport {
         return new ApiResultListDTO(videoEndList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getZianPassProductList(int userKey) {
+        int resultCode = OK.value();
+
+        List<ZianPassSignUpVO> zianPassList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassList = productMapper.selectSignUpZianPassList(userKey);
+        }
+        return new ApiResultListDTO(zianPassList, resultCode);
+    }
+
 }

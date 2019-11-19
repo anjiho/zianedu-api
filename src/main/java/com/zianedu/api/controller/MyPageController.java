@@ -157,4 +157,13 @@ public class MyPageController {
         return myPageService.getOnlineVideoEndList(userKey);
     }
 
+    @RequestMapping(value = "/getZianPassSignUpList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 지안패스 상품 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자키 값(41677)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getZianPassSignUpList(@PathVariable("userKey") int userKey) {
+        return myPageService.getZianPassProductList(userKey);
+    }
+
 }
