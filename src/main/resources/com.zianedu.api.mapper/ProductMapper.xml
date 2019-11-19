@@ -535,27 +535,30 @@
     </select>
 
     <select id="selectLectureListFromVideoProduct" resultType="TLecCurriVO">
-        SELECT
+        SELECT ROW_NUMBER() OVER(ORDER BY T.CURRI_KEY) NUM, T.*
+        FROM (
+            SELECT
             ROW_NUMBER() OVER(ORDER BY A.CURRI_KEY) NUM, A.NAME,
             A.CURRI_KEY,
             A.LEC_KEY,
-            <if test="device == 1">
-                A.VOD_FILE_LOW as vodFileLow,
-                A.VOD_FILE_HIGH as vodFileHigh,
+            <if test="device == 1">A.VOD_FILE_LOW as vodFileLow,
+                A.
+                VOD_FILE_HIGH as vodFileHigh,
             </if>
-            <if test="device == 3">
-                A.VOD_FILE_MOBILE_LOW as vodFileLow,
-                A.VOD_FILE_MOBILE_HIGH as vodFileHigh,
-            </if>
-            A.VOD_TIME,
-            A.DATA_FILE
-        FROM T_LEC_CURRI A
-        INNER JOIN T_LEC B
-        ON A.LEC_KEY = B.LEC_KEY
-        INNER JOIN T_GOODS C
-        ON B.G_KEY = C.G_KEY
-        WHERE C.G_KEY = #{gKey}
-        ORDER BY A.POS ASC
+                <if test="device == 3">
+                    A.VOD_FILE_MOBILE_LOW as vodFileLow,
+                    A.VOD_FILE_MOBILE_HIGH as vodFileHigh,
+                </if>
+                A.VOD_TIME,
+                A.DATA_FILE
+            FROM T_LEC_CURRI A
+            INNER JOIN T_LEC B
+            ON A.LEC_KEY = B.LEC_KEY
+            INNER JOIN T_GOODS C
+            ON B.G_KEY = C.G_KEY
+            WHERE C.G_KEY = #{gKey}
+            ORDER BY NUM ASC
+        )T
     </select>
 
     <select id="selectLectureListFromVideoProductCount" resultType="int">

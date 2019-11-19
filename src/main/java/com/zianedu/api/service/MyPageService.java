@@ -120,6 +120,21 @@ public class MyPageService extends PagingSupport {
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO getUserSignUpLectureCount(int userKey, String deviceType, int subjectCtgKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        int cnt = 0;
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (userKey == 0 && "".equals(deviceType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectSignUpLectureList(userKey, deviceType, subjectCtgKey, stepCtgKey);
+            cnt = signUpLectureNameList.size();
+        }
+        return new ApiResultCodeDTO("COUNT", cnt, resultCode);
+    }
+
     /**
      * 내 강의실 > 수강중인강좌 > 수강중인강좌 상세정보
      * @param jLecKey
