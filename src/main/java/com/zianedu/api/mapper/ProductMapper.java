@@ -39,6 +39,8 @@ public interface ProductMapper {
 
     List<OnlineVideoPauseVO> selectVideoOnlinePauseList(@Param("userKey") int userKey);
 
+    List<OnlineVideoPauseVO> selectVideoOnlinePauseListByJLecKey(@Param("jLecKey") int jLecKey);
+
     List<OnlineVideoEndVO> selectVideoOnlineEndList(@Param("userKey") int userKey);
 
     Integer selectVideoSubjectCount(@Param("gKey") int gKey);
@@ -134,6 +136,10 @@ public interface ProductMapper {
     List<TypeDTO> selectSignUpAcademyTypeList(@Param("userKey") int userKey);
 
     List<SignUpLectureVO> selectSignUpAcademySubjectNameList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
+
+    List<TypeDTO> selectSignUpVideoLecturePauseTypeList(@Param("userKey") int userKey);
+
+    List<SignUpLectureVO> selectSignUpVideoLecturePauseSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

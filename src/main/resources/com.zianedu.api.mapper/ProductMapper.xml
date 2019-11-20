@@ -377,6 +377,48 @@
         ORDER BY A.STEP_CTG_KEY ASC
     </select>
 
+    <select id="selectVideoOnlinePauseListByJLecKey" resultType="OnlineVideoPauseVO">
+        SELECT
+            B.J_KEY,
+            A.J_G_KEY,
+            A.G_KEY,
+            CONCAT( CONCAT( TO_CHAR(E.start_dt, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR((E.start_dt + E.limit_day), 'YYYY.MM.DD')) as lectureDate,
+            CONCAT( CONCAT( TO_CHAR(E.start_dt, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR((E.start_dt + E.limit_day + E.PAUSE_DAY), 'YYYY.MM.DD')) as changeLectureDate,
+            TO_CHAR(E.start_dt, 'YYYY.MM.DD') as startDate,
+            TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') as endDate,
+            TO_CHAR(E.PAUSE_START_DT, 'YYYY-MM-DD') as stopStartDate,
+            TO_CHAR((E.PAUSE_START_DT + E.PAUSE_DAY), 'YYYY-MM-DD') as stopEndDate,
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            C.NAME,
+            A.KIND,
+            E.J_LEC_KEY,
+            E.PAUSE_CNT,
+            E.PAUSE_DAY,
+            B.USER_KEY,
+            E.LIMIT_DAY,
+            (E.LIMIT_DAY + E.PAUSE_DAY) as changeLimitDay
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND B.pay_status = 2
+        AND A.J_PM_KEY = 0
+        AND E.PAUSE_DAY > 0
+        <![CDATA[
+            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <![CDATA[
+            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        AND E.J_LEC_KEY = #{jLecKey}
+    </select>
+
     <select id="selectVideoOnlineEndList" resultType="OnlineVideoEndVO">
         SELECT
             B.J_KEY,
@@ -1274,7 +1316,61 @@
         AND A.TYPE = 2
         AND B.PAY_STATUS = 2
         AND D.step_ctg_key = #{stepCtgKey}
-        ORDER BY B.J_KEY desc
+        ORDER BY B.J_KEY DESC
+    </select>
+
+    <select id="selectSignUpVideoLecturePauseTypeList" resultType="com.zianedu.api.dto.TypeDTO">
+        SELECT
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            ( SELECT Z.ctg_key FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND B.user_key = #{userKey}
+        AND B.pay_status = 2
+        AND A.j_pm_key = 0
+        AND E.PAUSE_DAY > 0
+        <![CDATA[
+        AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+        AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        GROUP BY D.step_ctg_key
+        ORDER BY D.STEP_CTG_KEY
+    </select>
+
+    <select id="selectSignUpVideoLecturePauseSubjectList" resultType="SignUpLectureVO">
+        SELECT B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND B.user_key = #{userKey}
+        AND B.pay_status = 2
+        AND A.J_PM_KEY = 0
+        AND E.PAUSE_DAY > 0
+        AND D.STEP_CTG_KEY = #{stepCtgKey}
+        <![CDATA[
+        AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        <![CDATA[
+        AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+        ]]>
+        ORDER BY D.STEP_CTG_KEY
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

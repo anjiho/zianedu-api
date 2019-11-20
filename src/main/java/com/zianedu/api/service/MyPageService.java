@@ -286,6 +286,27 @@ public class MyPageService extends PagingSupport {
 
     /**
      * 일시정지강좌 목록
+     * @param jLecKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getOnlineVideoPauseListByJLecKey(int jLecKey) {
+        int resultCode = OK.value();
+
+        List<OnlineVideoPauseVO> videoPauseList = new ArrayList<>();
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            videoPauseList = productMapper.selectVideoOnlinePauseListByJLecKey(jLecKey);
+            if (videoPauseList != null || videoPauseList.size() > 0) {
+                lectureProgressRateRepository.injectLectureProgressRateAny(videoPauseList);
+            }
+        }
+        return new ApiResultListDTO(videoPauseList, resultCode);
+    }
+
+    /**
+     * 종료된 강좌 목록
      * @param userKey
      * @return
      */
@@ -373,6 +394,32 @@ public class MyPageService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             signUpLectureNameList = productMapper.selectSignUpAcademySubjectNameList(userKey, stepCtgKey);
+        }
+        return new ApiResultListDTO(signUpLectureNameList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpVideoLecturePauseTypeList(int userKey) {
+        int resultCode = OK.value();
+
+        List<TypeDTO> typeList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            typeList = productMapper.selectSignUpVideoLecturePauseTypeList(userKey);
+        }
+        return new ApiResultListDTO(typeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpVideoLecturePauseSubjectList(int userKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectSignUpVideoLecturePauseSubjectList(userKey, stepCtgKey);
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }

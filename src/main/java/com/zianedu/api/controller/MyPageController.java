@@ -148,6 +148,15 @@ public class MyPageController {
         return myPageService.getOnlineVideoPauseList(userKey);
     }
 
+    @RequestMapping(value = "/getOnlineVideoPauseListByJLecKey/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 일시정지강좌 리스트(JLecKey기준)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getOnlineVideoPgetOnlineVideoPauseListByJLecKeyauseList(@PathVariable("jLecKey") int jLecKey) {
+        return myPageService.getOnlineVideoPauseListByJLecKey(jLecKey);
+    }
+
     @RequestMapping(value = "/getOnlineVideoEndList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강완료강좌 리스트")
     @ApiImplicitParams({
@@ -207,6 +216,26 @@ public class MyPageController {
     public ApiResultListDTO getSignUpAcademySubjectNameList(@PathVariable("userKey") int userKey,
                                                              @RequestParam("stepCtgKey") int stepCtgKey) {
         return myPageService.getSignUpAcademyLectureNameList(userKey, stepCtgKey);
+    }
+
+    @RequestMapping(value = "/getSignUpVideoLecturePauseTypeList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 일시정지 동영상 유형 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값(93928)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getSignUpVideoLecturePauseTypeList(@PathVariable("userKey") int userKey) {
+        return myPageService.getSignUpVideoLecturePauseTypeList(userKey);
+    }
+
+    @RequestMapping(value = "/getSignUpVideoLecturePauseSubjectList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 일시정지 > 강좌명 리스트 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getSignUpVideoLecturePauseSubjectList(@PathVariable("userKey") int userKey,
+                                                            @RequestParam("stepCtgKey") int stepCtgKey) {
+        return myPageService.getSignUpVideoLecturePauseSubjectList(userKey, stepCtgKey);
     }
 
 }
