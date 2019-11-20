@@ -124,7 +124,16 @@ public interface ProductMapper {
 
     List<ZianPassSignUpVO> selectSignUpZianPassList(@Param("userKey") int userKey);
 
+    List<TypeDTO> selectSignUpZianPassTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
+
+    List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
+                                         @Param("deviceType") String deviceType);
+
+    List<TLecCurriVO> selectVideoLectureListByJLecKey(@Param("jLecKey") int jLecKey, @Param("deviceType") String deviceType);
+
     List<TypeDTO> selectSignUpAcademyTypeList(@Param("userKey") int userKey);
+
+    List<SignUpLectureVO> selectSignUpAcademySubjectNameList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

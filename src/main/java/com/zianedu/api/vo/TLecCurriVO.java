@@ -39,4 +39,8 @@ public class TLecCurriVO {
 
     private String dataFileUrl;
 
+    private int jCurriKey;
+
+    private int remainTime;
+
 }

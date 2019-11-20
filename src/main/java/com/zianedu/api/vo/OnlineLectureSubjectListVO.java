@@ -28,4 +28,6 @@ public class OnlineLectureSubjectListVO {
     private String time;
 
     private String progressRateName;
+
+    private int jCurriKey;
 }

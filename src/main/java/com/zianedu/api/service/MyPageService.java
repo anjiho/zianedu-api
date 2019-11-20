@@ -325,4 +325,56 @@ public class MyPageService extends PagingSupport {
         return new ApiResultListDTO(zianPassList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpZianPassTypeList(int jKey, String device) {
+        int resultCode = OK.value();
+
+        List<TypeDTO> zianPassTypeList = new ArrayList<>();
+        if (jKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(jKey, device);
+        }
+        return new ApiResultListDTO(zianPassTypeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSinUpZianPassLectureNameList(int jKey, String deviceType, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (jKey == 0 && "".equals(deviceType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectZianPassSubjectNameList(jKey, stepCtgKey, deviceType);
+        }
+        return new ApiResultListDTO(signUpLectureNameList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpAcademyTypeList(int userKey) {
+        int resultCode = OK.value();
+
+        List<TypeDTO> academyTypeList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            academyTypeList = productMapper.selectSignUpAcademyTypeList(userKey);
+        }
+        return new ApiResultListDTO(academyTypeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpAcademyLectureNameList(int userKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectSignUpAcademySubjectNameList(userKey, stepCtgKey);
+        }
+        return new ApiResultListDTO(signUpLectureNameList, resultCode);
+    }
+
 }

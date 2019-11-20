@@ -358,4 +358,25 @@ public class ProductService {
         return new ApiResultObjectDTO(dto, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getVideoLectureListByJLecKey(int jLecKey, String device) {
+        int resultCode = OK.value();
+
+        MyLectureListDTO dto = null;
+        if (jLecKey == 0 && "".equals(device)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<TLecCurriVO>lectureList = productMapper.selectVideoLectureListByJLecKey(jLecKey, device);
+            int totalCnt = lectureList.size();
+
+            if (lectureList.size() > 0) {
+                for (TLecCurriVO vo : lectureList) {
+                    vo.setNumStr(StringUtils.addZeroTwoDigitUnder(vo.getNum()));
+                }
+            }
+            dto = new MyLectureListDTO(totalCnt, lectureList);
+        }
+        return new ApiResultObjectDTO(dto, resultCode);
+    }
+
 }

@@ -113,4 +113,14 @@ public class ProductController {
         return productService.getVideoLectureList(gKey, device);
     }
 
+    @RequestMapping(value = "/getLectureListByJLecKey/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 동영상 강의 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문강좌 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "device", value = "디바이스 종류(PC, MOBILE)", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getLectureListByJLecKey(@PathVariable("jLecKey") int jLecKey, @RequestParam("device") String device) {
+        return productService.getVideoLectureListByJLecKey(jLecKey, device);
+    }
+
 }
