@@ -124,6 +124,8 @@ public interface ProductMapper {
 
     List<ZianPassSignUpVO> selectSignUpZianPassList(@Param("userKey") int userKey);
 
+    List<TypeDTO> selectSignUpAcademyTypeList(@Param("userKey") int userKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

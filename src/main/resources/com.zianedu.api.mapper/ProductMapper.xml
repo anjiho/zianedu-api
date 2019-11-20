@@ -1143,6 +1143,25 @@
         ]]>
     </select>
 
+    <select id="selectSignUpAcademyTypeList" resultType="com.zianedu.api.dto.TypeDTO">
+        SELECT
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
+            ( SELECT Z.ctg_key FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN t_lec D
+        ON C.G_KEY = D.G_KEY
+        WHERE 1=1
+        AND A.USER_KEY = #{userKey}
+        AND A.TYPE = 2
+        AND B.PAY_STATUS = 2
+        GROUP BY D.step_ctg_key
+        ORDER BY D.step_ctg_key ASC
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
