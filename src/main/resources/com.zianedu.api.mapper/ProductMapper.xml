@@ -581,7 +581,10 @@
            C.PRICE,
            CONCAT( CONCAT( TO_CHAR(B.STARTDATE, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR((B.STARTDATE + B.LIMIT_DAY), 'YYYY.MM.DD')) as lectureDate,
            CONCAT( C.KIND, '개월') as month,
-           A.IMAGE_VIEW
+           A.IMAGE_VIEW,
+           B.LIMIT_DAY,
+           ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = B.step_ctg_key ) as ctgKey,
+           ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = B.step_ctg_key ) as ctgName
         FROM T_GOODS A
         INNER JOIN T_LEC B
         ON A.G_KEY = B.G_KEY

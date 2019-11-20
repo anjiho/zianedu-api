@@ -86,9 +86,12 @@ public class ProductService {
             //학원수강 상세정보
             academyLectureDetailVO = productMapper.selectAcademyLectureDetailInfo(gKey);
             if (academyLectureDetailVO != null) {
-                academyLectureDetailVO.setDiscountPercent(
-                        Util.getProductDiscountRate(academyLectureDetailVO.getPrice(), academyLectureDetailVO.getSellPrice())
-                );
+                //할인률 주입
+                if (academyLectureDetailVO.getPrice() > 0 && academyLectureDetailVO.getSellPrice() > 0) {
+                    academyLectureDetailVO.setDiscountPercent(
+                            Util.getProductDiscountRate(academyLectureDetailVO.getPrice(), academyLectureDetailVO.getSellPrice())
+                    );
+                }
                 academyLectureDetailVO.setImageViewUrl(
                         FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), academyLectureDetailVO.getImageView())
                 );

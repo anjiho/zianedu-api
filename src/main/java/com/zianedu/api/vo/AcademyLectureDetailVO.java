@@ -29,4 +29,10 @@ public class AcademyLectureDetailVO {
 
     private String discountPercent;
 
+    private int limitDay;
+
+    private int ctgKey;
+
+    private String ctgName;
+
 }

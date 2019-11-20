@@ -1019,7 +1019,7 @@ public class Util {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(String.format("%02d", 8));
+        System.out.println(getDiffDayCount("20190101", "20190301"));
 
 
     }
