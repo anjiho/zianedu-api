@@ -1205,6 +1205,7 @@
             ON A.J_G_KEY = E.J_G_KEY
             WHERE A.J_KEY = #{jKey}
             AND A.J_PM_KEY > 0
+            AND E.PAUSE_DAY = 0
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
                     AND A.KIND IN (100, 102)
@@ -1236,6 +1237,7 @@
         ON A.J_G_KEY = E.J_G_KEY
         WHERE A.J_KEY = #{jKey}
         AND A.J_PM_KEY > 0
+        AND E.PAUSE_DAY = 0
         <if test="stepCtgKey > 0">
             AND D.step_ctg_key = #{stepCtgKey}
         </if>
