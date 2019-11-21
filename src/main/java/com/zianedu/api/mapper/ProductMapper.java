@@ -141,6 +141,10 @@ public interface ProductMapper {
 
     List<SignUpLectureVO> selectSignUpVideoLecturePauseSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
 
+    List<TypeDTO> selectSignUpVideoLectureEndTypeList(@Param("userKey") int userKey);
+
+    List<SignUpLectureVO> selectSignUpVideoLectureEndSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

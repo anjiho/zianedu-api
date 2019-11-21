@@ -424,4 +424,29 @@ public class MyPageService extends PagingSupport {
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpVideoLectureEndTypeList(int userKey) {
+        int resultCode = OK.value();
+
+        List<TypeDTO> typeList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            typeList = productMapper.selectSignUpVideoLectureEndTypeList(userKey);
+        }
+        return new ApiResultListDTO(typeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpVideoLectureEndSubjectList(int userKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            signUpLectureNameList = productMapper.selectSignUpVideoLectureEndSubjectList(userKey, stepCtgKey);
+        }
+        return new ApiResultListDTO(signUpLectureNameList, resultCode);
+    }
 }
