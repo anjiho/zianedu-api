@@ -407,15 +407,6 @@
         INNER JOIN T_ORDER_LEC E
         ON A.J_G_KEY = E.J_G_KEY
         WHERE 1=1
-        AND B.pay_status = 2
-        AND A.J_PM_KEY = 0
-        AND E.PAUSE_DAY > 0
-        <![CDATA[
-            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
-        <![CDATA[
-            AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
         AND E.J_LEC_KEY = #{jLecKey}
     </select>
 
