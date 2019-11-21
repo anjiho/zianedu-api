@@ -449,4 +449,17 @@ public class MyPageService extends PagingSupport {
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getSignUpVideoLectureEndInfo(int jLecKey) {
+        int resultCode = OK.value();
+
+        OnlineVideoEndVO videoEndInfo = new OnlineVideoEndVO();
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            videoEndInfo = productMapper.selectVideoOnlineEndListByJLecKey(jLecKey);
+        }
+        return new ApiResultObjectDTO(videoEndInfo, resultCode);
+    }
 }

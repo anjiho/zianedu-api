@@ -241,7 +241,7 @@ public class MyPageController {
     @RequestMapping(value = "/getSignUpVideoLectureEndTypeList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강완료 유형 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키값(78906)", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값(70001)", dataType = "int", paramType = "path", required = true)
     })
     public ApiResultListDTO getSignUpVideoLectureEndTypeList(@PathVariable("userKey") int userKey) {
         return myPageService.getSignUpVideoLectureEndTypeList(userKey);
@@ -250,12 +250,23 @@ public class MyPageController {
     @RequestMapping(value = "/getSignUpVideoLectureEndSubjectList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강완료 과목 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키값(78906)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값(70001)", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true)
     })
     public ApiResultListDTO getSignUpVideoLectureEndSubjectList(@PathVariable("userKey") int userKey,
                                                                   @RequestParam("stepCtgKey") int stepCtgKey) {
         return myPageService.getSignUpVideoLectureEndSubjectList(userKey, stepCtgKey);
     }
+
+    @RequestMapping(value = "/getSignUpVideoLectureEndInfo/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강완료 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getSignUpVideoLectureEndInfo(@PathVariable("jLecKey") int jLecKey) {
+        return myPageService.getSignUpVideoLectureEndInfo(jLecKey);
+    }
+
+
 
 }

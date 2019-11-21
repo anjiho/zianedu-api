@@ -1389,7 +1389,6 @@
         ON A.J_G_KEY = E.J_G_KEY
         WHERE 1=1
         AND A.TYPE = 1
-        AND A.J_PM_KEY = 0
         AND B.PAY_TYPE NOT IN (20)
         AND B.PAY_STATUS = 2
         AND E.STATUS = 3
@@ -1411,13 +1410,42 @@
         ON A.J_G_KEY = E.J_G_KEY
         WHERE 1=1
         AND A.TYPE = 1
-        AND A.J_PM_KEY = 0
         AND B.PAY_TYPE NOT IN (20)
         AND B.PAY_STATUS = 2
         AND E.STATUS = 3
         AND B.USER_KEY = #{userKey}
         AND D.STEP_CTG_KEY = #{stepCtgKey}
         ORDER BY D.STEP_CTG_KEY ASC
+    </select>
+
+    <select id="selectVideoOnlineEndListByJLecKey" resultType="OnlineVideoEndVO">
+        SELECT
+            B.J_KEY,
+            A.J_G_KEY,
+            A.G_KEY,
+            TO_CHAR(E.START_DT, 'YYYY.MM.DD') as startDate,
+            TO_CHAR((E.START_DT + E.LIMIT_DAY + E.PAUSE_TOTAL_DAY), 'YYYY.MM.DD') as endDate,
+            ( SELECT Z.NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = D.STEP_CTG_KEY ) as ctgName,
+            C.NAME,
+            A.KIND,
+            E.J_LEC_KEY,
+            (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = A.G_KEY AND A.KIND = Z.KIND) as priceKey
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        INNER JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_LEC D
+        ON C.G_KEY = D.G_KEY
+        INNER JOIN T_ORDER_LEC E
+        ON A.J_G_KEY = E.J_G_KEY
+        WHERE 1=1
+        AND A.TYPE = 1
+        AND B.PAY_TYPE NOT IN (20)
+        AND B.PAY_STATUS = 2
+        AND E.STATUS = 3
+        AND E.J_LEC_KEY = #{jLecKey}
+        ORDER BY A.J_G_KEY ASC
     </select>
 
 

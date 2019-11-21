@@ -145,6 +145,8 @@ public interface ProductMapper {
 
     List<SignUpLectureVO> selectSignUpVideoLectureEndSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
 
+    OnlineVideoEndVO selectVideoOnlineEndListByJLecKey(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

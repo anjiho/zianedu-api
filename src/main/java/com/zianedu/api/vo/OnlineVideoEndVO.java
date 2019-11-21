@@ -39,4 +39,6 @@ public class OnlineVideoEndVO {
 
     private int jPmKey;
 
+    private int priceKey;
+
 }
