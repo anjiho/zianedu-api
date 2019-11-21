@@ -1336,7 +1336,6 @@
         WHERE 1=1
         AND B.user_key = #{userKey}
         AND B.pay_status = 2
-        AND A.j_pm_key = 0
         AND E.PAUSE_DAY > 0
         GROUP BY D.step_ctg_key
         ORDER BY D.STEP_CTG_KEY
@@ -1356,7 +1355,6 @@
         WHERE 1=1
         AND B.user_key = #{userKey}
         AND B.pay_status = 2
-        AND A.J_PM_KEY = 0
         AND E.PAUSE_DAY > 0
         AND D.STEP_CTG_KEY = #{stepCtgKey}
         ORDER BY D.STEP_CTG_KEY
