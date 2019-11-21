@@ -1354,26 +1354,7 @@
     </select>
 
     <select id="selectSignUpVideoLectureEndTypeList" resultType="com.zianedu.api.dto.TypeDTO">
-        SELECT
-            ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
-            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName
-        FROM T_ORDER_GOODS A
-        INNER JOIN T_ORDER B
-        ON A.J_KEY = B.J_KEY
-        INNER JOIN T_GOODS C
-        ON A.G_KEY = C.G_KEY
-        INNER JOIN T_LEC D
-        ON C.G_KEY = D.G_KEY
-        INNER JOIN T_ORDER_LEC E
-        ON A.J_G_KEY = E.J_G_KEY
-        WHERE 1=1
-        AND A.TYPE = 1
-        AND B.PAY_TYPE NOT IN (20)
-        AND B.PAY_STATUS = 2
-        AND E.STATUS = 3
-        AND B.USER_KEY = #{userKey}
-        GROUP BY D.STEP_CTG_KEY
-        ORDER BY D.STEP_CTG_KEY ASC
+        2
     </select>
 
     <select id="selectSignUpVideoLectureEndSubjectList" resultType="SignUpLectureVO">
@@ -1427,6 +1408,28 @@
         ORDER BY A.J_G_KEY ASC
     </select>
 
+    <select id="selectLectureApplySubjectList" resultType="LectureApplySubjectVO">
+        SELECT T.subjectKey, T.subjectName FROM
+        (
+            SELECT
+                (SELECT CTG_KEY FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) as subjectKey,
+                (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) as subjectName
+            FROM T_CATEGORY_GOODS A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            INNER JOIN T_LEC C
+            ON A.G_KEY = C.G_KEY
+            WHERE A.CTG_KEY IN (
+                SELECT CTG_KEY FROM T_CATEGORY
+                WHERE PARENT_KEY = #{menuCtgKey}
+            )
+            AND B.TYPE = #{productType}
+            AND B.IS_SHOW = 1
+            AND B.IS_SELL =1
+        )T
+        GROUP BY T.subjectKey, T.subjectName
+        ORDER BY T.subjectKey ASC
+    </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC

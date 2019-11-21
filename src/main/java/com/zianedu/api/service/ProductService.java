@@ -2,6 +2,7 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.EmphasisType;
+import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
@@ -23,6 +24,8 @@ import static org.springframework.http.HttpStatus.OK;
 public class ProductService {
 
     protected final String ZIAN_PASS_HTML_URL = "http://52.79.40.214/views/zianPass/";
+
+    protected int resultCode = OK.value();
 
     @Autowired
     private ProductMapper productMapper;
@@ -380,6 +383,18 @@ public class ProductService {
             dto = new MyLectureListDTO(totalCnt, lectureList);
         }
         return new ApiResultObjectDTO(dto, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getLectureApplySubjectList(int menuCtgKey, String goodsType) {
+        List<LectureApplySubjectVO> applySubjectList = new ArrayList<>();
+
+        if (menuCtgKey == 0 && "".equals(goodsType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            applySubjectList = productMapper.selectLectureApplySubjectList(menuCtgKey, GoodsType.getGoodsTypeKey(goodsType));
+        }
+        return new ApiResultListDTO(applySubjectList, resultCode);
     }
 
 }
