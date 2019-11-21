@@ -1338,12 +1338,6 @@
         AND B.pay_status = 2
         AND A.j_pm_key = 0
         AND E.PAUSE_DAY > 0
-        <![CDATA[
-        AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-         ]]>
-        <![CDATA[
-        AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
         GROUP BY D.step_ctg_key
         ORDER BY D.STEP_CTG_KEY
     </select>
@@ -1365,12 +1359,6 @@
         AND A.J_PM_KEY = 0
         AND E.PAUSE_DAY > 0
         AND D.STEP_CTG_KEY = #{stepCtgKey}
-        <![CDATA[
-        AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
-        <![CDATA[
-        AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
         ORDER BY D.STEP_CTG_KEY
     </select>
 
