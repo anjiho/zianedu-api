@@ -397,4 +397,16 @@ public class ProductService {
         return new ApiResultListDTO(applySubjectList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getLectureApplyTeacherList(int menuCtgKey, String goodsType) {
+        List<LectureApplySubjectVO> applySubjectList = new ArrayList<>();
+
+        if (menuCtgKey == 0 && "".equals(goodsType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            applySubjectList = productMapper.selectLectureApplySubjectList(menuCtgKey, GoodsType.getGoodsTypeKey(goodsType));
+        }
+        return new ApiResultListDTO(applySubjectList, resultCode);
+    }
+
 }

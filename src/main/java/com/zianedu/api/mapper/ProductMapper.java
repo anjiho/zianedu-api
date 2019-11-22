@@ -148,6 +148,8 @@ public interface ProductMapper {
     OnlineVideoEndVO selectVideoOnlineEndListByJLecKey(@Param("jLecKey") int jLecKey);
     //수강신청 과목 리스트
     List<LectureApplySubjectVO> selectLectureApplySubjectList(@Param("menuCtgKey") int menuCtgKey, @Param("productType") int productType);
+    //수강신청 교수 리스트
+    List<LectureApplyTeacherVO> selectLectureApplyTeacherList(@Param("menuCtgKey") int menuCtgKey, @Param("productType") int productType);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
