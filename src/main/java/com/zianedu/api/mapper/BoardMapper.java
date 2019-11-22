@@ -21,6 +21,10 @@ public interface BoardMapper {
                                         @Param("searchType") String searchType, @Param("searchText") String searchText,
                                         @Param("isNotice") int isNotice);
 
+    int selectLeaningTBbsDataListBySearchCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("teacherKey") int teacherKey,
+                                        @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                        @Param("isNotice") int isNotice);
+
     List<GoodsReviewVO> selectGoodsReviewList(@Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                            @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 

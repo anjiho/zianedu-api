@@ -53,6 +53,27 @@
             AND A.IS_NOTICE = #{isNotice}
             AND A.BBS_MASTER_KEY = #{bbsMasterKey}
             AND A.CTG_KEY = #{teacherKey}
+            <if test="searchType == 'title'">
+                AND A.TITLE LIKE '%'||#{searchText}||'%'
+            </if>
+            <if test="searchType == 'contents'">
+                AND A.CONTENTS LIKE '%'||#{searchText}||'%'
+            </if>
+            <if test="searchType == 'user'">
+                AND A.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
+            </if>
+        ) Z
+        WHERE 1=1
+    </select>
+
+    <select id="selectLeaningTBbsDataListBySearchCount" resultType="Integer">
+        SELECT * FROM (
+            SELECT COUNT(A.BBS_KEY)
+            FROM T_BBS_DATA A
+            WHERE 1=1
+            AND A.IS_NOTICE = #{isNotice}
+            AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+            AND A.CTG_KEY = #{teacherKey}
             START WITH A.BBS_PARENT_KEY = 0
             CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
             ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC

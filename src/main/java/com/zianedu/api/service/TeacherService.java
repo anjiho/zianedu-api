@@ -190,7 +190,7 @@ public class TeacherService extends PagingSupport {
         if (teacherKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            totalCount = boardMapper.selectTBbsDataListBySearchCount(
+            totalCount = boardMapper.selectLeaningTBbsDataListBySearchCount(
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(),
                     teacherKey,
                     Util.isNullValue(searchType, ""),
