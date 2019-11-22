@@ -151,6 +151,8 @@ public interface ProductMapper {
     //수강신청 교수 리스트
     List<LectureApplyTeacherVO> selectLectureApplyTeacherList(@Param("menuCtgKey") int menuCtgKey, @Param("productType") int productType);
 
+    List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

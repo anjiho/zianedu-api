@@ -50,6 +50,19 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
+    public List<TCategoryVO> getLectureApplySubjectLeftMenuList(int ctgKey) {
+        int resultCode = OK.value();
+
+        List<TCategoryVO> leftMenuList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            leftMenuList = menuMapper.selectTCategoryByParentKey(ctgKey);
+        }
+        return leftMenuList;
+    }
+
+    @Transactional(readOnly = true)
     public ApiResultListDTO getTechVodZianPassLeftMenu(int ctgKey) {
         int resultCode = OK.value();
 

@@ -126,11 +126,33 @@ public class ProductController {
     @RequestMapping(value = "/getLectureApplySubjectList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("수강신청 > 과목 리스트 가져오기")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getLectureApplySubjectList(@PathVariable("menuCtgKey") int menuCtgKey) {
+        return productService.getLectureApplySubjectList(menuCtgKey);
+    }
+
+    @RequestMapping(value = "/getLectureApplyTeacherList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("수강신청 > 교수 리스트 가져오기")
+    @ApiImplicitParams({
             @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "goodsType", value = "상품 종류(VIDEO, ACADEMY)", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultListDTO getLectureApplySubjectList(@PathVariable("menuCtgKey") int menuCtgKey, @RequestParam("goodsType") String goodsType) {
-        return productService.getLectureApplySubjectList(menuCtgKey, goodsType);
+    public ApiResultListDTO getLectureApplyTeacherList(@PathVariable("menuCtgKey") int menuCtgKey, @RequestParam("goodsType") String goodsType) {
+        return productService.getLectureApplyTeacherList(menuCtgKey, goodsType);
+    }
+
+    @RequestMapping(value = "/getLectureApplyTeacherTypeList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("수강신청 > 동영상 강의 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "goodsType", value = "상품 종류(VIDEO, ACADEMY)", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getLectureApplyTeacherTypeList(@PathVariable("menuCtgKey") int menuCtgKey,
+                                                           @RequestParam("stepCtgKey") int stepCtgKey,
+                                                           @RequestParam("goodsType") String goodsType) {
+        return productService.getLectureApplyTeacherTypeList(menuCtgKey, stepCtgKey, goodsType);
     }
 
 }

@@ -141,6 +141,57 @@ public class TeacherService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
+    public List<TeacherHomeLectureVO> getTeacherLectureListByLectureApply(int teacherKey, int stepCtgKey, int device) {
+        List<TeacherHomeLectureVO> teacherHomeLectureList = new ArrayList<>();
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherHomeLectureList = teacherMapper.selectTeacherVideoLectureList(teacherKey, stepCtgKey);
+            if (teacherHomeLectureList.size() > 0) {
+                for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
+                    for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
+                        vo2.setEmphasisName(EmphasisType.getEmphasisStr(vo2.getEmphasis()));    //NEW, BEST 주입
+                        //vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo2.getSellPrice())) + "원");
+                        //vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo2.getSellPrice())) + "원");
+                        //할인률 주입
+                        CalcPriceVO calcPriceVO = productMapper.selectTopCalcPrice(vo2.getGKey());
+                        if (calcPriceVO.getPrice() > 0 && calcPriceVO.getSellPrice() > 0) {
+                            vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()));
+                        }
+                        //동영상, 모바일, 동영상+모바일 리스트 주입
+                        List<TGoodsPriceOptionVO> videoLectureKindList = productMapper.selectGoodsPriceOptionList(vo2.getGKey());
+                        vo2.setVideoLectureKindList(videoLectureKindList);
+                        //동영상 종류별 금액 주입하기
+                        for (TGoodsPriceOptionVO priceOptionVO : videoLectureKindList) {
+                            if (priceOptionVO.getPrice() > 0 && priceOptionVO.getSellPrice() > 0 ) {
+                                String discountPercentName = Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice());
+                                priceOptionVO.setDiscountPercent(discountPercentName);
+                            }
+                            priceOptionVO.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())));
+                            if (priceOptionVO.getKind() == 100) {
+                                vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                            } else if (priceOptionVO.getKind() == 101) {
+                                vo2.setMobileSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                            } else if (priceOptionVO.getKind() == 102) {
+                                vo2.setPcMobileSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                            }
+                        }
+                        //강사 이미지 URL
+                        vo2.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo2.getImageTeacherList()));
+                        //강좌책 주입
+                        List<LectureBookVO> teacherBookList = productMapper.selectTeacherBookListFromVideoLectureLink(vo2.getGKey());
+                        vo2.setTeacherLectureBook(teacherBookList);
+                        //강의 목록 주입
+                        List<TLecCurriVO> lectureList = productMapper.selectLectureListFromVideoProduct(vo2.getGKey(), device);
+                        vo2.setLectureList(lectureList);
+                    }
+                }
+            }
+        }
+        return teacherHomeLectureList;
+    }
+
+    @Transactional(readOnly = true)
     public ApiResultListDTO getTeacherAcademyList(int teacherKey, int stepCtgKey) {
         int resultCode = OK.value();
 
