@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class TeacherHomeLectureVO {
 
+    private int gKey;
+
     private int stepCtgKey;
 
     private String ctgName;

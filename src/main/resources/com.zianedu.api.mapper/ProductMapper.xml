@@ -37,6 +37,7 @@
     </resultMap>
 
     <resultMap id="teacherHomeLectureMap" type="TeacherHomeLectureVO">
+        <result property="gKey" column="G_KEY"/>
         <result property="stepCtgKey" column="STEP_CTG_KEY"/>
         <result property="ctgName" column="CTG_NAME"/>
         <collection property="teacherLectureList" javaType="java.util.ArrayList" resultMap="teacherLectureListMap"/>
