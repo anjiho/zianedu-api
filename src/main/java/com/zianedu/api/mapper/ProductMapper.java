@@ -77,6 +77,9 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
                                                                                       @Param("teacherKey") int teacherKey);
 
+    List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture2(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
+                                                                                      @Param("teacherKey") int teacherKey);
+
     List<SpecialPackageVO> selectPromotionPackageList();
 
     SpecialPackageProductVO selectPromotionPackageDetailInfo(@Param("gKey") int gKey);
@@ -159,6 +162,13 @@ public interface ProductMapper {
 
     List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey,
                                                                       @Param("teacherKeys") List<String>teacherKeys, @Param("stepCtgKeys") List<String>stepCtgKeys);
+
+    List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList2(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey,
+                                                                      @Param("teacherKeys") List<String>teacherKeys, @Param("stepCtgKeys") List<String>stepCtgKeys);
+
+    List<TCategoryVO> selectLectureApplySubjectListBySubjectKey(@Param("menuCtgKey") int menuCtgKey);
+
+    List<TCategoryVO> selectLectureApplySubjectListFromSearch(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

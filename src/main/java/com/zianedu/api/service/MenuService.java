@@ -59,7 +59,8 @@ public class MenuService {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             List<String> subjectMenuKeyList = Arrays.asList(subjectMenuKeys);
-            leftMenuList = menuMapper.selectTCategoryByParentKeyAtLectureApply(ctgKey, subjectMenuKeyList);
+            //leftMenuList = menuMapper.selectTCategoryByParentKeyAtLectureApply(ctgKey, subjectMenuKeyList);
+            leftMenuList = productMapper.selectLectureApplySubjectListFromSearch(ctgKey, subjectMenuKeyList);
         }
         return leftMenuList;
     }

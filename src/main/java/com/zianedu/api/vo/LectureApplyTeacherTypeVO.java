@@ -13,6 +13,8 @@ public class LectureApplyTeacherTypeVO {
 
     private int subjectMenuKey;
 
+    private int subjectCtgKey;
+
     private String imageTeacherList;
 
     private int theoryCnt;

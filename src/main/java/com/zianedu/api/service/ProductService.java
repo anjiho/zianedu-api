@@ -204,7 +204,8 @@ public class ProductService {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             List<String>stepKeyList = Arrays.asList(stepCtgKeys);
-            teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture(ctgKey, stepKeyList, teacherKey);
+            //teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture(ctgKey, stepKeyList, teacherKey);
+            teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture2(ctgKey, stepKeyList, teacherKey);
             if (teacherHomeLectureList.size() > 0) {
                 for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
                     for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
@@ -505,6 +506,19 @@ public class ProductService {
         if (menuCtgKey == 0 ) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            //subjectMenuList = menuMapper.selectTCategoryByParentKey(menuCtgKey);
+            subjectMenuList = productMapper.selectLectureApplySubjectListBySubjectKey(menuCtgKey);
+        }
+        return new ApiResultListDTO(subjectMenuList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getLectureApplySubjectListFromSubjectKey(int menuCtgKey) {
+        List<TCategoryVO> subjectMenuList = new ArrayList<>();
+
+        if (menuCtgKey == 0 ) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
             subjectMenuList = menuMapper.selectTCategoryByParentKey(menuCtgKey);
             //applySubjectList = productMapper.selectLectureApplySubjectList(menuCtgKey, GoodsType.getGoodsTypeKey(goodsType));
         }
@@ -551,14 +565,16 @@ public class ProductService {
                     List<LectureApplyAcademyListVO> academyList = new ArrayList<>();
 
                     if (GoodsType.getGoodsTypeKey(goodsType) == 1) {
-                        teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
+                        //teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
+                        teacherTypeList = productMapper.selectLectureApplyTeacherTypeList2(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
                         if (teacherTypeList.size() > 0) {
                             for (LectureApplyTeacherTypeVO teacherTypeVO : teacherTypeList) {
                                 teacherTypeVO.setImageTeacherList(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherTypeVO.getImageTeacherList()));
-                                if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectMenuKey()) {
+                                if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectCtgKey()) {
                                     productDTO.setTeacherTypeInfo(teacherTypeList);
                                 }
-                                List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectVO.getCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
+                                //List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectVO.getCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
+                                List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(teacherTypeVO.getSubjectCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
                                 teacherTypeVO.setVideoLectureInfo(videoLectureList);
                             }
                         }
