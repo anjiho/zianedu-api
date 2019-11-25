@@ -1817,7 +1817,7 @@
 
     <select id="selectLectureApplyTeacherTypeList2" resultType="LectureApplyTeacherTypeVO">
         SELECT
-        TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST, TT.SUBJECT_CTG_KEY, TT.subjectMenuKey,
+        TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST, TT.SUBJECT_CTG_KEY
         (SELECT COUNT(T.TEACHER_KEY) FROM
         (
         SELECT F.TEACHER_KEY
@@ -1984,6 +1984,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND F.IMAGE_TEACHER_LIST IS NOT NULL
         AND C.SUBJECT_CTG_KEY = #{subjectMenuKey}
         <if test="teacherKeys.size  != 0">
             AND F.TEACHER_KEY IN
@@ -1998,7 +1999,7 @@
             </foreach>
         </if>
         )TT
-        GROUP BY TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST,TT.SUBJECT_CTG_KEY, TT.subjectMenuKey
+        GROUP BY TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST,TT.SUBJECT_CTG_KEY
         ORDER BY TT.SUBJECT_CTG_KEY ASC
     </select>
 
@@ -2048,6 +2049,7 @@
             AND B.TYPE = 1
             AND B.IS_SHOW = 1
             AND B.IS_SELL =1
+            AND C.SUBJECT_CTG_KEY IS NOT NULL
             GROUP BY C.SUBJECT_CTG_KEY
             ORDER BY C.SUBJECT_CTG_KEY ASC
         ) Z
