@@ -1839,6 +1839,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
         AND C.STEP_CTG_KEY = 203
         )T
         WHERE T.TEACHER_KEY = TT.TEACHER_KEY
@@ -1866,6 +1867,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY = #{subectCtgKey}
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
         AND C.STEP_CTG_KEY = 205
         )T
@@ -1894,6 +1896,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY = #{subectCtgKey}
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
         AND C.STEP_CTG_KEY = 207
         )T
@@ -1922,6 +1925,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY = #{subectCtgKey}
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
         AND C.STEP_CTG_KEY = 4172
         )T
@@ -1951,6 +1955,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY = #{subectCtgKey}
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
         AND C.STEP_CTG_KEY = 4266
         )T
