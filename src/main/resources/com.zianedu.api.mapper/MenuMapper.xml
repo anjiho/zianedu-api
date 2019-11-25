@@ -16,6 +16,18 @@
         ORDER BY POS ASC
     </select>
 
+    <select id="selectTCategoryByParentKeyAtLectureApply" resultType="TCategoryVO">
+        SELECT * FROM T_CATEGORY
+        WHERE PARENT_KEY = #{ctgKey}
+        <if test="subjectMenuKeys.size != 0">
+            AND CTG_KEY IN
+            <foreach collection="subjectMenuKeys" item="subjectMenuKey" separator="," open="(" close=")">
+                #{subjectMenuKey}
+            </foreach>
+        </if>
+        ORDER BY POS ASC
+    </select>
+
     <select id="selectTCategoryByCtgKey" resultType="TCategoryVO">
         SELECT * FROM T_CATEGORY
         WHERE CTG_KEY = #{ctgKey}

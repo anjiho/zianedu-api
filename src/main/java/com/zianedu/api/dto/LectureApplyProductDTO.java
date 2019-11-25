@@ -15,5 +15,5 @@ public class LectureApplyProductDTO {
 
     private List<LectureApplyTeacherTypeVO> teacherTypeInfo;
 
-    private List<TeacherHomeLectureVO> lectureInfo;
+    //private List<TeacherHomeLectureVO> lectureInfo;
 }

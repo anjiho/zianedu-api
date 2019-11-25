@@ -3,6 +3,8 @@ package com.zianedu.api.controller;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.ProductService;
+import com.zianedu.api.utils.GsonUtil;
+import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -146,13 +148,37 @@ public class ProductController {
     @ApiOperation("수강신청 > 동영상 강의 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "stepCtgKey", value = "유형 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "subjectMenuKeys", value = "과목 메뉴 키값", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "teacherKeys", value = "강사 키값", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "stepCtgKeys", value = "유형 키값", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(name = "goodsType", value = "상품 종류(VIDEO, ACADEMY)", dataType = "String", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getLectureApplyTeacherTypeList(@PathVariable("menuCtgKey") int menuCtgKey,
-                                                           @RequestParam("stepCtgKey") int stepCtgKey,
+                                                             @RequestParam(value = "subjectMenuKeys", defaultValue = "", required = false) String subjectMenuKeys,
+                                                             @RequestParam(value = "teacherKeys", defaultValue = "", required = false) String teacherKeys,
+                                                             @RequestParam(value = "stepCtgKeys", defaultValue = "", required = false) String stepCtgKeys,
                                                            @RequestParam("goodsType") String goodsType) {
-        return productService.getLectureApplyTeacherTypeList(menuCtgKey, stepCtgKey, goodsType);
+        String subjectMenuKeyStr = "";
+        String teacherKeyStr = "";
+        String stepCtgKeyStr = "";
+
+        String[] subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
+        String[] teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
+        String[] stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
+
+        if (!"".equals(subjectMenuKeys)) {
+            //String[] subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
+            subjectMenuKeyStr = StringUtils.implode(",", subjectMenuKeyStrs);
+        }
+        if (!"".equals(teacherKeys)) {
+            //String[] teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
+            teacherKeyStr = StringUtils.implode(",", teacherKeyStrs);
+        }
+        if (!"".equals(stepCtgKeys)) {
+            //String[] stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
+            stepCtgKeyStr = StringUtils.implode(",", stepCtgKeyStrs);
+        }
+        return productService.getLectureApplyTeacherTypeList(menuCtgKey, subjectMenuKeyStrs, teacherKeyStrs, stepCtgKeyStrs, goodsType);
     }
 
 }

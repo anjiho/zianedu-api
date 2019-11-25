@@ -727,6 +727,64 @@
         ORDER BY T.STEP_CTG_KEY ASC, T.G_KEY ASC
     </select>
 
+    <select id="selectVideoLectureListFromCategoryMenuFromApplyLecture" resultMap="teacherHomeLectureMap">
+        SELECT T.* FROM
+        (
+            SELECT
+            A.G_KEY, C.STEP_CTG_KEY,D.NAME as ctgName, B.EMPHASIS, B.NAME as goodsName,
+            (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, F.IMAGE_TEACHER_LIST,
+            (
+            SELECT * FROM (
+            SELECT T.VOD_FILE_LOW
+            FROM T_LEC_CURRI T
+            WHERE T.LEC_KEY = C.LEC_KEY
+            ORDER BY T.CURRI_KEY ASC
+            ) WHERE ROWNUM = 1
+            ) as lowVideo,
+            (
+            SELECT * FROM (
+            SELECT T.VOD_FILE_HIGH
+            FROM T_LEC_CURRI T
+            WHERE T.LEC_KEY = C.LEC_KEY
+            ORDER BY T.CURRI_KEY ASC
+            ) WHERE ROWNUM = 1
+            ) as highVideo,
+            (
+            SELECT * FROM (
+            SELECT T.CURRI_KEY
+            FROM T_LEC_CURRI T
+            WHERE T.LEC_KEY = C.LEC_KEY
+            ORDER BY T.CURRI_KEY ASC
+            ) WHERE ROWNUM = 1
+            ) as curriKey
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_LEC C
+        ON A.G_KEY = C.G_KEY
+        INNER JOIN T_CATEGORY D
+        ON C.STEP_CTG_KEY = D.CTG_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK E
+        ON A.G_KEY = E.G_KEY
+        INNER JOIN T_TEACHER F
+        ON E.TEACHER_KEY = F.TEACHER_KEY
+        WHERE A.CTG_KEY = #{ctgKey}
+        <if test="teacherKey > 0">
+            AND F.TEACHER_KEY = #{teacherKey}
+        </if>
+        <if test="stepCtgKeys.size != 0">
+            AND C.STEP_CTG_KEY IN
+            <foreach collection="stepCtgKeys" item="stepCtgKey" separator="," open="(" close=")">
+                #{stepCtgKey}
+            </foreach>
+        </if>
+        AND B.TYPE = 1
+        AND B.IS_SHOW = 1
+        AND B.IS_SELL =1
+        )T
+        ORDER BY T.STEP_CTG_KEY ASC, T.G_KEY ASC
+    </select>
+
     <select id="selectPromotionPackageList" resultType="SpecialPackageVO">
         SELECT A.CTG_G_KEY, B.G_KEY, B.NAME as goodsName, C.EXAM_YEAR, C.LIMIT_DAY
         FROM T_CATEGORY_GOODS A
@@ -1630,6 +1688,18 @@
             AND B.IS_SHOW = 1
             AND B.IS_SELL =1
             AND A.CTG_KEY = #{subjectMenuKey}
+            <if test="teacherKeys.size  != 0">
+                AND F.TEACHER_KEY IN
+                <foreach collection="teacherKeys" item="teacherKey" separator="," open="(" close=")">
+                    #{teacherKey}
+                </foreach>
+            </if>
+            <if test="stepCtgKeys.size != 0">
+                AND C.STEP_CTG_KEY IN
+                <foreach collection="stepCtgKeys" item="stepCtgKey" separator="," open="(" close=")">
+                    #{stepCtgKey}
+                </foreach>
+            </if>
         )TT
         GROUP BY TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST,TT.SUBJECT_CTG_KEY, TT.subjectMenuKey
         ORDER BY TT.SUBJECT_CTG_KEY ASC

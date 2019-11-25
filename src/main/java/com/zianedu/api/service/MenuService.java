@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,14 +51,15 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public List<TCategoryVO> getLectureApplySubjectLeftMenuList(int ctgKey) {
+    public List<TCategoryVO> getLectureApplySubjectLeftMenuList(int ctgKey, String[] subjectMenuKeys) {
         int resultCode = OK.value();
 
         List<TCategoryVO> leftMenuList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            leftMenuList = menuMapper.selectTCategoryByParentKey(ctgKey);
+            List<String> subjectMenuKeyList = Arrays.asList(subjectMenuKeys);
+            leftMenuList = menuMapper.selectTCategoryByParentKeyAtLectureApply(ctgKey, subjectMenuKeyList);
         }
         return leftMenuList;
     }

@@ -71,6 +71,9 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey,
                                                                     @Param("teacherKey") int teacherKey);
 
+    List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
+                                                                                      @Param("teacherKey") int teacherKey);
+
     List<SpecialPackageVO> selectPromotionPackageList();
 
     SpecialPackageProductVO selectPromotionPackageDetailInfo(@Param("gKey") int gKey);
@@ -151,7 +154,8 @@ public interface ProductMapper {
     //수강신청 교수 리스트
     List<LectureApplyTeacherVO> selectLectureApplyTeacherList(@Param("menuCtgKey") int menuCtgKey, @Param("productType") int productType);
 
-    List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey);
+    List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey,
+                                                                      @Param("teacherKeys") List<String>teacherKeys, @Param("stepCtgKeys") List<String>stepCtgKeys);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

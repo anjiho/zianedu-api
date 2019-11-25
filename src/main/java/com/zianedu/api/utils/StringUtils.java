@@ -406,19 +406,15 @@ public class StringUtils {
         return i;
     }
 
-    //한자리 숫자 앞에 0 붙이기
+    //한자리 숫자 앞에 0 붙이기7
     public static String addZeroTwoDigitUnder(int num) {
         return String.format("%02d", num);
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "\\r\\n&lt;center&gt;&lt;a href=&quot;http://tech.zianedu.com/Front/ProductOfflineLecView?a_lLinkCtgKey=0&amp;amp;a_lGKey=107027&quot; target=&quot;_blank&quot;&gt;\\r\\n&lt;img border=&quot;0&quot; src=&quot;http://www.zianedu.com/tt/sigan/201409/sigan_click.jpg&quot;&gt;&lt;/a&gt;&lt;br&gt;\\r\\n&lt;img src=&quot;http://tech.zianedu.com/Upload/100/lec/%EC%95%88%EB%8B%A4%EA%B5%AD%EC%96%B4%ED%8A%B9%EA%B0%95.jpg&quot; width=&quot;700&quot; height=&quot;990&quot; border=&quot;0&quot;&gt;&lt;/center&gt;";
-        String str2 = str.replaceAll("(\r|\n|\r\n|\n\r)", " ");
-        String str3 = str.replaceAll("(\\r|\\n|\r\n|\n\r)", " ");
+        String[] strs = {"11","22"};
+        String str = implode(",", strs);
         System.out.println(str);
-        System.out.println(str2);
-        System.out.println(str3);
-        //System.out.println(str.replaceAll(System.getProperty("line.separator"),""));
 
     }
 

@@ -12,6 +12,8 @@ public interface MenuMapper {
 
     List<TCategoryVO> selectTCategoryByParentKey(@Param("ctgKey") int ctgKey);
 
+    List<TCategoryVO> selectTCategoryByParentKeyAtLectureApply(@Param("ctgKey") int ctgKey, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
+
     List<TCategoryVO> selectTCategoryByCtgKey(@Param("ctgKey") int ctgKey);
 
     List<TeacherVO> selectTeacherListFromTeacherIntroduce(@Param("ctgKey") int ctgKey);
