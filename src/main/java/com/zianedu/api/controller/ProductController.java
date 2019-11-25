@@ -146,7 +146,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/getLectureApplyTeacherTypeList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("수강신청 > 동영상 강의 리스트")
+    @ApiOperation("수강신청 > 강의 리스트(동영상, 학원)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "subjectMenuKeys", value = "과목 메뉴 키값", dataType = "String", paramType = "query", required = false),
