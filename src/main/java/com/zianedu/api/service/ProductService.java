@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -544,19 +545,41 @@ public class ProductService {
                 for (TCategoryVO subjectVO : lectureApplySubjectList) {
                     LectureApplyProductDTO productDTO = new LectureApplyProductDTO();
 
-                    List<LectureApplyTeacherTypeVO> teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
+                    List<LectureApplyTeacherTypeVO> teacherTypeList = new ArrayList<>();
+                    //List<LectureApplyTeacherTypeVO> teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
                     //List<LectureApplyTeacherTypeVO> teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectMenuKey, teacherKey, stepCtgKey);
+                    List<LectureApplyAcademyListVO> academyList = new ArrayList<>();
 
-                    if (teacherTypeList.size() > 0) {
-                        for (LectureApplyTeacherTypeVO teacherTypeVO : teacherTypeList) {
-                            teacherTypeVO.setImageTeacherList(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherTypeVO.getImageTeacherList()));
-                            if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectMenuKey()) {
-                                productDTO.setTeacherTypeInfo(teacherTypeList);
+                    if (GoodsType.getGoodsTypeKey(goodsType) == 1) {
+                        teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
+                        if (teacherTypeList.size() > 0) {
+                            for (LectureApplyTeacherTypeVO teacherTypeVO : teacherTypeList) {
+                                teacherTypeVO.setImageTeacherList(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherTypeVO.getImageTeacherList()));
+                                if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectMenuKey()) {
+                                    productDTO.setTeacherTypeInfo(teacherTypeList);
+                                }
+                                List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectVO.getCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
+                                teacherTypeVO.setVideoLectureInfo(videoLectureList);
                             }
-                            List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectVO.getCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
-                            teacherTypeVO.setVideoLectureInfo(videoLectureList);
+                        }
+                    } else if (GoodsType.getGoodsTypeKey(goodsType) == 2) {
+                        academyList = productMapper.selectAcademyLectureListFromCategoryMenuAtLectureApply(menuCtgKey, stepCtgKeyList, teacherKeyList);
+                        for (LectureApplyAcademyListVO academyVO : academyList) {
+                            if (subjectVO.getCtgKey() == academyVO.getCtgKey()) {
+                                academyVO.setImageView(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), academyVO.getImageView()));
+                                productDTO.setAcademyLectureInfo(academyList);
+                            }
+                            //선생님 목록
+                            List<TeacherInfoVO>teacherInfoList = productMapper.selectAcademyLectureTeacherList(academyVO.getGKey());
+                            if (teacherInfoList.size() > 0) {
+                                for (TeacherInfoVO teacherInfoVO : teacherInfoList) {
+                                    teacherInfoVO.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherInfoVO.getTeacherImage()));
+                                }
+                                academyVO.setTeacherInfoList(teacherInfoList);
+                            }
                         }
                     }
+
                     productDTO.setSubjectName(subjectVO.getName());
                     productDTO.setSubjectKey(subjectVO.getCtgKey());
 

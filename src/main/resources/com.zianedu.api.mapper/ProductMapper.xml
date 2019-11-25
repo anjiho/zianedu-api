@@ -672,6 +672,58 @@
             </if>
     </select>
 
+    <select id="selectAcademyLectureListFromCategoryMenuAtLectureApply" resultType="LectureApplyAcademyListVO">
+        SELECT ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.goodsName, ZZ.g_key, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice, ZZ.PRICE_KEY, ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW FROM (
+        SELECT Z.*
+        FROM (
+                SELECT C.STEP_CTG_KEY as stepCtgKey, B.G_KEY,  D.NAME as ctgName, B.NAME as goodsName,
+                        CONCAT( CONCAT( TO_CHAR(C.STARTDATE, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR(C.STARTDATE + C.LIMIT_DAY, 'YYYY.MM.DD')) as lectureDate,
+                        E.PRICE_KEY, TRIM ( TO_CHAR(E.SELL_PRICE, '999,999') ) as sellPrice,
+                        CONCAT( E.KIND, '개월') as month,
+                        E.KIND,
+                        A.CTG_KEY,
+                        (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = A.CTG_KEY) as subjectName,
+                        F.TEACHER_KEY,
+                        B.IMAGE_VIEW
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_GOODS_PRICE_OPTION E
+                ON B.G_KEY = E.G_KEY
+                LEFT OUTER JOIN T_GOODS_TEACHER_LINK F
+                ON A.G_KEY = F.G_KEY
+                WHERE 1=1
+                AND B.TYPE = 2
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL = 1
+                AND A.CTG_KEY IN (
+                     SELECT CTG_KEY FROM T_CATEGORY
+                        WHERE PARENT_KEY = #{menuCtgKey}
+                    )
+                <if test="teacherKeys.size  != 0">
+                    AND F.TEACHER_KEY IN
+                    <foreach collection="teacherKeys" item="teacherKey" separator="," open="(" close=")">
+                        #{teacherKey}
+                    </foreach>
+                </if>
+                ORDER BY  C.STEP_CTG_KEY ASC, B.G_KEY ASC
+            ) Z
+            WHERE 1=1
+            <if test="stepCtgKeys.size  != 0">
+                AND Z.stepCtgKey IN
+                <foreach collection="stepCtgKeys" item="stepCtgKey" separator="," open="(" close=")">
+                    #{stepCtgKey}
+                </foreach>
+            </if>
+    )ZZ
+    GROUP BY ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.goodsName, ZZ.G_KEY, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice, ZZ.PRICE_KEY, ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW
+    ORDER BY ZZ.stepCtgKey ASC
+    </select>
+
     <select id="selectVideoLectureListFromCategoryMenu" resultMap="teacherHomeLectureMap">
         SELECT T.* FROM
         (

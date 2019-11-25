@@ -5,6 +5,7 @@ import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.ProductService;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.Util;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -161,9 +162,13 @@ public class ProductController {
         String[] subjectMenuKeyStrs = new String[0];
         String[] teacherKeyStrs = new String[0];
         String[] stepCtgKeyStrs = new String[0];
-        if (subjectMenuKeyStrs.length > 0) subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
-        if (teacherKeyStrs.length > 0 ) teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
-        if (stepCtgKeyStrs.length > 0) stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
+        if (!"".equals(Util.isNullValue(subjectMenuKeys, ""))) subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
+        if (!"".equals(Util.isNullValue(teacherKeys, ""))) teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
+        if (!"".equals(Util.isNullValue(stepCtgKeys, ""))) stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
+
+        //if (subjectMenuKeyStrs.length > 0) subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
+        //if (teacherKeyStrs.length > 0 ) teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
+        //if (stepCtgKeyStrs.length > 0) stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
 
 
 
