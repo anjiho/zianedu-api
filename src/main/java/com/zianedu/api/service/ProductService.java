@@ -514,7 +514,6 @@ public class ProductService {
         if (menuCtgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-
             //과목가져오기
             List<TCategoryVO> lectureApplySubjectList = menuService.getLectureApplySubjectLeftMenuList(menuCtgKey);
             if (lectureApplySubjectList.size() > 0) {
