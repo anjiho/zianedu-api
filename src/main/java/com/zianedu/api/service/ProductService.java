@@ -6,6 +6,7 @@ import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
+import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.StringUtils;
@@ -37,6 +38,9 @@ public class ProductService {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getVideoProductDetailInfo(int gKey, int device) {
@@ -491,7 +495,7 @@ public class ProductService {
         if (menuCtgKey == 0 ) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            subjectMenuList = menuService.getLectureApplySubjectLeftMenuList(menuCtgKey, null);
+            subjectMenuList = menuMapper.selectTCategoryByParentKey(menuCtgKey);
             //applySubjectList = productMapper.selectLectureApplySubjectList(menuCtgKey, GoodsType.getGoodsTypeKey(goodsType));
         }
         return new ApiResultListDTO(subjectMenuList, resultCode);
@@ -546,8 +550,6 @@ public class ProductService {
                     }
                     productDTO.setSubjectName(subjectVO.getName());
                     productDTO.setSubjectKey(subjectVO.getCtgKey());
-
-
 
                     lectureApplyProductList.add(productDTO);
                 }
