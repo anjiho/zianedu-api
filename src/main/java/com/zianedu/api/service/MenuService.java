@@ -58,7 +58,6 @@ public class MenuService {
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-
             List<String> subjectMenuKeyList = Arrays.asList(subjectMenuKeys);
             leftMenuList = menuMapper.selectTCategoryByParentKeyAtLectureApply(ctgKey, subjectMenuKeyList);
         }

@@ -158,26 +158,15 @@ public class ProductController {
                                                              @RequestParam(value = "teacherKeys", defaultValue = "", required = false) String teacherKeys,
                                                              @RequestParam(value = "stepCtgKeys", defaultValue = "", required = false) String stepCtgKeys,
                                                            @RequestParam("goodsType") String goodsType) {
-        String subjectMenuKeyStr = "";
-        String teacherKeyStr = "";
-        String stepCtgKeyStr = "";
+        String[] subjectMenuKeyStrs = new String[0];
+        String[] teacherKeyStrs = new String[0];
+        String[] stepCtgKeyStrs = new String[0];
+        if (subjectMenuKeyStrs.length > 0) subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
+        if (teacherKeyStrs.length > 0 ) teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
+        if (stepCtgKeyStrs.length > 0) stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
 
-        String[] subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
-        String[] teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
-        String[] stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
 
-        if (!"".equals(subjectMenuKeys)) {
-            //String[] subjectMenuKeyStrs = GsonUtil.convertToStringArrayFromString(subjectMenuKeys);
-            subjectMenuKeyStr = StringUtils.implode(",", subjectMenuKeyStrs);
-        }
-        if (!"".equals(teacherKeys)) {
-            //String[] teacherKeyStrs = GsonUtil.convertToStringArrayFromString(teacherKeys);
-            teacherKeyStr = StringUtils.implode(",", teacherKeyStrs);
-        }
-        if (!"".equals(stepCtgKeys)) {
-            //String[] stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
-            stepCtgKeyStr = StringUtils.implode(",", stepCtgKeyStrs);
-        }
+
         return productService.getLectureApplyTeacherTypeList(menuCtgKey, subjectMenuKeyStrs, teacherKeyStrs, stepCtgKeyStrs, goodsType);
     }
 
