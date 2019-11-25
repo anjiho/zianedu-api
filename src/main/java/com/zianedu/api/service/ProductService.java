@@ -212,7 +212,7 @@ public class ProductService {
                         //할인률 주입
                         CalcPriceVO calcPriceVO = productMapper.selectTopCalcPrice(vo2.getGKey());
                         if (calcPriceVO.getPrice() > 0 && calcPriceVO.getSellPrice() > 0) {
-                            vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()) + "할인");
+                            vo2.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()));
                         } else {
                             vo2.setDiscountPercent("");
                         }
@@ -223,10 +223,19 @@ public class ProductService {
                         for (TGoodsPriceOptionVO priceOptionVO : videoLectureKindList) {
                             if (priceOptionVO.getKind() == 100) {
                                 vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                                if (priceOptionVO.getSellPrice() > 0 && priceOptionVO.getPrice() > 0) {
+                                    priceOptionVO.setPcDiscountPercent(Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice()));
+                                }
                             } else if (priceOptionVO.getKind() == 101) {
                                 vo2.setMobileSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                                if (priceOptionVO.getSellPrice() > 0 && priceOptionVO.getPrice() > 0) {
+                                    priceOptionVO.setMobileDiscountPercent(Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice()));
+                                }
                             } else if (priceOptionVO.getKind() == 102) {
                                 vo2.setPcMobileSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
+                                if (priceOptionVO.getSellPrice() > 0 && priceOptionVO.getPrice() > 0) {
+                                    priceOptionVO.setPcMobileDiscountPercent(Util.getProductDiscountRate(priceOptionVO.getPrice(), priceOptionVO.getSellPrice()));
+                                }
                             }
                         }
                         //강사 이미지 URL

@@ -22,4 +22,10 @@ public class TGoodsPriceOptionVO {
     private int extendPercent;
 
     private String discountPercent;
+
+    private String pcDiscountPercent;
+
+    private String mobileDiscountPercent;
+
+    private String pcMobileDiscountPercent;
 }
