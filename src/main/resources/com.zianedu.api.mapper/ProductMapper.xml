@@ -2022,6 +2022,7 @@
         AND B.TYPE = 1
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND C.SUBJECT_CTG_KEY IS NOT NULL
         GROUP BY C.SUBJECT_CTG_KEY
         ORDER BY C.SUBJECT_CTG_KEY ASC
     </select>
