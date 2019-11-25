@@ -1817,7 +1817,7 @@
 
     <select id="selectLectureApplyTeacherTypeList2" resultType="LectureApplyTeacherTypeVO">
         SELECT
-        TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST, TT.SUBJECT_CTG_KEY
+        TT.TEACHER_KEY, TT.teacherName, TT.IMAGE_TEACHER_LIST, TT.SUBJECT_CTG_KEY,
         (SELECT COUNT(T.TEACHER_KEY) FROM
         (
         SELECT F.TEACHER_KEY
