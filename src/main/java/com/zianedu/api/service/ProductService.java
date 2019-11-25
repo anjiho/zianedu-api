@@ -516,8 +516,14 @@ public class ProductService {
         if (menuCtgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            if (subjectMenuKeys == null) {
+                subjectMenuKeys = new String[0];
+            }
             if (stepCtgKeys == null) {
                 stepCtgKeys = new String[0];
+            }
+            if (teacherKeys == null) {
+                teacherKeys = new String[0];
             }
             //과목가져오기
             List<TCategoryVO> lectureApplySubjectList = menuService.getLectureApplySubjectLeftMenuList(menuCtgKey, subjectMenuKeys);
