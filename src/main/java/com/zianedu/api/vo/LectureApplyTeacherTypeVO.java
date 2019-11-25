@@ -19,6 +19,8 @@ public class LectureApplyTeacherTypeVO {
 
     private int problemSolveCnt;
 
+    private int singleSpecialCnt;
+
     private int prepareNoteCnt;
 
     private int mockExamCnt;
