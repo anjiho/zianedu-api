@@ -579,11 +579,15 @@ public class ProductService {
                             }
                         }
                     } else if (GoodsType.getGoodsTypeKey(goodsType) == 2) {
+                        List<LectureApplyAcademyListVO> lectureApplyAcademyListVOS = new ArrayList<>();
                         academyList = productMapper.selectAcademyLectureListFromCategoryMenuAtLectureApply(menuCtgKey, stepCtgKeyList, teacherKeyList);
                         for (LectureApplyAcademyListVO academyVO : academyList) {
-                            if (subjectVO.getCtgKey() == academyVO.getCtgKey()) {
+                            LectureApplyAcademyListVO lectureApplyAcademyListVO = new LectureApplyAcademyListVO();
+                            if (subjectVO.getCtgKey() == academyVO.getSubjectCtgKey()) {
                                 academyVO.setImageView(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), academyVO.getImageView()));
-                                productDTO.setAcademyLectureInfo(academyList);
+                                lectureApplyAcademyListVO = academyVO;
+                                lectureApplyAcademyListVOS.add(lectureApplyAcademyListVO);
+                                productDTO.setAcademyLectureInfo(lectureApplyAcademyListVOS);
                             }
                             //선생님 목록
                             List<TeacherInfoVO>teacherInfoList = productMapper.selectAcademyLectureTeacherList(academyVO.getGKey());

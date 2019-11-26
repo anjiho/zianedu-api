@@ -13,6 +13,8 @@ public class LectureApplyAcademyListVO {
 
     private int gKey;
 
+    private int subjectCtgKey;
+
     private String goodsName;
 
     private String ctgName;
