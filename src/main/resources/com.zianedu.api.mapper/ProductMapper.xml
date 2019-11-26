@@ -2021,7 +2021,7 @@
         ON E.TEACHER_KEY = F.TEACHER_KEY
         WHERE A.CTG_KEY IN
         ( SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{menuCtgKey} )
-        AND B.TYPE = 1
+        AND B.TYPE = #{goodsType}
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
         AND C.SUBJECT_CTG_KEY IS NOT NULL
@@ -2047,7 +2047,7 @@
             ON E.TEACHER_KEY = F.TEACHER_KEY
             WHERE A.CTG_KEY IN
             ( SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{menuCtgKey} )
-            AND B.TYPE = 1
+            AND B.TYPE = #{goodsType}
             AND B.IS_SHOW = 1
             AND B.IS_SELL =1
             AND C.SUBJECT_CTG_KEY IS NOT NULL

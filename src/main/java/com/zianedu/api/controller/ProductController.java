@@ -129,10 +129,12 @@ public class ProductController {
     @RequestMapping(value = "/getLectureApplySubjectList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("수강신청 > 과목 리스트 가져오기")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "goodsType", value = "상품 종류(VIDEO, ACADEMY)", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultListDTO getLectureApplySubjectList(@PathVariable("menuCtgKey") int menuCtgKey) {
-        return productService.getLectureApplySubjectList(menuCtgKey);
+    public ApiResultListDTO getLectureApplySubjectList(@PathVariable("menuCtgKey") int menuCtgKey,
+                                                       @RequestParam("goodsType") String goodsType) {
+        return productService.getLectureApplySubjectList(menuCtgKey, goodsType);
     }
 
     @RequestMapping(value = "/getLectureApplyTeacherList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

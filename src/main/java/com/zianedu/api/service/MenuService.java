@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
+import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.LeftMenuSubDepthListDTO;
@@ -51,7 +52,7 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public List<TCategoryVO> getLectureApplySubjectLeftMenuList(int ctgKey, String[] subjectMenuKeys) {
+    public List<TCategoryVO> getLectureApplySubjectLeftMenuList(int ctgKey, String goodsType, String[] subjectMenuKeys) {
         int resultCode = OK.value();
 
         List<TCategoryVO> leftMenuList = new ArrayList<>();
@@ -60,7 +61,7 @@ public class MenuService {
         } else {
             List<String> subjectMenuKeyList = Arrays.asList(subjectMenuKeys);
             //leftMenuList = menuMapper.selectTCategoryByParentKeyAtLectureApply(ctgKey, subjectMenuKeyList);
-            leftMenuList = productMapper.selectLectureApplySubjectListFromSearch(ctgKey, subjectMenuKeyList);
+            leftMenuList = productMapper.selectLectureApplySubjectListFromSearch(ctgKey, GoodsType.getGoodsTypeKey(goodsType), subjectMenuKeyList);
         }
         return leftMenuList;
     }

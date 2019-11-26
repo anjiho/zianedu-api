@@ -166,9 +166,9 @@ public interface ProductMapper {
     List<LectureApplyTeacherTypeVO> selectLectureApplyTeacherTypeList2(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKey") int subjectMenuKey,
                                                                       @Param("teacherKeys") List<String>teacherKeys, @Param("stepCtgKeys") List<String>stepCtgKeys);
 
-    List<TCategoryVO> selectLectureApplySubjectListBySubjectKey(@Param("menuCtgKey") int menuCtgKey);
+    List<TCategoryVO> selectLectureApplySubjectListBySubjectKey(@Param("menuCtgKey") int menuCtgKey, @Param("goodsType") int goodsType);
 
-    List<TCategoryVO> selectLectureApplySubjectListFromSearch(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
+    List<TCategoryVO> selectLectureApplySubjectListFromSearch(@Param("menuCtgKey") int menuCtgKey, @Param("goodsType") int goodsType, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

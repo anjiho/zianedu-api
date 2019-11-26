@@ -500,14 +500,14 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getLectureApplySubjectList(int menuCtgKey) {
+    public ApiResultListDTO getLectureApplySubjectList(int menuCtgKey, String goodsType) {
         List<TCategoryVO> subjectMenuList = new ArrayList<>();
 
         if (menuCtgKey == 0 ) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             //subjectMenuList = menuMapper.selectTCategoryByParentKey(menuCtgKey);
-            subjectMenuList = productMapper.selectLectureApplySubjectListBySubjectKey(menuCtgKey);
+            subjectMenuList = productMapper.selectLectureApplySubjectListBySubjectKey(menuCtgKey, GoodsType.getGoodsTypeKey(goodsType));
         }
         return new ApiResultListDTO(subjectMenuList, resultCode);
     }
@@ -545,7 +545,7 @@ public class ProductService {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             //과목가져오기
-            List<TCategoryVO> lectureApplySubjectList = menuService.getLectureApplySubjectLeftMenuList(menuCtgKey, subjectMenuKeys);
+            List<TCategoryVO> lectureApplySubjectList = menuService.getLectureApplySubjectLeftMenuList(menuCtgKey, goodsType, subjectMenuKeys);
             if (lectureApplySubjectList.size() > 0) {
                 List<String>teacherKeyList = new ArrayList<>();
                 List<String>stepCtgKeyList = new ArrayList<>();
