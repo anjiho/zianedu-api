@@ -23,5 +23,7 @@ public class SpecialPackageLectureVO {
 
     private int lectureCount;
 
+    private String discountPercent;
+
     private List<TLecCurriVO> lectureList;
 }

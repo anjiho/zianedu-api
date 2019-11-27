@@ -35,9 +35,6 @@ public class ProductService {
     private ProductMapper productMapper;
 
     @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
     private MenuService menuService;
 
     @Autowired
@@ -340,6 +337,12 @@ public class ProductService {
                         lectureVO.setImageList(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), lectureVO.getImageList())); //교수 이미지 URL
                         lectureVO.setEmphasisName(EmphasisType.getEmphasisStr(lectureVO.getEmphasis()));    //NEW, BEST 주입
 
+                        //할인률 주입
+                        CalcPriceVO calcPriceVO2 = productMapper.selectTopCalcPrice(lectureVO.getGKey());
+                        if (calcPriceVO2.getPrice() > 0 && calcPriceVO2.getSellPrice() > 0) {
+                            lectureVO.setDiscountPercent(Util.getProductDiscountRate(calcPriceVO.getPrice(), calcPriceVO.getSellPrice()) + "할인");
+                        }
+
                         int deviceCode = 1;
                         if ("MOBILE".equals(device)) deviceCode = 3;
                         List<TLecCurriVO> lectureList = productMapper.selectLectureListFromVideoProduct(lectureVO.getGKey(), deviceCode);   //동영상 상품에 포함된 강좌 목록 가져오기
@@ -588,12 +591,9 @@ public class ProductService {
                     LectureApplyProductDTO productDTO = new LectureApplyProductDTO();
 
                     List<LectureApplyTeacherTypeVO> teacherTypeList = new ArrayList<>();
-                    //List<LectureApplyTeacherTypeVO> teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
-                    //List<LectureApplyTeacherTypeVO> teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectMenuKey, teacherKey, stepCtgKey);
                     List<LectureApplyAcademyListVO> academyList = new ArrayList<>();
 
                     if (GoodsType.getGoodsTypeKey(goodsType) == 1) {
-                        //teacherTypeList = productMapper.selectLectureApplyTeacherTypeList(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
                         teacherTypeList = productMapper.selectLectureApplyTeacherTypeList2(menuCtgKey, subjectVO.getCtgKey(), teacherKeyList, stepCtgKeyList);
                         if (teacherTypeList.size() > 0) {
                             for (LectureApplyTeacherTypeVO teacherTypeVO : teacherTypeList) {
@@ -601,7 +601,6 @@ public class ProductService {
                                 if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectCtgKey()) {
                                     productDTO.setTeacherTypeInfo(teacherTypeList);
                                 }
-                                //List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectVO.getCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
                                 List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(teacherTypeVO.getSubjectCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
                                 teacherTypeVO.setVideoLectureInfo(videoLectureList);
                             }
@@ -631,7 +630,6 @@ public class ProductService {
 //                            }
                         }
                     }
-
                     productDTO.setSubjectName(subjectVO.getName());
                     productDTO.setSubjectKey(subjectVO.getCtgKey());
 
