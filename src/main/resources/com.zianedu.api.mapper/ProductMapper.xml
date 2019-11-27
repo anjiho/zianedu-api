@@ -466,6 +466,15 @@
         SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
     </select>
 
+    <select id="selectGoodsPriceOptionList2" resultType="TGoodsPriceOptionVO">
+        SELECT T.*,
+               TRIM( TO_CHAR(SELL_PRICE, '999,999,999,999,999') ) as sellPriceName,
+               TRIM( TO_CHAR(PRICE, '999,999,999,999,999') ) as priceName
+        FROM (
+            SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
+        )T
+    </select>
+
     <select id="selectTeacherBookListFromVideoLectureLink" resultType="LectureBookVO">
         SELECT
             A.LINK_KEY, C.G_KEY, B.BOOK_KEY, B.WRITER, C.NAME as bookName, TO_CHAR(B.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
@@ -912,7 +921,133 @@
         WHERE B.TYPE = 5
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
+        AND A.CTG_KEY = #{menuCtgKey}
+        <if test="teacherKeys.size  != 0">
+            AND B.G_KEY IN
+            (
+                SELECT A.REQ_KEY
+                FROM T_LINK_KEY A
+                INNER JOIN T_GOODS B
+                ON A.RES_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_GOODS_TEACHER_LINK E
+                ON B.G_KEY = E.G_KEY
+                INNER JOIN T_TEACHER F
+                ON E.TEACHER_KEY = F.TEACHER_KEY
+                WHERE A.REQ_TYPE = 1
+                AND A.RES_TYPE = 1
+                AND A.REQ_KEY IN (
+                    SELECT B.G_KEY
+                    FROM T_CATEGORY_GOODS A
+                    INNER JOIN T_GOODS B
+                    ON A.G_KEY = B.G_KEY
+                    INNER JOIN T_PROMOTION C
+                    ON A.G_KEY = C.G_KEY
+                    WHERE B.TYPE = 5
+                    AND B.IS_SHOW = 1
+                    AND B.IS_SELL =1
+                    AND A.CTG_KEY = #{menuCtgKey}
+                )
+                AND F.TEACHER_KEY IN
+                <foreach collection="teacherKeys" item="teacherKey" separator="," open="(" close=")">
+                    #{teacherKey}
+                </foreach>
+            )
+        </if>
+        <if test="stepCtgKeys.size != 0">
+            AND B.G_KEY IN
+            (
+                SELECT A.REQ_KEY
+                FROM T_LINK_KEY A
+                INNER JOIN T_GOODS B
+                ON A.RES_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_GOODS_TEACHER_LINK E
+                ON B.G_KEY = E.G_KEY
+                INNER JOIN T_TEACHER F
+                ON E.TEACHER_KEY = F.TEACHER_KEY
+                WHERE A.REQ_TYPE = 1
+                AND A.RES_TYPE = 1
+                AND A.REQ_KEY IN (
+                    SELECT B.G_KEY
+                    FROM T_CATEGORY_GOODS A
+                    INNER JOIN T_GOODS B
+                    ON A.G_KEY = B.G_KEY
+                    INNER JOIN T_PROMOTION C
+                    ON A.G_KEY = C.G_KEY
+                    WHERE B.TYPE = 5
+                    AND B.IS_SHOW = 1
+                    AND B.IS_SELL =1
+                    AND A.CTG_KEY = #{menuCtgKey}
+                )
+                AND C.STEP_CTG_KEY IN
+                <foreach collection="stepCtgKeys" item="stepCtgKey" separator="," open="(" close=")">
+                    #{stepCtgKey}
+                </foreach>
+            )
+        </if>
+        <if test="subjectCtgKeys.size != 0">
+            AND B.G_KEY IN
+            (
+                SELECT A.REQ_KEY
+                FROM T_LINK_KEY A
+                INNER JOIN T_GOODS B
+                ON A.RES_KEY = B.G_KEY
+                INNER JOIN T_LEC C
+                ON B.G_KEY = C.G_KEY
+                INNER JOIN T_CATEGORY D
+                ON C.STEP_CTG_KEY = D.CTG_KEY
+                INNER JOIN T_GOODS_TEACHER_LINK E
+                ON B.G_KEY = E.G_KEY
+                INNER JOIN T_TEACHER F
+                ON E.TEACHER_KEY = F.TEACHER_KEY
+                WHERE A.REQ_TYPE = 1
+                AND A.RES_TYPE = 1
+                AND A.REQ_KEY IN (
+                    SELECT B.G_KEY
+                    FROM T_CATEGORY_GOODS A
+                    INNER JOIN T_GOODS B
+                    ON A.G_KEY = B.G_KEY
+                    INNER JOIN T_PROMOTION C
+                    ON A.G_KEY = C.G_KEY
+                    WHERE B.TYPE = 5
+                    AND B.IS_SHOW = 1
+                    AND B.IS_SELL =1
+                    AND A.CTG_KEY = #{menuCtgKey}
+                )
+                AND C.SUBJECT_CTG_KEY IN
+                <foreach collection="subjectCtgKeys" item="subjectCtgKey" separator="," open="(" close=")">
+                    #{subjectCtgKey}
+                </foreach>
+            )
+        </if>
         ORDER BY B.G_KEY DESC
+    </select>
+    
+    <select id="selectSpecialPackageIncludeProductList" resultType="SpecialPackageLectureVO">
+        SELECT B.G_KEY, B.EMPHASIS, B.NAME, C.LIMIT_DAY, F.IMAGE_LIST,
+                (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.STEP_CTG_KEY) as stepName,
+                (SELECT COUNT(Z.LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lectureCount
+        FROM T_LINK_KEY A
+        INNER JOIN T_GOODS B
+        ON A.RES_KEY = B.G_KEY
+        INNER JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        INNER JOIN T_CATEGORY D
+        ON C.STEP_CTG_KEY = D.CTG_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK E
+        ON B.G_KEY = E.G_KEY
+        INNER JOIN T_TEACHER F
+        ON E.TEACHER_KEY = F.TEACHER_KEY
+        WHERE A.REQ_TYPE = 1
+        AND A.RES_TYPE = 1
+        AND A.REQ_KEY = #{gKey}
     </select>
 
     <select id="selectPromotionPackageDetailInfo" resultType="SpecialPackageProductVO">
@@ -1610,7 +1745,8 @@
         SELECT T.TEACHER_KEY, T.teacherName, T.SUBJECT_CTG_KEY as subjectKey FROM
         (
             SELECT
-                    F.TEACHER_KEY, (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) as teacherName,A.G_KEY, C.SUBJECT_CTG_KEY
+                    F.TEACHER_KEY, (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) as teacherName,
+                    A.G_KEY, C.SUBJECT_CTG_KEY
             FROM T_CATEGORY_GOODS A
             INNER JOIN T_GOODS B
             ON A.G_KEY = B.G_KEY
@@ -2068,6 +2204,83 @@
                 #{subjectKey}
             </foreach>
         </if>
+    </select>
+
+    <select id="selectSpecialPackageSubjectListFromSearch" resultType="TCategoryVO">
+        SELECT * FROM (
+            SELECT
+                C.SUBJECT_CTG_KEY as ctgKey,
+                (select name from t_category Z where Z.ctg_key = C.SUBJECT_CTG_KEY) as name
+            FROM T_LINK_KEY A
+            INNER JOIN T_GOODS B
+            ON A.RES_KEY = B.G_KEY
+            INNER JOIN T_LEC C
+            ON B.G_KEY = C.G_KEY
+            INNER JOIN T_CATEGORY D
+            ON C.STEP_CTG_KEY = D.CTG_KEY
+            INNER JOIN T_GOODS_TEACHER_LINK E
+            ON B.G_KEY = E.G_KEY
+            INNER JOIN T_TEACHER F
+            ON E.TEACHER_KEY = F.TEACHER_KEY
+            WHERE A.REQ_TYPE = 1
+            AND A.RES_TYPE = 1
+            AND A.REQ_KEY IN (
+                SELECT B.G_KEY
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_PROMOTION C
+                ON A.G_KEY = C.G_KEY
+                WHERE B.TYPE = 5
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL =1
+                AND A.CTG_KEY = #{menuCtgKey}
+            )
+            GROUP BY C.SUBJECT_CTG_KEY
+            ORDER BY C.SUBJECT_CTG_KEY ASC
+         )
+        WHERE 1=1
+        <if test="subjectMenuKeys.size  != 0">
+            AND Z.ctgKey IN
+            <foreach collection="subjectMenuKeys" item="subjectKey" separator="," open="(" close=")">
+                #{subjectKey}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectSpecialPackageTeacherList" resultType="LectureApplyTeacherVO">
+        SELECT * FROM (
+            SELECT
+                   F.TEACHER_KEY,
+                   (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) as teacherName
+            FROM T_LINK_KEY A
+            INNER JOIN T_GOODS B
+            ON A.RES_KEY = B.G_KEY
+            INNER JOIN T_LEC C
+            ON B.G_KEY = C.G_KEY
+            INNER JOIN T_CATEGORY D
+            ON C.STEP_CTG_KEY = D.CTG_KEY
+            INNER JOIN T_GOODS_TEACHER_LINK E
+            ON B.G_KEY = E.G_KEY
+            INNER JOIN T_TEACHER F
+            ON E.TEACHER_KEY = F.TEACHER_KEY
+            WHERE A.REQ_TYPE = 1
+            AND A.RES_TYPE = 1
+            AND A.REQ_KEY IN (
+                SELECT B.G_KEY
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_PROMOTION C
+                ON A.G_KEY = C.G_KEY
+                WHERE B.TYPE = 5
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL =1
+                AND A.CTG_KEY = #{menuCtgKey}
+            )
+        ) Z
+        GROUP BY Z.TEACHER_KEY, Z.teacherName
+        ORDER BY Z.TEACHER_KEY ASC
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">

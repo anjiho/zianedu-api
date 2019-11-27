@@ -26,4 +26,6 @@ public class SpecialPackageVO {
     private String pcMobileSellPriceName;
 
     private List<TGoodsPriceOptionVO> videoLectureKindList;
+
+    private List<SpecialPackageLectureVO> includeProductList;
 }

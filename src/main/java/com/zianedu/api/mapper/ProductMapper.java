@@ -49,6 +49,8 @@ public interface ProductMapper {
 
     List<TGoodsPriceOptionVO> selectGoodsPriceOptionList(@Param("gKey") int gKey);
 
+    List<TGoodsPriceOptionVO> selectGoodsPriceOptionList2(@Param("gKey") int gKey);
+
     List<LectureBookVO> selectTeacherBookListFromVideoLectureLink(@Param("gKey") int gKey);
 
     List<LectureBookVO> selectTeacherAcademyLectureBookList(@Param("gKey") int gKey);
@@ -80,9 +82,12 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture2(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
                                                                                       @Param("teacherKey") int teacherKey);
 
-    List<SpecialPackageVO> selectPromotionPackageList();
+    List<SpecialPackageVO> selectPromotionPackageList(@Param("menuCtgKey") int menuCtgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
+                                                      @Param("teacherKeys") List<String> teacherKeys, @Param("subjectCtgKeys") List<String> subjectCtgKeys);
 
     SpecialPackageProductVO selectPromotionPackageDetailInfo(@Param("gKey") int gKey);
+
+    List<SpecialPackageLectureVO> selectSpecialPackageIncludeProductList(@Param("gKey") int gKey);
 
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
@@ -169,6 +174,10 @@ public interface ProductMapper {
     List<TCategoryVO> selectLectureApplySubjectListBySubjectKey(@Param("menuCtgKey") int menuCtgKey, @Param("goodsType") int goodsType);
 
     List<TCategoryVO> selectLectureApplySubjectListFromSearch(@Param("menuCtgKey") int menuCtgKey, @Param("goodsType") int goodsType, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
+
+    List<TCategoryVO> selectSpecialPackageSubjectListFromSearch(@Param("menuCtgKey") int menuCtgKey, @Param("subjectMenuKeys") List<String>subjectMenuKeys);
+
+    List<LectureApplyTeacherVO> selectSpecialPackageTeacherList(@Param("menuCtgKey") int menuCtgKey);
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);

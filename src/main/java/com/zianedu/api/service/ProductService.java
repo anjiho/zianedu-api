@@ -298,10 +298,19 @@ public class ProductService {
 //    }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSpecialPackageList() {
+    public ApiResultListDTO getSpecialPackageList(int menuCtgKey, String[] subjectMenuKeys, String[] teacherKeys, String[] stepCtgKeys, String device) {
         int resultCode = OK.value();
 
-        List<SpecialPackageVO> specialPackageList = productMapper.selectPromotionPackageList();
+        List<String>subjectKeyList = new ArrayList<>();
+        List<String>teacherKeyList = new ArrayList<>();
+        List<String>stepCtgKeyList = new ArrayList<>();
+
+        if (subjectMenuKeys.length > 0 || subjectMenuKeys != null) subjectKeyList = Arrays.asList(subjectMenuKeys);
+        if (teacherKeys.length > 0 || teacherKeys != null) teacherKeyList = Arrays.asList(teacherKeys);
+        if (stepCtgKeys.length > 0 || stepCtgKeys != null) stepCtgKeyList = Arrays.asList(stepCtgKeys);
+
+
+        List<SpecialPackageVO> specialPackageList = productMapper.selectPromotionPackageList(menuCtgKey, stepCtgKeyList,  teacherKeyList, subjectKeyList);
         if (specialPackageList.size() > 0) {
             for (SpecialPackageVO vo : specialPackageList) {
                 //할인률 주입
@@ -312,7 +321,7 @@ public class ProductService {
                     vo.setDiscountPercent("");
                 }
                 //동영상, 모바일, 동영상+모바일 리스트 주입
-                List<TGoodsPriceOptionVO> videoLectureKindList = productMapper.selectGoodsPriceOptionList(vo.getGKey());
+                List<TGoodsPriceOptionVO> videoLectureKindList = productMapper.selectGoodsPriceOptionList2(vo.getGKey());
                 vo.setVideoLectureKindList(videoLectureKindList);
                 //동영상 종류별 금액 주입하기
                 for (TGoodsPriceOptionVO priceOptionVO : videoLectureKindList) {
@@ -324,6 +333,25 @@ public class ProductService {
                         vo.setPcMobileSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(priceOptionVO.getSellPrice())) + "원");
                     }
                 }
+                //패키지 안에 포함되어 있는 동영상 상품 리스트 가져오기
+                List<SpecialPackageLectureVO> packageProductList = productMapper.selectSpecialPackageIncludeProductList(vo.getGKey());
+                if (packageProductList.size() > 0) {
+                    for (SpecialPackageLectureVO lectureVO : packageProductList) {
+                        lectureVO.setImageList(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), lectureVO.getImageList())); //교수 이미지 URL
+                        lectureVO.setEmphasisName(EmphasisType.getEmphasisStr(lectureVO.getEmphasis()));    //NEW, BEST 주입
+
+                        int deviceCode = 1;
+                        if ("MOBILE".equals(device)) deviceCode = 3;
+                        List<TLecCurriVO> lectureList = productMapper.selectLectureListFromVideoProduct(lectureVO.getGKey(), deviceCode);   //동영상 상품에 포함된 강좌 목록 가져오기
+                        if (lectureList.size() > 0) {
+                            for (TLecCurriVO lecCurriVO : lectureList) {
+                                lecCurriVO.setNumStr(StringUtils.addZeroTwoDigitUnder(lecCurriVO.getNum()));
+                            }
+                        }
+                        lectureVO.setLectureList(lectureList);
+                    }
+                }
+                vo.setIncludeProductList(packageProductList);
             }
         }
         return new ApiResultListDTO(specialPackageList, resultCode);
@@ -612,6 +640,31 @@ public class ProductService {
             }
         }
         return new ApiResultObjectDTO(lectureApplyProductList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSpecialPackageSubjectList(int menuCtgKey) {
+        List<TCategoryVO> subjectMenuList = new ArrayList<>();
+
+        if (menuCtgKey == 0 ) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<String>subjectMenuKeys = new ArrayList<>();
+            subjectMenuList = productMapper.selectSpecialPackageSubjectListFromSearch(menuCtgKey, subjectMenuKeys);
+        }
+        return new ApiResultListDTO(subjectMenuList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSpecialPackageTeacherList(int menuCtgKey) {
+        List<LectureApplyTeacherVO> teacherList = new ArrayList<>();
+
+        if (menuCtgKey == 0 ) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherList = productMapper.selectSpecialPackageTeacherList(menuCtgKey);
+        }
+        return new ApiResultListDTO(teacherList, resultCode);
     }
 
 }
