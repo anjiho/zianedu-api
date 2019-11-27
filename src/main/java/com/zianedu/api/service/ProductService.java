@@ -585,18 +585,22 @@ public class ProductService {
                             LectureApplyAcademyListVO lectureApplyAcademyListVO = new LectureApplyAcademyListVO();
                             if (subjectVO.getCtgKey() == academyVO.getSubjectCtgKey()) {
                                 academyVO.setImageView(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), academyVO.getImageView()));
+                                academyVO.setEmphasisStr(EmphasisType.getEmphasisStr(academyVO.getEmphasis()));
+                                if (academyVO.getPrice() > 0 && academyVO.getSellPrice2() > 0) {
+                                    academyVO.setDiscountPercent(Util.getProductDiscountRate(academyVO.getPrice(), academyVO.getSellPrice2()) + " 할인");
+                                }
                                 lectureApplyAcademyListVO = academyVO;
                                 lectureApplyAcademyListVOS.add(lectureApplyAcademyListVO);
                                 productDTO.setAcademyLectureInfo(lectureApplyAcademyListVOS);
                             }
                             //선생님 목록
-                            List<TeacherInfoVO>teacherInfoList = productMapper.selectAcademyLectureTeacherList(academyVO.getGKey());
-                            if (teacherInfoList.size() > 0) {
-                                for (TeacherInfoVO teacherInfoVO : teacherInfoList) {
-                                    teacherInfoVO.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherInfoVO.getTeacherImage()));
-                                }
-                                academyVO.setTeacherInfoList(teacherInfoList);
-                            }
+//                            List<TeacherInfoVO>teacherInfoList = productMapper.selectAcademyLectureTeacherList(academyVO.getGKey());
+//                            if (teacherInfoList.size() > 0) {
+//                                for (TeacherInfoVO teacherInfoVO : teacherInfoList) {
+//                                    teacherInfoVO.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherInfoVO.getTeacherImage()));
+//                                }
+//                                academyVO.setTeacherInfoList(teacherInfoList);
+//                            }
                         }
                     }
 

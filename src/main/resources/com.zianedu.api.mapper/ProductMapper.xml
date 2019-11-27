@@ -673,7 +673,9 @@
     </select>
 
     <select id="selectAcademyLectureListFromCategoryMenuAtLectureApply" resultType="LectureApplyAcademyListVO">
-        SELECT ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.SUBJECT_CTG_KEY, ZZ.goodsName, ZZ.g_key, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice, ZZ.PRICE_KEY, ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW FROM (
+        SELECT ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.SUBJECT_CTG_KEY, ZZ.goodsName, ZZ.g_key, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice,
+               ZZ.PRICE_KEY, ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW, ZZ.EMPHASIS , ZZ.PRICE, ZZ.sellPrice2
+        FROM (
         SELECT Z.*
         FROM (
                 SELECT C.STEP_CTG_KEY as stepCtgKey, B.G_KEY,  D.NAME as ctgName, B.NAME as goodsName,
@@ -685,7 +687,10 @@
                         (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = A.CTG_KEY) as subjectName,
                         F.TEACHER_KEY,
                         B.IMAGE_VIEW,
-                        C.SUBJECT_CTG_KEY
+                        C.SUBJECT_CTG_KEY,
+                        B.EMPHASIS,
+                        E.SELL_PRICE as sellPrice2,
+                        E.PRICE
                 FROM T_CATEGORY_GOODS A
                 INNER JOIN T_GOODS B
                 ON A.G_KEY = B.G_KEY
@@ -721,7 +726,8 @@
                 </foreach>
             </if>
     )ZZ
-    GROUP BY ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.goodsName, ZZ.SUBJECT_CTG_KEY, ZZ.G_KEY, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice, ZZ.PRICE_KEY, ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW
+    GROUP BY ZZ.stepCtgKey, ZZ.CTG_KEY, ZZ.goodsName, ZZ.SUBJECT_CTG_KEY, ZZ.G_KEY, ZZ.ctgName, ZZ.lectureDate, ZZ.sellPrice, ZZ.PRICE_KEY,
+             ZZ.month, ZZ.kind, ZZ.CTG_KEY, ZZ.subjectName, ZZ.IMAGE_VIEW, ZZ.EMPHASIS, ZZ.PRICE, ZZ.sellPrice2
     ORDER BY ZZ.stepCtgKey ASC
     </select>
 

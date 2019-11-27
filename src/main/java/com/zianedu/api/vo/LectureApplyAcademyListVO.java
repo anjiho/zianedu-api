@@ -33,6 +33,17 @@ public class LectureApplyAcademyListVO {
 
     private String imageView;
 
+    private int emphasis;
+
+    private String emphasisStr;
+
+    private int sellPrice2;
+
+    private int price;
+
+    private String discountPercent;
+
+
     private List<TeacherInfoVO> teacherInfoList;
 
 }
