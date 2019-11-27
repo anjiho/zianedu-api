@@ -169,9 +169,9 @@ public class ProductController {
     @ApiOperation("수강신청 > 강의 리스트(동영상, 학원)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "menuCtgKey", value = "메뉴 키값", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "subjectMenuKeys", value = "과목 메뉴 키값", dataType = "String", paramType = "query", required = false),
-            @ApiImplicitParam(name = "teacherKeys", value = "강사 키값", dataType = "String", paramType = "query", required = false),
-            @ApiImplicitParam(name = "stepCtgKeys", value = "유형 키값", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "subjectMenuKeys", value = "과목 메뉴 키값", dataType = "object", paramType = "query", required = false),
+            @ApiImplicitParam(name = "teacherKeys", value = "강사 키값", dataType = "object", paramType = "query", required = false),
+            @ApiImplicitParam(name = "stepCtgKeys", value = "유형 키값", dataType = "object", paramType = "query", required = false),
             @ApiImplicitParam(name = "goodsType", value = "상품 종류(VIDEO, ACADEMY)", dataType = "String", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getLectureApplyTeacherTypeList(@PathVariable("menuCtgKey") int menuCtgKey,
