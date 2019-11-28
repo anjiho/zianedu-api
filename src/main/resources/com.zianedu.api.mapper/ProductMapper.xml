@@ -1045,8 +1045,7 @@
         ON B.G_KEY = E.G_KEY
         INNER JOIN T_TEACHER F
         ON E.TEACHER_KEY = F.TEACHER_KEY
-        WHERE A.REQ_TYPE = 1
-        AND A.RES_TYPE = 1
+        WHERE 1=1
         AND A.REQ_KEY = #{gKey}
     </select>
 
