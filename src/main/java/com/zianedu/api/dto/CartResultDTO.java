@@ -44,10 +44,10 @@ public class CartResultDTO {
         this.deliveryPrice = deliveryPrice;
         this.totalPrice = totalPrice;
         this.totalPoint = totalPoint;
-        this.orderPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(orderPrice)) + "원";
-        this.deliveryPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice)) + "원";
-        this.totalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPrice)) + "원";
-        this.totalPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPoint)) + "점";
+        this.orderPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(orderPrice));
+        this.deliveryPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(deliveryPrice));
+        this.totalPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPrice));
+        this.totalPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(totalPoint));
         this.academyCartInfo = academyCartInfo;
         this.videoCartInfo = videoCartInfo;
         this.promotionCartInfo = promotionCartInfo;
