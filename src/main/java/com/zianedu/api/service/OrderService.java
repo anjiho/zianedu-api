@@ -111,7 +111,7 @@ public class OrderService {
                         promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getLinkSellPrice())) + "원");
                         promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
 
-                    } else if (promotionList.getKind() == 12) {
+                    } else {
                         orderPrice += promotionList.getSellPrice();
                         promotionOrderPrice += promotionList.getLinkSellPrice();
 
