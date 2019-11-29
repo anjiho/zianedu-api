@@ -10,6 +10,7 @@ import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,12 @@ public class OrderService {
         int deliveryPrice = 0;
         int totalPoint = 0;
 
+        int academyOrderPrice = 0;
+        int videoOrderPrice = 0;
+        int promotionOrderPrice = 0;
+        int bookOrderPrice = 0;
+        int examOrderPrice = 0;
+
         List<CartListVO>academyCartInfo = new ArrayList<>();
         List<CartListVO>videoCartInfo = new ArrayList<>();
         List<CartListVO>promotionCartInfo = new ArrayList<>();
@@ -69,6 +76,7 @@ public class OrderService {
                 for (CartListVO academyList : academyCartInfo) {
                     orderPrice += academyList.getSellPrice();
                     totalPoint += academyList.getPoint();
+                    academyOrderPrice += academyList.getSellPrice();
 
                     academyList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(academyList.getPrice())) + "원");
                     academyList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(academyList.getSellPrice())) + "원");
@@ -80,19 +88,24 @@ public class OrderService {
                 for (CartListVO videoList : videoCartInfo) {
                     orderPrice += videoList.getSellPrice();
                     totalPoint += videoList.getPoint();
+                    videoOrderPrice += videoList.getSellPrice();
 
                     int subjectCount = productMapper.selectVideoSubjectCount(videoList.getGKey());
                     videoList.setSubjectCount(subjectCount + "강");
                     videoList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(videoList.getPrice())) + "원");
                     videoList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(videoList.getSellPrice())) + "원");
                     videoList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(videoList.getPoint())) + "점");
+
                 }
+                if (videoCartInfo.size() == 2) videoOrderPrice = ZianUtils.calcPercent(videoOrderPrice, 10);
+                else if (videoCartInfo.size() > 2) videoOrderPrice = ZianUtils.calcPercent(videoOrderPrice, 20);
             }
 
             if (promotionCartInfo.size() > 0) {
                 for (CartListVO promotionList : promotionCartInfo) {
                     if (promotionList.getKind() == 0) {
                         orderPrice += promotionList.getLinkSellPrice();
+                        promotionOrderPrice += promotionList.getLinkSellPrice();
 
                         promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getLinkPrice())) + "원");
                         promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getLinkSellPrice())) + "원");
@@ -100,6 +113,7 @@ public class OrderService {
 
                     } else if (promotionList.getKind() == 12) {
                         orderPrice += promotionList.getSellPrice();
+                        promotionOrderPrice += promotionList.getLinkSellPrice();
 
                         promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
                         promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
@@ -115,6 +129,7 @@ public class OrderService {
                     bookPrice += bookList.getSellPrice();
 
                     orderPrice += bookList.getSellPrice();
+                    bookOrderPrice += bookList.getSellPrice();
                     totalPoint += bookList.getPoint();
 
                     bookList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(bookList.getPrice())) + "원");
@@ -130,6 +145,7 @@ public class OrderService {
             if (examCartInfo.size() > 0) {
                 for (CartListVO examList : examCartInfo) {
                     orderPrice += examList.getSellPrice();
+                    examOrderPrice += examList.getSellPrice();
                     totalPoint += examList.getPoint();
 
                     examList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPrice())) + "원");
@@ -137,7 +153,8 @@ public class OrderService {
                     examList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPoint())) + "점");
                 }
             }
-            int totalPrice = (orderPrice + deliveryPrice);
+
+            int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice ) + deliveryPrice);
             CartResultDTO cartResultDTO = new CartResultDTO(
                     orderPrice, deliveryPrice, totalPrice, totalPoint,
                     academyCartInfo, videoCartInfo, promotionCartInfo, bookCartInfo, examCartInfo

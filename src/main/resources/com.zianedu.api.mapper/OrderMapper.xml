@@ -17,7 +17,6 @@
         <if test="type > 0">
             AND C.TYPE = #{type}
         </if>
-        AND C.IS_SELL = 1
         AND A.IS_DELETE = 0
         AND A.IS_DIRECT = 0
         AND A.J_ID IS NULL

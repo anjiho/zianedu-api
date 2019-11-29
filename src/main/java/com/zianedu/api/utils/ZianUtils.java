@@ -58,9 +58,21 @@ public class ZianUtils {
         return fileName;
     }
 
+    public static int calcPercent(int price, int percent) {
+        int calcPrice = 0;
+        double calcPercent;
+
+        if (price > 0 && percent > 0) {
+            calcPercent = percent * 0.01;
+            int calcPriceSum = (int)(price * calcPercent);
+            calcPrice = price - calcPriceSum;
+        }
+        return calcPrice;
+    }
+
     public static void main(String[] args) {
-        String str = getSplitFileName("bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf");
-        System.out.println(str);
+        //String str = getSplitFileName("bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf");
+        System.out.println(calcPercent(100000, 30));
 
     }
 }
