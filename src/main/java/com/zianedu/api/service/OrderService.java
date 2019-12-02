@@ -251,9 +251,6 @@ public class OrderService {
                     //도서 상품 합계
                     if (cartInfo.getType() == 3) {
                         bookPrice += cartInfo.getSellPrice();
-                        if (bookPrice < 30000) {
-                            deliveryPrice += 2500;
-                        }
                     }
                     //모의고사 상품 합계
                     if (cartInfo.getType() == 4) {
@@ -267,6 +264,10 @@ public class OrderService {
 
             if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
             else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
+
+            if (bookPrice < 30000) {
+                deliveryPrice = 2500;
+            }
 
             totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
             //상품총합
