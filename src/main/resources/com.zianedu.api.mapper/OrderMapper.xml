@@ -37,7 +37,6 @@
         <if test="cartKey > 0">
             AND A.CART_KEY = #{cartKey}
         </if>
-        AND C.IS_SELL = 1
         AND A.IS_DELETE = 0
         AND A.IS_DIRECT = 0
         AND A.J_ID IS NULL
