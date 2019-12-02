@@ -1,5 +1,7 @@
 package com.zianedu.api.dto;
 
+import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.CartListVO;
 import com.zianedu.api.vo.TUserVO;
 import lombok.Data;
@@ -19,6 +21,8 @@ public class OrderSheetDTO {
 
     private int userPoint;
 
+    private String userPointName;
+
     private TUserVO orderUserInfo;
 
     public OrderSheetDTO(){}
@@ -29,6 +33,7 @@ public class OrderSheetDTO {
         this.productTotalPrice = productTotalPrice;
         this.productGroupPrice = productGroupPrice;
         this.userPoint = userPoint;
+        this.userPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(userPoint));
         this.orderUserInfo = orderUserInfo;
     }
 
@@ -38,6 +43,7 @@ public class OrderSheetDTO {
         this.productTotalPrice = productTotalPrice;
         this.productGroupPrice = productGroupPrice;
         this.userPoint = userPoint;
+        this.userPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(userPoint));
         this.orderUserInfo = orderUserInfo;
     }
 
