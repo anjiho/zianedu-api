@@ -190,6 +190,7 @@ public class OrderService {
 
             List<OrderProductListDTO>orderProductList = new ArrayList<>();
 
+            int videoProductCnt = 0;
             for (Integer cartKey : cartKeys) {
                 CartListVO cartInfo = orderMapper.selectOrderListByCartKey(cartKey);
 
@@ -198,17 +199,27 @@ public class OrderService {
                 //프로모션 상품일때
                 if (cartInfo.getType() == 5) {
                     //자유패키지
-                    if (cartInfo.getKind() == 0) {
-                        orderProductListDTO = new OrderProductListDTO(
-                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
-                                GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
-                                cartInfo.getCnt(), cartInfo.getLinkSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
-                        );
-                        totalProductPrice += cartInfo.getLinkSellPrice();
-                        totalPoint += cartInfo.getPoint();
-                        promotionPrice += cartInfo.getLinkSellPrice();
-                    //지안패스
-                    } else if (cartInfo.getKind() == 12) {
+//                    if (cartInfo.getKind() == 0) {
+//                        orderProductListDTO = new OrderProductListDTO(
+//                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+//                                GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
+//                                cartInfo.getCnt(), cartInfo.getLinkSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
+//                        );
+//                        totalProductPrice += cartInfo.getLinkSellPrice();
+//                        totalPoint += cartInfo.getPoint();
+//                        promotionPrice += cartInfo.getLinkSellPrice();
+//                    //지안패스
+//                    } else if (cartInfo.getKind() == 12) {
+//                        orderProductListDTO = new OrderProductListDTO(
+//                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+//                                GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
+//                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
+//                        );
+//                        totalProductPrice += cartInfo.getSellPrice();
+//                        totalPoint += cartInfo.getPoint();
+//                        promotionPrice += cartInfo.getSellPrice();
+//                    }
+                    if (cartInfo.getKind() > 0) {
                         orderProductListDTO = new OrderProductListDTO(
                                 cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
                                 GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
@@ -224,11 +235,12 @@ public class OrderService {
                             GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
                             cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
                     );
-                    totalProductPrice += cartInfo.getSellPrice();
+                    //totalProductPrice += cartInfo.getSellPrice();
                     totalPoint += cartInfo.getPoint();
                     //동영상 상품 합계
                     if (cartInfo.getType() == 1) {
                         videoPrice += cartInfo.getSellPrice();
+                        videoProductCnt++;
                     }
                     //학원실강 상품 합계
                     if (cartInfo.getType() == 2) {
@@ -248,7 +260,13 @@ public class OrderService {
                 }
                 //주문상품 리스트
                 orderProductList.add(orderProductListDTO);
+
             }
+
+            if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
+            else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
+
+            totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
             //상품총합
             ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
                     totalProductPrice, totalPoint, deliveryPrice
