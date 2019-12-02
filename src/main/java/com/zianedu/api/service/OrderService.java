@@ -153,7 +153,7 @@ public class OrderService {
                     examList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPoint())) + "점");
                 }
             }
-            if (bookOrderPrice > 30000) {
+            if (bookOrderPrice < 30000) {
                 deliveryPrice = 2500;
             }
             int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice ) + deliveryPrice);
