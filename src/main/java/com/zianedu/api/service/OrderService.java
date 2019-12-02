@@ -320,6 +320,7 @@ public class OrderService {
             List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuy(gKeyList);
 
             if (buyProductList.size() > 0) {
+                int videoProductCnt = 0;
                 for (CartListVO product : buyProductList) {
 
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
@@ -327,11 +328,12 @@ public class OrderService {
                             GoodsType.getGoodsTypeStr(product.getType()), product.getGoodsName(),
                             product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
                     );
-                    totalProductPrice += product.getSellPrice();
+                    //totalProductPrice += product.getSellPrice();
                     totalPoint += product.getPoint();
                     //동영상 상품 합계
                     if (product.getType() == 1) {
                         videoPrice += product.getSellPrice();
+                        videoProductCnt++;
                     }
                     //학원실강 상품 합계
                     if (product.getType() == 2) {
@@ -340,7 +342,7 @@ public class OrderService {
                     //도서 상품 합계
                     if (product.getType() == 3) {
                         bookPrice += product.getSellPrice();
-                        deliveryPrice += 2500;
+                        //deliveryPrice += 2500;
                     }
                     //모의고사 상품 합계
                     if (product.getType() == 4) {
@@ -348,6 +350,15 @@ public class OrderService {
                     }
                     orderProductList.add(orderProductListDTO);
                 }
+
+                if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
+                else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
+
+                if (bookPrice < 30000) {
+                    deliveryPrice = 2500;
+                }
+
+                totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
                 //상품총합
                 ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
                         totalProductPrice, totalPoint, deliveryPrice
@@ -372,7 +383,7 @@ public class OrderService {
     /**
      * 주문서 작성 > 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때
      * @param userKey
-     * @param gKeys
+     * @param goodsInfoList
      * @return
      */
     @Transactional(readOnly = true)
