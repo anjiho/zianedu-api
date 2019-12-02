@@ -12,4 +12,6 @@ public class ZianApiUtils {
 
     public static final String PAGE = "PAGE";
 
+    public static final String ZIAN_CDN_HOST = "http://zianedu.star.skcdn.com";
+
 }
