@@ -113,7 +113,7 @@ public class OrderService {
 
                     } else {
                         orderPrice += promotionList.getSellPrice();
-                        promotionOrderPrice += promotionList.getLinkSellPrice();
+                        promotionOrderPrice += promotionList.getSellPrice();
 
                         promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
                         promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
@@ -137,9 +137,9 @@ public class OrderService {
                     bookList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(bookList.getPoint())) + "점");
                 }
                 //배송비 추가
-                if (bookPrice < 30000) {
-                    deliveryPrice = 2500;
-                }
+//                if (bookPrice < 30000) {
+//                    deliveryPrice = 2500;
+//                }
             }
 
             if (examCartInfo.size() > 0) {
@@ -153,7 +153,9 @@ public class OrderService {
                     examList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPoint())) + "점");
                 }
             }
-
+            if (bookOrderPrice > 30000) {
+                deliveryPrice = 2500;
+            }
             int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice ) + deliveryPrice);
             CartResultDTO cartResultDTO = new CartResultDTO(
                     orderPrice, deliveryPrice, totalPrice, totalPoint,
