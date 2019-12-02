@@ -99,8 +99,8 @@ public class TeacherService extends PagingSupport {
             if (teacherHomeLectureList.size() > 0) {
                 for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
                     for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
-                        if (!"".equals(vo2.getHighVideo())) vo2.setHighVideo(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo2.getHighVideo()));
-                        if (!"".equals(vo2.getLowVideo())) vo2.setLowVideo(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo2.getLowVideo()));
+                        //if (!"".equals(vo2.getHighVideo())) vo2.setHighVideo(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo2.getHighVideo()));
+                        //if (!"".equals(vo2.getLowVideo())) vo2.setLowVideo(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo2.getLowVideo()));
 
                         vo2.setEmphasisName(EmphasisType.getEmphasisStr(vo2.getEmphasis()));    //NEW, BEST 주입
                         //vo2.setPcSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo2.getSellPrice())) + "원");

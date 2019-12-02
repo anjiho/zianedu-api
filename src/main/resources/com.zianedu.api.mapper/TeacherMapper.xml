@@ -147,22 +147,24 @@
         FROM (
                 SELECT A.G_KEY, C.STEP_CTG_KEY, D.NAME as ctgName, A.EMPHASIS, A.NAME as goodsName,
                         (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.LIMIT_DAY, E.IMAGE_TEACHER_LIST,
-                         (
-                           SELECT * FROM (
-                                SELECT T.VOD_FILE_LOW
-                                FROM T_LEC_CURRI T
-                                WHERE T.LEC_KEY = C.LEC_KEY
-                                ORDER BY T.CURRI_KEY ASC
-                            ) WHERE ROWNUM = 1
-                        ) as lowVideo,
+                        CONCAT('http://zianedu.star.skcdn.com/',
                         (
-                           SELECT * FROM (
-                                SELECT T.VOD_FILE_HIGH
-                                FROM T_LEC_CURRI T
-                                WHERE T.LEC_KEY = C.LEC_KEY
-                                ORDER BY T.CURRI_KEY ASC
+                            SELECT * FROM (
+                            SELECT T.VOD_FILE_LOW
+                            FROM T_LEC_CURRI T
+                            WHERE T.LEC_KEY = C.LEC_KEY
+                            ORDER BY T.CURRI_KEY ASC
                             ) WHERE ROWNUM = 1
-                        ) as highVideo,
+                        ))  as vodFileLow,
+                        CONCAT('http://zianedu.star.skcdn.com/',
+                            (
+                            SELECT * FROM (
+                            SELECT T.VOD_FILE_HIGH
+                            FROM T_LEC_CURRI T
+                            WHERE T.LEC_KEY = C.LEC_KEY
+                            ORDER BY T.CURRI_KEY ASC
+                            ) WHERE ROWNUM = 1
+                        ))  as highVideo,
                          (
                            SELECT * FROM (
                                 SELECT T.CURRI_KEY
