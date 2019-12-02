@@ -155,7 +155,7 @@
                             WHERE T.LEC_KEY = C.LEC_KEY
                             ORDER BY T.CURRI_KEY ASC
                             ) WHERE ROWNUM = 1
-                        ))  as vodFileLow,
+                        ))  as lowVideo,
                         CONCAT('http://zianedu.star.skcdn.com/',
                             (
                             SELECT * FROM (
