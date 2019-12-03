@@ -153,7 +153,7 @@ public class OrderService {
                     examList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPoint())) + "점");
                 }
             }
-            if (bookOrderPrice < 30000) {
+            if (bookOrderPrice > 0 && bookOrderPrice < 30000) {
                 deliveryPrice = 2500;
             }
             int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice ) + deliveryPrice);
@@ -265,7 +265,7 @@ public class OrderService {
             if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
             else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
 
-            if (bookPrice < 30000) {
+            if (bookPrice > 0 && bookPrice < 30000) {
                 deliveryPrice = 2500;
             }
 
@@ -354,7 +354,7 @@ public class OrderService {
                 if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
                 else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
 
-                if (bookPrice < 30000) {
+                if (bookPrice > 0 && bookPrice < 30000) {
                     deliveryPrice = 2500;
                 }
 
