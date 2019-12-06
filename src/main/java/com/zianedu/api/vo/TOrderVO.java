@@ -107,8 +107,8 @@ public class TOrderVO {
         this.payDate = Util.returnNow();
         this.payType = vo.getPayType();
         this.cancelDate = "";
-        this.bank = "";
-        this.bankAccount = "";
+        this.bank = vo.getBank();
+        this.bankAccount = vo.getBankAccount();
         this.cardCode = vo.getCardCode();
         this.depositUser = vo.getDepositUser();
         this.depositDate = "";
