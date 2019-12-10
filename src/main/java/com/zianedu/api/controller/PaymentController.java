@@ -50,6 +50,17 @@ public class PaymentController {
             @ApiImplicitParam(name = "cardApplprice", value = "카드승인금액", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(name = "ocbPayprice", value = "OK CASHBAG 포인트지불금액", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(name = "acctBankcode", value = "은행코드", dataType = "String", paramType = "query", required = false),
+
+            @ApiImplicitParam(name = "vactNum", value = "입금할 계좌번호", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "vactDate", value = "입금할 날짜", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "vactTime", value = "입금할 시간", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "vactBankCode", value = "입금할 은행코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "vactName", value = "입금할 상점명", dataType = "String", paramType = "query", required = false),
+
+            @ApiImplicitParam(name = "acctBankcode", value = "은행코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "acctBankcode", value = "은행코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "acctBankcode", value = "은행코드", dataType = "String", paramType = "query", required = false),
+
             @ApiImplicitParam(name = "resulterrorcode", value = "에러결과코드", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(name = "isMobile", value = "모바일여부(0:PC, 1:모바일)", dataType = "int", paramType = "query", required = true)
     })

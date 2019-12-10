@@ -69,6 +69,21 @@ public class TPayInipayVO {
     private String acctBankcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)
+    private String vactNum = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String vactDate = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String vactTime = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String vactBankCode = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
+    private String vactName = "";
+
+    @ApiModelProperty(hidden = true, readOnly = true)
     private String resulterrorcode = "";
 
     @ApiModelProperty(hidden = true, readOnly = true)

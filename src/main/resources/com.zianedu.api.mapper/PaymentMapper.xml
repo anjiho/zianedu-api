@@ -68,13 +68,16 @@
         </selectKey>
         INSERT INTO T_PAY_INIPAY
         (
-            PAY_KEY, C_KEY, INDATE, TID, RESULTCODE, RESULTMSG, PAYMETHOD, MOID, TOTPRICE, APPLDATE, APPLTIME, APPLNUM, CARD_QUOTA, CARD_INTEREST,
-            CARD_NUM, CARD_CODE, CARD_BANKCODE, EVENTCODE, CARD_APPLPRICE, OCB_PAYPRICE, ACCT_BANKCODE, RESULTERRORCODE, IS_MOBILE
+            PAY_KEY, C_KEY, INDATE, TID, RESULTCODE, RESULTMSG, PAYMETHOD, MOID, TOTPRICE, APPLDATE, APPLTIME,
+            APPLNUM, CARD_QUOTA, CARD_INTEREST,
+            CARD_NUM, CARD_CODE, CARD_BANKCODE, EVENTCODE, CARD_APPLPRICE, OCB_PAYPRICE, ACCT_BANKCODE, RESULTERRORCODE, IS_MOBILE,
+            VACT_NUM, VACT_DATE, VACT_TIME, VACT_BANKCODE, VACT_NAME
         )
         VALUES
         (
             #{payKey}, #{cKey}, sysdate, #{tid}, #{resultcode}, #{resultmsg}, #{paymethod}, #{moid}, #{totprice}, #{appldate}, #{appltime}, #{applnum}, #{cardQuota}, #{cardInterest},
-            #{cardNum}, #{cardCode}, #{cardBankcode}, #{eventcode}, #{cardApplprice}, #{ocbPayprice}, #{acctBankcode}, #{resulterrorcode}, #{isMobile}
+            #{cardNum}, #{cardCode}, #{cardBankcode}, #{eventcode}, #{cardApplprice}, #{ocbPayprice}, #{acctBankcode}, #{resulterrorcode}, #{isMobile},
+            #{vactNum}, #{vactDate}, #{vactTime}, #{vactBankCode}, #{vactName}
         )
     </insert>
 
