@@ -277,7 +277,7 @@ public class OrderService {
                 deliveryPrice = 2500;
             }
 
-            totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
+            totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice;
             //상품총합
             ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
                     totalProductPrice, totalPoint, deliveryPrice
