@@ -1,5 +1,6 @@
 package com.zianedu.api.controller;
 
+import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.ProductService;
@@ -105,14 +106,39 @@ public class ProductController {
         return productService.getMockExamProductList(ctgKey);
     }
 
+    @RequestMapping(value = "/getFreeVideoLectureStepList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원별 무료 동영상강의 유형 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "메뉴 카테고리 값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getFreeVideoLectureList(@PathVariable("ctgKey") int ctgKey) {
+        return productService.getFreeVideoLectureStepList(ctgKey);
+    }
+
     @RequestMapping(value = "/getFreeVideoLectureListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("학원별 무료 동영상강의 상품 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ctgKey", value = "메뉴 카테고리 값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "stepCtgKey", value = "유형 카테고리 값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getFreeVideoLectureList(@PathVariable("ctgKey") int ctgKey,
+                                                      @RequestParam("sPage") int sPage,
+                                                      @RequestParam("listLimit") int listLimit,
+                                                      @RequestParam("stepCtgKey") int stepCtgKey) {
+        return productService.getFreeVideoLectureListFromCategoryMenu(sPage, listLimit, ctgKey, stepCtgKey);
+    }
+
+    @RequestMapping(value = "/getFreeVideoLectureDetailInfo/{lecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원별 무료 동영상강의 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "lecKey", value = "강좌 키 값", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "device", value = "디바이스 종류(PC, MOBILE)", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultListDTO getFreeVideoLectureList(@PathVariable("ctgKey") int ctgKey, @RequestParam("device") String device) {
-        return productService.getFreeVideoLectureListFromCategoryMenu(ctgKey, device);
+    public ApiResultObjectDTO getFreeVideoLectureList(@PathVariable("lecKey") int lecKey,
+                                                    @RequestParam("device") String device) {
+        return productService.getFreeVideoLectureDetailInfo(lecKey, device);
     }
 
     @RequestMapping(value = "/getZianPassProductList/{parentKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

@@ -8,6 +8,7 @@ import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public interface ProductMapper {
@@ -119,7 +120,14 @@ public interface ProductMapper {
 
     Integer selectTGoodsPriceOptionCount(@Param("gKey") int gKey);
 
-    List<TeacherHomeLectureVO> selectFreeLectureListFromCategoryMenu(@Param("ctgKey") int ctgKey);
+    Integer selectFreeLectureListCountFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey);
+
+    List<FreeLectureVO> selectFreeLectureListFromCategoryMenu(@Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                                              @Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey);
+
+    FreeLectureVO selectFreeLectureListFromLecKey(@Param("lecKey") int lecKey);
+
+    List<TypeDTO> selectFreeLectureStepList(@Param("ctgKey") int ctgKey);
 
     List<TLecCurriVO> selectTLecCurriList(@Param("lecKey") int lecKey, @Param("device") String device);
 

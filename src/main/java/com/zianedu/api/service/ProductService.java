@@ -9,6 +9,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.FileUtil;
+import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
@@ -429,38 +430,81 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getFreeVideoLectureListFromCategoryMenu(int ctgKey, String device) {
-        int resultCode = OK.value();
-
-        List<TeacherHomeLectureVO> teacherHomeLectureList = new ArrayList<>();
+    public ApiResultListDTO getFreeVideoLectureStepList(int ctgKey) {
+        List<TypeDTO> stepList = new ArrayList<>();
 
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            teacherHomeLectureList = productMapper.selectFreeLectureListFromCategoryMenu(ctgKey);
+            stepList = productMapper.selectFreeLectureStepList(ctgKey);
+        }
+        return new ApiResultListDTO(stepList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getFreeVideoLectureListFromCategoryMenu(int sPage, int listLimit, int ctgKey, int stepCtgKey) {
+        int resultCode = OK.value();
+
+        int freeLectureListCount = 0;
+        List<FreeLectureVO> teacherHomeLectureList = new ArrayList<>();
+
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            freeLectureListCount = productMapper.selectFreeLectureListCountFromCategoryMenu(ctgKey, stepCtgKey);
+
+            int startNumber = PagingSupport.getPagingStartNumber(sPage, listLimit);
+            teacherHomeLectureList = productMapper.selectFreeLectureListFromCategoryMenu(startNumber, listLimit, ctgKey, stepCtgKey);
             if (teacherHomeLectureList.size() > 0) {
-                for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
-                    for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
+                for (FreeLectureVO vo : teacherHomeLectureList) {
+                    vo.setFreeThumbnailImg(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFreeThumbnailImg()));
+                    //for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
                         //NEW, BEST 주입
-                        vo2.setEmphasisName(EmphasisType.getEmphasisStr(vo2.getEmphasis()));
+
                         //강사 이미지 URL
-                        vo2.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo2.getImageTeacherList()));
-                        List<TLecCurriVO> lectureCurriList = productMapper.selectTLecCurriList(vo2.getLecKey(), device);
-                        if (lectureCurriList.size() > 0) {
-                            int num = 1;
-                            for (TLecCurriVO curriVO : lectureCurriList) {
-                                curriVO.setNumStr("0" + num);
-                                curriVO.setDataFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), curriVO.getDataFile()));
-                                num++;
-                            }
-                        }
-                        //무료강의 리스트 주입
-                        vo2.setLectureList(lectureCurriList);
+
+//                        List<TLecCurriVO> lectureCurriList = productMapper.selectTLecCurriList(vo2.getLecKey(), device);
+//                        if (lectureCurriList.size() > 0) {
+//                            int num = 1;
+//                            for (TLecCurriVO curriVO : lectureCurriList) {
+//                                curriVO.setNumStr("0" + num);
+//                                curriVO.setDataFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), curriVO.getDataFile()));
+//                                num++;
+//                            }
+//                        }
+//                        //무료강의 리스트 주입
+//                        vo2.setLectureList(lectureCurriList);
+                    }
+ //               }
+            }
+        }
+        return new ApiPagingResultDTO(freeLectureListCount, teacherHomeLectureList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getFreeVideoLectureDetailInfo(int lecKey, String device) {
+        FreeLectureDetailDTO freeLectureDetailDTO = null;
+
+        if (lecKey == 0 && "".equals(device)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            FreeLectureVO freeLectureInfo = productMapper.selectFreeLectureListFromLecKey(lecKey);
+            List<TLecCurriVO>freeLectureList = new ArrayList<>();
+            if (freeLectureInfo != null) {
+                freeLectureInfo.setFreeThumbnailImg(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), freeLectureInfo.getFreeThumbnailImg()));
+
+                freeLectureList = productMapper.selectTLecCurriList(lecKey, device);
+                if (freeLectureList.size() > 0) {
+                    int num = 1;
+                    for (TLecCurriVO curriVO : freeLectureList) {
+                        curriVO.setNumStr("0" + num);
+                        num++;
                     }
                 }
             }
+            freeLectureDetailDTO = new FreeLectureDetailDTO(freeLectureInfo, freeLectureList);
         }
-        return new ApiResultListDTO(teacherHomeLectureList, resultCode);
+        return new ApiResultObjectDTO(freeLectureDetailDTO, resultCode);
     }
 
     @Transactional(readOnly = true)
