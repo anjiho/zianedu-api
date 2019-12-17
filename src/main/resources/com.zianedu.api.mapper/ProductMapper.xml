@@ -1299,7 +1299,8 @@
                 (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) subjectName,
                 B.NAME as goodsName,
                 (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.FREE_THUMBNAIL_IMG,
-                (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) teacherName
+                (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) teacherName,
+                E.TEACHER_KEY
             FROM T_CATEGORY_GOODS A
             INNER JOIN T_GOODS B
             ON A.G_KEY = B.G_KEY
@@ -1313,7 +1314,7 @@
             ON E.TEACHER_KEY = F.TEACHER_KEY
             WHERE C.LEC_KEY = #{lecKey}
         )T
-        GROUP BY T.G_KEY, T.LEC_KEY, T.STEP_CTG_KEY, T.ctgName, T.subjectName, T.goodsName, T.lecCount, T.FREE_THUMBNAIL_IMG, T.teacherName
+        GROUP BY T.G_KEY, T.LEC_KEY, T.STEP_CTG_KEY, T.ctgName, T.subjectName, T.goodsName, T.lecCount, T.FREE_THUMBNAIL_IMG, T.teacherName, T.TEACHER_KEY
     </select>
 
     <select id="selectFreeLectureStepList" resultType="com.zianedu.api.dto.TypeDTO">

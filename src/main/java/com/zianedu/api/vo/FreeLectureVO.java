@@ -22,4 +22,6 @@ public class FreeLectureVO {
     private String freeThumbnailImg;
 
     private String teacherName;
+
+    private int teacherKey;
 }
