@@ -11,6 +11,8 @@ public class FreeLectureVO {
 
     private String ctgName;
 
+    private int stepCtgKey;
+
     private String subjectName;
 
     private String goodsName;

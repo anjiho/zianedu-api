@@ -1295,7 +1295,7 @@
         SELECT  T.* FROM
         (
             SELECT
-                A.G_KEY, C.LEC_KEY, C.STEP_CTG_KEY,D.NAME as ctgName,
+                A.G_KEY, C.LEC_KEY, C.STEP_CTG_KEY, D.NAME as ctgName,
                 (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) subjectName,
                 B.NAME as goodsName,
                 (SELECT COUNT(LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lecCount, C.FREE_THUMBNAIL_IMG,
@@ -1352,11 +1352,12 @@
         SELECT
             CURRI_KEY, NAME, VOD_TIME,
             <if test="device == 'PC'">
-                VOD_FILE_LOW, VOD_FILE_HIGH,
+                CONCAT('http://zianedu.star.skcdn.com/',VOD_FILE_LOW) as VOD_FILE_LOW,
+                CONCAT('http://zianedu.star.skcdn.com/',VOD_FILE_HIGH) as VOD_FILE_HIGH,
             </if>
             <if test="device == 'MOBILE'">
-                VOD_FILE_MOBILE_LOW as VOD_FILE_LOW,
-                VOD_FILE_MOBILE_HIGH as VOD_FILE_HIGH,
+                CONCAT('http://zianedu.star.skcdn.com/',VOD_FILE_MOBILE_LOW) as VOD_FILE_LOW,
+                CONCAT('http://zianedu.star.skcdn.com/',VOD_FILE_MOBILE_HIGH) as VOD_FILE_HIGH,
             </if>
             DATA_FILE
         FROM T_LEC_CURRI WHERE LEC_KEY = #{lecKey}
