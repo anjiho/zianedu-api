@@ -62,6 +62,7 @@
     </resultMap>
     <resultMap id="zianPassProductListMap" type="ZianPassProductListVO">
         <result property="gKey" column="G_KEY"/>
+        <result property="priceKey" column="PRICE_KEY"/>
         <result property="name" column="NAME"/>
         <result property="sellPrice" column="sellPrice"/>
         <result property="type" column="type"/>
@@ -1386,6 +1387,7 @@
                B.AFFILIATION_CTG_KEY,
                (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.AFFILIATION_CTG_KEY ) as affiliationName,
                TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPrice,
+               C.PRICE_KEY,
                '5' as type,
                '100' as pmType
         FROM T_GOODS A

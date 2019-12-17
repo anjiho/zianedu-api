@@ -7,6 +7,8 @@ public class ZianPassProductListVO {
 
     private int gKey;
 
+    private int priceKey;
+
     private String name;
 
     private String sellPrice;
