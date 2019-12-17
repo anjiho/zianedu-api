@@ -120,14 +120,16 @@ public interface ProductMapper {
 
     Integer selectTGoodsPriceOptionCount(@Param("gKey") int gKey);
 
-    Integer selectFreeLectureListCountFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey);
+    Integer selectFreeLectureListCountFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey,
+                                                       @Param("freeLectureType") String freeLectureType);
 
     List<FreeLectureVO> selectFreeLectureListFromCategoryMenu(@Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
-                                                              @Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey);
+                                                              @Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey,
+                                                              @Param("freeLectureType") String freeLectureType);
 
     FreeLectureVO selectFreeLectureListFromLecKey(@Param("lecKey") int lecKey);
 
-    List<TypeDTO> selectFreeLectureStepList(@Param("ctgKey") int ctgKey);
+    List<TypeDTO> selectFreeLectureStepList(@Param("ctgKey") int ctgKey, @Param("freeLectureType") String freeLectureType);
 
     List<TLecCurriVO> selectTLecCurriList(@Param("lecKey") int lecKey, @Param("device") String device);
 

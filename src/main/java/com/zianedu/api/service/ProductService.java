@@ -430,19 +430,19 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getFreeVideoLectureStepList(int ctgKey) {
+    public ApiResultListDTO getFreeVideoLectureStepList(int ctgKey, String freeLectureType) {
         List<TypeDTO> stepList = new ArrayList<>();
 
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            stepList = productMapper.selectFreeLectureStepList(ctgKey);
+            stepList = productMapper.selectFreeLectureStepList(ctgKey, freeLectureType);
         }
         return new ApiResultListDTO(stepList, resultCode);
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getFreeVideoLectureListFromCategoryMenu(int sPage, int listLimit, int ctgKey, int stepCtgKey) {
+    public ApiPagingResultDTO getFreeVideoLectureListFromCategoryMenu(int sPage, int listLimit, int ctgKey, int stepCtgKey, String freeLectureType) {
         int resultCode = OK.value();
 
         int freeLectureListCount = 0;
@@ -451,10 +451,10 @@ public class ProductService {
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            freeLectureListCount = productMapper.selectFreeLectureListCountFromCategoryMenu(ctgKey, stepCtgKey);
+            freeLectureListCount = productMapper.selectFreeLectureListCountFromCategoryMenu(ctgKey, stepCtgKey, freeLectureType);
 
             int startNumber = PagingSupport.getPagingStartNumber(sPage, listLimit);
-            teacherHomeLectureList = productMapper.selectFreeLectureListFromCategoryMenu(startNumber, listLimit, ctgKey, stepCtgKey);
+            teacherHomeLectureList = productMapper.selectFreeLectureListFromCategoryMenu(startNumber, listLimit, ctgKey, stepCtgKey, freeLectureType);
             if (teacherHomeLectureList.size() > 0) {
                 for (FreeLectureVO vo : teacherHomeLectureList) {
                     vo.setFreeThumbnailImg(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFreeThumbnailImg()));

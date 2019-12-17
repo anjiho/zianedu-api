@@ -1237,6 +1237,12 @@
         WHERE A.CTG_KEY IN (
             SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{ctgKey}
         )
+        <if test="freeLectureType == 'THEORY'">
+            AND C.STEP_CTG_KEY IN (203, 207, 774, 4172)
+        </if>
+        <if test="freeLectureType == 'PREV'">
+            AND C.STEP_CTG_KEY IN (205, 4266)
+        </if>
         <if test="stepCtgKey > 0">
             AND C.STEP_CTG_KEY = #{stepCtgKey}
         </if>
@@ -1268,6 +1274,12 @@
             WHERE A.CTG_KEY IN (
                 SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{ctgKey}
             )
+            <if test="freeLectureType == 'THEORY'">
+                AND C.STEP_CTG_KEY IN (203, 207, 774, 4172)
+            </if>
+            <if test="freeLectureType == 'PREV'">
+                AND C.STEP_CTG_KEY IN (205, 4266)
+            </if>
             <if test="stepCtgKey > 0">
                 AND C.STEP_CTG_KEY = #{stepCtgKey}
             </if>
@@ -1318,6 +1330,12 @@
             WHERE A.CTG_KEY IN (
                 SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = #{ctgKey}
             )
+            <if test="freeLectureType == 'THEORY'">
+                AND C.STEP_CTG_KEY IN (203, 207, 774, 4172)
+            </if>
+            <if test="freeLectureType == 'PREV'">
+                AND C.STEP_CTG_KEY IN (205, 4266)
+            </if>
             AND B.TYPE = 1
             AND B.IS_SHOW = 1
             AND B.IS_FREE = 1
