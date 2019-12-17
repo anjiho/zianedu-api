@@ -508,6 +508,18 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public ApiResultListDTO getZianPassProductSubjectList(int parentKey) {
+        List<TypeDTO> subjectList = new ArrayList<>();
+
+        if (parentKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            subjectList = productMapper.selectZianPassProductAffiliationList(parentKey);
+        }
+        return new ApiResultListDTO(subjectList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
     public ApiResultListDTO getZianPassProductList(int parentKey) {
         int resultCode = OK.value();
 

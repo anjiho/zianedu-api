@@ -1365,6 +1365,22 @@
         ORDER BY POS ASC
     </select>
 
+    <select id="selectZianPassProductAffiliationList" resultType="com.zianedu.api.dto.TypeDTO">
+        SELECT
+            B.AFFILIATION_CTG_KEY as ctgKey,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.AFFILIATION_CTG_KEY ) as ctgName
+        FROM T_GOODS A
+        LEFT JOIN T_PROMOTION B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.PARENT_KEY = #{parentKey}
+        AND A.TYPE = 5
+        AND A.IS_SELL = 1
+        GROUP BY B.AFFILIATION_CTG_KEY
+        ORDER BY AFFILIATION_CTG_KEY ASC
+    </select>
+
     <select id="selectZianPassProductList" resultMap="zianPassProductMap">
         SELECT A.G_KEY, A.NAME, C.SELL_PRICE,
                B.AFFILIATION_CTG_KEY,
