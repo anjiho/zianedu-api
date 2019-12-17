@@ -497,7 +497,7 @@ public class ProductService {
                 if (freeLectureList.size() > 0) {
                     int num = 1;
                     for (TLecCurriVO curriVO : freeLectureList) {
-                        curriVO.setNumStr("0" + num);
+                        curriVO.setNumStr(StringUtils.addZeroTwoDigitUnder(num));
                         num++;
                     }
                 }
