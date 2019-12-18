@@ -31,6 +31,8 @@ public class ProductService {
 
     protected final String ZIAN_PASS_HTML_URL = "http://52.79.40.214/views/zianPass/";
 
+    protected final String YEAR_MEMBER_HTML_URL = "http://52.79.40.214/views/yearMember/";
+
     protected int resultCode = OK.value();
 
     @Autowired
@@ -569,7 +571,7 @@ public class ProductService {
                     if (productDTO.getZianPassProductList().size() > 0) {
                         for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
                             String fileName = "yearmember" + productListVO.getGKey() + ".html";
-                            productListVO.setTargetUrl(ZIAN_PASS_HTML_URL + fileName);
+                            productListVO.setTargetUrl(YEAR_MEMBER_HTML_URL + fileName);
                         }
                     }
                 }
