@@ -133,9 +133,9 @@ public interface ProductMapper {
 
     List<TLecCurriVO> selectTLecCurriList(@Param("lecKey") int lecKey, @Param("device") String device);
 
-    List<TypeDTO> selectZianPassProductAffiliationList(@Param("parentKey") int parentKey);
+    List<TypeDTO> selectZianPassProductAffiliationList(@Param("parentKey") int parentKey, @Param("pmType") int pmType);
 
-    List<ZianPassProductDTO> selectZianPassProductList(@Param("parentKey") int parentKey);
+    List<ZianPassProductDTO> selectZianPassProductList(@Param("parentKey") int parentKey, @Param("pmType") int pmType);
 
     List<ZianPassProductDTO> selectZianPassSubjectSingleProductList(@Param("parentKey") int parentKey);
 

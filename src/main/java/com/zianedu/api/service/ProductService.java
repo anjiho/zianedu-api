@@ -4,6 +4,7 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.datasource.EmphasisType;
 import com.zianedu.api.define.datasource.GoodsType;
 import com.zianedu.api.define.datasource.LectureStatusType;
+import com.zianedu.api.define.datasource.PromotionPmType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.MenuMapper;
@@ -514,7 +515,7 @@ public class ProductService {
         if (parentKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            subjectList = productMapper.selectZianPassProductAffiliationList(parentKey);
+            subjectList = productMapper.selectZianPassProductAffiliationList(parentKey, PromotionPmType.ZIAN_PASS.getPromotionPmKey());
         }
         return new ApiResultListDTO(subjectList, resultCode);
     }
@@ -527,7 +528,7 @@ public class ProductService {
         if (parentKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            zianPassProductDTOList = productMapper.selectZianPassProductList(parentKey);
+            zianPassProductDTOList = productMapper.selectZianPassProductList(parentKey, PromotionPmType.ZIAN_PASS.getPromotionPmKey());
             if (zianPassProductDTOList.size() > 0) {
                 for (ZianPassProductDTO productDTO : zianPassProductDTOList) {
                     if (productDTO.getZianPassProductList().size() > 0) {
@@ -541,6 +542,43 @@ public class ProductService {
         }
         return new ApiResultListDTO(zianPassProductDTOList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getYearMemberProductSubjectList(int parentKey) {
+        List<TypeDTO> subjectList = new ArrayList<>();
+
+        if (parentKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            subjectList = productMapper.selectZianPassProductAffiliationList(parentKey, PromotionPmType.YEAR_MEMBER.getPromotionPmKey());
+        }
+        return new ApiResultListDTO(subjectList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getYearMemberProductList(int parentKey) {
+        int resultCode = OK.value();
+
+        List<ZianPassProductDTO> zianPassProductDTOList = new ArrayList<>();
+        if (parentKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassProductDTOList = productMapper.selectZianPassProductList(parentKey, PromotionPmType.YEAR_MEMBER.getPromotionPmKey());
+            if (zianPassProductDTOList.size() > 0) {
+                for (ZianPassProductDTO productDTO : zianPassProductDTOList) {
+                    if (productDTO.getZianPassProductList().size() > 0) {
+                        for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
+                            String fileName = "yearmember" + productListVO.getGKey() + ".html";
+                            productListVO.setTargetUrl(ZIAN_PASS_HTML_URL + fileName);
+                        }
+                    }
+                }
+            }
+        }
+        return new ApiResultListDTO(zianPassProductDTOList, resultCode);
+    }
+
+
 
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getVideoLectureList(int gKey, String device) {

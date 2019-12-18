@@ -18,4 +18,6 @@ public class ZianPassProductListVO {
     private int pmType;
 
     private String targetUrl;
+
+    private String term;
 }

@@ -67,6 +67,7 @@
         <result property="sellPrice" column="sellPrice"/>
         <result property="type" column="type"/>
         <result property="pmType" column="pmType"/>
+        <result property="term" column="term"/>
     </resultMap>
 
     <select id="selectAcademySignUp" resultType="AcademySignUpVO">
@@ -1376,6 +1377,7 @@
         LEFT JOIN T_GOODS_PRICE_OPTION C
         ON A.G_KEY = C.G_KEY
         WHERE A.PARENT_KEY = #{parentKey}
+        AND B.PM_TYPE = #{pmType}
         AND A.TYPE = 5
         AND A.IS_SELL = 1
         GROUP BY B.AFFILIATION_CTG_KEY
@@ -1389,13 +1391,15 @@
                TRIM( TO_CHAR(C.SELL_PRICE, '999,999,999,999,999') ) as sellPrice,
                C.PRICE_KEY,
                '5' as type,
-               '100' as pmType
+               '100' as pmType,
+               CONCAT(C.KIND, '개월') as term
         FROM T_GOODS A
         LEFT JOIN T_PROMOTION B
         ON A.G_KEY = B.G_KEY
         LEFT JOIN T_GOODS_PRICE_OPTION C
         ON A.G_KEY = C.G_KEY
         WHERE A.PARENT_KEY = #{parentKey}
+        AND B.PM_TYPE = #{pmType}
         AND A.TYPE = 5
         AND A.IS_SELL = 1
         ORDER BY AFFILIATION_CTG_KEY ASC

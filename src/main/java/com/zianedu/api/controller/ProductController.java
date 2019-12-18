@@ -163,6 +163,24 @@ public class ProductController {
         return productService.getZianPassProductList(parentKey);
     }
 
+    @RequestMapping(value = "/getYearMemberProductSubjectList/{parentKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("연간회원제 과목 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentKey", value = "카테고리 부모키 값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getYearMemberProductSubjectList(@PathVariable("parentKey") int parentKey) {
+        return productService.getYearMemberProductSubjectList(parentKey);
+    }
+
+    @RequestMapping(value = "/getYearMemberProductList/{parentKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("연간회원제 상품 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentKey", value = "카테고리 부모키 값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getYearMemberProductList(@PathVariable("parentKey") int parentKey) {
+        return productService.getYearMemberProductList(parentKey);
+    }
+
     @RequestMapping(value = "/getLectureList/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("강의 리스트")
     @ApiImplicitParams({
