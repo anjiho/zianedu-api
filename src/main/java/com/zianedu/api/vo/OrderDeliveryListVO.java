@@ -9,15 +9,15 @@ public class OrderDeliveryListVO {
 
     private int jKey;
 
+    private String jId;
+
     private int price;
 
-    private int pricePay;
+    private String sellPriceName;
 
     private String indate;
 
     private int payStatus;
-
-    private String jId;
 
     private int isCancelRequest;
 
@@ -26,4 +26,10 @@ public class OrderDeliveryListVO {
     private String payStatusName;
 
     private String priceName;
+
+    private String orderGoodsName;
+
+    private int deliveryStatus;
+
+    private int orderGoodsCount;
 }

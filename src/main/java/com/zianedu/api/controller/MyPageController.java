@@ -5,6 +5,7 @@ import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.MyPageService;
+import com.zianedu.api.service.OrderService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,6 +20,9 @@ public class MyPageController {
 
     @Autowired
     private MyPageService myPageService;
+
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
@@ -267,6 +271,22 @@ public class MyPageController {
         return myPageService.getSignUpVideoLectureEndInfo(jLecKey);
     }
 
+    @RequestMapping(value = "/getUserOrderList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 주문내역 조회 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "startDate", value = "검색 시작일", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "endDate", value = "검색 종료일", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스트 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getUserOrderList(@PathVariable("userKey") int userKey,
+                                               @RequestParam("startDate") String startDate,
+                                               @RequestParam("endDate") String endDate,
+                                               @RequestParam("sPage") int sPage,
+                                               @RequestParam("listLimit") int listLimit) {
+        return orderService.getUserOrderList(userKey, startDate, endDate, sPage, listLimit);
+    }
 
 
 }

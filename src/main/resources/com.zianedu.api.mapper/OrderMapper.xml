@@ -161,6 +161,58 @@
         SELECT COUNT(CART_KEY) FROM T_CART WHERE USER_KEY = #{userKey}
     </select>
 
+    <select id="selectUserOrderList" resultType="OrderDeliveryListVO">
+        SELECT Z.J_KEY, Z.jId ,
+                TRIM ( TO_CHAR(Z.PRICE_PAY, '999,999') ) as sellPriceName,
+                Z.INDATE, Z.orderGoodsName, Z.deliveryStatus,
+                CASE  Z.orderGoodsCount
+                WHEN 0 THEN 0
+                WHEN 1 THEN 0
+                ELSE  Z.orderGoodsCount
+                END as orderGoodsCount
+        FROM (
+            SELECT
+                A.J_KEY, A.J_ID as jId, A.PRICE, A.PRICE_PAY,  TO_CHAR(A.INDATE, 'YYYY-MM-DD') as INDATE,
+                A.PAY_STATUS, A.J_ID, A.IS_CANCEL_REQUEST,
+                ( SELECT NAME FROM
+                    (
+                        SELECT /*+ PARALLEL(4) */ TT.NAME FROM T_ORDER_GOODS T  LEFT JOIN T_GOODS TT ON T.G_KEY = TT.G_KEY WHERE T.J_KEY = A.J_KEY
+                    ) WHERE ROWNUM = 1
+                ) as orderGoodsName,
+                ( SELECT  COUNT(J_G_KEY) FROM (SELECT /*+FIRST_ROWS*/ J_G_KEY FROM T_ORDER_GOODS T WHERE T.J_KEY = A.J_KEY and T.PRICE > 0 AND SELL_PRICE > 0 AND PM_TYPE NOT IN (100, 50) ) ) as orderGoodsCount,
+                 B.STATUS as deliveryStatus
+            FROM T_ORDER A
+            LEFT OUTER JOIN T_ORDER_DELIVERY B
+            ON A.J_KEY = B.J_KEY
+            WHERE A.USER_KEY = #{userKey}
+            <![CDATA[
+                AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+             ]]>
+            <![CDATA[
+                AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') < TO_DATE(#{endDate}, 'YYYY-MM-DD')
+             ]]>
+            AND A.PAY_STATUS = 2
+            ORDER BY A.J_KEY DESC
+            OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+        ) Z
+    </select>
+
+    <select id="selectUserOrderListCount" resultType="int">
+        SELECT COUNT(A.J_KEY)
+        FROM T_ORDER A
+        LEFT OUTER JOIN T_ORDER_DELIVERY B
+        ON A.J_KEY = B.J_KEY
+        WHERE A.USER_KEY = #{userKey}
+        <![CDATA[
+            AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+            AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') < TO_DATE(#{endDate}, 'YYYY-MM-DD')
+         ]]>
+        AND A.PAY_STATUS = 2
+        ORDER BY A.J_KEY DESC
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL

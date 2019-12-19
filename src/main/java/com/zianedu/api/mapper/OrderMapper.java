@@ -37,6 +37,10 @@ public interface OrderMapper {
 
     Integer selectCartCountByUserKey(@Param("userKey") int userKey);
 
+    List<OrderDeliveryListVO> selectUserOrderList(@Param("userKey") int userKey, @Param("startDate") String startDate, @Param("endDate") String endDate,
+                                                  @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectUserOrderListCount(@Param("userKey") int userKey, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);

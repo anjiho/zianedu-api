@@ -7,10 +7,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.OrderMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
-import com.zianedu.api.utils.GsonUtil;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
-import com.zianedu.api.utils.ZianUtils;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +22,11 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class OrderService {
+public class OrderService extends PagingSupport {
 
     protected final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
+    protected int resultCode = OK.value();
 
     @Autowired
     private OrderMapper orderMapper;
@@ -738,5 +737,29 @@ public class OrderService {
             }
         }
         return new ApiResultCodeDTO("CART_KEY", resultKey, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getUserOrderList(int userKey, String startDate, String endDate, int sPage, int listLimit) {
+        List<OrderDeliveryListVO> orderList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (userKey == 0 && "".equals(startDate) && "".equals(endDate)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = orderMapper.selectUserOrderListCount(userKey, startDate, endDate);
+            orderList = orderMapper.selectUserOrderList(userKey, startDate, endDate, startNumber, listLimit);
+            if (orderList.size() > 0) {
+                for (OrderDeliveryListVO vo : orderList) {
+                    if (vo.getOrderGoodsCount() > 1) {
+                        vo.setOrderGoodsName(vo.getOrderGoodsName() + "외" + vo.getOrderGoodsCount());
+                    }
+                    vo.setSellPriceName(vo.getSellPriceName() + "원");
+                    vo.setJId("[" + vo.getJId() + "]");
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, orderList, resultCode);
     }
 }
