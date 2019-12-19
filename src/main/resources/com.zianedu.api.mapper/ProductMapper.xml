@@ -2384,6 +2384,10 @@
         ORDER BY Z.TEACHER_KEY ASC
     </select>
 
+    <select id="selectPackagePriceKey" resultType="int">
+        SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

@@ -265,4 +265,13 @@ public class ProductController {
         return productService.getSpecialPackageTeacherList(menuCtgKey);
     }
 
+    @RequestMapping(value = "/getPackagePriceKey/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("패키지 가격 키값 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "gKey", value = "상품 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getPackagePriceKey(@PathVariable(value = "gKey") int gKey) {
+        return productService.getPackagePriceKey(gKey);
+    }
+
 }

@@ -761,4 +761,16 @@ public class ProductService {
         return new ApiResultListDTO(teacherList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getPackagePriceKey(int gKey) {
+        int priceKey = 0;
+
+        if (gKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            priceKey = productMapper.selectPackagePriceKey(gKey);
+        }
+        return new ApiResultObjectDTO("PRICE_KEY", priceKey);
+    }
+
 }

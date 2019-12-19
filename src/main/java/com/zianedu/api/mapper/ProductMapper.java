@@ -191,6 +191,8 @@ public interface ProductMapper {
 
     List<LectureApplyTeacherVO> selectSpecialPackageTeacherList(@Param("menuCtgKey") int menuCtgKey);
 
+    int selectPackagePriceKey(@Param("gKey") int gKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
