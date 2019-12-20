@@ -207,7 +207,7 @@
             AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
          ]]>
         <![CDATA[
-            AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') < TO_DATE(#{endDate}, 'YYYY-MM-DD')
+            AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
          ]]>
         AND A.PAY_STATUS = 2
         ORDER BY A.J_KEY DESC
