@@ -213,6 +213,20 @@
         ORDER BY A.J_KEY DESC
     </select>
 
+    <select id="selectUserOrderDetailInfo" resultType="OrderDetailInfoVO">
+        SELECT A.USER_KEY, C.NAME as goodsName, A.J_KEY, A.TYPE, A.J_G_KEY, D.J_LEC_KEY, B.PAY_TYPE
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        LEFT JOIN T_GOODS C
+        ON A.G_KEY = C.G_KEY
+        LEFT JOIN T_ORDER_LEC D
+        ON A.J_G_KEY = D.J_G_KEY
+        WHERE 1=1
+        AND A.J_PM_KEY = 0
+        AND A.J_KEY = #{jKey}
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL

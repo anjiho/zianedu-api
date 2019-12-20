@@ -596,7 +596,7 @@ public class OrderService extends PagingSupport {
             if (paymentInfo != null) {
                 paymentInfo.setPayStatusName(OrderPayStatusType.getOrderPayStatusStr(paymentInfo.getPayStatus()));
                 paymentInfo.setPayTypeName(OrderPayType.getOrderPayTypeStr(paymentInfo.getPayType()));
-                paymentInfo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusTypeStr(paymentInfo.getDeliveryStatus()));
+                paymentInfo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusName(paymentInfo.getDeliveryStatus()));
                 paymentInfo.setPricePayName(StringUtils.addThousandSeparatorCommas(String.valueOf(paymentInfo.getPricePay())) + "원");
             }
         }
@@ -757,9 +757,47 @@ public class OrderService extends PagingSupport {
                     }
                     vo.setSellPriceName(vo.getSellPriceName() + "원");
                     vo.setJId("[" + vo.getJId() + "]");
+                    vo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusName(vo.getDeliveryStatus()));
                 }
             }
         }
         return new ApiPagingResultDTO(totalCount, orderList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserOrderDetailInfo(int jKey) {
+        UserOrderDetailDTO userOrderDetailDTO = null;
+
+        if (jKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<OrderDetailInfoVO> orderList = orderMapper.selectUserOrderDetailInfo(jKey);
+            TUserVO orderUserInfo = new TUserVO();
+            DeliveryAddressVO deliveryAddressInfo = new DeliveryAddressVO();
+            PaymentVO paymentInfo = new PaymentVO();
+
+            if (orderList.size() > 0) {
+                for (OrderDetailInfoVO vo : orderList) {
+                    vo.setTypeName(GoodsType.getGoodsTypeStr(vo.getType()));
+                    if (vo.getPayType() != 20 && vo.getType() == 1) {
+                        vo.setReviewYn(true);
+                    }
+                }
+            }
+            //주문자 정보
+            orderUserInfo = userMapper.selectUserInfoByUserKey(orderList.get(0).getUserKey());
+            //배송지 정보
+            deliveryAddressInfo = orderMapper.selectDeliveryAddressInfo(jKey);
+            //결제,배송정보
+            paymentInfo = orderMapper.selectUserPaymentInfo(jKey);
+            if (paymentInfo != null) {
+                paymentInfo.setPayStatusName(OrderPayStatusType.getOrderPayStatusStr(paymentInfo.getPayStatus()));
+                paymentInfo.setPayTypeName(OrderPayType.getOrderPayTypeStr(paymentInfo.getPayType()));
+                paymentInfo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusName(paymentInfo.getDeliveryStatus()));
+                paymentInfo.setPricePayName(StringUtils.addThousandSeparatorCommas(String.valueOf(paymentInfo.getPricePay())) + "원");
+            }
+            userOrderDetailDTO = new UserOrderDetailDTO(orderList, orderUserInfo, deliveryAddressInfo, paymentInfo);
+        }
+        return new ApiResultObjectDTO(userOrderDetailDTO, resultCode);
     }
 }

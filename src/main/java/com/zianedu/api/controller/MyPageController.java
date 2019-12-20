@@ -288,5 +288,14 @@ public class MyPageController {
         return orderService.getUserOrderList(userKey, startDate, endDate, sPage, listLimit);
     }
 
+    @RequestMapping(value = "/getUserOrderDetail/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 주문내역 상세")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jKey", value = "주문 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getUserOrderDetail(@PathVariable("jKey") int jKey) {
+        return orderService.getUserOrderDetailInfo(jKey);
+    }
+
 
 }

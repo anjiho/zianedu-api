@@ -42,6 +42,8 @@ public interface OrderMapper {
 
     int selectUserOrderListCount(@Param("userKey") int userKey, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
+    List<OrderDetailInfoVO> selectUserOrderDetailInfo(@Param("jKey") int jKey);
+
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);
 

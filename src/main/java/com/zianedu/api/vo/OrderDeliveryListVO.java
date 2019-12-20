@@ -31,5 +31,7 @@ public class OrderDeliveryListVO {
 
     private int deliveryStatus;
 
+    private String deliveryStatusName;
+
     private int orderGoodsCount;
 }
