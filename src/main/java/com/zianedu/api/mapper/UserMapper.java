@@ -1,7 +1,9 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.vo.TDeviceChangeCodeVO;
 import com.zianedu.api.vo.TUserSecessionVO;
 import com.zianedu.api.vo.TUserVO;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -26,6 +28,8 @@ public interface UserMapper {
     Integer insertUserInfo(TUserVO tUserVO);
 
     Integer insertUserSecession(TUserSecessionVO tUserSecessionVO);
+
+    Integer insertDeviceChangeCode(TDeviceChangeCodeVO tDeviceChangeCodeVO);
 
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);

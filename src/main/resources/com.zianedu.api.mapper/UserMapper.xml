@@ -37,7 +37,7 @@
 
     <select id="selectUserInfoByUserKey" resultType="TUserVO">
         SELECT
-            USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,
+            USER_KEY, USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,
             RECV_SMS, RECV_EMAIL, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, INTEREST_CTG_KEY_0
         FROM T_USER
         WHERE 1=1
@@ -98,6 +98,20 @@
         VALUES
         (
             #{secessionKey}, #{cKey}, #{userKey}, #{userId}, #{name}, sysdate, #{reason}, #{memo}, sysdate
+        )
+    </insert>
+
+    <insert id="insertDeviceChangeCode" parameterType="TDeviceChangeCodeVO">
+        <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
+            SELECT T_DEVICE_CHANGE_CODE_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_DEVICE_CHANGE_CODE
+        (
+            IDX, USER_KEY, REQUEST_CODE, DEVICE_TYPE, SEND_EMAIL_ADDRESS
+        )
+        VALUES
+        (
+            #{idx}, #{userKey}, #{requestCode}, #{deviceType}, #{sendEmailAddress}
         )
     </insert>
 

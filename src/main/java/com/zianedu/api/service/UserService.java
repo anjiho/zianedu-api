@@ -6,11 +6,14 @@ import com.zianedu.api.define.err.ZianException;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.ApiResultStringDTO;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
+import com.zianedu.api.utils.RandomUtil;
 import com.zianedu.api.utils.SecurityUtil;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.AcademySignUpVO;
+import com.zianedu.api.vo.TDeviceChangeCodeVO;
 import com.zianedu.api.vo.TUserSecessionVO;
 import com.zianedu.api.vo.TUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +29,16 @@ import static org.springframework.http.HttpStatus.OK;
 @Service
 public class UserService extends ApiResultKeyCode {
 
+    protected int resultCode = OK.value();
+
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private EmailSendService emailSendService;
 
     /**
      * 사용자 로그인
@@ -167,6 +175,30 @@ public class UserService extends ApiResultKeyCode {
             }
         }
         return new ApiResultCodeDTO("SECESSION_KEY", secessionKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO requestChangeDevice(int userKey, String deviceType) throws Exception {
+        String sendEmailAddress = "";
+
+        if (userKey == 0 && "".equals(deviceType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            /**
+             * 기기변경을 했는지 여부 체크 T_DEVICE_LIMIT 테이블 조건 확인
+             */
+            TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+            String code = RandomUtil.getRandomNumber(4);
+            TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
+                    userKey, code, deviceType, userInfo.getEmail()
+            );
+            userMapper.insertDeviceChangeCode(codeVO);
+            if (codeVO.getIdx() > 0) {
+                emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);
+                sendEmailAddress = userInfo.getEmail();
+            }
+        }
+        return new ApiResultCodeDTO("SEND_EMAIL_ADDRESS", sendEmailAddress, resultCode);
     }
 
 }

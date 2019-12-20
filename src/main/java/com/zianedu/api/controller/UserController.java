@@ -70,12 +70,12 @@ public class UserController {
     @ApiOperation("회원정보 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "birth", value = "생년월일", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "email", value = "이메일", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "telephone", value = "일반전화", dataType = "String", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "birth", value = "생년월일", dataType = "String", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "email", value = "이메일", dataType = "String", paramType = "query", required = true),
+            //@ApiImplicitParam(name = "telephone", value = "일반전화", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "telephoneMobile", value = "휴대전화", dataType = "String", paramType = "query", required = true),
-            @ApiImplicitParam(name = "recvSms", value = "SMS 수신여부", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "recvEmail", value = "메일링 수신여부", dataType = "int", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "recvSms", value = "SMS 수신여부", dataType = "int", paramType = "query", required = false),
+            //@ApiImplicitParam(name = "recvEmail", value = "메일링 수신여부", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "zipcode", value = "우편번호", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "addressRoad", value = "신주소 명", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "addressNumber", value = "구주소명", dataType = "String", paramType = "query", required = true),
@@ -114,6 +114,17 @@ public class UserController {
                                             @RequestParam("reason") String reason,
                                             @RequestParam(value = "memo", required = false) String memo) {
         return userService.requestMemberSecession(userName, userId, userPassword, reason, memo);
+    }
+
+    @RequestMapping(value = "/requestChangeDevice/{userKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("기기변경 요청")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키갑", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류 (PC, MOBILE)", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO requestChangeDevice(@PathVariable("userKey") int userKey,
+                                                @RequestParam("deviceType") String deviceType) throws Exception {
+        return userService.requestChangeDevice(userKey, deviceType);
     }
 
 }
