@@ -26,4 +26,8 @@ public class PaymentVO {
     private int pricePay;
 
     private String pricePayName;
+
+    private int price;
+
+    private String priceName;
 }

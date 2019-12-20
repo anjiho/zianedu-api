@@ -779,7 +779,7 @@ public class OrderService extends PagingSupport {
             if (orderList.size() > 0) {
                 for (OrderDetailInfoVO vo : orderList) {
                     vo.setTypeName(GoodsType.getGoodsTypeStr(vo.getType()));
-                    if (vo.getPayType() != 20 && vo.getType() == 1) {
+                    if (vo.getPayType() != 20 && vo.getType() == 1 && vo.getJLecKey() > 0) {
                         vo.setReviewYn(true);
                     }
                 }
@@ -795,6 +795,7 @@ public class OrderService extends PagingSupport {
                 paymentInfo.setPayTypeName(OrderPayType.getOrderPayTypeStr(paymentInfo.getPayType()));
                 paymentInfo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusName(paymentInfo.getDeliveryStatus()));
                 paymentInfo.setPricePayName(StringUtils.addThousandSeparatorCommas(String.valueOf(paymentInfo.getPricePay())) + "원");
+                paymentInfo.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(paymentInfo.getPrice())) + "원");
             }
             userOrderDetailDTO = new UserOrderDetailDTO(orderList, orderUserInfo, deliveryAddressInfo, paymentInfo);
         }
