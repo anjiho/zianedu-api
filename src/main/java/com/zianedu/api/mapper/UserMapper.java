@@ -24,6 +24,8 @@ public interface UserMapper {
 
     Integer selectUserCurrentPoint(@Param("userKey") int userKey);
 
+    int selectDeviceLimitCount(@Param("userKey") int userKey, @Param("deviceType") int deviceType);
+
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 

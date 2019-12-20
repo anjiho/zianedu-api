@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.define.datasource.ApiResultKeyCode;
+import com.zianedu.api.define.datasource.DeviceLimitDeviceType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.define.err.ZianException;
 import com.zianedu.api.dto.ApiResultCodeDTO;
@@ -187,15 +188,25 @@ public class UserService extends ApiResultKeyCode {
             /**
              * 기기변경을 했는지 여부 체크 T_DEVICE_LIMIT 테이블 조건 확인
              */
-            TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
-            String code = RandomUtil.getRandomNumber(4);
-            TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
-                    userKey, code, deviceType, userInfo.getEmail()
-            );
-            userMapper.insertDeviceChangeCode(codeVO);
-            if (codeVO.getIdx() > 0) {
-                emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);
-                sendEmailAddress = userInfo.getEmail();
+            int deviceLimitCnt = userMapper.selectDeviceLimitCount(userKey, DeviceLimitDeviceType.getDeviceTypeKey(deviceType));
+
+            if (deviceLimitCnt == 1) {
+                if (DeviceLimitDeviceType.PC.name().equals(deviceType)) {
+                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_PC.code();
+                } else if (DeviceLimitDeviceType.MOBILE.name().equals(deviceType)) {
+                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_MOBILE.code();
+                }
+            } else {
+                TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+                String code = RandomUtil.getRandomNumber(4);
+                TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
+                        userKey, code, deviceType, userInfo.getEmail()
+                );
+                userMapper.insertDeviceChangeCode(codeVO);
+                if (codeVO.getIdx() > 0) {
+                    emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);
+                    sendEmailAddress = userInfo.getEmail();
+                }
             }
         }
         return new ApiResultCodeDTO("SEND_EMAIL_ADDRESS", sendEmailAddress, resultCode);

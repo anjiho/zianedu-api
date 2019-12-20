@@ -67,6 +67,13 @@
          FROM T_POINT WHERE USER_KEY = #{userKey}
     </select>
 
+    <select id="selectDeviceLimitCount" resultType="int">
+        SELECT COUNT(DEVICE_LIMIT_KEY) 
+        FROM T_DEVICE_LIMIT 
+        WHERE TYPE = #{deviceType}
+        AND USER_KEY = #{userKey} 
+    </select>
+
     <insert id="insertUserInfo" parameterType="TUserVO">
         <selectKey resultType="Integer" keyProperty="userKey" order="BEFORE">
             SELECT T_USER_SEQ.nextval FROM DUAL

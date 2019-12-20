@@ -1,5 +1,6 @@
 package com.zianedu.api.utils;
 
+import com.zianedu.api.define.datasource.DeviceLimitDeviceType;
 import com.zianedu.api.define.datasource.PromotionPmType;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -1019,7 +1020,7 @@ public class Util {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(getDiffDayCount("20190101", "20190301"));
+        System.out.println(DeviceLimitDeviceType.getDeviceTypeKey("MOBILE"));
 
 
     }

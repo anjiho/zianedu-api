@@ -11,7 +11,9 @@ public enum ZianErrCode {
     CUSTOM_SHORT_USER_PASSWORD(903, "CUSTOM :: 비밀번호 길이가 4개이하"),
     CUSTOM_DIFFERENT_CURRENT_USER_PASSWORD(904, "CUSTOM :: 현재 비밀번호가 다름"),
     CUSTOM_PAUSE_LIMIT_OVER_VIDEO(905, "CUSTOM :: 강좌 일시정지 횟수 3회 초과"),
-    CUSTOM_DATA_SIZE_ZERO(906, "CUSTOP :: 데이터의 길이가 0")
+    CUSTOM_DATA_SIZE_ZERO(906, "CUSTOM :: 데이터의 길이가 0"),
+    CUSTOM_DEVICE_LIMIT_PC(907, "CUSTOM :: PC 기기제한 초기화 초과"),
+    CUSTOM_DEVICE_LIMIT_MOBILE(908, "CUSTOM :: MOBILE 기기제한 초기화 초과"),
     ;
 
     int code;
