@@ -67,11 +67,11 @@
          FROM T_POINT WHERE USER_KEY = #{userKey}
     </select>
 
-    <select id="selectDeviceLimitCount" resultType="int">
-        SELECT COUNT(DEVICE_LIMIT_KEY) 
-        FROM T_DEVICE_LIMIT 
+    <select id="selectDeviceLimitLogCount" resultType="int">
+        SELECT COUNT(DEVICE_LOG_KEY)
+        FROM T_DEVICE_LIMIT_LOG
         WHERE TYPE = #{deviceType}
-        AND USER_KEY = #{userKey} 
+        AND USER_KEY = #{userKey}
     </select>
 
     <insert id="insertUserInfo" parameterType="TUserVO">

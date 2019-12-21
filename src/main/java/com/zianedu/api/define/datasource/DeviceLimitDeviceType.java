@@ -2,18 +2,18 @@ package com.zianedu.api.define.datasource;
 
 public enum DeviceLimitDeviceType {
 
-    PC(0),
-    MOBILE(1);
+    PC("0"),
+    MOBILE("1");
 
-    int deviceTypeKey;
+    String deviceTypeKey;
 
-    DeviceLimitDeviceType(int deviceTypeKey) {
+    DeviceLimitDeviceType(String deviceTypeKey) {
         this.deviceTypeKey = deviceTypeKey;
     }
 
-    public static Integer getDeviceTypeKey(String deviceType) {
+    public static String getDeviceTypeKey(String deviceType) {
         for (DeviceLimitDeviceType deviceLimitDeviceType : DeviceLimitDeviceType.values()) {
-            if (deviceType == deviceLimitDeviceType.toString()) {
+            if (deviceType.equals(deviceLimitDeviceType.name())) {
                 return deviceLimitDeviceType.deviceTypeKey;
             }
         }

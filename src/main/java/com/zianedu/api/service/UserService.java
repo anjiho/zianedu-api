@@ -17,6 +17,7 @@ import com.zianedu.api.vo.AcademySignUpVO;
 import com.zianedu.api.vo.TDeviceChangeCodeVO;
 import com.zianedu.api.vo.TUserSecessionVO;
 import com.zianedu.api.vo.TUserVO;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -188,8 +189,9 @@ public class UserService extends ApiResultKeyCode {
             /**
              * 기기변경을 했는지 여부 체크 T_DEVICE_LIMIT 테이블 조건 확인
              */
-            int deviceLimitCnt = userMapper.selectDeviceLimitCount(userKey, DeviceLimitDeviceType.getDeviceTypeKey(deviceType));
-
+            //로그 테이블 개수 확인
+            int deviceLimitCnt = userMapper.selectDeviceLimitLogCount(userKey, Integer.parseInt(DeviceLimitDeviceType.getDeviceTypeKey(deviceType)));
+            //기기제한에 걸렸을때
             if (deviceLimitCnt == 1) {
                 if (DeviceLimitDeviceType.PC.name().equals(deviceType)) {
                     resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_PC.code();
@@ -197,14 +199,15 @@ public class UserService extends ApiResultKeyCode {
                     resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_MOBILE.code();
                 }
             } else {
+                //기기변경이 가능할때
                 TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
-                String code = RandomUtil.getRandomNumber(4);
+                String code = RandomUtil.getRandomNumber(4);    //코드값 생성
                 TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
                         userKey, code, deviceType, userInfo.getEmail()
                 );
-                userMapper.insertDeviceChangeCode(codeVO);
-                if (codeVO.getIdx() > 0) {
-                    emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);
+                userMapper.insertDeviceChangeCode(codeVO);  //코드 정보 테이블 저장
+                if (codeVO.getIdx() > 0 && !"".equals(sendEmailAddress)) {
+                    emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);    //이메일 발송
                     sendEmailAddress = userInfo.getEmail();
                 }
             }
