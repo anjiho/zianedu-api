@@ -14,6 +14,8 @@ public enum ZianErrCode {
     CUSTOM_DATA_SIZE_ZERO(906, "CUSTOM :: 데이터의 길이가 0"),
     CUSTOM_DEVICE_LIMIT_PC(907, "CUSTOM :: PC 기기제한 초기화 초과"),
     CUSTOM_DEVICE_LIMIT_MOBILE(908, "CUSTOM :: MOBILE 기기제한 초기화 초과"),
+    CUSTOM_DEVICE_CHANGE_CODE_CHECK_FAIL(909, "CUSTOM :: 기기변경 코드 일치 실패"),
+    CUSTOM_DEVICE_CHANGE_CODE_OVER_TIME(910, "CUSTOM :: 기기변경 제한시간 초과")
     ;
 
     int code;

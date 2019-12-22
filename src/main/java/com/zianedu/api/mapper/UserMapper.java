@@ -26,6 +26,10 @@ public interface UserMapper {
 
     int selectDeviceLimitLogCount(@Param("userKey") int userKey, @Param("deviceType") int deviceType);
 
+    int selectDeviceChangeCodeCount(@Param("userKey") int userKey, @Param("code") String code);
+
+    int selectDeviceChangeCodeCountByRequestDate(@Param("userKey") int userKey, @Param("code") String code);
+
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 

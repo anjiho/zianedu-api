@@ -215,5 +215,59 @@ public class UserService extends ApiResultKeyCode {
         return new ApiResultCodeDTO("SEND_EMAIL_ADDRESS", sendEmailAddress, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO confirmChangeDeviceCode(int userKey, String code) {
+        boolean isCodeConfirm = false;
+
+        if (userKey == 0 && "".equals(code)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int deviceCodeCount = userMapper.selectDeviceChangeCodeCount(userKey, code);
+
+            if (deviceCodeCount == 1) {
+                 int deviceCodeDateCheckCount = userMapper.selectDeviceChangeCodeCountByRequestDate(userKey, code);
+                 if (deviceCodeDateCheckCount == 1) {
+                     /**
+                      * TODO 기기변경을 해준다
+                      */
+                     isCodeConfirm = true;
+                 } else {
+                     /**
+                      * 5분초과
+                      */
+                     resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_OVER_TIME.code();
+                 }
+            } else if (deviceCodeCount == 0) {
+                resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_CHECK_FAIL.code();
+            }
+        }
+        return new ApiResultCodeDTO("CHANGE_CODE_CONFIRM", isCodeConfirm, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserInfo(int userKey) {
+        TUserVO userVO = new TUserVO();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            userVO = userMapper.selectUserInfoByUserKey(userKey);
+        }
+        return new ApiResultObjectDTO(userVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO confirmUserPassword(int userKey, String userPwd) {
+        boolean isConfirm = false;
+
+        if (userKey == 0 && "".equals(userPwd)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int userCount = userMapper.selectUserCountAtChangePasswd(userKey, SecurityUtil.encryptSHA256(userPwd));
+            if (userCount == 1) isConfirm = true;
+        }
+        return new ApiResultCodeDTO("USER_CONFIRM", isConfirm, resultCode);
+    }
+
 }
 

@@ -119,12 +119,43 @@ public class UserController {
     @RequestMapping(value = "/requestChangeDevice/{userKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("기기변경 요청")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키갑", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "deviceType", value = "기기종류 (PC, MOBILE)", dataType = "string", paramType = "query", required = true)
     })
     public ApiResultCodeDTO requestChangeDevice(@PathVariable("userKey") int userKey,
                                                 @RequestParam("deviceType") String deviceType) throws Exception {
         return userService.requestChangeDevice(userKey, deviceType);
+    }
+
+    @RequestMapping(value = "/confirmChangeDeviceCode/{userKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("기기변경 코드 확인하기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "code", value = "이메일 발송 코드값", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO confirmChangeDeviceCode(@PathVariable("userKey") int userKey,
+                                                    @RequestParam("code") String code) {
+        return userService.confirmChangeDeviceCode(userKey, code);
+    }
+
+    @RequestMapping(value = "/getUserInfo/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("사용자 정보 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getUserInfo(@PathVariable("userKey") int userKey) {
+        return userService.getUserInfo(userKey);
+    }
+
+    @RequestMapping(value = "/confirmUserPassword/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("사용자 패스워드가 맞는지 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userPwd", value = "패스워드", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO confirmUserPassword(@PathVariable("userKey") int userKey,
+                                                @RequestParam("userPwd") String userPwd) {
+        return userService.confirmUserPassword(userKey, userPwd);
     }
 
 }

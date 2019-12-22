@@ -74,6 +74,23 @@
         AND USER_KEY = #{userKey}
     </select>
 
+    <select id="selectDeviceChangeCodeCount" resultType="int">
+        SELECT COUNT (IDX)
+        FROM T_DEIVCE_CHANGE_CODE
+        WHERE USER_KEY = #{userKey}
+        AND REQUEST_CODE = #{code}
+    </select>
+
+    <select id="selectDeviceChangeCodeCountByRequestDate" resultType="int">
+       SELECT COUNT(IDX)
+        FROM ZIANEDU.T_DEVICE_CHANGE_CODE
+        WHERE USER_KEY = #{userKey}
+        AND REQUEST_CODE = #{code}
+        <![CDATA[
+           AND (REQUEST_DATE + 5 / (24 * 60)) >= sysdate
+        ]]>
+    </select>
+
     <insert id="insertUserInfo" parameterType="TUserVO">
         <selectKey resultType="Integer" keyProperty="userKey" order="BEFORE">
             SELECT T_USER_SEQ.nextval FROM DUAL
