@@ -12,11 +12,9 @@ import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.RandomUtil;
 import com.zianedu.api.utils.SecurityUtil;
+import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
-import com.zianedu.api.vo.AcademySignUpVO;
-import com.zianedu.api.vo.TDeviceChangeCodeVO;
-import com.zianedu.api.vo.TUserSecessionVO;
-import com.zianedu.api.vo.TUserVO;
+import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -181,6 +179,7 @@ public class UserService extends ApiResultKeyCode {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO requestChangeDevice(int userKey, String deviceType) throws Exception {
+        int resultCode = OK.value();
         String sendEmailAddress = "";
 
         if (userKey == 0 && "".equals(deviceType)) {
@@ -191,24 +190,29 @@ public class UserService extends ApiResultKeyCode {
              */
             //로그 테이블 개수 확인
             int deviceLimitCnt = userMapper.selectDeviceLimitLogCount(userKey, Integer.parseInt(DeviceLimitDeviceType.getDeviceTypeKey(deviceType)));
-            //기기제한에 걸렸을때
-            if (deviceLimitCnt == 1) {
-                if (DeviceLimitDeviceType.PC.name().equals(deviceType)) {
-                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_PC.code();
-                } else if (DeviceLimitDeviceType.MOBILE.name().equals(deviceType)) {
-                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_MOBILE.code();
-                }
+            TDeviceLimitVO tDeviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, Integer.parseInt(DeviceLimitDeviceType.getDeviceTypeKey(deviceType)));
+            if (tDeviceLimitVO == null) {
+                resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_NULL.code();
             } else {
-                //기기변경이 가능할때
-                TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
-                String code = RandomUtil.getRandomNumber(4);    //코드값 생성
-                TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
-                        userKey, code, deviceType, userInfo.getEmail()
-                );
-                userMapper.insertDeviceChangeCode(codeVO);  //코드 정보 테이블 저장
-                if (codeVO.getIdx() > 0 && !"".equals(sendEmailAddress)) {
-                    emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);    //이메일 발송
-                    sendEmailAddress = userInfo.getEmail();
+                //기기제한에 걸렸을때
+                if (deviceLimitCnt == 1) {
+                    if (DeviceLimitDeviceType.PC.name().equals(deviceType)) {
+                        resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_PC.code();
+                    } else if (DeviceLimitDeviceType.MOBILE.name().equals(deviceType)) {
+                        resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT_MOBILE.code();
+                    }
+                } else if (deviceLimitCnt == 0) {
+                    //기기변경이 가능할때
+                    TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+                    String code = RandomUtil.getRandomNumber(4);    //코드값 생성
+                    TDeviceChangeCodeVO codeVO = new TDeviceChangeCodeVO(
+                            userKey, code, deviceType, userInfo.getEmail()
+                    );
+                    userMapper.insertDeviceChangeCode(codeVO);  //코드 정보 테이블 저장
+                    if (codeVO.getIdx() > 0 && !"".equals(userInfo.getEmail())) {
+                        emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);    //이메일 발송
+                        sendEmailAddress = userInfo.getEmail();
+                    }
                 }
             }
         }
@@ -217,6 +221,7 @@ public class UserService extends ApiResultKeyCode {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO confirmChangeDeviceCode(int userKey, String code) {
+        int resultCode = OK.value();
         boolean isCodeConfirm = false;
 
         if (userKey == 0 && "".equals(code)) {
@@ -230,12 +235,28 @@ public class UserService extends ApiResultKeyCode {
                      /**
                       * TODO 기기변경을 해준다
                       */
-                     isCodeConfirm = true;
+                     TDeviceChangeCodeVO changeCodeVO = userMapper.selectDeviceChangeCodeInfo(userKey, code);
+                     if (changeCodeVO != null) {
+                        TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(
+                                userKey, Integer.parseInt(DeviceLimitDeviceType.getDeviceTypeKey(changeCodeVO.getDeviceType()))
+                        );
+                         if (deviceLimitVO != null) {
+                             String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
+                             TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
+                                     deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
+                                     deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
+                                     deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
+                             );
+                             userMapper.insertTDeviceLimitLog(limitLogVO);
+                         }
+                         userMapper.deleteTDeviceLimit(deviceLimitVO.getDeviceLimitKey());
+                         userMapper.updateTDeviceChangeCode(changeCodeVO.getIdx());
+                         isCodeConfirm = true;
+                     } else {
+                        resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_CHECK_FAIL.code();
+                     }
                  } else {
-                     /**
-                      * 5분초과
-                      */
-                     resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_OVER_TIME.code();
+                     resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_OVER_TIME.code();   //5분 초과
                  }
             } else if (deviceCodeCount == 0) {
                 resultCode = ZianErrCode.CUSTOM_DEVICE_CHANGE_CODE_CHECK_FAIL.code();

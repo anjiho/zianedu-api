@@ -1,8 +1,6 @@
 package com.zianedu.api.mapper;
 
-import com.zianedu.api.vo.TDeviceChangeCodeVO;
-import com.zianedu.api.vo.TUserSecessionVO;
-import com.zianedu.api.vo.TUserVO;
+import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,6 +28,10 @@ public interface UserMapper {
 
     int selectDeviceChangeCodeCountByRequestDate(@Param("userKey") int userKey, @Param("code") String code);
 
+    TDeviceChangeCodeVO selectDeviceChangeCodeInfo(@Param("userKey") int userKey, @Param("code") String code);
+
+    TDeviceLimitVO selectTDeviceLimitInfo(@Param("userKey") int userKey, @Param("deviceType") int deviceType);
+
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 
@@ -37,8 +39,17 @@ public interface UserMapper {
 
     Integer insertDeviceChangeCode(TDeviceChangeCodeVO tDeviceChangeCodeVO);
 
+    void insertTDeviceLimitLog(TDeviceLimitLogVO tDeviceLimitLogVO);
+
+    void insertTDeviceLimitLog2(TDeviceLimitLogVO tDeviceLimitLogVO);
+
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);
 
     void updateUserPassword(@Param("userKey") int userKey, @Param("userPwd") String userPwd);
+
+    void updateTDeviceChangeCode(@Param("idx") int idx);
+
+    /** DELETE **/
+    void deleteTDeviceLimit(@Param("deviceLimitKey") int deviceLimitKey);
 }

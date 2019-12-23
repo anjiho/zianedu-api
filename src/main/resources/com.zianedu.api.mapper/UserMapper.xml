@@ -76,19 +76,32 @@
 
     <select id="selectDeviceChangeCodeCount" resultType="int">
         SELECT COUNT (IDX)
-        FROM T_DEIVCE_CHANGE_CODE
+        FROM T_DEVICE_CHANGE_CODE
         WHERE USER_KEY = #{userKey}
         AND REQUEST_CODE = #{code}
+        AND APPLY_YN = 0
     </select>
 
     <select id="selectDeviceChangeCodeCountByRequestDate" resultType="int">
        SELECT COUNT(IDX)
-        FROM ZIANEDU.T_DEVICE_CHANGE_CODE
+        FROM T_DEVICE_CHANGE_CODE
         WHERE USER_KEY = #{userKey}
         AND REQUEST_CODE = #{code}
         <![CDATA[
            AND (REQUEST_DATE + 5 / (24 * 60)) >= sysdate
         ]]>
+    </select>
+
+    <select id="selectDeviceChangeCodeInfo" resultType="TDeviceChangeCodeVO">
+        SELECT * FROM T_DEVICE_CHANGE_CODE
+        WHERE USER_KEY = #{userKey}
+        AND REQUEST_CODE = #{code}
+    </select>
+
+    <select id="selectTDeviceLimitInfo" resultType="TDeviceLimitVO">
+        SELECT * FROM T_DEVICE_LIMIT
+        WHERE USER_KEY = #{userKey}
+        AND TYPE = #{deviceType}
     </select>
 
     <insert id="insertUserInfo" parameterType="TUserVO">
@@ -139,6 +152,22 @@
         )
     </insert>
 
+    <insert id="insertTDeviceLimitLog" parameterType="TDeviceLimitLogVO">
+        <selectKey resultType="int" keyProperty="deviceLogKey" order="BEFORE">
+            SELECT T_DEVICE_LIMIT_LOG_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_DEVICE_LIMIT_LOG
+        (
+            DEVICE_LOG_KEY, DEVICE_LIMIT_KEY, C_KEY, USER_KEY, INDATE,
+            DELETE_DATE, TYPE, DATA_KEY, DEVICE_ID, DEVICE_MODEL, OS_VERSION, APP_VERSION
+        )
+        VALUES
+        (
+            #{deviceLogKey}, #{deviceLimitKey}, #{cKey}, #{userKey}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'),
+            TO_DATE(#{deleteDate}, 'YYYY-mm-dd hh24:mi:ss'), #{type}, #{dataKey}, #{deviceId}, #{deviceModel}, #{osVersion}, #{appVersion}
+        )
+    </insert>
+
     <update id="updateUserInfo" parameterType="TUserVO">
         UPDATE T_USER
         <set>
@@ -164,5 +193,15 @@
         </set>
         WHERE USER_KEY = #{userKey}
     </update>
+
+    <update id="updateTDeviceChangeCode">
+        UPDATE T_DEVICE_CHANGE_CODE
+        SET APPLY_YN = 1, APPLY_DATE = sysdate
+        WHERE IDX = #{idx}
+    </update>
+
+    <delete id="deleteTDeviceLimit">
+        DELETE FROM T_DEVICE_LIMIT WHERE DEVICE_LIMIT_KEY = #{deviceLimitKey}
+    </delete>
 
 </mapper>
