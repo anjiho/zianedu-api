@@ -348,7 +348,7 @@ public class PaymentService {
         if (userKey == 0 && "".equals(injectType) && point == 0) return;
 
         int type = 0;
-        int descType = 0;
+        String descType = "";
         //상품구매일때 마일리지 사용
         if ("M".equals(injectType)) {
             point = -point;
@@ -357,8 +357,12 @@ public class PaymentService {
         } else if ("P".equals(injectType)) {
             type = 1;
             descType = PointDescType.PRODUCT_BUY_GAIN.getPointDescTypeKey();
+        //회원가입일때 마일리지 획득
+        } else if ("U".equals(injectType)) {
+            type = 1;
+            descType = PointDescType.MEMBER_REG.getPointDescTypeKey();
         }
-        TPointVO tPointVO = new TPointVO(userKey, type, point, jKey, jId, descType);
+        TPointVO tPointVO = new TPointVO(userKey, type, point, jKey, jId, Integer.parseInt(descType));
         paymentMapper.insertTPoint(tPointVO);
     }
 }

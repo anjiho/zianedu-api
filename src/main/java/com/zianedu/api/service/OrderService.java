@@ -628,12 +628,15 @@ public class OrderService extends PagingSupport {
 
                 for (PointListVO vo : pointList) {
                     String pointDesc = "";
-                    if (vo.getDescType() == 1) pointDesc = "마일리지 사용";
-                    else if (vo.getDescType() == 2) pointDesc = "마일리지 획득";
-                    else if (vo.getDescType() == 5) pointDesc = "마일리지 반환";
+                    if (vo.getDescType() == 0) pointDesc = "회원가입 마일리지 획득";
+                    else if (vo.getDescType() == 1) pointDesc = "상품구매 마일리지 획득";
+                    else if (vo.getDescType() == 2) pointDesc = "상품구매 마일리지 사용";
+                    else if (vo.getDescType() == 3) pointDesc = "상품구매 주문취소 마일리지 반환";
+                    else if (vo.getDescType() == 4) pointDesc = "결제취소 사용한 마일리지 반환";
+                    else if (vo.getDescType() == 5) pointDesc = "결제취소 획득한 마일리지 반환";
 
                     vo.setPointDesc(pointDesc);
-                    vo.setPointName(StringUtils.addThousandSeparatorCommas(vo.getPoint() + "점"));
+                    vo.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getPoint())) + "점");
 
                     remainPoint += vo.getPoint();
                 }

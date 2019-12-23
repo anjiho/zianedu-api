@@ -3,26 +3,19 @@ package com.zianedu.api.service;
 import com.zianedu.api.define.datasource.ApiResultKeyCode;
 import com.zianedu.api.define.datasource.DeviceLimitDeviceType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.define.err.ZianException;
 import com.zianedu.api.dto.ApiResultCodeDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.ApiResultStringDTO;
-import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.RandomUtil;
 import com.zianedu.api.utils.SecurityUtil;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
-import io.swagger.models.auth.In;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -35,7 +28,7 @@ public class UserService extends ApiResultKeyCode {
     private UserMapper userMapper;
 
     @Autowired
-    private ProductMapper productMapper;
+    private PaymentService paymentService;
 
     @Autowired
     private EmailSendService emailSendService;
@@ -98,6 +91,8 @@ public class UserService extends ApiResultKeyCode {
 
             if (regUser.getUserKey() == 0) resultCode = ZianErrCode.CUSTOM_FAIL_REG_USER.code();
             userKey = regUser.getUserKey();
+            //회원가입에 의한 마일리지 주입
+            paymentService.injectUserPoint("U", userKey, 1000, 0, "");
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
@@ -233,7 +228,7 @@ public class UserService extends ApiResultKeyCode {
                  int deviceCodeDateCheckCount = userMapper.selectDeviceChangeCodeCountByRequestDate(userKey, code);
                  if (deviceCodeDateCheckCount == 1) {
                      /**
-                      * TODO 기기변경을 해준다
+                      * 기기변경을 해준다
                       */
                      TDeviceChangeCodeVO changeCodeVO = userMapper.selectDeviceChangeCodeInfo(userKey, code);
                      if (changeCodeVO != null) {
