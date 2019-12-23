@@ -297,5 +297,27 @@ public class MyPageController {
         return orderService.getUserOrderDetailInfo(jKey);
     }
 
+    @RequestMapping(value = "/getUserPointList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 마일리지 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getUserPointList(@PathVariable("userKey") int userKey,
+                                               @RequestParam("sPage") int sPage,
+                                               @RequestParam("listLimit") int listLimit) {
+        return orderService.getUserPointList(userKey, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/getUserPointInfo/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 총 마일리지 정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getUserPointInfo(@PathVariable("userKey") int userKey) {
+        return orderService.getUserPointInfo(userKey);
+    }
+
 
 }

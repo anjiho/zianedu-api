@@ -612,17 +612,21 @@ public class OrderService extends PagingSupport {
      * @return
      */
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getUserPointList(int userKey) {
+    public ApiPagingResultDTO getUserPointList(int userKey, int sPage, int listLimit) {
         int resultCode = OK.value();
 
-        int remainPoint = 0;
-        String remainPointName = "";
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        //UserPointInfoVO pointInfoVO = null;
         List<PointListVO> pointList = new ArrayList<>();
 
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            pointList = orderMapper.selectUserPointListInfo(userKey);
+            //pointInfoVO = orderMapper.selectUserPointInfo(userKey);
+            totalCount = orderMapper.selectUserPointListInfoCount(userKey);
+            pointList = orderMapper.selectUserPointListInfo(userKey, startNumber, listLimit);
 
             if (pointList.size() > 0) {
 
@@ -637,15 +641,26 @@ public class OrderService extends PagingSupport {
 
                     vo.setPointDesc(pointDesc);
                     vo.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getPoint())) + "점");
-
-                    remainPoint += vo.getPoint();
                 }
             }
         }
-        remainPointName = StringUtils.addThousandSeparatorCommas(String.valueOf(remainPoint)) + "점";
-        PointInfoDTO pointInfo = new PointInfoDTO(remainPointName, pointList);
+        //PointInfoDTO pointInfo = new PointInfoDTO(pointInfoVO, pointList);
 
-        return new ApiResultObjectDTO(pointInfo, resultCode);
+        return new ApiPagingResultDTO(totalCount, pointList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserPointInfo(int userKey) {
+        int resultCode = OK.value();
+
+        UserPointInfoVO pointInfoVO = null;
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            pointInfoVO = orderMapper.selectUserPointInfo(userKey);
+        }
+        return new ApiResultObjectDTO(pointInfoVO, resultCode);
     }
 
     /**

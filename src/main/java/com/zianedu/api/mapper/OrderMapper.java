@@ -29,7 +29,11 @@ public interface OrderMapper {
 
     PaymentVO selectUserPaymentInfo(@Param("jKey") int jKey);
 
-    List<PointListVO> selectUserPointListInfo(@Param("userKey") int userKey);
+    List<PointListVO> selectUserPointListInfo(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectUserPointListInfoCount(@Param("userKey") int userKey);
+
+    UserPointInfoVO selectUserPointInfo(@Param("userKey") int userKey);
 
     TCartVO selectCartInfoByCartKey(@Param("cartKey") int cartKey);
 

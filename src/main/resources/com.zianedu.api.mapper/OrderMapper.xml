@@ -147,6 +147,24 @@
         FROM T_POINT
         WHERE USER_KEY = #{userKey}
         ORDER BY INDATE DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectUserPointListInfoCount" resultType="int">
+        SELECT COUNT(POINT_KEY)
+        FROM T_POINT
+        WHERE USER_KEY = #{userKey}
+        ORDER BY INDATE DESC
+    </select>
+
+    <select id="selectUserPointInfo" resultType="UserPointInfoVO">
+        SELECT
+            TRIM (TO_CHAR((SELECT SUM(POINT) FROM T_POINT Z WHERE Z.USER_KEY = A.USER_KEY AND TYPE = 1), '999,999,999,999,999')) as earnedPoint,
+            TRIM (TO_CHAR((SELECT SUM(POINT) FROM T_POINT Z WHERE Z.USER_KEY = A.USER_KEY AND TYPE = 0), '999,999,999,999,999')) as usedPoint,
+            TRIM (TO_CHAR((SELECT SUM(POINT) FROM T_POINT Z WHERE Z.USER_KEY = A.USER_KEY AND TYPE IN (0,1)), '999,999,999,999,999')) as usefulPoint
+        FROM T_POINT A
+        WHERE USER_KEY = #{userKey}
+        AND ROWNUM =1
     </select>
 
     <select id="selectCartInfoByCartKey" resultType="TCartVO">
