@@ -87,6 +87,8 @@ public interface BoardMapper {
 
     void insertTLectureRoomTable(LectureRoomTableVO lectureRoomTableVO);
 
+    void insertTConsultReserve(TConsultReserveVO tConsultReserveVO);
+
     /** UPDATE **/
     void updateTBbsData(TBbsDataVO tBbsDataVO);
 

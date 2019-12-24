@@ -559,6 +559,17 @@
         ( #{lectureDate}, #{academyNumber}, #{fileName} )
     </insert>
 
+    <insert id="insertTConsultReserve" parameterType="TConsultReserveVO">
+        INSERT INTO T_CONSULT_RESERVE
+        (
+            USER_KEY, RESERVE_DATE, RESERVE_TIME_KEY, RESERVE_TYPE, RESERVE_LOCATION, CREATE_DATE
+        )
+        VALUES
+        (
+            #{userKey}, #{reserveDate}, #{reserveTimeKey}, #{reserveType}, #{reserveLocation}, sysdate
+        )
+    </insert>
+
     <update id="updateTBbsData" parameterType="TBbsDataVO">
         UPDATE T_BBS_DATA
         <set>

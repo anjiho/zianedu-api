@@ -1020,7 +1020,7 @@ public class Util {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(DeviceLimitDeviceType.getDeviceTypeKey("MOBILE"));
+        System.out.println(getToday());
 
 
     }

@@ -393,4 +393,19 @@ public class BoardService extends PagingSupport {
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO reserveConsult(int userKey, String reserveDate, int reserveTimeKey, int reserveType, int reserveLocation) {
+        int resultCode = OK.value();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TConsultReserveVO reserveVO = new TConsultReserveVO(
+                    userKey, reserveDate, reserveTimeKey, reserveType, reserveLocation
+            );
+            boardMapper.insertTConsultReserve(reserveVO);
+        }
+        return new ApiResultCodeDTO("RESERVE_TIME_KEY", reserveTimeKey, resultCode);
+    }
+
 }
