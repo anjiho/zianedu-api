@@ -11,4 +11,6 @@ public class UserPointInfoVO {
 
     private String usefulPoint;
 
+    private String expirePoint;
+
 }

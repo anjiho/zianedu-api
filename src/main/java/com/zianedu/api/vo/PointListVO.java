@@ -9,7 +9,7 @@ public class PointListVO {
 
     private int type;
 
-    private int point;
+    private String point;
 
     private int jKey;
 
@@ -20,4 +20,6 @@ public class PointListVO {
     private String pointDesc;
 
     private String pointName;
+
+    private String seqPoint;
 }

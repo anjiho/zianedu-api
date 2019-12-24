@@ -640,7 +640,7 @@ public class OrderService extends PagingSupport {
                     else if (vo.getDescType() == 5) pointDesc = "결제취소 획득한 마일리지 반환";
 
                     vo.setPointDesc(pointDesc);
-                    vo.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getPoint())) + "점");
+                    //vo.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(vo.getPoint())) + "점");
                 }
             }
         }
