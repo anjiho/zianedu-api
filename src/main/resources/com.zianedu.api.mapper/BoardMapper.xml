@@ -476,6 +476,24 @@
         AND A.BBS_KEY = #{bbsParentKey}
     </select>
 
+    <select id="selectOneByOneQuestionListByBbsKey" resultType="ReferenceRoomVO">
+        SELECT * FROM (
+            SELECT
+                A.BBS_KEY, A.BBS_PARENT_KEY, TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, LEVEL,
+                (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount, A.PWD, A.IS_NOTICE,
+                (SELECT NAME FROM T_USER WHERE USER_KEY = A.WRITE_USER_KEY) as writeUserName,
+                TO_CHAR(A.INDATE,'YYYY.MM.DD') as indate2
+            FROM T_BBS_DATA A
+            WHERE 1=1
+            AND A.BBS_MASTER_KEY = 10019
+            AND A.BBS_PARENT_KEY = #{bbsKey}
+            START WITH A.BBS_PARENT_KEY = 0
+            CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
+            ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
+        ) Z
+        WHERE 1=1
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

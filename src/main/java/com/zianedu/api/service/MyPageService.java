@@ -485,29 +485,41 @@ public class MyPageService extends PagingSupport {
             List<ReferenceRoomVO> questionList = boardMapper.selectOneByOneQuestionList(userKey, startNumber,listLimit);
             if (questionList.size() > 0) {
                 for (ReferenceRoomVO vo : questionList) {
-                    List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
-                    ReferenceRoomVO questionInfo = new ReferenceRoomVO();
-                    questionList2.add(vo);
-                    int len = vo.getLevel();
-                    int level = len;
-                    for (int i = 0; i < len-1; i++) {
-                        if (i == 0){
-                            questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(vo.getBbsParentKey());
-                            questionInfo.setLevel(--level);
-                        } else {
-                            questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(questionInfo.getBbsParentKey());
-                            questionInfo.setLevel(--level);
+                    if (vo.getLevel() > 1) {
+                        List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
+                        ReferenceRoomVO questionInfo = new ReferenceRoomVO();
+                        questionList2.add(vo);
+                        int len = vo.getLevel();
+                        int level = len;
+                        for (int i = 0; i < len-1; i++) {
+                            if (i == 0){
+                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(vo.getBbsParentKey());
+                                questionInfo.setLevel(--level);
+                            } else {
+                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(questionInfo.getBbsParentKey());
+                                questionInfo.setLevel(--level);
+                            }
+                            questionList2.add(questionInfo);
+                            if (questionInfo == null) {
+                                continue;
+                            }
                         }
-                        questionList2.add(questionInfo);
-                        if (questionInfo == null) {
-                            continue;
+                        Collections.sort(questionList2);
+                        int len2 = questionList2.size();
+                        for (int j=0; j<len2 ; j++) {
+                            if ((j+1) == questionList2.get(j).getLevel()) {
+                                questionList3.add(questionList2.get(j));
+                            }
                         }
-                    }
-                    Collections.sort(questionList2);
-                    int len2 = questionList2.size();
-                    for (int j=0; j<len2 ; j++) {
-                        if ((j+1) == questionList2.get(j).getLevel()) {
-                            questionList3.add(questionList2.get(j));
+                    } else if (vo.getLevel() == 1) {
+                        questionList3.add(vo);
+                        ReferenceRoomVO questionInfo = boardMapper.selectOneByOneQuestionListByBbsKey(vo.getBbsKey());
+                        if (questionInfo != null) {
+                            questionList3.add(questionInfo);
+                            ReferenceRoomVO questionInfo2 = boardMapper.selectOneByOneQuestionListByBbsKey(questionInfo.getBbsKey());
+                            if (questionInfo2 != null) {
+                                questionList3.add(questionInfo2);
+                            }
                         }
                     }
                 }

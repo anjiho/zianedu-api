@@ -74,6 +74,8 @@ public interface BoardMapper {
 
     ReferenceRoomVO selectOneByOneQuestionListByBbsParentKey(@Param("bbsParentKey") int bbsParentKey);
 
+    ReferenceRoomVO selectOneByOneQuestionListByBbsKey(@Param("bbsKey") int bbsKey);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 
