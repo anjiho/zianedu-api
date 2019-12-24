@@ -527,5 +527,19 @@ public class MyPageService extends PagingSupport {
         }
         return new ApiPagingResultDTO(totalCount, questionList3, resultCode);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultObjectDTO getOneByOneQuestionDetailInfo (int bbsKey) {
+        int resultCode = OK.value();
+
+        ReferenceRoomDetailVO detailVO = new ReferenceRoomDetailVO();
+        if (bbsKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+           detailVO  = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
+           boardMapper.updateTBbsReadCount(bbsKey);
+        }
+        return new ApiResultObjectDTO(detailVO, resultCode);
+    }
 }
 

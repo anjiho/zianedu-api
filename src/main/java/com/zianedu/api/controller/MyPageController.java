@@ -4,6 +4,7 @@ import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.service.BoardService;
 import com.zianedu.api.service.MyPageService;
 import com.zianedu.api.service.OrderService;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -23,6 +24,9 @@ public class MyPageController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private BoardService boardService;
 
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
@@ -320,7 +324,7 @@ public class MyPageController {
     }
 
     @RequestMapping(value = "/getOneByOneQuestionList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("마이페이지 > 1:1상담내역")
+    @ApiOperation("마이페이지 > 1:1상담내역 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
@@ -330,6 +334,15 @@ public class MyPageController {
                                                @RequestParam("sPage") int sPage,
                                                @RequestParam("listLimit") int listLimit) {
         return myPageService.getOneByOneQuestionList(userKey, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/getOneByOneQuestionDetailInfo/{bbsKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 1:1상담 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getOneByOneQuestionDetailInfo(@PathVariable("bbsKey") int bbsKey) {
+        return boardService.getBoardDetailInfo(10019, bbsKey);
     }
 
 
