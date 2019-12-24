@@ -3,7 +3,7 @@ package com.zianedu.api.vo;
 import lombok.Data;
 
 @Data
-public class ReferenceRoomVO {
+public class ReferenceRoomVO implements Comparable<ReferenceRoomVO>{
 
     private int num;
 
@@ -37,4 +37,13 @@ public class ReferenceRoomVO {
 
     private String writeUserName;
 
+    @Override
+    public int compareTo(ReferenceRoomVO o) {
+        if (this.level < o.getLevel()) {
+            return -1;
+        } else if (this.level > o.getLevel()) {
+            return 1;
+        }
+        return 0;
+    }
 }

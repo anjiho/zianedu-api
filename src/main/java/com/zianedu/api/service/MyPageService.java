@@ -5,19 +5,23 @@ import com.zianedu.api.define.datasource.GoodsKindType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
+import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.vo.*;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -26,6 +30,9 @@ public class MyPageService extends PagingSupport {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private BoardMapper boardMapper;
 
     @Autowired
     private LectureProgressRateRepository lectureProgressRateRepository;
@@ -462,4 +469,51 @@ public class MyPageService extends PagingSupport {
         }
         return new ApiResultObjectDTO(videoEndInfo, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getOneByOneQuestionList(int userKey, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+        List<ReferenceRoomVO> questionList3 = new CopyOnWriteArrayList<>();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectOneByOneQuestionListCount(userKey);
+            List<ReferenceRoomVO> questionList = boardMapper.selectOneByOneQuestionList(userKey, startNumber,listLimit);
+            if (questionList.size() > 0) {
+                for (ReferenceRoomVO vo : questionList) {
+                    List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
+                    ReferenceRoomVO questionInfo = new ReferenceRoomVO();
+                    questionList2.add(vo);
+                    int len = vo.getLevel();
+                    int level = len;
+                    for (int i = 0; i < len-1; i++) {
+                        if (i == 0){
+                            questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(vo.getBbsParentKey());
+                            questionInfo.setLevel(--level);
+                        } else {
+                            questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(questionInfo.getBbsParentKey());
+                            questionInfo.setLevel(--level);
+                        }
+                        questionList2.add(questionInfo);
+                        if (questionInfo == null) {
+                            continue;
+                        }
+                    }
+                    Collections.sort(questionList2);
+                    int len2 = questionList2.size();
+                    for (int j=0; j<len2 ; j++) {
+                        if ((j+1) == questionList2.get(j).getLevel()) {
+                            questionList3.add(questionList2.get(j));
+                        }
+                    }
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, questionList3, resultCode);
+    }
 }
+
