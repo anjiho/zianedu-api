@@ -486,6 +486,7 @@ public class MyPageService extends PagingSupport {
             if (questionList.size() > 0) {
                 for (ReferenceRoomVO vo : questionList) {
                     if (vo.getLevel() > 1) {
+                        //운영자가 쓴글 기준으로 불러올때
                         List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
                         ReferenceRoomVO questionInfo = new ReferenceRoomVO();
                         questionList2.add(vo);
@@ -512,6 +513,7 @@ public class MyPageService extends PagingSupport {
                             }
                         }
                     } else if (vo.getLevel() == 1) {
+                        //일반 사용자가 쓴글 기준으로 불러올때
                         questionList3.add(vo);
                         ReferenceRoomVO questionInfo = boardMapper.selectOneByOneQuestionListByBbsKey(vo.getBbsKey());
                         if (questionInfo != null) {
