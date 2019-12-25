@@ -76,6 +76,9 @@ public interface BoardMapper {
 
     ReferenceRoomVO selectOneByOneQuestionListByBbsKey(@Param("bbsKey") int bbsKey);
 
+    int selectConsultReserveCount(@Param("reserveDate") String reserveDate, @Param("reserveTimeKey") int reserveTimeKey,
+                                  @Param("reserveLocation") int reserveLocation);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 
