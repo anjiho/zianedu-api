@@ -494,6 +494,14 @@
         WHERE 1=1
     </select>
 
+    <select id="selectConsultReserveCount" resultType="int">
+        SELECT COUNT(USER_KEY)
+        FROM T_CONSULT_RESERVE
+        WHERE RESERVE_DATE = #{reserveDate}
+        AND RESERVE_TIME_KEY = #{reserveTimeKey}
+        AND RESERVE_LOCATION = #{reserveLocation}
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
@@ -557,6 +565,19 @@
         ( LECTURE_DATE, ACADEMY_NUMBER, FILE_NAME )
         VALUES
         ( #{lectureDate}, #{academyNumber}, #{fileName} )
+    </insert>
+
+    <insert id="insertTConsultReserve" parameterType="TConsultReserveVO">
+        INSERT INTO T_CONSULT_RESERVE
+        (
+            RESERVE_DATE, RESERVE_TIME_KEY, RESERVE_TYPE, RESERVE_LOCATION, CREATE_DATE, USER_NAME, MOBILE_NUMBER,
+            EMAIL_ADDRESS, CTG_KEY_1, CTG_KEY_2, CTG_KEY_3, RESERVE_CONTENTS
+        )
+        VALUES
+        (
+            #{reserveDate}, #{reserveTimeKey}, #{reserveType}, #{reserveLocation}, sysdate, #{userName}, #{mobileNumber},
+            #{emailAddress}, #{ctgKey1}, #{ctgKey2}, #{ctgKey3}, #{reserveContents}
+        )
     </insert>
 
     <update id="updateTBbsData" parameterType="TBbsDataVO">

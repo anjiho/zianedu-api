@@ -16,7 +16,8 @@ public enum ZianErrCode {
     CUSTOM_DEVICE_LIMIT_MOBILE(908, "CUSTOM :: MOBILE 기기제한 초기화 초과"),
     CUSTOM_DEVICE_CHANGE_CODE_CHECK_FAIL(909, "CUSTOM :: 기기변경 코드 일치 실패"),
     CUSTOM_DEVICE_CHANGE_CODE_OVER_TIME(910, "CUSTOM :: 기기변경 제한시간 초과"),
-    CUSTOM_DEVICE_LIMIT_NULL(911, "CUSTOM :: 기기가 등록되어있지 않습니다.")
+    CUSTOM_DEVICE_LIMIT_NULL(911, "CUSTOM :: 기기가 등록되어있지 않습니다."),
+    CUSTOM_CONSULT_RESERVE_LIMIT(912, "CUSTOM :: 요청 상담예약(월, 시간, 장소) 중복")
     ;
 
     int code;

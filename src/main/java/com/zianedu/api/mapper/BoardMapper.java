@@ -76,6 +76,9 @@ public interface BoardMapper {
 
     ReferenceRoomVO selectOneByOneQuestionListByBbsKey(@Param("bbsKey") int bbsKey);
 
+    int selectConsultReserveCount(@Param("reserveDate") String reserveDate, @Param("reserveTimeKey") int reserveTimeKey,
+                                  @Param("reserveLocation") int reserveLocation);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 
@@ -86,6 +89,8 @@ public interface BoardMapper {
     void insertTBbsDataFile(@Param("bbsKey") int bbsKey, @Param("fileName") String fileName);
 
     void insertTLectureRoomTable(LectureRoomTableVO lectureRoomTableVO);
+
+    void insertTConsultReserve(TConsultReserveVO tConsultReserveVO);
 
     /** UPDATE **/
     void updateTBbsData(TBbsDataVO tBbsDataVO);
