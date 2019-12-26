@@ -1,49 +1,51 @@
 package com.zianedu.api.vo;
 
-import com.zianedu.api.utils.Util;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class TConsultReserveVO {
-
+public class TConsultReserveVO implements Serializable {
+    @ApiModelProperty(hidden = true,readOnly = true)
+    private int userKey;
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String reserveDate;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private int reserveTimeKey;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private int reserveType;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private int reserveLocation;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String userName;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String mobileNumber;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String emailAddress;
-
-    private int ctgKey1;
-
-    private int ctgKey2;
-
-    private int ctgKey3;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
+    private int ctgKey;
+//    @ApiModelProperty(hidden = true,readOnly = true)
+//    private int ctgKey2;
+//    @ApiModelProperty(hidden = true,readOnly = true)
+//    private int ctgKey3;
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String reserveContents;
-
+    @ApiModelProperty(hidden = true,readOnly = true)
     private String createDate;
 
     public TConsultReserveVO(){}
 
-    public TConsultReserveVO(String reserveDate, int reserveTimeKey, int reserveType, int reserveLocation, String userName,
-                             String mobileNumber, String emailAddress, int ctgKey1, int ctgKey2, int ctgKey3, String reserveContents) {
-        this.reserveDate = reserveDate;
-        this.reserveTimeKey = reserveTimeKey;
-        this.reserveType = reserveType;
-        this.reserveLocation = reserveLocation;
-        this.userName = userName;
-        this.mobileNumber = mobileNumber;
-        this.emailAddress = emailAddress;
-        this.ctgKey1 = ctgKey1;
-        this.ctgKey2 = ctgKey2;
-        this.ctgKey3 = ctgKey3;
-        this.reserveContents = reserveContents;
+    public TConsultReserveVO(TConsultReserveVO reserveVO) {
+        this.userKey = reserveVO.getUserKey();
+        this.reserveDate = reserveVO.getReserveDate();
+        this.reserveTimeKey = reserveVO.getReserveTimeKey();
+        this.reserveType = reserveVO.getReserveType();
+        this.reserveLocation = reserveVO.getReserveLocation();
+        this.userName = reserveVO.getUserName();
+        this.mobileNumber = reserveVO.getMobileNumber();
+        this.emailAddress = reserveVO.getEmailAddress();
+        this.ctgKey = reserveVO.getCtgKey();
+        this.reserveContents = reserveVO.getReserveContents();
     }
 }
