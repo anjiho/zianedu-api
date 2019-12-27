@@ -19,25 +19,21 @@ public class CustomerCenterService {
 
     //상담예약하기
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO reserveConsult(String reserveDate, int reserveTimeKey, int reserveType, int reserveLocation,
-                                           String userName, String mobileNumber, String emailAddress, int ctgKey1, int ctgKey2,
-                                           int ctgKey3, String reserveContents) {
+    public ApiResultCodeDTO reserveConsult(TConsultReserveVO tConsultReserveVO) {
         int resultCode = OK.value();
 
-        if ("".equals(reserveDate)) {
+        if (tConsultReserveVO == null) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            int consultReserveCount = boardMapper.selectConsultReserveCount(reserveDate, reserveTimeKey, reserveLocation);
+            int consultReserveCount = boardMapper.selectConsultReserveCount(
+                    tConsultReserveVO.getReserveDate(), tConsultReserveVO.getReserveTimeKey(), tConsultReserveVO.getReserveLocation());
             if (consultReserveCount == 0) {
-                TConsultReserveVO reserveVO = new TConsultReserveVO(
-                        reserveDate, reserveTimeKey, reserveType, reserveLocation, userName, mobileNumber,
-                        emailAddress, ctgKey1, ctgKey2, ctgKey3, reserveContents
-                );
+                TConsultReserveVO reserveVO = new TConsultReserveVO(tConsultReserveVO);
                 boardMapper.insertTConsultReserve(reserveVO);
             } else {
                 resultCode = ZianErrCode.CUSTOM_CONSULT_RESERVE_LIMIT.code();
             }
         }
-        return new ApiResultCodeDTO("RESERVE_TIME_KEY", reserveTimeKey, resultCode);
+        return new ApiResultCodeDTO("RESERVE_TIME_KEY", tConsultReserveVO.getReserveTimeKey(), resultCode);
     }
 }
