@@ -24,11 +24,11 @@ public class TConsultReserveVO implements Serializable {
     @ApiModelProperty(hidden = true,readOnly = true)
     private String emailAddress;
     @ApiModelProperty(hidden = true,readOnly = true)
-    private int ctgKey;
-//    @ApiModelProperty(hidden = true,readOnly = true)
-//    private int ctgKey2;
-//    @ApiModelProperty(hidden = true,readOnly = true)
-//    private int ctgKey3;
+    private int ctgKey1;
+    @ApiModelProperty(hidden = true,readOnly = true)
+    private int ctgKey2;
+    @ApiModelProperty(hidden = true,readOnly = true)
+    private int ctgKey3;
     @ApiModelProperty(hidden = true,readOnly = true)
     private String reserveContents;
     @ApiModelProperty(hidden = true,readOnly = true)
@@ -45,7 +45,9 @@ public class TConsultReserveVO implements Serializable {
         this.userName = reserveVO.getUserName();
         this.mobileNumber = reserveVO.getMobileNumber();
         this.emailAddress = reserveVO.getEmailAddress();
-        this.ctgKey = reserveVO.getCtgKey();
+        this.ctgKey1 = reserveVO.getCtgKey1();
+        this.ctgKey2 = reserveVO.getCtgKey2();
+        this.ctgKey3 = reserveVO.getCtgKey3();
         this.reserveContents = reserveVO.getReserveContents();
     }
 }

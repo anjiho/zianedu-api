@@ -28,10 +28,12 @@ public class CustomerCenterController {
             @ApiImplicitParam(name = "userName", value = "예약자명", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "mobileNumber", value = "핸드폰번호", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "emailAddress", value = "이메일주소", dataType = "string", paramType = "query", required = true),
-            @ApiImplicitParam(name = "ctgKey", value = "관심1", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "ctgKey1", value = "분류1", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "ctgKey2", value = "분류2", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "ctgKey3", value = "분류3", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "reserveContents", value = "상담요청내용", dataType = "string", paramType = "query", required = true)
     })
     public ApiResultCodeDTO saveBoardFileList(@ModelAttribute TConsultReserveVO tConsultReserveVO) {
-       // customerCenterService.reserveConsult()
-        return null;
+        return customerCenterService.reserveConsult(tConsultReserveVO);
     }
 }
