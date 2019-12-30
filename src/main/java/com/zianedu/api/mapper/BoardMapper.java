@@ -79,6 +79,8 @@ public interface BoardMapper {
     int selectConsultReserveCount(@Param("reserveDate") String reserveDate, @Param("reserveTimeKey") int reserveTimeKey,
                                   @Param("reserveLocation") int reserveLocation);
 
+    List<TConsultReserveVO> selectConsultReserveTimeList(@Param("reserveDate") String reserveDate, @Param("reserveLocation") int reserveLocation);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 

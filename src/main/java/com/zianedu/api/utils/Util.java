@@ -1,5 +1,6 @@
 package com.zianedu.api.utils;
 
+import com.zianedu.api.define.datasource.ConsultReserveTimeType;
 import com.zianedu.api.define.datasource.DeviceLimitDeviceType;
 import com.zianedu.api.define.datasource.PromotionPmType;
 import org.joda.time.DateTime;
@@ -1020,7 +1021,7 @@ public class Util {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(getToday());
+        System.out.println(ConsultReserveTimeType.values().length);
 
 
     }

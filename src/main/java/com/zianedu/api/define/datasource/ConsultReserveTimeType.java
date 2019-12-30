@@ -1,5 +1,10 @@
 package com.zianedu.api.define.datasource;
 
+import com.zianedu.api.dto.ConsultTimeDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public enum ConsultReserveTimeType {
 
     AM_NINE_CLOCK(1, "9:00"),
@@ -23,5 +28,27 @@ public enum ConsultReserveTimeType {
     ConsultReserveTimeType(int consultReserveTimeTypeKey, String consultReserveTimeTypeName) {
         this.consultReserveTimeTypeKey = consultReserveTimeTypeKey;
         this.consultReserveTimeTypeName = consultReserveTimeTypeName;
+    }
+
+    public static String getConsultReserveTimeName(int consultReserveTimeTypeKey) {
+        for (ConsultReserveTimeType timeType : ConsultReserveTimeType.values()) {
+            if (consultReserveTimeTypeKey == timeType.consultReserveTimeTypeKey) {
+                return timeType.consultReserveTimeTypeName;
+            }
+        }
+        return null;
+    }
+
+    public static List<ConsultTimeDTO> getConsultTimeList() {
+        List<ConsultTimeDTO>list = new ArrayList<>();
+        for (ConsultReserveTimeType consultReserveTimeType : ConsultReserveTimeType.values()) {
+            ConsultTimeDTO consultTimeDTO = new ConsultTimeDTO();
+            consultTimeDTO.setReserveTimeKey(consultReserveTimeType.consultReserveTimeTypeKey);
+            consultTimeDTO.setReserveTimeName(consultReserveTimeType.consultReserveTimeTypeName);
+            consultTimeDTO.setReserveYn(false);
+
+            list.add(consultTimeDTO);
+        }
+        return list;
     }
 }

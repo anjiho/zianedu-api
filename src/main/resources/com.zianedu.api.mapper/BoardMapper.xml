@@ -502,6 +502,12 @@
         AND RESERVE_LOCATION = #{reserveLocation}
     </select>
 
+    <select id="selectConsultReserveTimeList" resultType="TConsultReserveVO">
+        SELECT RESERVE_TIME_KEY FROM T_CONSULT_RESERVE
+        WHERE TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') = #{reserveDate}
+        AND RESERVE_LOCATION = #{reserveLocation}
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

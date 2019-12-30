@@ -1,6 +1,7 @@
 package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiResultCodeDTO;
+import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.service.CustomerCenterService;
 import com.zianedu.api.utils.ZianApiUtils;
 import com.zianedu.api.vo.TConsultReserveVO;
@@ -35,5 +36,16 @@ public class CustomerCenterController {
     })
     public ApiResultCodeDTO saveBoardFileList(@ModelAttribute TConsultReserveVO tConsultReserveVO) {
         return customerCenterService.reserveConsult(tConsultReserveVO);
+    }
+
+    @RequestMapping(value = "/getReserveTime", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("예약시간 목록 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "reserveDate", value = "예약월(YYYY-MM-DD)", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "reserveLocation", value = "학원관(1관:1, 2관:2)", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getReserveTime(@RequestParam("reserveDate") String reserveDate,
+                                           @RequestParam("reserveLocation") int reserveLocation) {
+        return customerCenterService.getConsultTimeList(reserveDate, reserveLocation);
     }
 }
