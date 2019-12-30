@@ -9,5 +9,5 @@ public class ConsultTimeDTO {
 
     private String reserveTimeName;
 
-    private boolean reserveYn;
+    private boolean reservedYn;
 }

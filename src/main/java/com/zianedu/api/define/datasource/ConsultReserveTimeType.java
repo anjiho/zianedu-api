@@ -45,7 +45,7 @@ public enum ConsultReserveTimeType {
             ConsultTimeDTO consultTimeDTO = new ConsultTimeDTO();
             consultTimeDTO.setReserveTimeKey(consultReserveTimeType.consultReserveTimeTypeKey);
             consultTimeDTO.setReserveTimeName(consultReserveTimeType.consultReserveTimeTypeName);
-            consultTimeDTO.setReserveYn(false);
+            consultTimeDTO.setReservedYn(false);
 
             list.add(consultTimeDTO);
         }

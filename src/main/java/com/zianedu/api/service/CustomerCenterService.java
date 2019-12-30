@@ -55,7 +55,7 @@ public class CustomerCenterService {
             for (ConsultTimeDTO timeDTO : consultTimeList) {
                 for (TConsultReserveVO reserveVO : reservedTimeList) {
                     if (reserveVO.getReserveTimeKey() == timeDTO.getReserveTimeKey()) {
-                        timeDTO.setReserveYn(true);
+                        timeDTO.setReservedYn(true);
                     }
                 }
             }
