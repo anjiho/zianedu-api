@@ -81,6 +81,8 @@ public interface BoardMapper {
 
     List<TConsultReserveVO> selectConsultReserveTimeList(@Param("reserveDate") String reserveDate, @Param("reserveLocation") int reserveLocation);
 
+    List<TBbsDataVO> selectTBbsDataByCtgKey(@Param("ctgKey") int ctgKey);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 

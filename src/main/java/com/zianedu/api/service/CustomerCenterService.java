@@ -6,6 +6,7 @@ import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ConsultTimeDTO;
 import com.zianedu.api.mapper.BoardMapper;
+import com.zianedu.api.vo.TBbsDataVO;
 import com.zianedu.api.vo.TConsultReserveVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,18 @@ public class CustomerCenterService {
             }
         }
         return new ApiResultListDTO(consultTimeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getOftenQuestionDetailList(int ctgKey) {
+        int resultCode = OK.value();
+
+        List<TBbsDataVO> oftenQuestionList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            oftenQuestionList = boardMapper.selectTBbsDataByCtgKey(ctgKey);
+        }
+        return new ApiResultListDTO(oftenQuestionList, resultCode);
     }
 }

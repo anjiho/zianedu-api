@@ -18,6 +18,15 @@ public class CustomerCenterController {
     @Autowired
     private CustomerCenterService customerCenterService;
 
+    @RequestMapping(value = "/getOftenQuestionDetailList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("자주하는 질문(세부질문) 목록 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값", dataType = "in", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getOftenQuestionDetailList(@PathVariable("ctgKey") int ctgKey) {
+        return customerCenterService.getOftenQuestionDetailList(ctgKey);
+    }
+
     @RequestMapping(value = "/reserveConsult", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("상담예약하기")
     @ApiImplicitParams({

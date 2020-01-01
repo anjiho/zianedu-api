@@ -508,6 +508,12 @@
         AND RESERVE_LOCATION = #{reserveLocation}
     </select>
 
+    <select id="selectTBbsDataByCtgKey" resultType="TBbsDataVO">
+        SELECT BBS_KEY, BBS_MASTER_KEY, TITLE
+        FROM T_BBS_DATA
+        WHERE CTG_KEY = #{ctgKey}
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
