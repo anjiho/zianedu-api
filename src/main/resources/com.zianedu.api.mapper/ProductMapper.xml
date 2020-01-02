@@ -1465,7 +1465,7 @@
             LEFT JOIN T_CATEGORY F
             ON F.CTG_KEY = D.SUBJECT_CTG_KEY
             WHERE 1=1
-            AND B.USER_KEY=5
+            AND B.USER_KEY = #{userKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
@@ -1493,7 +1493,7 @@
             LEFT JOIN T_CATEGORY F
             ON F.CTG_KEY = D.SUBJECT_CTG_KEY
             WHERE 1=1
-            AND B.USER_KEY=5
+            AND B.USER_KEY = #{userKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
@@ -1517,7 +1517,8 @@
     </select>
 
     <select id="selectVideoOnlineSignUpTypeList" resultType="com.zianedu.api.dto.TypeDTO">
-        SELECT * FROM (
+        SELECT Z.*
+        FROM (
             SELECT
                 ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
                 ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName
@@ -1531,17 +1532,46 @@
             INNER JOIN T_ORDER_LEC E
             ON A.J_G_KEY = E.J_G_KEY
             WHERE 1=1
-            AND B.user_key = #{userKey}
+            AND B.user_key =5
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            AND E.start_dt IS NULL
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
+            </if>
+
+        UNION ALL
+
+            SELECT
+            ( SELECT Z.CTG_KEY FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgKey,
+            ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_LEC D
+            ON C.G_KEY = D.G_KEY
+            INNER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            WHERE 1=1
+            AND B.user_key =5
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
             <![CDATA[
-                --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-                AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-            ]]>
+                    --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                    AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                ]]>
             <![CDATA[
-                --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-                AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                    --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+                    AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
             ]]>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
@@ -1551,7 +1581,7 @@
                     AND A.KIND IN (101, 102)
                 </if>
             </if>
-            ) Z
+        ) Z
         GROUP BY Z.ctgKey, Z.ctgName
     </select>
 
