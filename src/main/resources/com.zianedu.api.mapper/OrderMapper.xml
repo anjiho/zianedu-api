@@ -181,10 +181,12 @@
     </select>
 
     <select id="selectCartInfoByRetake" resultType="CartListVO">
-        SELECT G_KEY, PRICE_KEY, LINK_PRICE, LINK_SELL_PRICE, CTG_KEY
-        FROM T_CART
-        WHERE USER_KEY = #{userKey}
-        AND EXTEND_DAY > -1
+        SELECT A.*, B.KIND
+        FROM T_CART A
+        LEFT JOIN T_GOODS_PRICE_OPTION B
+        ON A.PRICE_KEY = B.PRICE_KEY
+        WHERE A.USER_KEY = #{userKey}
+        AND A.EXTEND_DAY > -1
     </select>
 
     <select id="selectCartLinkGoodsList" resultType="TCartLinkGoodsVO">
