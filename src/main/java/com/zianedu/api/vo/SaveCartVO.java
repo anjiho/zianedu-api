@@ -13,4 +13,6 @@ public class SaveCartVO {
 
     private int gCount;
 
+    private int extendDay;
+
 }

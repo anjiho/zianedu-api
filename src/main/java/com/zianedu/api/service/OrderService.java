@@ -717,6 +717,49 @@ public class OrderService extends PagingSupport {
     }
 
     /**
+     * 장바구니 저장
+     * @param saveCartInfo
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO saveCartAtRetake(String saveCartInfo) {
+        int resultCode = OK.value();
+        String resultKey = "";
+
+        if ("".equals(saveCartInfo)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            JsonArray saveCartInfoJson = GsonUtil.convertStringToJsonArray(saveCartInfo);
+            List<SaveCartVO>saveCartList = GsonUtil.getObjectFromJsonArray(saveCartInfoJson, SaveCartVO.class);
+
+            if (saveCartList.size() > 0) {
+                List<Integer>cartKeyList = new ArrayList<>();
+                for (SaveCartVO vo : saveCartList) {
+                    VideoLectureDetailVO lectureInfo = productMapper.selectGoodsInfoByRetake(vo.getGKey(), vo.getPriceKey());
+                    int sellPrice = 0;
+                    int extendDay = 0;
+                    if (vo.getExtendDay() == 0) {
+                        sellPrice = ZianUtils.calcPercent(lectureInfo.getSellPrice(), lectureInfo.getExtendPercent());
+                        extendDay = -1;
+                    } else {
+                        sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getLimitDay()) * vo.getExtendDay();
+                        extendDay = vo.getExtendDay();
+                    }
+                    TCartVO cartVO = new TCartVO(
+                            vo.getUserKey(), vo.getGKey(), vo.getPriceKey(), vo.getGCount(),
+                            String.valueOf(extendDay), lectureInfo.getPrice(), sellPrice
+                    );
+                    orderMapper.insertTCart(cartVO);
+                    cartKeyList.add(cartVO.getCartKey());
+                }
+                Integer[] cartKeyArray = StringUtils.arrayIntegerListToStringArray(cartKeyList);
+                resultKey = StringUtils.implodeFromInteger(",", cartKeyArray);
+            }
+        }
+        return new ApiResultCodeDTO("CART_KEY", resultKey, resultCode);
+    }
+
+    /**
      * 자유패키지 장바구니 저장
      * @param userKey
      * @param gKeys

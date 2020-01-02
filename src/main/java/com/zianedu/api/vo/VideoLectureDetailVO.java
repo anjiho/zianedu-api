@@ -34,4 +34,10 @@ public class VideoLectureDetailVO {
     private String description;
 
     private String teacherImageUrl;
+
+    private int extendPercent;
+
+    private int sellPrice;
+
+    private int price;
 }

@@ -72,7 +72,7 @@ public class ZianUtils {
 
     public static void main(String[] args) {
         //String str = getSplitFileName("bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf");
-        System.out.println(calcPercent(100000, 30));
+        System.out.println(calcPercent(130000, 20));
 
     }
 }

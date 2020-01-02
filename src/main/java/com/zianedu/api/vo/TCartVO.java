@@ -105,4 +105,23 @@ public class TCartVO {
         this.siteName = "";
     }
 
+    public TCartVO(int userKey, int gKey, int priceKey, int gCount, String extendDay, int price, int sellPrice) {
+        this.cKey = 100;
+        this.userKey = userKey;
+        this.gKey = gKey;
+        this.priceKey = priceKey;
+        this.groupId = "";
+        this.isDelete = 0;
+        this.isDirect = 0;
+        this.isMember = 1;
+        this.jId = "";
+        this.cnt = gCount;
+        this.freebieParentKey = 0;
+        this.linkPrice = price;
+        this.linkSellPrice = sellPrice;
+        this.linkPoint = 0;
+        this.extendDay = Integer.parseInt(extendDay);
+        this.ctgKey = 0;
+        this.siteName = "";
+    }
 }

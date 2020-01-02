@@ -193,6 +193,8 @@ public interface ProductMapper {
 
     int selectPackagePriceKey(@Param("gKey") int gKey);
 
+    VideoLectureDetailVO selectGoodsInfoByRetake(@Param("gKey") int gKey, @Param("priceKey") int priceKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
