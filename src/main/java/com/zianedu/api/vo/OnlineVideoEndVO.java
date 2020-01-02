@@ -41,4 +41,8 @@ public class OnlineVideoEndVO {
 
     private int priceKey;
 
+    private String limitDate;
+
+    private String retakeYn;
+
 }

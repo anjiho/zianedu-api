@@ -1895,7 +1895,14 @@
             C.NAME,
             A.KIND,
             E.J_LEC_KEY,
-            A.PRICE_KEY
+            A.PRICE_KEY,
+            TO_CHAR((E.START_DT + E.LIMIT_DAY + E.PAUSE_TOTAL_DAY + 90), 'YYYY-MM-DD') as limitDate,
+            CASE WHEN
+                <![CDATA[
+                TO_CHAR((E.START_DT + E.LIMIT_DAY + E.PAUSE_TOTAL_DAY + 90), 'YYYY-MM-DD') <= sysdate
+                ]]>
+            THEN 'N'
+            ELSE 'Y' END AS retakeYn
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
