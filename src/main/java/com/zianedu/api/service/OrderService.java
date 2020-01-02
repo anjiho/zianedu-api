@@ -167,6 +167,8 @@ public class OrderService extends PagingSupport {
                     orderPrice += retakeList.getLinkSellPrice();
                     retakeOrderPrice += retakeList.getLinkSellPrice();
 
+                    int subjectCount = productMapper.selectVideoSubjectCount(retakeList.getGKey());
+                    retakeList.setSubjectCount(subjectCount + "강");
                     retakeList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(retakeList.getLinkPrice())) + "원");
                     retakeList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(retakeList.getLinkSellPrice())) + "원");
                     retakeList.setPointName("0점");
