@@ -1819,7 +1819,7 @@
             C.NAME,
             A.KIND,
             E.J_LEC_KEY,
-            (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = A.G_KEY AND A.KIND = Z.KIND) as priceKey
+            A.PRICE_KEY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
