@@ -449,14 +449,14 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSignUpVideoLectureEndSubjectList(int userKey, int stepCtgKey) {
+    public ApiResultListDTO getSignUpVideoLectureEndSubjectList(int userKey, int stepCtgKey, String deviceType) {
         int resultCode = OK.value();
 
         List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            signUpLectureNameList = productMapper.selectSignUpVideoLectureEndSubjectList(userKey, stepCtgKey);
+            signUpLectureNameList = productMapper.selectSignUpVideoLectureEndSubjectList(userKey, stepCtgKey, deviceType);
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }

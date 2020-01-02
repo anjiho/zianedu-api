@@ -150,11 +150,11 @@ public class OrderController {
     @ApiOperation("재수강 '바로신청' 버튼으로 주문서 작성으로 갈때")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "productInfo", value = "상품 정보 >> [{'gKey':12345, 'priceKey':12345, 'extendDay':0}]", dataType = "string", paramType = "query", required = true)
+            @ApiImplicitParam(name = "productInfo", value = "상품 정보 >> [{'gKey':12345,'priceKey':12345,'gCount':1, 'extendDay':0}]", dataType = "string", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtRetake(@PathVariable("userKey") int userKey,
                                                                        @RequestParam("productInfo") String productInfo) {
-      //  return orderService.getOrderSheetInfoFromImmediatelyAtRetake(productInfo);
-        return null;
+        return orderService.getOrderSheetInfoFromImmediatelyAtRetake(userKey, productInfo);
+        //return null;
     }
 }

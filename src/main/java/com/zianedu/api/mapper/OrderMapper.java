@@ -14,6 +14,8 @@ public interface OrderMapper {
 
     List<CartListVO> selectOrderListByImmediatelyBuy(@Param("gKeys") List<Integer>gKeys);
 
+    List<CartListVO> selectOrderListByImmediatelyBuyFromPriceKeyList(@Param("priceKeys") List<Integer>priceKeys);
+
     CartListVO selectOrderListByImmediatelyBuyFromPriceKey(@Param("gKey") int gKey, @Param("priceKey") int priceKey);
 
     List<CartListVO> selectOrderListByImmediatelyBuyAtFree(@Param("ctgKey") int ctgKey);

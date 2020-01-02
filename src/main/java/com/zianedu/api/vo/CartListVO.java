@@ -43,6 +43,10 @@ public class CartListVO {
 
     private int pmType;
 
+    private int limitDay;
+
+    private int extendPercent;
+
     private String priceName;
 
     private String sellPriceName;

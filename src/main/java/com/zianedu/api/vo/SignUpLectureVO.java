@@ -13,5 +13,7 @@ public class SignUpLectureVO {
 
     private int jLecKey;
 
+    private int kind;
+
     private String name;
 }

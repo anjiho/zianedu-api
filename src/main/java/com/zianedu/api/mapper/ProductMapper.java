@@ -169,7 +169,7 @@ public interface ProductMapper {
 
     List<TypeDTO> selectSignUpVideoLectureEndTypeList(@Param("userKey") int userKey);
 
-    List<SignUpLectureVO> selectSignUpVideoLectureEndSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
+    List<SignUpLectureVO> selectSignUpVideoLectureEndSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey, @Param("deviceType") String deviceType);
 
     OnlineVideoEndVO selectVideoOnlineEndListByJLecKey(@Param("jLecKey") int jLecKey);
     //수강신청 과목 리스트
