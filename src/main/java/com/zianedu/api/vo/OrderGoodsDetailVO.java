@@ -15,6 +15,8 @@ public class OrderGoodsDetailVO {
 
     private int pmType;
 
+    private int extendDay;
+
     private String goodsName;
 
     private String productType;

@@ -21,5 +21,7 @@ public class OrderDetailInfoVO {
 
     private int jLecKey;
 
+    private int extendDay;
+
     private boolean isReviewYn = false;
 }

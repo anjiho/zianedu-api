@@ -31,10 +31,14 @@ public enum GoodsType {
         return 0;
     }
 
-    public static String getGoodsTypeStr(int goodsTypeKey) {
+    public static String getGoodsTypeStr(int goodsTypeKey, int extendDay) {
         for (GoodsType goodsType : GoodsType.values()) {
             if (goodsTypeKey == goodsType.goodsTypeKey) {
-                return goodsType.goodsTypeStr;
+                if (extendDay > -1) {
+                    return "재수강";
+                } else {
+                    return goodsType.goodsTypeStr;
+                }
             }
         }
         return null;

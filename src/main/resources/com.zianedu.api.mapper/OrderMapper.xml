@@ -40,7 +40,6 @@
         AND A.IS_DELETE = 0
         AND A.IS_DIRECT = 0
         AND A.J_ID IS NULL
-        AND A.EXTEND_DAY = -1
     </select>
 
     <select id="selectOrderListByImmediatelyBuy" resultType="CartListVO">
@@ -115,7 +114,7 @@
 
     <select id="selectOrderGoodsDetailInfo" resultType="OrderGoodsDetailVO">
         SELECT
-            A.SELL_PRICE, A.CNT, A.TYPE, A.KIND, A.PM_TYPE, B.NAME as goodsName
+            A.SELL_PRICE, A.CNT, A.TYPE, A.KIND, A.PM_TYPE, B.NAME as goodsName, A.EXTEND_DAY
         FROM T_ORDER_GOODS A
         INNER JOIN T_GOODS B
         ON A.G_KEY = B.G_KEY
@@ -252,7 +251,7 @@
     </select>
 
     <select id="selectUserOrderDetailInfo" resultType="OrderDetailInfoVO">
-        SELECT A.USER_KEY, C.NAME as goodsName, A.J_KEY, A.TYPE, A.J_G_KEY, D.J_LEC_KEY, B.PAY_TYPE
+        SELECT A.USER_KEY, C.NAME as goodsName, A.J_KEY, A.TYPE, A.J_G_KEY, D.J_LEC_KEY, B.PAY_TYPE, A.EXTEND_DAY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY

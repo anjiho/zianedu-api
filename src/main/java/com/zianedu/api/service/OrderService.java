@@ -211,6 +211,7 @@ public class OrderService extends PagingSupport {
             int promotionPrice = 0;
             int bookPrice = 0;
             int examPrice = 0;
+            int retakePrice = 0;
 
             List<OrderProductListDTO>orderProductList = new ArrayList<>();
 
@@ -248,7 +249,7 @@ public class OrderService extends PagingSupport {
 
                         orderProductListDTO = new OrderProductListDTO(
                                 cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
-                                GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
+                                GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
                                 cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), promotionVO.getPmType()
                         );
                         totalProductPrice += cartInfo.getSellPrice();
@@ -256,18 +257,31 @@ public class OrderService extends PagingSupport {
                         promotionPrice += cartInfo.getSellPrice();
                     }
                 } else {
-                    orderProductListDTO = new OrderProductListDTO(
-                            cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
-                            GoodsType.getGoodsTypeStr(cartInfo.getType()), cartInfo.getGoodsName(),
-                            cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
-                    );
+                    if (cartInfo.getExtendDay() == -1) {
+                        orderProductListDTO = new OrderProductListDTO(
+                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+                                GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
+                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
+                        );
+                    } else {
+                        orderProductListDTO = new OrderProductListDTO(
+                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+                                GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
+                                cartInfo.getCnt(), cartInfo.getLinkSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
+                        );
+                    }
                     //totalProductPrice += cartInfo.getSellPrice();
-                    totalPoint += cartInfo.getPoint();
+                    if (cartInfo.getExtendDay() == -1) {
+                        totalPoint += cartInfo.getPoint();
+                    }
                     //동영상 상품 합계
-                    if (cartInfo.getType() == 1) {
+                    if (cartInfo.getType() == 1 && cartInfo.getExtendDay() == -1) {
                         videoPrice += cartInfo.getSellPrice();
                         videoProductCnt++;
+                    } else if (cartInfo.getType() == 1 && cartInfo.getExtendDay() > -1) {
+                        retakePrice += cartInfo.getLinkSellPrice();
                     }
+
                     //학원실강 상품 합계
                     if (cartInfo.getType() == 2) {
                         academyPrice += cartInfo.getSellPrice();
@@ -293,14 +307,14 @@ public class OrderService extends PagingSupport {
                 deliveryPrice = 2500;
             }
 
-            totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice;
+            totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + retakePrice;
             //상품총합
             ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
                     totalProductPrice, totalPoint, deliveryPrice
             );
             //상품별 상품 금액
             GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
-                videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice
+                videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice, retakePrice
             );
             //현재 보유 포인트
             int currentPoint = userMapper.selectUserCurrentPoint(userKey);
@@ -337,6 +351,7 @@ public class OrderService extends PagingSupport {
             int promotionPrice = 0;
             int bookPrice = 0;
             int examPrice = 0;
+            int retakePrice = 0;
 
             List<OrderProductListDTO>orderProductList = new ArrayList<>();
 
@@ -349,7 +364,7 @@ public class OrderService extends PagingSupport {
 
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                             product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
-                            GoodsType.getGoodsTypeStr(product.getType()), product.getGoodsName(),
+                            GoodsType.getGoodsTypeStr(product.getType(), product.getExtendDay()), product.getGoodsName(),
                             product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
                     );
                     //totalProductPrice += product.getSellPrice();
@@ -389,7 +404,7 @@ public class OrderService extends PagingSupport {
                 );
                 //상품별 상품 금액
                 GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
-                        videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice
+                        videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice, retakePrice
                 );
                 //현재 보유 포인트
                 int currentPoint = userMapper.selectUserCurrentPoint(userKey);
@@ -470,7 +485,7 @@ public class OrderService extends PagingSupport {
                 );
                 //상품별 상품 금액
                 GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
-                        videoPrice, academyPrice, calcTotalPrice, bookPrice, examPrice, deliveryPrice
+                        videoPrice, academyPrice, calcTotalPrice, bookPrice, examPrice, deliveryPrice, 0
                 );
                 //현재 보유 포인트
                 int currentPoint = userMapper.selectUserCurrentPoint(userKey);
@@ -532,7 +547,7 @@ public class OrderService extends PagingSupport {
             );
             //상품별 상품 금액
             GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
-                    videoPrice, academyPrice, calcTotalPrice, bookPrice, examPrice, deliveryPrice
+                    videoPrice, academyPrice, calcTotalPrice, bookPrice, examPrice, deliveryPrice, 0
             );
             //현재 보유 포인트
             int currentPoint = userMapper.selectUserCurrentPoint(userKey);
@@ -600,7 +615,7 @@ public class OrderService extends PagingSupport {
 
             if (orderGoodsDetailList.size() > 0) {
                 for (OrderGoodsDetailVO vo : orderGoodsDetailList) {
-                    vo.setProductType(GoodsType.getGoodsTypeStr(vo.getType()));
+                    vo.setProductType(GoodsType.getGoodsTypeStr(vo.getType(), vo.getExtendDay()));
                     vo.setPriceName(StringUtils.addThousandSeparatorCommas( String.valueOf(vo.getSellPrice())) + "원");
                 }
             }
@@ -855,7 +870,7 @@ public class OrderService extends PagingSupport {
 
             if (orderList.size() > 0) {
                 for (OrderDetailInfoVO vo : orderList) {
-                    vo.setTypeName(GoodsType.getGoodsTypeStr(vo.getType()));
+                    vo.setTypeName(GoodsType.getGoodsTypeStr(vo.getType(), vo.getExtendDay()));
                     if (vo.getPayType() != 20 && vo.getType() == 1 && vo.getJLecKey() > 0) {
                         vo.setReviewYn(true);
                     }
@@ -878,4 +893,92 @@ public class OrderService extends PagingSupport {
         }
         return new ApiResultObjectDTO(userOrderDetailDTO, resultCode);
     }
+
+//    @Transactional(readOnly = true)
+//    public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtRetake(int userKey, String productInfo) {
+//        int resultCode = OK.value();
+//
+//        OrderSheetDTO orderSheetDTO = new OrderSheetDTO();
+//
+//        if (priceKeys == null || priceKeys.length == 0) {
+//            resultCode = ZianErrCode.BAD_REQUEST.code();
+//        } else {
+//            JsonArray saveCartInfoJson = GsonUtil.convertStringToJsonArray(productInfo);
+//            List<SaveCartVO>saveCartList = GsonUtil.getObjectFromJsonArray(saveCartInfoJson, SaveCartVO.class);
+//
+//            int totalProductPrice = 0;
+//            int totalPoint = 0;
+//            int deliveryPrice = 0;
+//            int videoPrice = 0;
+//            int academyPrice = 0;
+//            int promotionPrice = 0;
+//            int bookPrice = 0;
+//            int examPrice = 0;
+//            int retakePrice = 0;
+//
+//            List<OrderProductListDTO>orderProductList = new ArrayList<>();
+//
+//            List<Integer>priceKeyList = StringUtils.integerArrayToArrayList(priceKeys);
+//            List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuy(gKeyList);
+//
+//            if (buyProductList.size() > 0) {
+//                int videoProductCnt = 0;
+//                for (CartListVO product : buyProductList) {
+//
+//                    OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
+//                            product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
+//                            GoodsType.getGoodsTypeStr(product.getType()), product.getGoodsName(),
+//                            product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
+//                    );
+//                    //totalProductPrice += product.getSellPrice();
+//                    totalPoint += product.getPoint();
+//                    //동영상 상품 합계
+//                    if (product.getType() == 1) {
+//                        videoPrice += product.getSellPrice();
+//                        videoProductCnt++;
+//                    }
+//                    //학원실강 상품 합계
+//                    if (product.getType() == 2) {
+//                        academyPrice += product.getSellPrice();
+//                    }
+//                    //도서 상품 합계
+//                    if (product.getType() == 3) {
+//                        bookPrice += product.getSellPrice();
+//                        //deliveryPrice += 2500;
+//                    }
+//                    //모의고사 상품 합계
+//                    if (product.getType() == 4) {
+//                        examPrice += product.getSellPrice();
+//                    }
+//                    orderProductList.add(orderProductListDTO);
+//                }
+//
+//                if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
+//                else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
+//
+//                if (bookPrice > 0 && bookPrice < 30000) {
+//                    deliveryPrice = 2500;
+//                }
+//
+//                totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
+//                //상품총합
+//                ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
+//                        totalProductPrice, totalPoint, deliveryPrice
+//                );
+//                //상품별 상품 금액
+//                GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
+//                        videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice
+//                );
+//                //현재 보유 포인트
+//                int currentPoint = userMapper.selectUserCurrentPoint(userKey);
+//                //주문자 정보
+//                TUserVO orderUserInfo = userMapper.selectUserInfoByUserKey(userKey);
+//
+//                orderSheetDTO = new OrderSheetDTO(
+//                        orderProductList, productTotalPrice, productGroupPrice, currentPoint, orderUserInfo
+//                );
+//            }
+//        }
+//        return new ApiResultObjectDTO(orderSheetDTO, resultCode);
+//    }
 }
