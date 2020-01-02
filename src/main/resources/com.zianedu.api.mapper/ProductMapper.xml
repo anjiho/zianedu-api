@@ -1453,38 +1453,67 @@
 
     <!-- 수강중인 동영상 강좌 과목 리스트 -->
     <select id="selectVideoOnlineSignUpSubjectList" resultType="com.zianedu.api.dto.SubjectDTO">
-        SELECT D.SUBJECT_CTG_KEY, F.NAME as subjectName
-        FROM T_ORDER_GOODS A
-        LEFT JOIN T_ORDER B
-        ON A.J_KEY = B.J_KEY
-        LEFT JOIN T_LEC D
-        ON A.G_KEY = D.G_KEY
-        LEFT JOIN T_ORDER_LEC E
-        ON A.J_G_KEY = E.J_G_KEY
-        LEFT JOIN T_CATEGORY F
-        ON F.CTG_KEY = D.SUBJECT_CTG_KEY
-        WHERE 1=1
-        AND B.USER_KEY= #{userKey}
-        AND B.pay_status = 2
-        AND A.j_pm_key = 0
-        AND E.PAUSE_DAY = 0
-        <![CDATA[
-            --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-            AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
-        <![CDATA[
-            --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-            AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-        ]]>
-        <if test="deviceType != '' and deviceType != null">
-            <if test="deviceType == 'PC'">
-                AND A.KIND IN (100, 102)
+        SELECT Z.SUBJECT_CTG_KEY, Z.subjectName FROM (
+            SELECT D.SUBJECT_CTG_KEY, F.NAME as subjectName
+            FROM T_ORDER_GOODS A
+            LEFT JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            LEFT JOIN T_LEC D
+            ON A.G_KEY = D.G_KEY
+            LEFT OUTER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            LEFT JOIN T_CATEGORY F
+            ON F.CTG_KEY = D.SUBJECT_CTG_KEY
+            WHERE 1=1
+            AND B.USER_KEY=5
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            AND E.start_dt is null
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
             </if>
-            <if test="deviceType == 'MOBILE'">
-                AND A.KIND IN (101, 102)
+             GROUP BY D.SUBJECT_CTG_KEY, F.NAME
+
+        UNION ALL
+
+            SELECT D.SUBJECT_CTG_KEY, F.NAME as subjectName
+            FROM T_ORDER_GOODS A
+            LEFT JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            LEFT JOIN T_LEC D
+            ON A.G_KEY = D.G_KEY
+            LEFT OUTER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            LEFT JOIN T_CATEGORY F
+            ON F.CTG_KEY = D.SUBJECT_CTG_KEY
+            WHERE 1=1
+            AND B.USER_KEY=5
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            <![CDATA[
+            AND TO_CHAR(E.start_dt, 'YYYY-MM-DD')  <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+             ]]>
+            <![CDATA[
+            AND TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+             ]]>
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
             </if>
-        </if>
-        GROUP BY D.SUBJECT_CTG_KEY, F.NAME
+            GROUP BY D.SUBJECT_CTG_KEY, F.NAME
+        )Z
+        GROUP BY Z.SUBJECT_CTG_KEY, Z.subjectName
     </select>
 
     <select id="selectVideoOnlineSignUpTypeList" resultType="com.zianedu.api.dto.TypeDTO">
@@ -1527,49 +1556,89 @@
     </select>
 
     <select id="selectSignUpLectureList" resultType="SignUpLectureVO">
-        SELECT
-            B.J_KEY,
-            A.J_G_KEY,
-            A.G_KEY,
-            C.NAME,
-            E.J_LEC_KEY
-        FROM T_ORDER_GOODS A
-        INNER JOIN T_ORDER B
-        ON A.J_KEY = B.J_KEY
-        INNER JOIN T_GOODS C
-        ON A.G_KEY = C.G_KEY
-        INNER JOIN T_LEC D
-        ON C.G_KEY = D.G_KEY
-        INNER JOIN T_ORDER_LEC E
-        ON A.J_G_KEY = E.J_G_KEY
-        WHERE 1=1
-        AND B.user_key = #{userKey}
-        AND B.pay_status = 2
-        AND A.j_pm_key = 0
-        AND E.PAUSE_DAY = 0
-        <if test="subjectCtgKey > 0">
-            AND D.subject_ctg_key = #{subjectCtgKey}
-        </if>
-        <if test="stepCtgKey > 0">
-            AND D.step_ctg_key = #{stepCtgKey}
-        </if>
-        <![CDATA[
-                --AND TO_CHAR(E.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-                AND E.start_dt <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-            ]]>
-        <![CDATA[
-                --AND TO_CHAR( (E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-                AND (E.start_dt + E.limit_day) >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-            ]]>
-        <if test="deviceType != '' and deviceType != null">
-            <if test="deviceType == 'PC'">
-                AND A.KIND IN (100, 102)
+        SELECT Z.* FROM (
+            SELECT
+                B.J_KEY,
+                A.J_G_KEY,
+                A.G_KEY,
+                C.NAME,
+                E.J_LEC_KEY
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_LEC D
+            ON C.G_KEY = D.G_KEY
+            INNER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            WHERE 1=1
+            AND B.user_key = 5
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            AND E.start_dt is null
+            <if test="subjectCtgKey > 0">
+                AND D.subject_ctg_key = #{subjectCtgKey}
             </if>
-            <if test="deviceType == 'MOBILE'">
-                AND A.KIND IN (101, 102)
+            <if test="stepCtgKey > 0">
+                AND D.step_ctg_key = #{stepCtgKey}
             </if>
-        </if>
-        GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
+            </if>
+            GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
+
+        UNION ALL
+
+            SELECT
+                B.J_KEY,
+                A.J_G_KEY,
+                A.G_KEY,
+                C.NAME,
+                E.J_LEC_KEY
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            INNER JOIN T_LEC D
+            ON C.G_KEY = D.G_KEY
+            INNER JOIN T_ORDER_LEC E
+            ON A.J_G_KEY = E.J_G_KEY
+            WHERE 1=1
+            AND B.user_key = 5
+            AND B.pay_status = 2
+            AND A.j_pm_key = 0
+            AND E.PAUSE_DAY = 0
+            <![CDATA[
+                AND TO_CHAR(E.start_dt, 'YYYY-MM-DD')  <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+           ]]>
+            <![CDATA[
+             AND TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+             ]]>
+            <if test="subjectCtgKey > 0">
+                AND D.subject_ctg_key = #{subjectCtgKey}
+            </if>
+            <if test="stepCtgKey > 0">
+                AND D.step_ctg_key = #{stepCtgKey}
+            </if>
+            <if test="deviceType != '' and deviceType != null">
+                <if test="deviceType == 'PC'">
+                    AND A.KIND IN (100, 102)
+                </if>
+                <if test="deviceType == 'MOBILE'">
+                    AND A.KIND IN (101, 102)
+                </if>
+            </if>
+            GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
+        )Z
+        ORDER BY Z.J_LEC_KEY DESC
     </select>
 
     <select id="selectSignUpZianPassList" resultType="ZianPassSignUpVO">
