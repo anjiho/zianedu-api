@@ -447,13 +447,20 @@
             <if test="userKey > 0">
                 START WITH A.WRITE_USER_KEY = #{userKey}
             </if>
+            <if test="userKey == 0">
+                <if test="searchType == 'title'">
+                    START WITH A.TITLE LIKE '%'||#{searchText}||'%'
+                </if>
+            </if>
             CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
             ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
         ) Z
         WHERE 1=1
-        <if test="searchType == 'title'">
-            START WITH Z.TITLE LIKE '%'||#{searchText}||'%'
-            CONNECT BY PRIOR Z.BBS_KEY = Z.BBS_PARENT_KEY
+        <if test="userKey > 0">
+            <if test="searchType == 'title'">
+                START WITH Z.TITLE LIKE '%'||#{searchText}||'%'
+                CONNECT BY PRIOR Z.BBS_KEY = Z.BBS_PARENT_KEY
+            </if>
         </if>
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
