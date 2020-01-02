@@ -58,12 +58,12 @@ public class TBbsDataVO {
 
     public TBbsDataVO() {}
 
-    public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret) {
+    public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret, int ctgKey) {
         this.bbsMasterKey = bbsMasterKey;
         this.bbsParentKey = 0;
         this.title = Util.isNullValue(title, "");
         this.writeUserKey = userKey;
-        this.ctgKey = 0;
+        this.ctgKey = ctgKey;
         this.ctgKey02 = 0;
         this.readCount = 0;
         this.isShow = 0;

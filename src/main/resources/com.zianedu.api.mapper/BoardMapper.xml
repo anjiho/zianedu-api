@@ -444,7 +444,9 @@
             FROM T_BBS_DATA A
             WHERE 1=1
             AND A.BBS_MASTER_KEY = 10019
-            AND A.WRITE_USER_KEY = #{userKey}
+            <if test="userKey > 0">
+                AND A.WRITE_USER_KEY = #{userKey}
+            </if>
             START WITH A.BBS_PARENT_KEY = 0
             CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
             ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
@@ -458,10 +460,12 @@
         FROM T_BBS_DATA A
         WHERE 1=1
         AND A.BBS_MASTER_KEY = 10019
-        AND A.WRITE_USER_KEY = #{userKey}
-        START WITH A.BBS_PARENT_KEY = 0
-        CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
-        ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
+        <if test="userKey > 0">
+            AND A.WRITE_USER_KEY = #{userKey}
+        </if>
+        <if test="searchType == 'title'">
+            AND A.TITLE LIKE '%'||#{searchText}||'%'
+        </if>
     </select>
 
     <select id="selectOneByOneQuestionListByBbsParentKey" resultType="ReferenceRoomVO">
@@ -474,6 +478,9 @@
         WHERE 1=1
         AND A.BBS_MASTER_KEY = 10019
         AND A.BBS_KEY = #{bbsParentKey}
+        <if test="searchType == 'title'">
+            AND A.TITLE LIKE '%'||#{searchText}||'%'
+        </if>
     </select>
 
     <select id="selectOneByOneQuestionListByBbsKey" resultType="ReferenceRoomVO">

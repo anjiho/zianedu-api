@@ -68,11 +68,12 @@ public interface BoardMapper {
 
     List<LectureRoomTableVO> selectLectureRoomTableList(@Param("lectureDate") String lectureDate);
 
-    List<ReferenceRoomVO> selectOneByOneQuestionList(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+    List<ReferenceRoomVO> selectOneByOneQuestionList(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                                     @Param("searchType") String searchType, @Param("searchText") String searchText);
 
-    int selectOneByOneQuestionListCount(@Param("userKey") int userKey);
+    int selectOneByOneQuestionListCount(@Param("userKey") int userKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
-    ReferenceRoomVO selectOneByOneQuestionListByBbsParentKey(@Param("bbsParentKey") int bbsParentKey);
+    ReferenceRoomVO selectOneByOneQuestionListByBbsParentKey(@Param("bbsParentKey") int bbsParentKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
     ReferenceRoomVO selectOneByOneQuestionListByBbsKey(@Param("bbsKey") int bbsKey);
 

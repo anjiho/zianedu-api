@@ -245,14 +245,14 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO saveBoardInfo(int bbsMasterKey, int userKey, String title, String content, int isSecret, String fileName) {
+    public ApiResultCodeDTO saveBoardInfo(int bbsMasterKey, int userKey, String title, String content, int isSecret, int ctgKey, String fileName) {
         int resultCode = OK.value();
 
         int bbsKey = 0;
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret);
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, ctgKey);
             boardMapper.insertTBbsData(bbsDataVO);
             bbsKey = bbsDataVO.getBbsKey();
             //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
@@ -267,7 +267,7 @@ public class BoardService extends PagingSupport {
     public ApiResultCodeDTO saveBoardInfoAtNoUser(int bbsMasterKey, int userKey, String title, String content, int isSecret, String fileName) {
         int bbsKey = 0;
 
-        TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret);
+        TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, 0);
         boardMapper.insertTBbsData(bbsDataVO);
         bbsKey = bbsDataVO.getBbsKey();
         //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장

@@ -7,6 +7,7 @@ import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.ProductMapper;
+import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
@@ -33,6 +34,9 @@ public class MyPageService extends PagingSupport {
 
     @Autowired
     private BoardMapper boardMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private LectureProgressRateRepository lectureProgressRateRepository;
@@ -471,49 +475,31 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getOneByOneQuestionList(int userKey, int sPage, int listLimit) {
+    public ApiPagingResultDTO getOneByOneQuestionList(int userKey, int sPage, int listLimit, String searchType, String searchText) {
         int resultCode = OK.value();
 
         int totalCount = 0;
         int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        List<ReferenceRoomVO> questionList = new ArrayList<>();
         List<ReferenceRoomVO> questionList3 = new CopyOnWriteArrayList<>();
+
 
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            totalCount = boardMapper.selectOneByOneQuestionListCount(userKey);
-            List<ReferenceRoomVO> questionList = boardMapper.selectOneByOneQuestionList(userKey, startNumber,listLimit);
+            TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+            if (userInfo.getAuthority() == 0) {
+                userKey = 0;
+            }
+            totalCount = boardMapper.selectOneByOneQuestionListCount(userKey, searchType, searchText);
+            questionList = boardMapper.selectOneByOneQuestionList(userKey, startNumber,listLimit, searchType, searchText);
+
             if (questionList.size() > 0) {
+
+
                 for (ReferenceRoomVO vo : questionList) {
-                    if (vo.getLevel() > 1) {
-                        //운영자가 쓴글 기준으로 불러올때
-                        List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
-                        ReferenceRoomVO questionInfo = new ReferenceRoomVO();
-                        questionList2.add(vo);
-                        int len = vo.getLevel();
-                        int level = len;
-                        for (int i = 0; i < len-1; i++) {
-                            if (i == 0){
-                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(vo.getBbsParentKey());
-                                questionInfo.setLevel(--level);
-                            } else {
-                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(questionInfo.getBbsParentKey());
-                                questionInfo.setLevel(--level);
-                            }
-                            questionList2.add(questionInfo);
-                            if (questionInfo == null) {
-                                continue;
-                            }
-                        }
-                        Collections.sort(questionList2);
-                        int len2 = questionList2.size();
-                        for (int j=0; j<len2 ; j++) {
-                            if ((j+1) == questionList2.get(j).getLevel()) {
-                                questionList3.add(questionList2.get(j));
-                            }
-                        }
-                    } else if (vo.getLevel() == 1) {
-                        //일반 사용자가 쓴글 기준으로 불러올때
+                    //일반 사용자가 쓴글 기준으로 불러올때
                         questionList3.add(vo);
                         ReferenceRoomVO questionInfo = boardMapper.selectOneByOneQuestionListByBbsKey(vo.getBbsKey());
                         if (questionInfo != null) {
@@ -523,7 +509,46 @@ public class MyPageService extends PagingSupport {
                                 questionList3.add(questionInfo2);
                             }
                         }
-                    }
+
+//                    if (vo.getLevel() > 1) {
+//                        //운영자가 쓴글 기준으로 불러올때
+//                        List<ReferenceRoomVO> questionList2 = new CopyOnWriteArrayList<>();
+//                        ReferenceRoomVO questionInfo = new ReferenceRoomVO();
+//                        questionList2.add(vo);
+//                        int len = vo.getLevel();
+//                        int level = len;
+//                        for (int i = 0; i < len-1; i++) {
+//                            if (i == 0){
+//                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(vo.getBbsParentKey());
+//                                questionInfo.setLevel(--level);
+//                            } else {
+//                                questionInfo = boardMapper.selectOneByOneQuestionListByBbsParentKey(questionInfo.getBbsParentKey());
+//                                questionInfo.setLevel(--level);
+//                            }
+//                            questionList2.add(questionInfo);
+//                            if (questionInfo == null) {
+//                                continue;
+//                            }
+//                        }
+//                        Collections.sort(questionList2);
+//                        int len2 = questionList2.size();
+//                        for (int j=0; j<len2 ; j++) {
+//                            if ((j+1) == questionList2.get(j).getLevel()) {
+//                                questionList3.add(questionList2.get(j));
+//                            }
+//                        }
+//                    } else if (vo.getLevel() == 1) {
+//                        //일반 사용자가 쓴글 기준으로 불러올때
+//                        questionList3.add(vo);
+//                        ReferenceRoomVO questionInfo = boardMapper.selectOneByOneQuestionListByBbsKey(vo.getBbsKey());
+//                        if (questionInfo != null) {
+//                            questionList3.add(questionInfo);
+//                            ReferenceRoomVO questionInfo2 = boardMapper.selectOneByOneQuestionListByBbsKey(questionInfo.getBbsKey());
+//                            if (questionInfo2 != null) {
+//                                questionList3.add(questionInfo2);
+//                            }
+//                        }
+//                    }
                 }
             }
         }

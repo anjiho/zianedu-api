@@ -105,6 +105,7 @@ public class BoardController {
             @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false)
 
     })
@@ -113,8 +114,9 @@ public class BoardController {
                                       @RequestParam("title") String title,
                                       @RequestParam("content") String content,
                                       @RequestParam("isSecret") int isSecret,
+                                      @RequestParam("ctgKey") int ctgKey,
                                       @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
-        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, fileName);
+        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName);
     }
 
     @RequestMapping(value = "/saveBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
