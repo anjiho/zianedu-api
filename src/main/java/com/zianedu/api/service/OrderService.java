@@ -55,12 +55,14 @@ public class OrderService extends PagingSupport {
         int promotionOrderPrice = 0;
         int bookOrderPrice = 0;
         int examOrderPrice = 0;
+        int retakeOrderPrice = 0;
 
         List<CartListVO>academyCartInfo = new ArrayList<>();
         List<CartListVO>videoCartInfo = new ArrayList<>();
         List<CartListVO>promotionCartInfo = new ArrayList<>();
         List<CartListVO>bookCartInfo = new ArrayList<>();
         List<CartListVO>examCartInfo = new ArrayList<>();
+        List<CartListVO>retakeVideoCartInfo = new ArrayList<>();
 
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -70,6 +72,7 @@ public class OrderService extends PagingSupport {
             promotionCartInfo = orderMapper.selectCartList(userKey, GoodsType.PACKAGE.getGoodsTypeKey());
             bookCartInfo = orderMapper.selectCartList(userKey, GoodsType.BOOK.getGoodsTypeKey());
             examCartInfo = orderMapper.selectCartList(userKey, GoodsType.EXAM.getGoodsTypeKey());
+            retakeVideoCartInfo = orderMapper.selectCartInfoByRetake(userKey);
 
             if (academyCartInfo.size() > 0) {
                 for (CartListVO academyList : academyCartInfo) {
@@ -158,13 +161,25 @@ public class OrderService extends PagingSupport {
                     examList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(examList.getPoint())) + "점");
                 }
             }
+
+            if (retakeVideoCartInfo.size() > 0) {
+                for (CartListVO retakeList : retakeVideoCartInfo) {
+                    orderPrice += retakeList.getLinkSellPrice();
+                    retakeOrderPrice += retakeList.getLinkSellPrice();
+
+                    retakeList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(retakeList.getLinkPrice())) + "원");
+                    retakeList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(retakeList.getLinkSellPrice())) + "원");
+                    retakeList.setPointName("0점");
+                }
+            }
+
             if (bookOrderPrice > 0 && bookOrderPrice < 30000) {
                 deliveryPrice = 2500;
             }
-            int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice ) + deliveryPrice);
+            int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice + retakeOrderPrice ) + deliveryPrice);
             CartResultDTO cartResultDTO = new CartResultDTO(
                     orderPrice, deliveryPrice, totalPrice, totalPoint,
-                    academyCartInfo, videoCartInfo, promotionCartInfo, bookCartInfo, examCartInfo
+                    academyCartInfo, videoCartInfo, promotionCartInfo, bookCartInfo, examCartInfo, retakeVideoCartInfo
             );
             return new ApiResultObjectDTO(cartResultDTO, resultCode);
         }
@@ -740,14 +755,13 @@ public class OrderService extends PagingSupport {
                     int extendDay = 0;
                     if (vo.getExtendDay() == 0) {
                         sellPrice = ZianUtils.calcPercent(lectureInfo.getSellPrice(), lectureInfo.getExtendPercent());
-                        extendDay = -1;
                     } else {
                         sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getLimitDay()) * vo.getExtendDay();
                         extendDay = vo.getExtendDay();
                     }
                     TCartVO cartVO = new TCartVO(
                             vo.getUserKey(), vo.getGKey(), vo.getPriceKey(), vo.getGCount(),
-                            String.valueOf(extendDay), lectureInfo.getPrice(), sellPrice
+                            String.valueOf(extendDay), lectureInfo.getPrice(), StringUtils.convertSipWonZero(sellPrice)
                     );
                     orderMapper.insertTCart(cartVO);
                     cartKeyList.add(cartVO.getCartKey());

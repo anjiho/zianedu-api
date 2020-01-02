@@ -398,6 +398,17 @@ public class StringUtils {
         return convertNumber;
     }
 
+    //일단위 0으로 만들기
+    public static int convertSipWonZero(int number) {
+        int convertNumber = 0;
+        if (number > 0) {
+            BigDecimal incm_civil_amt = new BigDecimal(number);
+            incm_civil_amt = incm_civil_amt.setScale(-2, BigDecimal.ROUND_DOWN);
+            return incm_civil_amt.intValue();
+        }
+        return convertNumber;
+    }
+
     public static int convertLongToInt(Long l) {
         Integer i = 0;
         if (l != null) {
@@ -412,9 +423,8 @@ public class StringUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String[] strs = {"11","22"};
-        String str = implode(",", strs);
-        System.out.println(str);
+
+        System.out.println(convertSipWonZero(69990));
 
     }
 

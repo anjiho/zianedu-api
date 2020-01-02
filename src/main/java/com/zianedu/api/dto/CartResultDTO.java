@@ -35,11 +35,14 @@ public class CartResultDTO {
 
     private List<CartListVO> examCartInfo;
 
+    private List<CartListVO> retakeCartInfo;
+
     public CartResultDTO() {}
 
     public CartResultDTO(int orderPrice, int deliveryPrice, int totalPrice, int totalPoint,
                          List<CartListVO>academyCartInfo, List<CartListVO>videoCartInfo,
-                         List<CartListVO>promotionCartInfo, List<CartListVO>bookCartInfo, List<CartListVO>examCartInfo) {
+                         List<CartListVO>promotionCartInfo, List<CartListVO>bookCartInfo, List<CartListVO>examCartInfo,
+                         List<CartListVO>retakeCartInfo) {
         this.orderPrice = orderPrice;
         this.deliveryPrice = deliveryPrice;
         this.totalPrice = totalPrice;
@@ -53,6 +56,7 @@ public class CartResultDTO {
         this.promotionCartInfo = promotionCartInfo;
         this.bookCartInfo = bookCartInfo;
         this.examCartInfo = examCartInfo;
+        this.retakeCartInfo = retakeCartInfo;
     }
 
 }

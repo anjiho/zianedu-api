@@ -37,6 +37,8 @@ public interface OrderMapper {
 
     TCartVO selectCartInfoByCartKey(@Param("cartKey") int cartKey);
 
+    List<CartListVO> selectCartInfoByRetake(@Param("userKey") int userKey);
+
     List<TCartLinkGoodsVO> selectCartLinkGoodsList(@Param("cartKey") int cartKey);
 
     Integer selectCartCountByUserKey(@Param("userKey") int userKey);

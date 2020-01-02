@@ -180,6 +180,13 @@
         SELECT G_KEY, PRICE_KEY, LINK_PRICE, LINK_SELL_PRICE, CTG_KEY FROM T_CART WHERE CART_KEY = #{cartKey}
     </select>
 
+    <select id="selectCartInfoByRetake" resultType="CartListVO">
+        SELECT G_KEY, PRICE_KEY, LINK_PRICE, LINK_SELL_PRICE, CTG_KEY
+        FROM T_CART
+        WHERE USER_KEY = #{userKey}
+        AND EXTEND_DAY > -1
+    </select>
+
     <select id="selectCartLinkGoodsList" resultType="TCartLinkGoodsVO">
         SELECT * FROM T_CART_LINK_GOODS WHERE CART_KEY = #{cartKey}
     </select>
