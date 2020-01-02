@@ -167,7 +167,7 @@ public interface ProductMapper {
 
     List<SignUpLectureVO> selectSignUpVideoLecturePauseSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
 
-    List<TypeDTO> selectSignUpVideoLectureEndTypeList(@Param("userKey") int userKey);
+    List<TypeDTO> selectSignUpVideoLectureEndTypeList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
 
     List<SignUpLectureVO> selectSignUpVideoLectureEndSubjectList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey, @Param("deviceType") String deviceType);
 

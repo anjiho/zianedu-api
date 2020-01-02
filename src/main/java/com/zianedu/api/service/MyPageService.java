@@ -436,14 +436,14 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSignUpVideoLectureEndTypeList(int userKey) {
+    public ApiResultListDTO getSignUpVideoLectureEndTypeList(int userKey, String deviceType) {
         int resultCode = OK.value();
 
         List<TypeDTO> typeList = new ArrayList<>();
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            typeList = productMapper.selectSignUpVideoLectureEndTypeList(userKey);
+            typeList = productMapper.selectSignUpVideoLectureEndTypeList(userKey, deviceType);
         }
         return new ApiResultListDTO(typeList, resultCode);
     }

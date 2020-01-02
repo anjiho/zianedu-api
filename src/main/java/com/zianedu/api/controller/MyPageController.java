@@ -249,10 +249,12 @@ public class MyPageController {
     @RequestMapping(value = "/getSignUpVideoLectureEndTypeList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강완료 유형 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키값(70001)", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값(70001)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "디바이스 종류", dataType = "string", paramType = "query", required = true)
     })
-    public ApiResultListDTO getSignUpVideoLectureEndTypeList(@PathVariable("userKey") int userKey) {
-        return myPageService.getSignUpVideoLectureEndTypeList(userKey);
+    public ApiResultListDTO getSignUpVideoLectureEndTypeList(@PathVariable("userKey") int userKey,
+                                                             @RequestParam("deviceType") String deviceType) {
+        return myPageService.getSignUpVideoLectureEndTypeList(userKey, deviceType);
     }
 
     @RequestMapping(value = "/getSignUpVideoLectureEndSubjectList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
