@@ -1783,6 +1783,16 @@
         AND B.PAY_STATUS = 2
         AND E.STATUS = 3
         AND B.USER_KEY = #{userKey}
+        AND A.J_PM_KEY = 0
+        AND A.PM_TYPE = 0
+        <if test="deviceType != '' and deviceType != null">
+            <if test="deviceType == 'PC'">
+                AND A.KIND IN (100, 102)
+            </if>
+            <if test="deviceType == 'MOBILE'">
+                AND A.KIND IN (101, 102)
+            </if>
+        </if>
         GROUP BY D.STEP_CTG_KEY
         ORDER BY D.STEP_CTG_KEY ASC
     </select>
