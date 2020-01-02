@@ -136,4 +136,13 @@ public class OrderController {
         Integer[] gKeyArray = GsonUtil.convertToIntegerArrayFromString(gKeys);
         return orderService.saveCartFreePackage(userKey, gKeyArray);
     }
+
+    @RequestMapping(value = "/saveCartAtRetake", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("재수강 장바구니 담기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "saveCartInfo", value = "저장할 카트 정보 >> {'userKey':5,'gKey':12345,'priceKey':12345,'gCount':1, 'extendDay':0}", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO saveCartAtRetake(@RequestParam("saveCartInfo") String saveCartInfo) {
+        return orderService.saveCart(saveCartInfo);
+    }
 }

@@ -63,8 +63,11 @@
     </select>
 
     <select id="selectUserCurrentPoint" resultType="Integer">
-         SELECT NVL( SUM(POINT), 0 ) as userPoint
-         FROM T_POINT WHERE USER_KEY = #{userKey}
+        SELECT SUM(POINT)
+        FROM T_POINT Z
+        WHERE Z.USER_KEY = #{userKey}
+        AND TYPE IN (0,1)
+        <![CDATA[  AND add_months(sysdate, -6)  < INDATE ]]>
     </select>
 
     <select id="selectDeviceLimitLogCount" resultType="int">

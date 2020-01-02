@@ -345,5 +345,14 @@ public class MyPageController {
         return boardService.getBoardDetailInfo(10019, bbsKey);
     }
 
+    @RequestMapping(value = "/getConsultReserveList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 상담내역목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getConsultReserveList(@PathVariable("bbsKey") int bbsKey) {
+        return boardService.getBoardDetailInfo(10019, bbsKey);
+    }
+
 
 }
