@@ -132,7 +132,7 @@ public class BoardService extends PagingSupport {
                     if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
                     else vo.setNew(false);
                     //합격자 영상, 지안식구 일때 이미지 썸네일 경로 주입
-                    if (bbsMasterKey == 10970 || bbsMasterKey == 11031) {
+                    if (bbsMasterKey == 10970 || bbsMasterKey == 11031 || bbsMasterKey == 11045) {
                         String fileName = boardMapper.selectTBbsDataFileName(vo.getBbsKey());
                         vo.setFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), fileName));
                     }
