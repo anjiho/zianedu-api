@@ -1483,10 +1483,10 @@
         )Z
         WHERE 1=1
         <![CDATA[
-            AND TO_CHAR(Z.start_dt, 'YYYY-MM-DD')  <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND Z.start_dt  <= sysdate
              ]]>
         <![CDATA[
-            AND TO_CHAR((Z.start_dt + Z.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND (Z.start_dt + Z.limit_day) >= sysdate
          ]]>
         GROUP BY Z.SUBJECT_CTG_KEY, Z.subjectName
         ORDER BY Z.SUBJECT_CTG_KEY ASC
@@ -1525,23 +1525,26 @@
         )Z
         WHERE 1=1
         <![CDATA[
-            AND TO_CHAR(Z.start_dt, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND Z.start_dt <= sysdate
          ]]>
         <![CDATA[
-            AND  TO_CHAR((Z.start_dt + Z.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND  (Z.start_dt + Z.limit_day) >= sysdate
         ]]>
         GROUP BY Z.ctgKey, Z.ctgName
         ORDER BY Z.ctgKey ASC
     </select>
 
     <select id="selectSignUpLectureList" resultType="SignUpLectureVO">
-        SELECT Z.* FROM (
+        SELECT Z.J_KEY, Z.J_G_KEY, Z.G_KEY, Z.NAME, Z.J_LEC_KEY
+        FROM (
             SELECT
                 B.J_KEY,
                 A.J_G_KEY,
                 A.G_KEY,
                 C.NAME,
-                E.J_LEC_KEY
+                E.J_LEC_KEY,
+                NVL(E.start_dt, sysdate) as start_dt,
+                E.LIMIT_DAY
             FROM T_ORDER_GOODS A
             INNER JOIN T_ORDER B
             ON A.J_KEY = B.J_KEY
@@ -1552,11 +1555,10 @@
             INNER JOIN T_ORDER_LEC E
             ON A.J_G_KEY = E.J_G_KEY
             WHERE 1=1
-            AND B.user_key = 5
+            AND B.user_key = #{userKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
-            AND E.start_dt is null
             <if test="subjectCtgKey > 0">
                 AND D.subject_ctg_key = #{subjectCtgKey}
             </if>
@@ -1571,52 +1573,15 @@
                     AND A.KIND IN (101, 102)
                 </if>
             </if>
-            GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
-
-        UNION ALL
-
-            SELECT
-                B.J_KEY,
-                A.J_G_KEY,
-                A.G_KEY,
-                C.NAME,
-                E.J_LEC_KEY
-            FROM T_ORDER_GOODS A
-            INNER JOIN T_ORDER B
-            ON A.J_KEY = B.J_KEY
-            INNER JOIN T_GOODS C
-            ON A.G_KEY = C.G_KEY
-            INNER JOIN T_LEC D
-            ON C.G_KEY = D.G_KEY
-            INNER JOIN T_ORDER_LEC E
-            ON A.J_G_KEY = E.J_G_KEY
-            WHERE 1=1
-            AND B.user_key = 5
-            AND B.pay_status = 2
-            AND A.j_pm_key = 0
-            AND E.PAUSE_DAY = 0
-            <![CDATA[
-                AND TO_CHAR(E.start_dt, 'YYYY-MM-DD')  <= TO_CHAR(sysdate, 'YYYY-MM-DD')
-           ]]>
-            <![CDATA[
-             AND TO_CHAR((E.start_dt + E.limit_day), 'YYYY-MM-DD') >= TO_CHAR(sysdate, 'YYYY-MM-DD')
-             ]]>
-            <if test="subjectCtgKey > 0">
-                AND D.subject_ctg_key = #{subjectCtgKey}
-            </if>
-            <if test="stepCtgKey > 0">
-                AND D.step_ctg_key = #{stepCtgKey}
-            </if>
-            <if test="deviceType != '' and deviceType != null">
-                <if test="deviceType == 'PC'">
-                    AND A.KIND IN (100, 102)
-                </if>
-                <if test="deviceType == 'MOBILE'">
-                    AND A.KIND IN (101, 102)
-                </if>
-            </if>
-            GROUP BY B.J_KEY, A.J_G_KEY, A.G_KEY, C.NAME, E.J_LEC_KEY
-        )Z
+        ) Z
+        WHERE 1=1
+        <![CDATA[
+            AND Z.start_dt <= sysdate
+        ]]>
+        <![CDATA[
+            AND  (Z.start_dt + Z.limit_day) >= sysdate
+        ]]>
+        GROUP BY Z.J_KEY, Z.J_G_KEY, Z.G_KEY, Z.NAME, Z.J_LEC_KEY
         ORDER BY Z.J_LEC_KEY DESC
     </select>
 

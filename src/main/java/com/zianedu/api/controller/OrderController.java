@@ -155,6 +155,5 @@ public class OrderController {
     public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtRetake(@PathVariable("userKey") int userKey,
                                                                        @RequestParam("productInfo") String productInfo) {
         return orderService.getOrderSheetInfoFromImmediatelyAtRetake(userKey, productInfo);
-        //return null;
     }
 }
