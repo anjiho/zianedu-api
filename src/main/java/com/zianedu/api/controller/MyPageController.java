@@ -353,13 +353,13 @@ public class MyPageController {
         return boardService.getBoardDetailInfo(10019, bbsKey);
     }
 
-    @RequestMapping(value = "/getConsultReserveList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
-    @ApiOperation("마이페이지 > 상담내역목록")
+    @RequestMapping(value = "/getZianPassEndList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 지안패스 완료된 강좌")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "bbsKey", value = "게시판 키", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true)
     })
-    public ApiResultObjectDTO getConsultReserveList(@PathVariable("bbsKey") int bbsKey) {
-        return boardService.getBoardDetailInfo(10019, bbsKey);
+    public ApiResultListDTO getZianPassEndList(@PathVariable("userKey") int userKey) {
+        return myPageService.getZianPassEndList(userKey);
     }
 
 

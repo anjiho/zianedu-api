@@ -2467,6 +2467,36 @@
         AND A.G_KEY = #{gKey}
     </select>
 
+    <select id="selectZianPassEndList" resultType="ZianPassEndListVO">
+        SELECT Z.* FROM (
+            SELECT
+                C.NAME as goodsName, A.J_G_KEY, A.J_KEY, A.G_KEY, A.PRICE_KEY,
+                TO_CHAR(B.INDATE, 'YYYY.MM.DD') start_dt,
+                TO_CHAR((B.INDATE + (A.KIND * 30)), 'YYYY.MM.DD') as end_dt,
+                <![CDATA[
+                    CASE WHEN TO_CHAR((B.INDATE + (A.KIND * 30) + 90), 'YYYY-MM-DD') <= sysdate
+                ]]>
+                THEN 'N'
+                ELSE 'Y'
+                END AS retakeYn
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            WHERE A.TYPE = 5
+            AND A.PM_TYPE = 100
+            AND B.PAY_TYPE NOT IN (20)
+            AND B.PAY_STATUS = 2
+            AND A.USER_KEY = #{userKey}
+            ORDER BY A.J_G_KEY ASC
+        )Z
+        WHERE 1=1
+        <![CDATA[
+            AND Z.end_dt <= sysdate
+        ]]>
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
