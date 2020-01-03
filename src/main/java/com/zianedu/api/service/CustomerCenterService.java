@@ -1,13 +1,16 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.define.datasource.ConsultReserveTimeType;
+import com.zianedu.api.define.datasource.ConsultReserveType;
+import com.zianedu.api.define.datasource.ZianAcademyType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiResultCodeDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ConsultTimeDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
+import com.zianedu.api.mapper.UserMapper;
+import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.vo.TBbsDataVO;
 import com.zianedu.api.vo.TConsultReserveVO;
+import com.zianedu.api.vo.TUserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,10 +22,13 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class CustomerCenterService {
+public class CustomerCenterService extends PagingSupport {
 
     @Autowired
     private BoardMapper boardMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     //상담예약하기
     @Transactional(propagation = Propagation.REQUIRED)
@@ -75,5 +81,33 @@ public class CustomerCenterService {
             oftenQuestionList = boardMapper.selectTBbsDataByCtgKey(ctgKey);
         }
         return new ApiResultListDTO(oftenQuestionList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getConsultList(int userKey, String reserveDate, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int consultListCount = 0;
+        List<ConsultReserveListDTO> consultReserveList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (userKey == 0 && "".equals(reserveDate)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+            if (userInfo.getAuthority() == 0) {
+                userKey = 0;
+            }
+            consultListCount = boardMapper.selectConsultReserveListCount(userKey, reserveDate);
+            consultReserveList = boardMapper.selectConsultReserveList(userKey, reserveDate, startNumber, listLimit);
+            if (consultReserveList.size() > 0) {
+                for (ConsultReserveListDTO dto : consultReserveList) {
+                    dto.setReserveTimeName(ConsultReserveTimeType.getConsultReserveTimeName(dto.getReserveTimeKey()));
+                    dto.setReserveTypeName(ConsultReserveType.getConsultReserveTypeName(dto.getReserveType()));
+                    dto.setReserveLocationName(ZianAcademyType.getZianAcademyName(dto.getReserveLocation()));
+                }
+            }
+        }
+        return new ApiPagingResultDTO(consultListCount, consultReserveList, resultCode);
     }
 }

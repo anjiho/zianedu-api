@@ -1,5 +1,6 @@
 package com.zianedu.api.controller;
 
+import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.service.CustomerCenterService;
@@ -56,5 +57,21 @@ public class CustomerCenterController {
     public ApiResultListDTO getReserveTime(@RequestParam("reserveDate") String reserveDate,
                                            @RequestParam("reserveLocation") int reserveLocation) {
         return customerCenterService.getConsultTimeList(reserveDate, reserveLocation);
+    }
+
+    @RequestMapping(value = "/getConsultReserveList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("상담예약 목록 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "reserveDate", value = "예약월(YYYY-MM-DD)", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+
+    })
+    public ApiPagingResultDTO getConsultReserveList(@PathVariable("userKey") int userKey,
+                                                    @RequestParam("reserveDate") String reserveDate,
+                                                    @RequestParam("sPage") int sPage,
+                                                    @RequestParam("listLimit") int listLimit) {
+        return customerCenterService.getConsultList(userKey, reserveDate, sPage, listLimit);
     }
 }

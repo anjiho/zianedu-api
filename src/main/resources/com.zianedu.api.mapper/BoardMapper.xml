@@ -531,6 +531,34 @@
         WHERE CTG_KEY = #{ctgKey}
     </select>
 
+    <select id="selectConsultReserveList" resultType="com.zianedu.api.dto.ConsultReserveListDTO">
+        SELECT
+            USER_KEY, TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') as reserve_date,
+            RESERVE_TIME_KEY, RESERVE_TYPE, RESERVE_LOCATION,
+            USER_NAME, MOBILE_NUMBER, EMAIL_ADDRESS, RESERVE_CONTENTS,
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as create_date
+        FROM T_CONSULT_RESERVE
+        WHERE 1=1
+        <if test="userKey > 0">
+            AND USER_KEY = #{userKey}
+        </if>
+        <if test="reserveDate != ''">
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') = #{reserveDate}
+        </if>
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectConsultReserveListCount" resultType="int">
+        SELECT COUNT(USER_KEY) FROM T_CONSULT_RESERVE
+        WHERE 1=1
+        <if test="userKey > 0">
+            AND USER_KEY = #{userKey}
+        </if>
+        <if test="reserveDate != ''">
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') = #{reserveDate}
+        </if>
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

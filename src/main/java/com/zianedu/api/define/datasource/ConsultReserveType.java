@@ -13,4 +13,13 @@ public enum ConsultReserveType {
         this.consultReserveTypeKey = consultReserveTypeKey;
         this.consultReserveTypeName = consultReserveTypeName;
     }
+
+    public static String getConsultReserveTypeName(int consultReserveTypeKey) {
+        for (ConsultReserveType reserveType : ConsultReserveType.values()) {
+            if (consultReserveTypeKey == reserveType.consultReserveTypeKey) {
+                return reserveType.consultReserveTypeName;
+            }
+        }
+        return null;
+    }
 }

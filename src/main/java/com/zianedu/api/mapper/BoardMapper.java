@@ -1,5 +1,6 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.dto.ConsultReserveListDTO;
 import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -83,6 +84,11 @@ public interface BoardMapper {
     List<TConsultReserveVO> selectConsultReserveTimeList(@Param("reserveDate") String reserveDate, @Param("reserveLocation") int reserveLocation);
 
     List<TBbsDataVO> selectTBbsDataByCtgKey(@Param("ctgKey") int ctgKey);
+
+    List<ConsultReserveListDTO> selectConsultReserveList(@Param("userKey") int userKey, @Param("reserveDate") String reserveDate,
+                                                         @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectConsultReserveListCount(@Param("userKey") int userKey, @Param("reserveDate") String reserveDate);
 
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);

@@ -13,4 +13,13 @@ public enum ZianAcademyType {
         this.zianAcademyTypeKey = zianAcademyTypeKey;
         this.zianAcademyTypeName = zianAcademyTypeName;
     }
+
+    public static String getZianAcademyName(int zianAcademyTypeKey) {
+        for (ZianAcademyType academyType : ZianAcademyType.values()) {
+            if (zianAcademyTypeKey == academyType.zianAcademyTypeKey) {
+                return academyType.zianAcademyTypeName;
+            }
+        }
+        return null;
+    }
 }

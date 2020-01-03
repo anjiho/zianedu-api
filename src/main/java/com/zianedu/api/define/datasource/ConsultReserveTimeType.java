@@ -13,13 +13,13 @@ public enum ConsultReserveTimeType {
     AM_ELEVEN_CLOCK(4, "11:00"),
     AM_ELEVEN_HALF(5, "11:30"),
     PM_TWELVE_CLOCK(6, "12:00"),
-    PM_ONE_HALF(7, "12:30"),
-    PM_THREE_HALF(8, "2:30"),
-    PM_THREE_CLOCK(9, "3:00"),
-    PM_FOUR_HALF(10, "3:30"),
-    PM_FOUR_CLOCK(11, "4:00"),
-    PM_FIVE_HALF(12, "4:30"),
-    PM_FIVE_CLOCK(13, "5:00");
+    PM_ONE_HALF(7, "14:00"),
+    PM_THREE_HALF(8, "14:30"),
+    PM_THREE_CLOCK(9, "15:00"),
+    PM_FOUR_HALF(10, "15:30"),
+    PM_FOUR_CLOCK(11, "16:00"),
+    PM_FIVE_HALF(12, "16:30"),
+    PM_FIVE_CLOCK(13, "17:00");
 
     int consultReserveTimeTypeKey;
 
