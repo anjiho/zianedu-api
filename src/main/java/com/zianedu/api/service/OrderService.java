@@ -331,16 +331,16 @@ public class OrderService extends PagingSupport {
     /**
      * 주문서 작성 > 일반 상품 > '바로신청' 버튼으로 주문서 작성으로 갈때
      * @param userKey
-     * @param gKeys
+     * @param priceKeys
      * @return
      */
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getOrderSheetFromImmediatelyBuy(int userKey, Integer[] gKeys) {
+    public ApiResultObjectDTO getOrderSheetFromImmediatelyBuy(int userKey, Integer[] priceKeys) {
         int resultCode = OK.value();
 
         OrderSheetDTO orderSheetDTO = new OrderSheetDTO();
 
-        if (gKeys == null || gKeys.length == 0) {
+        if (priceKeys == null || priceKeys.length == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             int totalProductPrice = 0;
@@ -355,8 +355,8 @@ public class OrderService extends PagingSupport {
 
             List<OrderProductListDTO>orderProductList = new ArrayList<>();
 
-            List<Integer>gKeyList = StringUtils.integerArrayToArrayList(gKeys);
-            List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuy(gKeyList);
+            List<Integer>priceKeyList = StringUtils.integerArrayToArrayList(priceKeys);
+            List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuyFromPriceKeyList(priceKeyList);
 
             if (buyProductList.size() > 0) {
                 int videoProductCnt = 0;
@@ -364,7 +364,7 @@ public class OrderService extends PagingSupport {
 
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                             product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
-                            GoodsType.getGoodsTypeStr(product.getType(), product.getExtendDay()), product.getGoodsName(),
+                            GoodsType.getGoodsTypeStr(product.getType(), -1), product.getGoodsName(),
                             product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
                     );
                     //totalProductPrice += product.getSellPrice();

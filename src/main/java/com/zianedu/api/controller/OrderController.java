@@ -62,12 +62,12 @@ public class OrderController {
     @ApiOperation("주문서 작성 > 일반 상품 > '바로신청' 버튼으로 주문서 작성으로 갈때")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "gKeys", value = "상품 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true)
+            @ApiImplicitParam(name = "priceKeys", value = "가격 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getOrderSheetFromImmediatelyBuy(@PathVariable("userKey") int userKey,
-                                                        @RequestParam("gKeys") String gKeys) {
-        Integer[] gKeyArray = GsonUtil.convertToIntegerArrayFromString(gKeys);
-        return orderService.getOrderSheetFromImmediatelyBuy(userKey, gKeyArray);
+                                                        @RequestParam("priceKeys") String priceKeys) {
+        Integer[] priceKeyArray = GsonUtil.convertToIntegerArrayFromString(priceKeys);
+        return orderService.getOrderSheetFromImmediatelyBuy(userKey, priceKeyArray);
     }
 
     @RequestMapping(value = "/getOrderSheetInfoFromImmediatelyAtBasicPackage/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
