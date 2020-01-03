@@ -939,7 +939,7 @@ public class OrderService extends PagingSupport {
 
                         OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                                 product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
-                                GoodsType.getGoodsTypeStr(product.getType(), retakeInfo.getExtendDay()), "0",
+                                GoodsType.getGoodsTypeStr(product.getType(), retakeInfo.getExtendDay()), product.getGoodsName(),
                                 product.getCnt(), StringUtils.convertSipWonZero(sellPrice), product.getKind(), retakeInfo.getExtendDay(), product.getPmType()
                         );
                         //totalProductPrice += product.getSellPrice();
