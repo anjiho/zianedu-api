@@ -90,6 +90,10 @@ public interface BoardMapper {
 
     int selectConsultReserveListCount(@Param("userKey") int userKey, @Param("reserveDate") String reserveDate);
 
+    List<TBbsDataVO> selectBoardListAtMyWrite(@Param("userKey") int userKey, @Param("boardType") String boardType,
+                                              @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                              @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 

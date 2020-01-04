@@ -56,6 +56,8 @@ public class TBbsDataVO {
 
     private int bbsCustomKey;
 
+    private String userName;
+
     public TBbsDataVO() {}
 
     public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret, int ctgKey) {

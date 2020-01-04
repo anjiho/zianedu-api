@@ -560,6 +560,40 @@
         </if>
     </select>
 
+    <select id="selectBoardListAtMyWrite" resultType="TBbsDataVO">
+        SELECT BBS_KEY, TITLE, READ_COUNT, TO_CHAR(INDATE, 'YYYY.MM.DD') as indate,
+              (SELECT NAME FROM T_USER TU WHERE TU.USER_KEY = WRITE_USER_KEY) as userName
+        FROM T_BBS_DATA
+        WHERE 1=1
+        <if test="userKey > 0">
+            AND WRITE_USER_KEY = #{userKey}
+        </if>
+        <!-- 합격수기 -->
+        <if test="boardType == 'PASS'">
+            AND BBS_MASTER_KEY IN (10013, 10032, 10048)
+        </if>
+        <!-- 수강후기 -->
+        <if test="boardType == 'LECTURE'">
+            AND BBS_MASTER_KEY IN (10014, 10015, 10033, 10034, 10056, 10049)
+        </if>
+        <!-- 도서후기 -->
+        <if test="boardType == 'BOOK'">
+            AND BBS_MASTER_KEY IN (10016, 10035, 10050)
+        </if>
+        <!-- 응시후기 -->
+        <if test="boardType == 'EXAM'">
+            AND BBS_MASTER_KEY IN (11030)
+        </if>
+        <if test="searchType == 'title'">
+            AND TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND CONTENTS LIKE '%'||#{searchText}||'%'
+        </if>
+        ORDER BY BBS_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
