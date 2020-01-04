@@ -362,5 +362,18 @@ public class MyPageController {
         return myPageService.getZianPassEndList(userKey);
     }
 
+    @RequestMapping(value = "/getMyWriteBoard/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 내 후기글")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false),
+    })
+    public ApiPagingResultDTO getMyWriteBoard() {
+        return null;
+    }
+
 
 }

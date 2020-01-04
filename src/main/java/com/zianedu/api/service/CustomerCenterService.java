@@ -2,6 +2,7 @@ package com.zianedu.api.service;
 
 import com.zianedu.api.define.datasource.ConsultReserveTimeType;
 import com.zianedu.api.define.datasource.ConsultReserveType;
+import com.zianedu.api.define.datasource.ConsultStatusType;
 import com.zianedu.api.define.datasource.ZianAcademyType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
@@ -105,6 +106,7 @@ public class CustomerCenterService extends PagingSupport {
                     dto.setReserveTimeName(ConsultReserveTimeType.getConsultReserveTimeName(dto.getReserveTimeKey()));
                     dto.setReserveTypeName(ConsultReserveType.getConsultReserveTypeName(dto.getReserveType()));
                     dto.setReserveLocationName(ZianAcademyType.getZianAcademyName(dto.getReserveLocation()));
+                    dto.setConsultStatusName(ConsultStatusType.getConsultStatusTypeName(dto.getConsultStatus()));
                 }
             }
         }

@@ -26,9 +26,13 @@ public class ConsultReserveListDTO {
 
     private String createDate;
 
+    private int consultStatus;
+
     private String reserveTimeName;
 
     private String reserveTypeName;
 
     private String reserveLocationName;
+
+    private String consultStatusName;
 }

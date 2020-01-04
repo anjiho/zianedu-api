@@ -536,7 +536,8 @@
             USER_KEY, TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') as reserve_date,
             RESERVE_TIME_KEY, RESERVE_TYPE, RESERVE_LOCATION,
             USER_NAME, MOBILE_NUMBER, EMAIL_ADDRESS, RESERVE_CONTENTS,
-            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as create_date
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as create_date,
+            CONSULT_STATUS
         FROM T_CONSULT_RESERVE
         WHERE 1=1
         <if test="userKey > 0">
