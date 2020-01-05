@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 public class TConsultReserveVO implements Serializable {
     @ApiModelProperty(hidden = true,readOnly = true)
+    private int idx;
+    @ApiModelProperty(hidden = true,readOnly = true)
     private int userKey;
     @ApiModelProperty(hidden = true,readOnly = true)
     private String reserveDate;

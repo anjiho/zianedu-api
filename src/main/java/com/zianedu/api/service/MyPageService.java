@@ -570,5 +570,26 @@ public class MyPageService extends PagingSupport {
         }
         return new ApiResultListDTO(endList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getBoardListAtMyWrite(int userKey, String boardType, int sPage, int listLimit,
+                                                    String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+        List<TBbsDataVO> boardList = new ArrayList<>();
+        if (userKey == 0 && "".equals(boardType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
+            if (userInfo.getAuthority() == 0) {
+                userKey = 0;
+            }
+            totalCount = boardMapper.selectBoardListAtMyWriteCount(userKey, boardType, searchType, searchText);
+            boardList = boardMapper.selectBoardListAtMyWrite(userKey, boardType, startNumber, listLimit, searchType, searchText);
+        }
+        return new ApiPagingResultDTO(totalCount, boardList, resultCode);
+    }
 }
 

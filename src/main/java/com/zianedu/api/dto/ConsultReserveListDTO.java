@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class ConsultReserveListDTO {
 
+    private int idx;
+
     private int userKey;
 
     private String reserveDate;
