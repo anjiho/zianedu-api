@@ -94,6 +94,9 @@ public interface BoardMapper {
                                               @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
                                               @Param("searchType") String searchType, @Param("searchText") String searchText);
 
+    int selectBoardListAtMyWriteCount(@Param("userKey") int userKey, @Param("boardType") String boardType,
+                                      @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 
