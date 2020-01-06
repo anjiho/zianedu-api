@@ -682,6 +682,81 @@
         </if>
     </select>
 
+    <select id="selectPasserVideoList2" resultType="CommunityListVO">
+        SELECT
+            A.BBS_KEY, TO_CHAR(A.INDATE,'YYYY.MM.DD') as createDate,
+            TO_CHAR(A.INDATE,'YYYY-MM-DD') as indate, A.TITLE, A.WRITE_USER_KEY, A.READ_COUNT, 0 as level1,
+            (SELECT COUNT(BBS_COMMNET_KEY) FROM T_BBS_COMMENT T WHERE T.BBS_KEY = A.BBS_KEY) commentCount,
+            (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName, A.PWD, A.IS_NOTICE
+        FROM T_BBS_DATA A
+        WHERE A.IS_NOTICE = 0
+        AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+        <if test="searchType == 'title'">
+            AND A.TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'name'">
+            AND A.WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+        </if>
+        <if test="searchType == 'content'">
+            AND A.BBS_KEY IN (
+            SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+            )
+        </if>
+        ORDER BY BBS_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectPasserVideoListCount2" resultType="int">
+        SELECT COUNT (A.BBS_KEY)
+        FROM T_BBS_DATA A
+        WHERE A.IS_NOTICE = 0
+        AND A.BBS_MASTER_KEY = #{bbsMasterKey}
+        <if test="searchType == 'title'">
+            AND A.TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'name'">
+            AND A.WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+        </if>
+        <if test="searchType == 'content'">
+            AND A.BBS_KEY IN (
+            SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+            )
+        </if>
+    </select>
+
+    <select id="selectReviewList" resultType="TBbsDataVO">
+        SELECT BBS_KEY, TITLE, READ_COUNT, TO_CHAR(INDATE, 'YYYY.MM.DD') as indate,
+        (SELECT NAME FROM T_USER TU WHERE TU.USER_KEY = WRITE_USER_KEY) as userName
+        FROM T_BBS_DATA
+        WHERE 1=1
+        <if test="bbsMasterKey > 0">
+            AND BBS_MASTER_KEY = #{bbsMasterKey}
+        </if>
+        <if test="searchType == 'title'">
+            AND TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND CONTENTS LIKE '%'||#{searchText}||'%'
+        </if>
+        ORDER BY BBS_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectReviewListCount" resultType="int">
+        SELECT COUNT(BBS_KEY)
+        FROM T_BBS_DATA
+        WHERE 1=1
+        <if test="bbsMasterKey > 0">
+            AND BBS_MASTER_KEY = #{bbsMasterKey}
+        </if>
+        <if test="searchType == 'title'">
+            AND TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND CONTENTS LIKE '%'||#{searchText}||'%'
+        </if>
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL
@@ -717,12 +792,14 @@
         INSERT INTO T_BBS_DATA
         (
             BBS_KEY, BBS_MASTER_KEY, BBS_PARENT_KEY, INDATE, TITLE, WRITE_USER_KEY, CTG_KEY,
-            CTG_KEY_02, IS_NOTICE, PWD, CONTENTS, IS_HAVE_ANSWER, BBS_CUSTOM_KEY
+            CTG_KEY_02, IS_NOTICE, PWD, CONTENTS, IS_HAVE_ANSWER, BBS_CUSTOM_KEY,
+            YOUTUBE_HTML, G_KEY, SUCCESS_SUBJECT, LECTURE_SUBJECT
         )
         VALUES
         (
             #{bbsKey}, #{bbsMasterKey}, #{bbsParentKey}, sysdate, #{title}, #{writeUserKey}, #{ctgKey},
-            #{ctgKey02}, #{isNotice}, #{pwd}, #{contents}, #{isHaveAnswer}, #{bbsCustomKey}
+            #{ctgKey02}, #{isNotice}, #{pwd}, #{contents}, #{isHaveAnswer}, #{bbsCustomKey},
+            #{youtubeHtml}, #{gKey}, #{successSubject}, #{lectureSubject}
         )
     </insert>
 

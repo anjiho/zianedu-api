@@ -106,7 +106,11 @@ public class BoardController {
             @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false)
+            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "youtubeHtml", value = "html코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "gKey", value = "수강후기 상품키값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "successSubject", value = "합격과목", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "lectureSubject", value = "수강과목, 도서명", dataType = "String", paramType = "query", required = false)
 
     })
     public ApiResultCodeDTO saveBoard(@RequestParam("bbsMasterKey") int bbsMasterKey,
@@ -115,8 +119,12 @@ public class BoardController {
                                       @RequestParam("content") String content,
                                       @RequestParam("isSecret") int isSecret,
                                       @RequestParam("ctgKey") int ctgKey,
-                                      @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
-        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName);
+                                      @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
+                                      @RequestParam(value = "youtubeHtml", required = false, defaultValue = "") String youtubeHtml,
+                                      @RequestParam(value = "gKey", required = false, defaultValue = "0") int gKey,
+                                      @RequestParam(value = "successSubject", required = false, defaultValue = "") String successSubject,
+                                      @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
+        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
     }
 
     @RequestMapping(value = "/saveBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
@@ -306,5 +314,39 @@ public class BoardController {
                                                @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                                                @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
         return boardService.getPasserVideoList(sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/getPasserVideoListFromReview/{bbsMasterKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격수기 > 합격자영상 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 키값(11045 : 행정직, 10970 : 기술직/계리직)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, name : 이름, content : 내용) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+    })
+    public ApiPagingResultDTO getPasserVideoListFromReview(@PathVariable("bbsMasterKey") int bbsMasterKey,
+                                                 @RequestParam("sPage") int sPage,
+                                                 @RequestParam("listLimit") int listLimit,
+                                                 @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                 @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+        return boardService.getPasserVideoListFromReview(bbsMasterKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/getReviewBoardList/{bbsMasterKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격수 > 합격수기, 수강후기, 도서후기 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, name : 이름, content : 내용) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+    })
+    public ApiPagingResultDTO getReviewBoardList(@PathVariable("bbsMasterKey") int bbsMasterKey,
+                                                           @RequestParam("sPage") int sPage,
+                                                           @RequestParam("listLimit") int listLimit,
+                                                           @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                           @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+        return boardService.getReviewBoardList(bbsMasterKey, sPage, listLimit, searchType, searchText);
     }
 }

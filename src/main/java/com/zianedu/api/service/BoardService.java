@@ -245,19 +245,20 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO saveBoardInfo(int bbsMasterKey, int userKey, String title, String content, int isSecret, int ctgKey, String fileName) {
+    public ApiResultCodeDTO saveBoardInfo(int bbsMasterKey, int userKey, String title, String content, int isSecret, int ctgKey, String fileName,
+                                          String youtubeHtml, int gKey, String successSubject, String lectureSubject) {
         int resultCode = OK.value();
 
         int bbsKey = 0;
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, ctgKey);
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, ctgKey, youtubeHtml, gKey, successSubject, lectureSubject);
             boardMapper.insertTBbsData(bbsDataVO);
             bbsKey = bbsDataVO.getBbsKey();
             //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
             if (!"".equals(fileName)) {
-                boardMapper.insertTBbsDataFile(bbsKey, fileName);
+                boardMapper.insertTBbsDataFile(bbsKey, "100/bbs/" + fileName);
             }
         }
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
@@ -267,7 +268,7 @@ public class BoardService extends PagingSupport {
     public ApiResultCodeDTO saveBoardInfoAtNoUser(int bbsMasterKey, int userKey, String title, String content, int isSecret, String fileName) {
         int bbsKey = 0;
 
-        TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, 0);
+        TBbsDataVO bbsDataVO = new TBbsDataVO(bbsMasterKey, userKey, title, content, isSecret, 0, "", 0, "", "");
         boardMapper.insertTBbsData(bbsDataVO);
         bbsKey = bbsDataVO.getBbsKey();
         //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
@@ -423,6 +424,54 @@ public class BoardService extends PagingSupport {
             }
         }
         return new ApiPagingResultDTO(totalCount, communityList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getPasserVideoListFromReview(int bbsMasterKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
+        int resultCode = OK.value();
+
+        List<CommunityListVO> communityList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (bbsMasterKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectPasserVideoListCount2(bbsMasterKey, Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+            communityList = boardMapper.selectPasserVideoList2(bbsMasterKey, startNumber, listLimit, Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+
+            if (communityList.size() > 0) {
+                String standardDate = Util.plusDate(Util.returnNow(), -10);
+                for (CommunityListVO vo : communityList) {
+                    int diffDayCnt = Util.getDiffDayCount(Util.convertDateFormat3(standardDate), Util.convertDateFormat3(vo.getIndate()));
+
+                    if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
+                    else vo.setNew(false);
+                    //합격자 영상, 지안식구 일때 이미지 썸네일 경로 주입
+                    //if (bbsMasterKey == 10970 || bbsMasterKey == 11031 || bbsMasterKey == 11045) {
+                    String fileName = boardMapper.selectTBbsDataFileName(vo.getBbsKey());
+                    vo.setFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), fileName));
+                    //}
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, communityList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getReviewBoardList(int bbsMasterKey, int sPage, int listLimit, String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+        List<TBbsDataVO> boardList = new ArrayList<>();
+        if (bbsMasterKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectReviewListCount(bbsMasterKey, searchType, searchText);
+            boardList = boardMapper.selectReviewList(bbsMasterKey, startNumber, listLimit, searchType, searchText);
+        }
+        return new ApiPagingResultDTO(totalCount, boardList, resultCode);
     }
 
 }

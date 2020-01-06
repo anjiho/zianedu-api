@@ -104,6 +104,16 @@ public interface BoardMapper {
     List<CommunityListVO> selectPasserVideoList(@Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
                                               @Param("searchType") String searchType, @Param("searchText") String searchText);
 
+    Integer selectPasserVideoListCount2(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<CommunityListVO> selectPasserVideoList2(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber,
+                                                 @Param("listLimitNumber") int listLimitNumber, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<TBbsDataVO> selectReviewList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                              @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    int selectReviewListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 

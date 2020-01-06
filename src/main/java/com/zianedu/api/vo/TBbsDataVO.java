@@ -58,9 +58,18 @@ public class TBbsDataVO {
 
     private String userName;
 
+    private String youtubeHtml;
+
+    private int gKey;
+
+    private String successSubject;
+
+    private String lectureSubject;
+
     public TBbsDataVO() {}
 
-    public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret, int ctgKey) {
+    public TBbsDataVO(int bbsMasterKey, int userKey, String title, String contents, int isSecret, int ctgKey,
+                      String youtubeHtml, int gKey, String successSubject, String lectureSubject) {
         this.bbsMasterKey = bbsMasterKey;
         this.bbsParentKey = 0;
         this.title = Util.isNullValue(title, "");
@@ -74,6 +83,10 @@ public class TBbsDataVO {
         this.contents = Util.isNullValue(contents, "");
         this.isHaveAnswer = 0;
         this.bbsCustomKey = 0;
+        this.youtubeHtml = youtubeHtml;
+        this.gKey = gKey;
+        this.successSubject = successSubject;
+        this.lectureSubject = lectureSubject;
     }
 
     public TBbsDataVO(int bbsKey, String title, String contents, int isSecret) {
