@@ -106,11 +106,7 @@ public class BoardController {
             @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false),
-            @ApiImplicitParam(name = "youtubeHtml", value = "html코드", dataType = "String", paramType = "query", required = false),
-            @ApiImplicitParam(name = "gKey", value = "수강후기 상품키값", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "successSubject", value = "합격과목", dataType = "String", paramType = "query", required = false),
-            @ApiImplicitParam(name = "lectureSubject", value = "수강과목, 도서명", dataType = "String", paramType = "query", required = false)
+            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false)
 
     })
     public ApiResultCodeDTO saveBoard(@RequestParam("bbsMasterKey") int bbsMasterKey,
@@ -119,12 +115,8 @@ public class BoardController {
                                       @RequestParam("content") String content,
                                       @RequestParam("isSecret") int isSecret,
                                       @RequestParam("ctgKey") int ctgKey,
-                                      @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
-                                      @RequestParam(value = "youtubeHtml", required = false, defaultValue = "") String youtubeHtml,
-                                      @RequestParam(value = "gKey", required = false, defaultValue = "0") int gKey,
-                                      @RequestParam(value = "successSubject", required = false, defaultValue = "") String successSubject,
-                                      @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
-        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
+                                      @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName) {
+        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName, "", 0, "", "");
     }
 
     @RequestMapping(value = "/saveBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
@@ -348,5 +340,35 @@ public class BoardController {
                                                            @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                                                            @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
         return boardService.getReviewBoardList(bbsMasterKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/saveBoardReview", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격수기 글 저장")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 마스터 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "ctgKey", value = "카테고리 키값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "youtubeHtml", value = "html코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "gKey", value = "수강후기 상품키값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "successSubject", value = "합격과목", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "lectureSubject", value = "수강과목, 도서명", dataType = "String", paramType = "query", required = false)
+
+    })
+    public ApiResultCodeDTO saveBoardReview(@RequestParam("bbsMasterKey") int bbsMasterKey,
+                                      @RequestParam("userKey") int userKey,
+                                      @RequestParam("title") String title,
+                                      @RequestParam("content") String content,
+                                      @RequestParam("isSecret") int isSecret,
+                                      @RequestParam("ctgKey") int ctgKey,
+                                      @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
+                                      @RequestParam(value = "youtubeHtml", required = false, defaultValue = "") String youtubeHtml,
+                                      @RequestParam(value = "gKey", required = false, defaultValue = "0") int gKey,
+                                      @RequestParam(value = "successSubject", required = false, defaultValue = "") String successSubject,
+                                      @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
+        return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
     }
 }
