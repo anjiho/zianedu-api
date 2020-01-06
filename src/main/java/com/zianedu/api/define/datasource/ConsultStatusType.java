@@ -3,7 +3,7 @@ package com.zianedu.api.define.datasource;
 public enum ConsultStatusType {
     PREPARE(1, "상담대기"),
     SUCCESS(2, "상담완료"),
-    CANCEL(3, "상담취소");
+    CANCEL(3, "예약취소");
 
     int consultStatusKey;
 

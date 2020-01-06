@@ -738,6 +738,17 @@
         WHERE BBS_KEY = #{bbsKey}
     </update>
 
+    <update id="updateTConsultReserveStatus">
+        UPDATE T_CONSULT_RESERVE
+        SET CONSULT_STATUS = #{consultStatus}
+        <if test="idxs.size  != 0">
+            WHERE IDX IN
+            <foreach collection="idxs" item="idx" separator="," open="(" close=")">
+                #{idx}
+            </foreach>
+        </if>
+    </update>
+
     <delete id="deleteTBbsData">
         DELETE FROM T_BBS_DATA WHERE BBS_KEY = #{bbsKey}
     </delete>

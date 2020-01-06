@@ -2456,15 +2456,14 @@
     </select>
 
     <select id="selectGoodsInfoByRetake" resultType="VideoLectureDetailVO">
-        SELECT A.G_KEY, B.STATUS, B.LIMIT_DAY,
-               (SELECT COUNT(Z.LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = B.LEC_KEY) as lectureCount,
+        SELECT A.G_KEY, A.TYPE,
+               (SELECT LIMIT_DAY FROM T_LEC Z WHERE Z.G_KEY = A.G_KEY)as limitDay,
                (SELECT PRICE FROM T_GOODS_PRICE_OPTION Z where Z.PRICE_KEY = #{priceKey}) as price,
                (SELECT SELL_PRICE FROM T_GOODS_PRICE_OPTION Z where Z.PRICE_KEY = #{priceKey}) as sellPrice,
-               (SELECT EXTEND_PERCENT  FROM T_GOODS_PRICE_OPTION Z where Z.PRICE_KEY = #{priceKey}) as extendPercent
+               (SELECT EXTEND_PERCENT  FROM T_GOODS_PRICE_OPTION Z where Z.PRICE_KEY = #{priceKey}) as extendPercent,
+               (SELECT KIND  FROM T_GOODS_PRICE_OPTION Z where Z.PRICE_KEY = #{priceKey}) as kind
         FROM T_GOODS A
-        INNER JOIN T_LEC B
-        ON A.G_KEY = B.G_KEY
-        AND A.G_KEY = #{gKey}
+        WHERE A.G_KEY = #{gKey}
     </select>
 
     <select id="selectZianPassEndList" resultType="ZianPassEndListVO">

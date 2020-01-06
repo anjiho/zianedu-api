@@ -770,12 +770,18 @@ public class OrderService extends PagingSupport {
                     VideoLectureDetailVO lectureInfo = productMapper.selectGoodsInfoByRetake(vo.getGKey(), vo.getPriceKey());
                     int sellPrice = 0;
                     int extendDay = 0;
-                    if (vo.getExtendDay() == 0) {
-                        sellPrice = ZianUtils.calcPercent(lectureInfo.getSellPrice(), lectureInfo.getExtendPercent());
-                    } else {
-                        sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getLimitDay()) * vo.getExtendDay();
+                    if (lectureInfo.getType() == 1) {
+                        if (vo.getExtendDay() == 0) {
+                            sellPrice = ZianUtils.calcPercent(lectureInfo.getSellPrice(), lectureInfo.getExtendPercent());
+                        } else {
+                            sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getLimitDay()) * vo.getExtendDay();
+                            extendDay = vo.getExtendDay();
+                        }
+                    } else if (lectureInfo.getType() == 5) {
+                        sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getKind() ) * (vo.getExtendDay() / 30);
                         extendDay = vo.getExtendDay();
                     }
+
                     TCartVO cartVO = new TCartVO(
                             vo.getUserKey(), vo.getGKey(), vo.getPriceKey(), vo.getGCount(),
                             String.valueOf(extendDay), lectureInfo.getPrice(), StringUtils.convertSipWonZero(sellPrice)

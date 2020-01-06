@@ -9,6 +9,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.PagingSupport;
+import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.vo.TBbsDataVO;
 import com.zianedu.api.vo.TConsultReserveVO;
 import com.zianedu.api.vo.TUserVO;
@@ -111,5 +112,18 @@ public class CustomerCenterService extends PagingSupport {
             }
         }
         return new ApiPagingResultDTO(consultListCount, consultReserveList, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO changeConsultReserveStatus(Integer[]idxs, int reserveStatusType) {
+        int resultCode = OK.value();
+
+        if (idxs.length == 0 && reserveStatusType == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<Integer>idxList = StringUtils.integerArrayToArrayList(idxs);
+            boardMapper.updateTConsultReserveStatus(idxList, reserveStatusType);
+        }
+        return new ApiResultCodeDTO("RESULT", "SUCCESS", resultCode);
     }
 }

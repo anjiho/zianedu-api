@@ -2,6 +2,7 @@ package com.zianedu.api.mapper;
 
 import com.zianedu.api.dto.ConsultReserveListDTO;
 import com.zianedu.api.vo.*;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -118,6 +119,8 @@ public interface BoardMapper {
     void updateTBbsComment(@Param("bbsCommentKey") int bbsCommentKey, @Param("comment") String comment);
 
     void updateTBbsReadCount(@Param("bbsKey") int bbsKey);
+
+    void updateTConsultReserveStatus(@Param("idxs") List<Integer>idxs, @Param("consultStatus") int consultStatus);
 
     /** DELETE **/
     void deleteTBbsData(@Param("bbsKey") int bbsKey);

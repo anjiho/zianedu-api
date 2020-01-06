@@ -4,6 +4,7 @@ import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.service.CustomerCenterService;
+import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
 import com.zianedu.api.vo.TConsultReserveVO;
 import io.swagger.annotations.ApiImplicitParam;
@@ -66,12 +67,23 @@ public class CustomerCenterController {
             @ApiImplicitParam(name = "reserveDate", value = "예약월(YYYY-MM-DD)", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
-
     })
     public ApiPagingResultDTO getConsultReserveList(@PathVariable("userKey") int userKey,
                                                     @RequestParam("reserveDate") String reserveDate,
                                                     @RequestParam("sPage") int sPage,
                                                     @RequestParam("listLimit") int listLimit) {
         return customerCenterService.getConsultList(userKey, reserveDate, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/changeConsultReserveStatus", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("상담예약 상태변경하기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "idxList", value = "상담예약내역 선택된 인덱스 값 목록 > [1234,1234,...]", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "reserveStatusType", value = "1:상담대기, 2:상담완료, 3:예약취소 ", dataType = "string", paramType = "query", required = true),
+    })
+    public ApiResultCodeDTO changeConsultReserveStatus(@RequestParam("idxList") String idxList,
+                                                       @RequestParam("reserveStatusType") int reserveStatusType) {
+        Integer[] idxArray = GsonUtil.convertToIntegerArrayFromString(idxList);
+        return customerCenterService.changeConsultReserveStatus(idxArray, reserveStatusType);
     }
 }

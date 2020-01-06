@@ -40,4 +40,8 @@ public class VideoLectureDetailVO {
     private int sellPrice;
 
     private int price;
+
+    private int type;
+
+    private int kind;
 }
