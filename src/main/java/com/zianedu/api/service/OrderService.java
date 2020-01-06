@@ -781,7 +781,6 @@ public class OrderService extends PagingSupport {
                         sellPrice = (lectureInfo.getSellPrice() / lectureInfo.getKind() ) * (vo.getExtendDay() / 30);
                         extendDay = vo.getExtendDay();
                     }
-
                     TCartVO cartVO = new TCartVO(
                             vo.getUserKey(), vo.getGKey(), vo.getPriceKey(), vo.getGCount(),
                             String.valueOf(extendDay), lectureInfo.getPrice(), StringUtils.convertSipWonZero(sellPrice)
@@ -937,12 +936,15 @@ public class OrderService extends PagingSupport {
 
                     for (CartListVO product : buyProductList) {
                         int sellPrice = 0;
-                        if (retakeInfo.getExtendDay() == 0) {
-                            sellPrice = ZianUtils.calcPercent(product.getSellPrice(), product.getExtendPercent());
-                        } else {
-                            sellPrice = (product.getSellPrice() / product.getLimitDay()) * retakeInfo.getExtendDay();
+                        if (product.getType() == 1) {
+                            if (retakeInfo.getExtendDay() == 0) {
+                                sellPrice = ZianUtils.calcPercent(product.getSellPrice(), product.getExtendPercent());
+                            } else {
+                                sellPrice = (product.getSellPrice() / product.getLimitDay()) * retakeInfo.getExtendDay();
+                            }
+                        } else if (product.getType() == 5) {
+                            sellPrice = (product.getSellPrice() / product.getKind() ) * (retakeInfo.getExtendDay() / 30);
                         }
-
                         OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                                 product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
                                 GoodsType.getGoodsTypeStr(product.getType(), retakeInfo.getExtendDay()), product.getGoodsName(),
