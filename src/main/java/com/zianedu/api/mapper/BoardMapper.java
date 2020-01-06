@@ -86,10 +86,11 @@ public interface BoardMapper {
 
     List<TBbsDataVO> selectTBbsDataByCtgKey(@Param("ctgKey") int ctgKey);
 
-    List<ConsultReserveListDTO> selectConsultReserveList(@Param("userKey") int userKey, @Param("reserveDate") String reserveDate,
-                                                         @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+    List<ConsultReserveListDTO> selectConsultReserveList(@Param("userKey") int userKey, @Param("reserveStartDate") String reserveStartDate,
+                                                         @Param("reserveEndDate") String reserveEndDate, @Param("startNumber") int startNumber,
+                                                         @Param("listLimitNumber") int listLimitNumber);
 
-    int selectConsultReserveListCount(@Param("userKey") int userKey, @Param("reserveDate") String reserveDate);
+    int selectConsultReserveListCount(@Param("userKey") int userKey, @Param("reserveStartDate") String reserveStartDate, @Param("reserveEndDate") String reserveEndDate);
 
     List<TBbsDataVO> selectBoardListAtMyWrite(@Param("userKey") int userKey, @Param("boardType") String boardType,
                                               @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,

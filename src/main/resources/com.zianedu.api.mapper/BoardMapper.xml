@@ -543,9 +543,17 @@
         <if test="userKey > 0">
             AND USER_KEY = #{userKey}
         </if>
-        <if test="reserveDate != ''">
-            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') = #{reserveDate}
+        <if test="reserveStartDate != ''">
+            <![CDATA[
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') >= #{reserveStartDate}
+        ]]>
         </if>
+        <if test="reserveEndDate != ''">
+            <![CDATA[
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') <= #{reserveEndDate}
+        ]]>
+        </if>
+        ORDER BY RESERVE_DATE DESC
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
@@ -555,8 +563,15 @@
         <if test="userKey > 0">
             AND USER_KEY = #{userKey}
         </if>
-        <if test="reserveDate != ''">
-            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') = #{reserveDate}
+        <if test="reserveStartDate != ''">
+        <![CDATA[
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') >= #{reserveStartDate}
+        ]]>
+        </if>
+        <if test="reserveEndDate != ''">
+        <![CDATA[
+            AND TO_CHAR(RESERVE_DATE, 'YYYY-MM-DD') <= #{reserveEndDate}
+        ]]>
         </if>
     </select>
 

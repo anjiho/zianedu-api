@@ -86,22 +86,22 @@ public class CustomerCenterService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getConsultList(int userKey, String reserveDate, int sPage, int listLimit) {
+    public ApiPagingResultDTO getConsultList(int userKey, String reserveStartDate, String reserveEndDate, int sPage, int listLimit) {
         int resultCode = OK.value();
 
         int consultListCount = 0;
         List<ConsultReserveListDTO> consultReserveList = new ArrayList<>();
         int startNumber = getPagingStartNumber(sPage, listLimit);
 
-        if (userKey == 0 && "".equals(reserveDate)) {
+        if (userKey == 0 && "".equals(reserveStartDate) && "".equals(reserveEndDate)) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             TUserVO userInfo = userMapper.selectUserInfoByUserKey(userKey);
             if (userInfo.getAuthority() == 0) {
                 userKey = 0;
             }
-            consultListCount = boardMapper.selectConsultReserveListCount(userKey, reserveDate);
-            consultReserveList = boardMapper.selectConsultReserveList(userKey, reserveDate, startNumber, listLimit);
+            consultListCount = boardMapper.selectConsultReserveListCount(userKey, reserveStartDate, reserveEndDate);
+            consultReserveList = boardMapper.selectConsultReserveList(userKey, reserveStartDate, reserveEndDate, startNumber, listLimit);
             if (consultReserveList.size() > 0) {
                 for (ConsultReserveListDTO dto : consultReserveList) {
                     dto.setReserveTimeName(ConsultReserveTimeType.getConsultReserveTimeName(dto.getReserveTimeKey()));
