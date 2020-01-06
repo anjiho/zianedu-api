@@ -393,4 +393,36 @@ public class BoardService extends PagingSupport {
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getPasserVideoList(int sPage, int listLimit, String searchType, String searchText) throws Exception {
+        int resultCode = OK.value();
+
+        List<CommunityListVO> communityList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (sPage == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectPasserVideoListCount(Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+            communityList = boardMapper.selectPasserVideoList(startNumber, listLimit, Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+
+            if (communityList.size() > 0) {
+                String standardDate = Util.plusDate(Util.returnNow(), -10);
+                for (CommunityListVO vo : communityList) {
+                    int diffDayCnt = Util.getDiffDayCount(Util.convertDateFormat3(standardDate), Util.convertDateFormat3(vo.getIndate()));
+
+                    if (diffDayCnt >= 0 && diffDayCnt <= 10) vo.setNew(true);
+                    else vo.setNew(false);
+                    //합격자 영상, 지안식구 일때 이미지 썸네일 경로 주입
+                    //if (bbsMasterKey == 10970 || bbsMasterKey == 11031 || bbsMasterKey == 11045) {
+                        String fileName = boardMapper.selectTBbsDataFileName(vo.getBbsKey());
+                        vo.setFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), fileName));
+                    //}
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, communityList, resultCode);
+    }
+
 }

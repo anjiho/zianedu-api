@@ -292,4 +292,13 @@ public class BoardController {
         String[] fileNames = GsonUtil.convertToStringArrayFromString(fileName);
         return boardService.saveBoardFileList(bbsKey, fileNames);
     }
+
+    @RequestMapping(value = "/getPasserVideoList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격자영상 리스트")
+    public ApiPagingResultDTO getPasserVideoList(@RequestParam("sPage") int sPage,
+                                               @RequestParam("listLimit") int listLimit,
+                                               @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                               @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+        return boardService.getPasserVideoList(sPage, listLimit, searchType, searchText);
+    }
 }
