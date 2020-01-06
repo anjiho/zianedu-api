@@ -373,7 +373,7 @@ public class BoardService extends PagingSupport {
             if (fileNames.length > 0) {
                 List<String>fileNameList = Arrays.asList(fileNames);
                 for (String fileName : fileNameList) {
-                    boardMapper.insertTBbsDataFile(bbsKey, fileName);
+                    boardMapper.insertTBbsDataFile(bbsKey, "100/bbs/" + fileName);
                 }
             }
         }
