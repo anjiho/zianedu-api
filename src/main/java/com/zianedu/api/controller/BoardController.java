@@ -295,6 +295,12 @@ public class BoardController {
 
     @RequestMapping(value = "/getPasserVideoList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("합격자영상 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, name : 이름, content : 내용) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+    })
     public ApiPagingResultDTO getPasserVideoList(@RequestParam("sPage") int sPage,
                                                @RequestParam("listLimit") int listLimit,
                                                @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
