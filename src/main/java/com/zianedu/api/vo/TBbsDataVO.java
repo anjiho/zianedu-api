@@ -110,6 +110,10 @@ public class TBbsDataVO {
         this.contents = Util.isNullValue(contents, "");
         this.isHaveAnswer = 0;
         this.bbsCustomKey = 0;
+        this.youtubeHtml = "";
+        this.gKey = 0;
+        this.successSubject = "";
+        this.lectureSubject = "";
     }
 
     public TBbsDataVO(int bbsMasterKey, int bbsParentKey, int teacherKey, int userKey, String title, String contents, int isSecret, int isNotice) {

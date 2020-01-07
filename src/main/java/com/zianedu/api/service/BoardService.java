@@ -474,4 +474,17 @@ public class BoardService extends PagingSupport {
         return new ApiPagingResultDTO(totalCount, boardList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO getReviewBoardCount(int bbsMasterKey) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        if (bbsMasterKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectReviewListCount(bbsMasterKey, "", "");
+        }
+        return new ApiResultCodeDTO("COUNT", totalCount, resultCode);
+    }
+
 }

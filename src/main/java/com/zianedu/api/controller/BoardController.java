@@ -363,12 +363,21 @@ public class BoardController {
                                       @RequestParam("title") String title,
                                       @RequestParam("content") String content,
                                       @RequestParam("isSecret") int isSecret,
-                                      @RequestParam("ctgKey") int ctgKey,
+                                      @RequestParam(value = "ctgKey" ,required = false, defaultValue = "0") int ctgKey,
                                       @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
                                       @RequestParam(value = "youtubeHtml", required = false, defaultValue = "") String youtubeHtml,
                                       @RequestParam(value = "gKey", required = false, defaultValue = "0") int gKey,
                                       @RequestParam(value = "successSubject", required = false, defaultValue = "") String successSubject,
                                       @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
         return boardService.saveBoardInfo(bbsMasterKey, userKey, title, content, isSecret, ctgKey, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
+    }
+
+    @RequestMapping(value = "/getReviewBoardCount/{bbsMasterKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("합격수기 글 총 개수 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsMasterKey", value = "게시판 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultCodeDTO getReviewBoardCount(@PathVariable("bbsMasterKey") int bbsMasterKey) {
+        return boardService.getReviewBoardCount(bbsMasterKey);
     }
 }
