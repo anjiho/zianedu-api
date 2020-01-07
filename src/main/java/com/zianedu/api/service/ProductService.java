@@ -773,4 +773,17 @@ public class ProductService {
         return new ApiResultObjectDTO("PRICE_KEY", priceKey);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getGoodsInfoByJLecKey(int jLecKey) {
+        int resultCode = OK.value();
+
+        VideoLectureDetailVO vo = null;
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            vo = productMapper.selectGoodsInfoByJLecKey(jLecKey);
+        }
+        return new ApiResultObjectDTO(vo, resultCode);
+    }
+
 }

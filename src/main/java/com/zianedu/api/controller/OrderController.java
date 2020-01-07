@@ -156,4 +156,26 @@ public class OrderController {
                                                                        @RequestParam("productInfo") String productInfo) {
         return orderService.getOrderSheetInfoFromImmediatelyAtRetake(userKey, productInfo);
     }
+
+    @RequestMapping(value = "/getAvailabilityLectureReview/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("수강후기 버튼 클릭 시 수강후기 글쓰기가 가능하지 여부 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO getAvailabilityLectureReview(@PathVariable("userKey") int userKey,
+                                                           @RequestParam("jLecKey") int jLecKey) {
+        return orderService.getAvailabilityLectureReview(userKey, jLecKey);
+    }
+
+    @RequestMapping(value = "/addLectureLimitDay", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("수강후기 작성 시 3일 추가 연장하기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO addLectureLimitDay(@RequestParam("jLecKey") int jLecKey) {
+        return orderService.addLectureLimitDay(jLecKey);
+    }
+
+
 }

@@ -1007,4 +1007,30 @@ public class OrderService extends PagingSupport {
         }
         return new ApiResultObjectDTO(orderSheetDTO, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO getAvailabilityLectureReview(int userKey, int jLecKey) {
+        int resultCode = OK.value();
+
+        boolean bl = false;
+        if (userKey == 0 && jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int cnt = orderMapper.selectTBbsDataCountByJLecKey(userKey, jLecKey);
+            if (cnt == 0) bl = true;
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO addLectureLimitDay(int jLecKey) {
+        int resultCode = OK.value();
+
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            orderMapper.updateTOderLecLimitDay(jLecKey, 3);
+        }
+        return new ApiResultCodeDTO("RESULT", jLecKey, resultCode);
+    }
 }

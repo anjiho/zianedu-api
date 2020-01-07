@@ -197,6 +197,8 @@ public interface ProductMapper {
 
     List<ZianPassEndListVO> selectZianPassEndList(@Param("userKey") int userKey);
 
+    VideoLectureDetailVO selectGoodsInfoByJLecKey(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

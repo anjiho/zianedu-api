@@ -274,4 +274,13 @@ public class ProductController {
         return productService.getPackagePriceKey(gKey);
     }
 
+    @RequestMapping(value = "/getGoodsInfoByJLecKey/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("jLecKey로 상품 정보 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getGoodsInfoByJLecKey(@PathVariable(value = "jLecKey") int jLecKey) {
+        return productService.getGoodsInfoByJLecKey(jLecKey);
+    }
+
 }

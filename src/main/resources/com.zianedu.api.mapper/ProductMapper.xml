@@ -2495,6 +2495,25 @@
             AND Z.end_dt <= sysdate
         ]]>
     </select>
+    
+    <select id="selectGoodsInfoByJLecKey" resultType="VideoLectureDetailVO">
+        SELECT A.G_KEY, A.NAME as goodsName, D.NAME as teacherName
+        FROM T_GOODS A
+        INNER JOIN T_GOODS_TEACHER_LINK B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_TEACHER C
+        ON B.TEACHER_KEY = C.TEACHER_KEY
+        INNER JOIN T_USER D
+        ON C.USER_KEY = D.USER_KEY
+        WHERE 1=1
+        AND A.G_KEY = (
+            SELECT G_KEY
+            FROM T_ORDER_LEC A
+            INNER JOIN T_ORDER_GOODS B
+            ON A.J_G_KEY = B.J_G_KEY
+            WHERE A.J_LEC_KEY = #{jLecKey}
+        )
+    </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC

@@ -298,6 +298,19 @@
         AND A.J_KEY = #{jKey}
     </select>
 
+    <select id="selectTBbsDataCountByJLecKey" resultType="int">
+        SELECT COUNT (BBS_KEY)
+        FROM T_BBS_DATA
+        WHERE WRITE_USER_KEY = #{userKey}
+        AND G_KEY = (
+            SELECT G_KEY
+            FROM T_ORDER_LEC A
+            INNER JOIN T_ORDER_GOODS B
+            ON A.J_G_KEY = B.J_G_KEY
+            WHERE A.J_LEC_KEY = #{jLecKey}
+        )
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL
@@ -341,6 +354,12 @@
             #{jPmKey}, #{jGKey}, sysdate, #{pmType}, sysdate, sysdate
         )
     </insert>
+
+    <update id="updateTOderLecLimitDay">
+        UPDATE T_ORDER_LEC
+        SET LIMIT_DAY = LIMIT_DAY + #{dayCount}
+        WHERE J_LEC_KEY = #{jLecKey}
+    </update>
 
     <delete id="deleteCartInfo">
         DELETE FROM T_CART WHERE CART_KEY = #{cartKey}

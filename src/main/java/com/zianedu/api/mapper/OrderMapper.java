@@ -2,6 +2,7 @@ package com.zianedu.api.mapper;
 
 import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -54,6 +55,8 @@ public interface OrderMapper {
 
     List<OrderDetailInfoVO> selectUserOrderDetailInfo(@Param("jKey") int jKey);
 
+    int selectTBbsDataCountByJLecKey(@Param("userKey") int userKey, @Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);
 
@@ -62,6 +65,7 @@ public interface OrderMapper {
     void insertTOrderPromotion(TOrderPromotionVO tOrderPromotionVO);
 
     /** UPDATE **/
+    void updateTOderLecLimitDay(@Param("jLecKey") int jLecKey, @Param("dayCount") int dayCount);
 
     /** DELETE **/
     void deleteCartInfo(@Param("cartKey") int cartKey);
