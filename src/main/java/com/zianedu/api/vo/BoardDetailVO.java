@@ -30,5 +30,15 @@ public class BoardDetailVO {
 
     private int ctgKey;
 
+    private int writeUserKey;
+
+    private String youtubeHtml;
+
+    private int gKey;
+
+    private String successSubject;
+
+    private String lectureSubject;
+
     private List<FileInfoDTO> fileInfo;
 }

@@ -318,7 +318,12 @@
             A.BBS_KEY, A.TITLE, TO_CHAR(A.INDATE, 'YYYY.MM.DD') as indate, A.READ_COUNT, TRIM(A.CONTENTS) as contents,
             (SELECT USER_ID FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userId,
             (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.WRITE_USER_KEY) as userName,
-            A.CTG_KEY
+            A.CTG_KEY,
+            A.WRITE_USER_KEY,
+            A.G_KEY,
+            A.YOUTUBE_HTML,
+            A.SUCCESS_SUBJECT,
+            A.LECTURE_SUBJECT
         FROM T_BBS_DATA A
         WHERE A.BBS_KEY = #{bbsKey}
     </select>

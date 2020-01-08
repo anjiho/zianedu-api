@@ -13,6 +13,8 @@ public interface EventMapper {
 
     int selectEventListCount(@Param("eventType") String eventType, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
+    TEventVO selectEventDetailInfo(@Param("idx") int idx);
+
 
     /** INSERT **/
     void insertTEvent(TEventVO tEventVO);
