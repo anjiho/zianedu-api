@@ -62,7 +62,11 @@
     </select>
 
     <select id="selectEventDetailInfo" resultType="TEventVO">
-        SELECT * FROM T_EVENT WHERE IDX = #{idx}
+        SELECT IDX, EVENT_TITLE, EVENT_DESC,
+               TO_CHAR(EVENT_START_DATE, 'YYYY-MM-DD') as EVENT_START_DATE,
+               TO_CHAR(EVENT_END_DATE, 'YYYY-MM-DD') as EVENT_END_DATE,
+               THUMBNAIL_PATH, TARGET_URL, TARGET_NAME, CREATE_DATE
+        FROM T_EVENT WHERE IDX = #{idx}
     </select>
 
     <insert id="insertTEvent" parameterType="TEventVO">
@@ -78,5 +82,19 @@
             #{idx}, #{eventTitle}, #{eventDesc}, #{eventStartDate}, #{eventEndDate}, #{thumbnailPath}, #{targetUrl}, #{targetName}
         )
     </insert>
+
+    <update id="updateTEvent" parameterType="TEventVO">
+        UPDATE T_EVENT
+        <set>
+            <if test="eventTitle != ''">EVENT_TITLE = #{eventTitle},</if>
+            <if test="eventDesc != ''">EVENT_DESC = #{eventDesc},</if>
+            <if test="eventStartDate != ''">EVENT_START_DATE = #{eventStartDate},</if>
+            <if test="eventEndDate != ''">EVENT_END_DATE = #{eventEndDate},</if>
+            <if test="thumbnailPath != ''">THUMBNAIL_PATH = #{thumbnailPath},</if>
+            <if test="targetUrl != ''">TARGET_URL = #{targetUrl},</if>
+            <if test="targetUrl != ''">TARGET_NAME = #{targetUrl},</if>
+        </set>
+        WHERE IDX = #{idx}
+    </update>
 
 </mapper>

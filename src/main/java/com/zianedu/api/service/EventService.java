@@ -4,9 +4,11 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.EventMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.TEventVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,23 @@ public class EventService extends PagingSupport {
         return new ApiPagingResultDTO(totalCnt, eventList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getEventDetailInfo(int eventIdx) {
+        int resultCode = OK.value();
+
+        TEventVO eventInfo = new TEventVO();
+        if (eventIdx == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            eventInfo = eventMapper.selectEventDetailInfo(eventIdx);
+            if (eventInfo != null) {
+                eventInfo.setThumbnailPath(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), eventInfo.getThumbnailPath()));
+                eventInfo.setThumbnailFileName(ZianUtils.getFileNameFromPath(eventInfo.getThumbnailPath()));
+            }
+        }
+        return new ApiResultObjectDTO(eventInfo, resultCode);
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO saveEventInfo(String eventTitle, String eventDesc, String eventStartDate, String eventEndDate,
                                           String thumbnailFileName, String targetUrl, String targetName) {
@@ -61,6 +80,22 @@ public class EventService extends PagingSupport {
             );
             eventMapper.insertTEvent(eventVO);
             idx = eventVO.getIdx();
+        }
+        return new ApiResultCodeDTO("RESULT", idx, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO updateEventInfo(int idx, String eventTitle, String eventDesc, String eventStartDate,
+                                            String eventEndDate, String thumbnailFileName, String targetUrl, String targetName) {
+        int resultCode = OK.value();
+
+        if (idx == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TEventVO eventVO = new TEventVO(
+                    idx, eventTitle, eventDesc, eventStartDate, eventEndDate, thumbnailFileName, targetUrl, targetName
+            );
+            eventMapper.updateTEvent(eventVO);
         }
         return new ApiResultCodeDTO("RESULT", idx, resultCode);
     }

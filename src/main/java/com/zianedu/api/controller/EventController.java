@@ -2,6 +2,7 @@ package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.EventService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,8 +31,17 @@ public class EventController {
                                                  @RequestParam("sPage") int sPage,
                                                  @RequestParam("listLimit") int listLimit,
                                                  @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
-                                                 @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+                                                 @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) {
         return eventService.getEventList(eventType, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/eventDetailInfo/{idx}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("이벤트 > 이벤트 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "idx", value = "이벤트 키값", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO eventList(@PathVariable("idx") int idx) {
+        return eventService.getEventDetailInfo(idx);
     }
 
     @RequestMapping(value = "/saveEventInfo", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
@@ -53,6 +63,29 @@ public class EventController {
                                             @RequestParam("thumbnailFileName") String thumbnailFileName,
                                             @RequestParam("targetUrl") String targetUrl) {
         return eventService.saveEventInfo(eventTitle, eventDesc, eventStartDate, eventEndDate, thumbnailFileName, targetUrl, targetName);
+    }
+
+    @RequestMapping(value = "/updateEventInfo", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("이벤트 정보 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "idx", value = "이벤트 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "eventTitle", value = "제목", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "eventDesc", value = "설명", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "eventStartDate", value = "기간(시작일)", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "eventEndDate", value = "기간(종료일)", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "targetName", value = "대상", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "thumbnailFileName", value = "썸네일파일명", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "targetUrl", value = "URL경로", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO updateEventInfo(@RequestParam("idx") int idx,
+                                          @RequestParam("eventTitle") String eventTitle,
+                                          @RequestParam("eventDesc") String eventDesc,
+                                          @RequestParam("eventStartDate") String eventStartDate,
+                                          @RequestParam("eventEndDate") String eventEndDate,
+                                          @RequestParam("targetName") String targetName,
+                                          @RequestParam("thumbnailFileName") String thumbnailFileName,
+                                          @RequestParam("targetUrl") String targetUrl) {
+        return eventService.updateEventInfo(idx, eventTitle, eventDesc, eventStartDate, eventEndDate, thumbnailFileName, targetUrl, targetName);
     }
 
 }

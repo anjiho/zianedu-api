@@ -18,4 +18,7 @@ public interface EventMapper {
 
     /** INSERT **/
     void insertTEvent(TEventVO tEventVO);
+
+    /** UPDATE **/
+    void updateTEvent(TEventVO tEventVO);
 }

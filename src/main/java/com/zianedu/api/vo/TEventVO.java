@@ -25,10 +25,24 @@ public class TEventVO {
 
     private String eventTerm;
 
+    private String thumbnailFileName;
+
     public TEventVO(){}
 
     public TEventVO(String eventTitle, String eventDesc, String eventStartDate, String eventEndDate, String thumbnailFileName,
                     String targetUrl, String targetName) {
+        this.eventTitle = eventTitle;
+        this.eventDesc = eventDesc;
+        this.eventStartDate = eventStartDate;
+        this.eventEndDate = eventEndDate;
+        this.thumbnailPath = "100/bbs/" + thumbnailFileName;
+        this.targetUrl = targetUrl;
+        this.targetName = targetName;
+    }
+
+    public TEventVO(int idx, String eventTitle, String eventDesc, String eventStartDate, String eventEndDate,
+                    String thumbnailFileName, String targetUrl, String targetName) {
+        this.idx = idx;
         this.eventTitle = eventTitle;
         this.eventDesc = eventDesc;
         this.eventStartDate = eventStartDate;
