@@ -740,7 +740,7 @@
         <if test="searchType == 'title'">
             AND TITLE LIKE '%'||#{searchText}||'%'
         </if>
-        <if test="searchType == 'contents'">
+        <if test="searchType == 'content'">
             AND CONTENTS LIKE '%'||#{searchText}||'%'
         </if>
         ORDER BY BBS_KEY DESC
@@ -757,7 +757,7 @@
         <if test="searchType == 'title'">
             AND TITLE LIKE '%'||#{searchText}||'%'
         </if>
-        <if test="searchType == 'contents'">
+        <if test="searchType == 'content'">
             AND CONTENTS LIKE '%'||#{searchText}||'%'
         </if>
     </select>
