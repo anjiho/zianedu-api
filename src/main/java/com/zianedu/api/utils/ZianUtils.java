@@ -70,9 +70,23 @@ public class ZianUtils {
         return calcPrice;
     }
 
+    public static String getFileNameFromPath(String filePath) {
+        String fileName = "";
+        if (!"".equals(filePath)) {
+            if (filePath.contains("/")) {
+                String[] files = filePath.split("/");
+                fileName = files[2];
+            } else {
+                fileName = filePath;
+            }
+        }
+        return getSplitFileName(fileName);
+    }
+
     public static void main(String[] args) {
         //String str = getSplitFileName("bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf");
-        System.out.println(calcPercent(130000, 20));
+        String str = "1234.jpg";
+        System.out.println(getFileNameFromPath(str));
 
     }
 }

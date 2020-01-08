@@ -61,6 +61,10 @@
         </if>
     </select>
 
+    <select id="selectEventDetailInfo" resultType="TEventVO">
+        SELECT * FROM T_EVENT WHERE IDX = #{idx}
+    </select>
+
     <insert id="insertTEvent" parameterType="TEventVO">
         <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
             SELECT T_EVENT_SEQ.NEXTVAL FROM DUAL

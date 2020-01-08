@@ -163,7 +163,8 @@ public class BoardService extends PagingSupport {
                     List<FileInfoDTO> fileInfoList = new ArrayList<>();
                     for (String file : fileNameList) {
                         FileInfoDTO fileInfoDTO = new FileInfoDTO();
-                        String fileName = ZianUtils.getSplitFileName(file);
+                        //String fileName = ZianUtils.getSplitFileName(file);
+                        String fileName = ZianUtils.getFileNameFromPath(file);
                         String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), file);
                         fileInfoDTO.setFileName(fileName);
                         fileInfoDTO.setFileUrl(fileUrl);
