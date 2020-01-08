@@ -883,6 +883,20 @@
         </if>
     </update>
 
+    <update id="updateTBbsDataReview" parameterType="TBbsDataVO">
+        UPDATE T_BBS_DATA
+        <set>
+            <if test="title != ''">TITLE = #{title},</if>
+            <if test="contents != ''">CONTENTS = #{contents},</if>
+            <if test="pwd != ''">PWD = #{pwd},</if>
+            <if test="youtubeHtml != ''">YOUTUBE_HTML = #{youtubeHtml},</if>
+            <if test="gKey > 0">G_KEY = #{gKey},</if>
+            <if test="successSubject != ''">SUCCESS_SUBJECT = #{successSubject},</if>
+            <if test="lectureSubject != ''">LECTURE_SUBJECT = #{lectureSubject},</if>
+        </set>
+        WHERE BBS_KEY = #{bbsKey}
+    </update>
+
     <delete id="deleteTBbsData">
         DELETE FROM T_BBS_DATA WHERE BBS_KEY = #{bbsKey}
     </delete>

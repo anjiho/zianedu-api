@@ -138,6 +138,8 @@ public interface BoardMapper {
 
     void updateTConsultReserveStatus(@Param("idxs") List<Integer>idxs, @Param("consultStatus") int consultStatus);
 
+    void updateTBbsDataReview(TBbsDataVO tBbsDataVO);
+
     /** DELETE **/
     void deleteTBbsData(@Param("bbsKey") int bbsKey);
 

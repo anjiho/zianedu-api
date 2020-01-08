@@ -380,4 +380,29 @@ public class BoardController {
     public ApiResultCodeDTO getReviewBoardCount(@PathVariable("bbsMasterKey") int bbsMasterKey) {
         return boardService.getReviewBoardCount(bbsMasterKey);
     }
+
+    @RequestMapping(value = "/updateBoardReview", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("게시판 글 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isSecret", value = "공개/비공개 여부(0 : 공개, 1 : 비공개)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "fileName", value = "파일명", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "youtubeHtml", value = "html코드", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "gKey", value = "수강후기 상품키값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "successSubject", value = "합격과목", dataType = "String", paramType = "query", required = false),
+            @ApiImplicitParam(name = "lectureSubject", value = "수강과목, 도서명", dataType = "String", paramType = "query", required = false)
+    })
+    public ApiResultCodeDTO updateBoard(@RequestParam("bbsKey") int bbsKey,
+                                        @RequestParam("title") String title,
+                                        @RequestParam("content") String content,
+                                        @RequestParam("isSecret") int isSecret,
+                                        @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
+                                        @RequestParam(value = "youtubeHtml", required = false, defaultValue = "") String youtubeHtml,
+                                        @RequestParam(value = "gKey", required = false, defaultValue = "0") int gKey,
+                                        @RequestParam(value = "successSubject", required = false, defaultValue = "") String successSubject,
+                                        @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
+        return boardService.updateBoardReviewInfo(bbsKey, title, content, isSecret, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
+    }
 }

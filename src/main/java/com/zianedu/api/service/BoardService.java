@@ -487,4 +487,25 @@ public class BoardService extends PagingSupport {
         return new ApiResultCodeDTO("COUNT", totalCount, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO updateBoardReviewInfo(int bbsKey, String title, String content, int isSecret, String fileName,
+                                                  String youtubeHtml, int gKey, String successSubject, String lectureSubject) {
+        int resultCode = OK.value();
+
+        if (bbsKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsKey, title, content, isSecret, youtubeHtml, gKey, successSubject, lectureSubject);
+            boardMapper.updateTBbsDataReview(bbsDataVO);
+            bbsKey = bbsDataVO.getBbsKey();
+            //첨부파일이 있을때 T_BBS_DATA_FILE 테이블 저장
+            if (!"".equals(fileName)) {
+                TBbsDataFileVO fileVO = boardMapper.selectTBbsDataFile(bbsKey);
+                if (fileVO == null) boardMapper.insertTBbsDataFile(bbsKey, fileName);
+                else boardMapper.updateTBbsDataFile(fileVO.getBbsFileKey(), fileName);
+            }
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
 }

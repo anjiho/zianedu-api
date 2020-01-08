@@ -132,5 +132,16 @@ public class TBbsDataVO {
         this.bbsCustomKey = 0;
     }
 
+    public TBbsDataVO(int bbsKey, String title, String contents, int isSecret, String youtubeHtml, int gKey, String successSubject, String lectureSubject) {
+        this.bbsKey = bbsKey;
+        this.title = Util.isNullValue(title, "");
+        this.pwd = String.valueOf(isSecret);
+        this.contents = Util.isNullValue(contents, "");
+        this.youtubeHtml = youtubeHtml;
+        this.gKey = gKey;
+        this.successSubject = successSubject;
+        this.lectureSubject = lectureSubject;
+    }
+
 
 }

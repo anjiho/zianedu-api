@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zianedu.api.mapper.EventMapper">
+
+    <select id="selectEventList" resultType="TEventVO">
+        SELECT
+            IDX, EVENT_TITLE, EVENT_DESC,
+            CONCAT( CONCAT( TO_CHAR(EVENT_START_DATE, 'YYYY.MM.DD'), ' ~ '),  TO_CHAR(EVENT_END_DATE, 'YYYY.MM.DD')) as eventTerm,
+            TARGET_NAME,
+            THUMBNAIL_PATH,
+            TO_CHAR(CREATE_DATE, 'YYYY.MM.DD') as create_date
+        FROM T_EVENT
+        WHERE 1=1
+        <if test="eventType == 'PROCEED'">
+        <![CDATA[
+            AND EVENT_START_DATE <= sysdate
+        ]]>
+            AND EVENT_END_DATE >= sysdate
+        </if>
+        <if test="eventType == 'DEAD'">
+        <![CDATA[
+            AND EVENT_START_DATE < sysdate
+        ]]>
+        <![CDATA[
+            AND EVENT_END_DATE < sysdate
+        ]]>
+        </if>
+        <if test="searchType == 'title'">
+            AND EVENT_TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND EVENT_DESC LIKE '%'||#{searchText}||'%'
+        </if>
+        ORDER BY CREATE_DATE DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectEventListCount" resultType="int">
+        SELECT COUNT (IDX)
+        FROM T_EVENT
+        WHERE 1=1
+        <if test="eventType == 'PROCEED'">
+            <![CDATA[
+            AND EVENT_START_DATE <= sysdate
+        ]]>
+            AND EVENT_END_DATE >= sysdate
+        </if>
+        <if test="eventType == 'DEAD'">
+            <![CDATA[
+            AND EVENT_START_DATE < sysdate
+        ]]>
+            <![CDATA[
+            AND EVENT_END_DATE < sysdate
+        ]]>
+        </if>
+        <if test="searchType == 'title'">
+            AND EVENT_TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'contents'">
+            AND EVENT_DESC LIKE '%'||#{searchText}||'%'
+        </if>
+    </select>
+
+    <insert id="insertTEvent" parameterType="TEventVO">
+        <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
+            SELECT T_EVENT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_EVENT
+        (
+            IDX, EVENT_TITLE, EVENT_DESC, EVENT_START_DATE, EVENT_END_DATE, THUMBNAIL_PATH, TARGET_URL, TARGET_NAME
+        )
+        VALUES
+        (
+            #{idx}, #{eventTitle}, #{eventDesc}, #{eventStartDate}, #{eventEndDate}, #{thumbnailPath}, #{targetUrl}, #{targetName}
+        )
+    </insert>
+
+</mapper>
