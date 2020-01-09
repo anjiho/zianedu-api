@@ -14,4 +14,6 @@ public interface BookStoreMapper {
 
     Integer selectBookListFromLeftMenuCtgKeyCount(@Param("ctgKey") int ctgKey);
 
+    List<BookListVO> selectBookListFromLeftMenuCtgKeyAtBest();
+
 }

@@ -85,7 +85,7 @@ public class ZianUtils {
 
     public static void main(String[] args) {
         //String str = getSplitFileName("bbs\\2017년 건축구조 9.7급 세부출제항목 분석.pdf");
-        String str = "1234.jpg";
+        String str = "100/bbs/event_img02.jpg";
         System.out.println(getFileNameFromPath(str));
 
     }

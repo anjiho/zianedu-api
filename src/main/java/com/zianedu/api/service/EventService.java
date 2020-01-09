@@ -59,8 +59,8 @@ public class EventService extends PagingSupport {
         } else {
             eventInfo = eventMapper.selectEventDetailInfo(eventIdx);
             if (eventInfo != null) {
-                eventInfo.setThumbnailPath(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), eventInfo.getThumbnailPath()));
                 eventInfo.setThumbnailFileName(ZianUtils.getFileNameFromPath(eventInfo.getThumbnailPath()));
+                eventInfo.setThumbnailPath(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), eventInfo.getThumbnailPath()));
             }
         }
         return new ApiResultObjectDTO(eventInfo, resultCode);

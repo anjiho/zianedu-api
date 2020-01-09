@@ -41,4 +41,10 @@ public class BookStoreController {
                                           @RequestParam(value = "listLimit") int listLimit) {
         return bookStoreService.getBookListFromLeftMenuCtgKey(ctgKey, sPage, listLimit);
     }
+
+    @RequestMapping(value = "/getBestBookList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인서점 > 지안에듀 BEST 도서 리스트")
+    public ApiResultListDTO getBestBookList() {
+        return bookStoreService.getBestBookList();
+    }
 }

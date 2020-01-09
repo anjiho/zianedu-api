@@ -81,4 +81,26 @@ public class BookStoreService extends PagingSupport {
         }
         return new ApiPagingResultDTO(totalCount, bookList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getBestBookList() {
+        int resultCode = OK.value();
+
+        List<BookListVO> bestBookList = bookStoreMapper.selectBookListFromLeftMenuCtgKeyAtBest();
+        if (bestBookList.size() > 0) {
+            for (BookListVO vo : bestBookList) {
+                String discountPercent = Util.getProductDiscountRate(Integer.parseInt(vo.getPrice()), Integer.parseInt(vo.getSellPrice()));
+                vo.setDiscountPercent(discountPercent);
+
+                String accrualRate = Util.getAccrualRatePoint(Integer.parseInt(vo.getSellPrice()), Integer.parseInt(vo.getPoint()));
+                vo.setAccrualRate(accrualRate);
+
+                vo.setPrice(StringUtils.addThousandSeparatorCommas(vo.getPrice()));
+                vo.setSellPrice(StringUtils.addThousandSeparatorCommas(vo.getSellPrice()));
+                vo.setPoint(StringUtils.addThousandSeparatorCommas(vo.getPoint()));
+                vo.setBookImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
+            }
+        }
+        return new ApiResultListDTO(bestBookList, resultCode);
+    }
 }
