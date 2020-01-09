@@ -6,6 +6,7 @@ import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardMapper {
 
@@ -52,7 +53,7 @@ public interface BoardMapper {
 
     String selectTBbsDataFileName(@Param("bbsKey") int bbsKey);
 
-    List<String> selectTBbsDataFileNameList(@Param("bbsKey") int bbsKey);
+    List<BbsFileDataVO> selectTBbsDataFileNameList(@Param("bbsKey") int bbsKey);
 
     BoardDetailVO selectBoardDetailInfo(@Param("bbsKey") int bbsKey);
 
@@ -144,6 +145,8 @@ public interface BoardMapper {
     void deleteTBbsData(@Param("bbsKey") int bbsKey);
 
     void deleteTBbsDataFile(@Param("bbsKey") int bbsKey);
+
+    void deleteTBbsDataFileFromBbsFileKey(@Param("bbsFileKey") int bbsFileKey);
 
     void deleteTBbsCommentFromBbsKey(@Param("bbsKey") int bbsKey);
 

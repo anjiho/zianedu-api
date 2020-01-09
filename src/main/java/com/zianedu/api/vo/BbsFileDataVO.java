@@ -1,13 +1,11 @@
-package com.zianedu.api.dto;
+package com.zianedu.api.vo;
 
 import lombok.Data;
 
 @Data
-public class FileInfoDTO {
+public class BbsFileDataVO {
 
     private int bbsFileKey;
 
     private String fileName;
-
-    private String fileUrl;
 }

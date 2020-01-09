@@ -309,8 +309,8 @@
         SELECT FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
     </select>
 
-    <select id="selectTBbsDataFileNameList" resultType="String">
-        SELECT FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    <select id="selectTBbsDataFileNameList" resultType="BbsFileDataVO">
+        SELECT BBS_FILE_KEY as bbsFileKey, FILENAME FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
     </select>
 
     <select id="selectBoardDetailInfo" resultType="BoardDetailVO">
@@ -908,6 +908,10 @@
 
     <delete id="deleteTBbsDataFile">
         DELETE FROM T_BBS_DATA_FILE WHERE BBS_KEY = #{bbsKey}
+    </delete>
+
+    <delete id="deleteTBbsDataFileFromBbsFileKey">
+        DELETE FROM T_BBS_DATA_FILE WHERE BBS_FILE_KEY = #{bbsFileKey}
     </delete>
 
     <delete id="deleteTBbsCommentFromBbsKey">

@@ -405,4 +405,14 @@ public class BoardController {
                                         @RequestParam(value = "lectureSubject", required = false, defaultValue = "") String lectureSubject) {
         return boardService.updateBoardReviewInfo(bbsKey, title, content, isSecret, fileName, youtubeHtml, gKey, successSubject, lectureSubject);
     }
+
+    @RequestMapping(value = "/deleteBoardFile/{bbsFileKey}", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("게시판 첨부 파일 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsFileKey", value = "게시판 파일 키값", dataType = "int", paramType = "path", required = true)
+
+    })
+    public ApiResultCodeDTO deleteBoardFile(@PathVariable("bbsFileKey") int bbsFileKey) {
+        return boardService.deleteBoardFile(bbsFileKey);
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -158,16 +159,17 @@ public class BoardService extends PagingSupport {
             //ReferenceRoomDetailVO referenceRoomDetailVO = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
             if (boardDetailVO != null) {
                 //파일정보 주입 시작
-                List<String> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
+                List<BbsFileDataVO> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
                 if (fileNameList.size() > 0) {
                     List<FileInfoDTO> fileInfoList = new ArrayList<>();
-                    for (String file : fileNameList) {
+                    for (BbsFileDataVO vo : fileNameList) {
                         FileInfoDTO fileInfoDTO = new FileInfoDTO();
                         //String fileName = ZianUtils.getSplitFileName(file);
-                        String fileName = ZianUtils.getFileNameFromPath(file);
-                        String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), file);
+                        String fileName = ZianUtils.getFileNameFromPath(vo.getFileName());
+                        String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFileName());
                         fileInfoDTO.setFileName(fileName);
                         fileInfoDTO.setFileUrl(fileUrl);
+                        fileInfoDTO.setBbsFileKey(vo.getBbsFileKey());
 
                         fileInfoList.add(fileInfoDTO);
                     }
@@ -347,6 +349,18 @@ public class BoardService extends PagingSupport {
             boardMapper.deleteTBbsComment(bbsCommentKey);
         }
         return new ApiResultCodeDTO("bbsCommentKey", bbsCommentKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO deleteBoardFile(int bbsFileKey) {
+        int resultCode = OK.value();
+
+        if (bbsFileKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            boardMapper.deleteTBbsDataFileFromBbsFileKey(bbsFileKey);
+        }
+        return new ApiResultCodeDTO("bbsFileKey", bbsFileKey, resultCode);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
