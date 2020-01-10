@@ -84,9 +84,11 @@
             LEFT JOIN T_GOODS_PRICE_OPTION E
             ON B.G_KEY = E.G_KEY
             WHERE 1=1
-            <if test="bookMenuType == 'ALL'">
-                AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            <!-- 공통과목 -->
+            <if test="bookMenuType == 'COMMON'">
+                AND A.CTG_KEY IN (701)
             </if>
+            --AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
             AND B.TYPE = 3
             AND B.IS_SHOW = 1
             AND B.IS_SELL = 1
@@ -110,9 +112,11 @@
             LEFT JOIN T_GOODS_PRICE_OPTION E
             ON B.G_KEY = E.G_KEY
             WHERE 1=1
-            <if test="bookMenuType == 'ALL'">
-                AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            <!-- 공통과목 -->
+            <if test="bookMenuType == 'COMMON'">
+                AND A.CTG_KEY IN (701)
             </if>
+                --AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
             AND B.TYPE = 3
             AND B.IS_SHOW = 1
             AND B.IS_SELL = 1
@@ -122,6 +126,7 @@
         )T
         GROUP BY T.G_KEY, T.goodsName, T.IMAGE_LIST, T.WRITER, T.NAME, T.PRICE, T.SELL_PRICE, T.POINT,
         T.PRICE_KEY, T.SUBJECT_CTG_KEY, T.CTG_KEY, T.publishDate
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimit} ROWS ONLY
     </select>
 
     <select id="selectSalesBookListCount" resultType="int">
@@ -138,8 +143,9 @@
                 LEFT JOIN T_GOODS_PRICE_OPTION E
                 ON B.G_KEY = E.G_KEY
                 WHERE 1=1
-                <if test="bookMenuType == 'ALL'">
-                    AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+                <!-- 공통과목 -->
+                <if test="bookMenuType == 'COMMON'">
+                    AND A.CTG_KEY IN (701)
                 </if>
                 AND B.TYPE = 3
                 AND B.IS_SHOW = 1
@@ -161,8 +167,9 @@
                 LEFT JOIN T_GOODS_PRICE_OPTION E
                 ON B.G_KEY = E.G_KEY
                 WHERE 1=1
-                <if test="bookMenuType == 'ALL'">
-                    AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+                <!-- 공통과목 -->
+                <if test="bookMenuType == 'COMMON'">
+                    AND A.CTG_KEY IN (701)
                 </if>
                 AND B.TYPE = 3
                 AND B.IS_SHOW = 1
