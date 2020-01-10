@@ -47,4 +47,21 @@ public class BookStoreController {
     public ApiResultListDTO getBestBookList() {
         return bookStoreService.getBestBookList();
     }
+
+    @RequestMapping(value = "/getSalesBookList/{bookMenuType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인서점 도서 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bookMenuType", value = "전체 : ALL", dataType = "string", paramType = "path", required = true),
+            @ApiImplicitParam(name = "searchText", value = "검색명", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "orderType", value = "출간일순 : date, 저자순 : name", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getSalesBookList(@PathVariable(value = "bookMenuType") String bookMenuType,
+                                               @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
+                                               @RequestParam(value = "orderType") String orderType,
+                                               @RequestParam(value = "sPage") int sPage,
+                                               @RequestParam(value = "listLimit") int listLimit) {
+        return bookStoreService.getSalesBookList(bookMenuType, searchText, orderType, sPage, listLimit);
+    }
 }

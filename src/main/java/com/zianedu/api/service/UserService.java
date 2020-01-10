@@ -92,7 +92,7 @@ public class UserService extends ApiResultKeyCode {
             if (regUser.getUserKey() == 0) resultCode = ZianErrCode.CUSTOM_FAIL_REG_USER.code();
             userKey = regUser.getUserKey();
             //회원가입에 의한 마일리지 주입
-            paymentService.injectUserPoint("U", userKey, 1000, 0, "");
+            paymentService.injectUserPoint("U", userKey, 3000, 0, "");
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }

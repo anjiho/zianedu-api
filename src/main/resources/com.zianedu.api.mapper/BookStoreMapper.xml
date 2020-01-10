@@ -68,4 +68,111 @@
         ORDER BY B.G_KEY DESC
     </select>
 
+    <select id="selectSalesBookList" resultType="BookListVO">
+        SELECT T.* FROM (
+            SELECT
+                B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER,
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY, A.CTG_KEY,
+                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate
+            FROM T_CATEGORY_GOODS A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            INNER JOIN T_BOOK C
+            ON B.G_KEY = C.G_KEY
+            LEFT JOIN T_CP D
+            ON B.CP_KEY = D.CP_KEY
+            LEFT JOIN T_GOODS_PRICE_OPTION E
+            ON B.G_KEY = E.G_KEY
+            WHERE 1=1
+            <if test="bookMenuType == 'ALL'">
+                AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            </if>
+            AND B.TYPE = 3
+            AND B.IS_SHOW = 1
+            AND B.IS_SELL = 1
+            <if test="searchText != ''">
+                AND REGEXP_LIKE(B.NAME, #{searchText})
+            </if>
+
+            UNION ALL
+
+            SELECT
+                B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER,
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY, A.CTG_KEY,
+                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate
+            FROM T_CATEGORY_GOODS A
+            INNER JOIN T_GOODS B
+            ON A.G_KEY = B.G_KEY
+            INNER JOIN T_BOOK C
+            ON B.G_KEY = C.G_KEY
+            LEFT JOIN T_CP D
+            ON B.CP_KEY = D.CP_KEY
+            LEFT JOIN T_GOODS_PRICE_OPTION E
+            ON B.G_KEY = E.G_KEY
+            WHERE 1=1
+            <if test="bookMenuType == 'ALL'">
+                AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            </if>
+            AND B.TYPE = 3
+            AND B.IS_SHOW = 1
+            AND B.IS_SELL = 1
+            <if test="searchText != ''">
+                AND REGEXP_LIKE(C.WRITER, #{searchText})
+            </if>
+        )T
+        GROUP BY T.G_KEY, T.goodsName, T.IMAGE_LIST, T.WRITER, T.NAME, T.PRICE, T.SELL_PRICE, T.POINT,
+        T.PRICE_KEY, T.SUBJECT_CTG_KEY, T.CTG_KEY, T.publishDate
+    </select>
+
+    <select id="selectSalesBookListCount" resultType="int">
+        SELECT COUNT (TT.G_KEY) FROM (
+            SELECT T.G_KEY FROM (
+                SELECT B.G_KEY
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_BOOK C
+                ON B.G_KEY = C.G_KEY
+                LEFT JOIN T_CP D
+                ON B.CP_KEY = D.CP_KEY
+                LEFT JOIN T_GOODS_PRICE_OPTION E
+                ON B.G_KEY = E.G_KEY
+                WHERE 1=1
+                <if test="bookMenuType == 'ALL'">
+                    AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+                </if>
+                AND B.TYPE = 3
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL = 1
+                <if test="searchText != ''">
+                    AND REGEXP_LIKE(B.NAME, #{searchText})
+                </if>
+
+                UNION ALL
+
+                SELECT B.G_KEY
+                FROM T_CATEGORY_GOODS A
+                INNER JOIN T_GOODS B
+                ON A.G_KEY = B.G_KEY
+                INNER JOIN T_BOOK C
+                ON B.G_KEY = C.G_KEY
+                LEFT JOIN T_CP D
+                ON B.CP_KEY = D.CP_KEY
+                LEFT JOIN T_GOODS_PRICE_OPTION E
+                ON B.G_KEY = E.G_KEY
+                WHERE 1=1
+                <if test="bookMenuType == 'ALL'">
+                    AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+                </if>
+                AND B.TYPE = 3
+                AND B.IS_SHOW = 1
+                AND B.IS_SELL = 1
+                <if test="searchText != ''">
+                    AND REGEXP_LIKE(C.WRITER, #{searchText})
+                </if>
+            )T
+            GROUP BY T.G_KEY
+        ) TT
+       </select>
+
 </mapper>

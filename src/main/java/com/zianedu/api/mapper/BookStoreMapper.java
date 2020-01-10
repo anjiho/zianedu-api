@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface BookStoreMapper {
+public interface BookStoreMapper<selectSalesBookListCount> {
 
     List<BookBannerVO> selectBookListFromMenuCtgKey(@Param("ctgKey") int ctgKey, @Param("listLimit") int listLimit);
 
@@ -15,5 +15,10 @@ public interface BookStoreMapper {
     Integer selectBookListFromLeftMenuCtgKeyCount(@Param("ctgKey") int ctgKey);
 
     List<BookListVO> selectBookListFromLeftMenuCtgKeyAtBest();
+
+    List<BookListVO> selectSalesBookList(@Param("bookMenuType") String bookMenuType, @Param("searchText") String searchText,
+                                         @Param("orderType") String orderType, @Param("startNumber") int startNumber, @Param("listLimit") int listLimit);
+
+    int selectSalesBookListCount(@Param("bookMenuType") String bookMenuType, @Param("searchText") String searchText);
 
 }

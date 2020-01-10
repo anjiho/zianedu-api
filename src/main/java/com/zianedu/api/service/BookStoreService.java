@@ -103,4 +103,36 @@ public class BookStoreService extends PagingSupport {
         }
         return new ApiResultListDTO(bestBookList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getSalesBookList(String bookMenuType, String searchText, String orderType, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        List<BookListVO> bookList = new ArrayList<>();
+
+        if ("".equals(bookMenuType) && sPage == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = bookStoreMapper.selectSalesBookListCount(bookMenuType, searchText);
+            bookList = bookStoreMapper.selectSalesBookList(bookMenuType, searchText, orderType.toUpperCase(), startNumber, listLimit);
+            if (bookList.size() > 0) {
+                for (BookListVO vo : bookList) {
+                    String discountPercent = Util.getProductDiscountRate(Integer.parseInt(vo.getPrice()), Integer.parseInt(vo.getSellPrice()));
+                    vo.setDiscountPercent(discountPercent);
+
+                    String accrualRate = Util.getAccrualRatePoint(Integer.parseInt(vo.getSellPrice()), Integer.parseInt(vo.getPoint()));
+                    vo.setAccrualRate(accrualRate);
+
+                    vo.setPrice(StringUtils.addThousandSeparatorCommas(vo.getPrice()));
+                    vo.setSellPrice(StringUtils.addThousandSeparatorCommas(vo.getSellPrice()));
+                    vo.setPoint(StringUtils.addThousandSeparatorCommas(vo.getPoint()));
+                    vo.setBookImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, bookList, resultCode);
+    }
 }

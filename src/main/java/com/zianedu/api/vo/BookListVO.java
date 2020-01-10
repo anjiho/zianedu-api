@@ -30,4 +30,10 @@ public class BookListVO {
     private String accrualRate;
 
     private int priceKey;
+
+    private int subjectKey;
+
+    private String subjectName;
+
+    private int ctgKey;
 }
