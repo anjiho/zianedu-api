@@ -190,7 +190,7 @@
             ORDER BY T.publishDate DESC
         </if>
         <if test="orderType == 'NAME'">
-            ORDER BY T.NAME ASC
+            ORDER BY T.WRITER ASC
         </if>
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimit} ROWS ONLY
     </select>
