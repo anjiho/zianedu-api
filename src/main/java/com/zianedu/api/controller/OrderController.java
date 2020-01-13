@@ -75,7 +75,7 @@ public class OrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "priceKeys", value = "가격 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true),
-            @ApiImplicitParam(name = "bookCount", value = "도서 개수", dataType = "string", paramType = "query", required = true)
+            @ApiImplicitParam(name = "bookCount", value = "도서 개수", dataType = "int", paramType = "query", required = true)
     })
     public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtBookStore(@PathVariable("userKey") int userKey,
                                                                           @RequestParam("priceKeys") String priceKeys,
