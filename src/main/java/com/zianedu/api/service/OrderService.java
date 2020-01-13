@@ -423,6 +423,91 @@ public class OrderService extends PagingSupport {
         return new ApiResultObjectDTO(orderSheetDTO, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getOrderSheetFromImmediatelyBuyAtBookStore(int userKey, Integer[] priceKeys, int bookCount) {
+        int resultCode = OK.value();
+
+        OrderSheetDTO orderSheetDTO = new OrderSheetDTO();
+
+        if (priceKeys == null || priceKeys.length == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int totalProductPrice = 0;
+            int totalPoint = 0;
+            int deliveryPrice = 0;
+            int videoPrice = 0;
+            int academyPrice = 0;
+            int promotionPrice = 0;
+            int bookPrice = 0;
+            int examPrice = 0;
+            int retakePrice = 0;
+
+            List<OrderProductListDTO>orderProductList = new ArrayList<>();
+
+            List<Integer>priceKeyList = StringUtils.integerArrayToArrayList(priceKeys);
+            List<CartListVO> buyProductList = orderMapper.selectOrderListByImmediatelyBuyFromPriceKeyList(priceKeyList);
+
+            if (buyProductList.size() > 0) {
+                int videoProductCnt = 0;
+                for (CartListVO product : buyProductList) {
+
+                    OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
+                            product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
+                            GoodsType.getGoodsTypeStr(product.getType(), -1), product.getGoodsName(),
+                            bookCount, product.getSellPrice(), product.getKind(), -1, product.getPmType()
+                    );
+                    //totalProductPrice += product.getSellPrice();
+                    totalPoint += (product.getPoint() * bookCount);
+                    //동영상 상품 합계
+                    if (product.getType() == 1) {
+                        videoPrice += product.getSellPrice();
+                        videoProductCnt++;
+                    }
+                    //학원실강 상품 합계
+                    if (product.getType() == 2) {
+                        academyPrice += product.getSellPrice();
+                    }
+                    //도서 상품 합계
+                    if (product.getType() == 3) {
+                        bookPrice += (product.getSellPrice() * bookCount);
+                        //deliveryPrice += 2500;
+                    }
+                    //모의고사 상품 합계
+                    if (product.getType() == 4) {
+                        examPrice += product.getSellPrice();
+                    }
+                    orderProductList.add(orderProductListDTO);
+                }
+
+                if (videoProductCnt == 2) videoPrice = ZianUtils.calcPercent(videoPrice, 10);
+                else if (videoProductCnt > 2) videoPrice = ZianUtils.calcPercent(videoPrice, 20);
+
+                if (bookPrice > 0 && bookPrice < 30000) {
+                    deliveryPrice = 2500;
+                }
+
+                totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice;
+                //상품총합
+                ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
+                        totalProductPrice, totalPoint, deliveryPrice
+                );
+                //상품별 상품 금액
+                GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
+                        videoPrice, academyPrice, promotionPrice, bookPrice, examPrice, deliveryPrice, retakePrice
+                );
+                //현재 보유 포인트
+                int currentPoint = userMapper.selectUserCurrentPoint(userKey);
+                //주문자 정보
+                TUserVO orderUserInfo = userMapper.selectUserInfoByUserKey(userKey);
+
+                orderSheetDTO = new OrderSheetDTO(
+                        orderProductList, productTotalPrice, productGroupPrice, currentPoint, orderUserInfo
+                );
+            }
+        }
+        return new ApiResultObjectDTO(orderSheetDTO, resultCode);
+    }
+
     /**
      * 주문서 작성 > 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때
      * @param userKey

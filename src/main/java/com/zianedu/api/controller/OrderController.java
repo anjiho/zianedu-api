@@ -70,6 +70,20 @@ public class OrderController {
         return orderService.getOrderSheetFromImmediatelyBuy(userKey, priceKeyArray);
     }
 
+    @RequestMapping(value = "/getOrderSheetInfoFromImmediatelyAtBookStore/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인 서점 > '바로신청' 버튼으로 주문서 작성으로 갈때")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "priceKeys", value = "가격 키 >> [1234,1234,...]", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "bookCount", value = "도서 개수", dataType = "string", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getOrderSheetInfoFromImmediatelyAtBookStore(@PathVariable("userKey") int userKey,
+                                                                          @RequestParam("priceKeys") String priceKeys,
+                                                                          @RequestParam("bookCount") int bookCount) {
+        Integer[] priceKeyArray = GsonUtil.convertToIntegerArrayFromString(priceKeys);
+        return orderService.getOrderSheetFromImmediatelyBuyAtBookStore(userKey, priceKeyArray, bookCount);
+    }
+
     @RequestMapping(value = "/getOrderSheetInfoFromImmediatelyAtBasicPackage/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("주문서 작성 > 특별, 자유 패키지 > '바로신청' 버튼으로 주문서 작성으로 갈때")
     @ApiImplicitParams({
