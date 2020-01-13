@@ -21,4 +21,8 @@ public interface BookStoreMapper<selectSalesBookListCount> {
 
     int selectSalesBookListCount(@Param("bookMenuType") String bookMenuType, @Param("searchText") String searchText);
 
+    BookListVO selectBookDetailInfo(@Param("gKey") int gKey);
+
+    List<BookListVO> selectWriterOtherBookInfo(@Param("gKey") int gKey, @Param("writer") String writer);
+
 }

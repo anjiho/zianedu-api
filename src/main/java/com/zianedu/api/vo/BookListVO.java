@@ -36,4 +36,10 @@ public class BookListVO {
     private String subjectName;
 
     private int ctgKey;
+
+    private int pageCnt;
+
+    private String description;
+
+    private String contentList;
 }

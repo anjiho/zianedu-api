@@ -4,6 +4,8 @@ import com.zianedu.api.config.ConfigHolder;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.dto.BookDetailInfoDTO;
 import com.zianedu.api.mapper.BookStoreMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -134,5 +137,49 @@ public class BookStoreService extends PagingSupport {
             }
         }
         return new ApiPagingResultDTO(totalCount, bookList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getBookDetailInfo(int gKey) {
+        int resultCode = OK.value();
+
+        BookDetailInfoDTO detailInfoDTO = null;
+
+        if (gKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            BookListVO bookDetailInfo = bookStoreMapper.selectBookDetailInfo(gKey);
+            List<BookListVO> writerOtherBookInfoList = new ArrayList<>();
+            if (bookDetailInfo.getGKey() > 0) {
+                bookDetailInfo.setDiscountPercent(Util.getProductDiscountRate(Integer.parseInt(bookDetailInfo.getPrice()), Integer.parseInt(bookDetailInfo.getSellPrice())));
+
+                String accrualRate = Util.getAccrualRatePoint(Integer.parseInt(bookDetailInfo.getSellPrice()), Integer.parseInt(bookDetailInfo.getPoint()));
+                bookDetailInfo.setAccrualRate(accrualRate);
+
+                bookDetailInfo.setPrice(StringUtils.addThousandSeparatorCommas(bookDetailInfo.getPrice()));
+                bookDetailInfo.setSellPrice(StringUtils.addThousandSeparatorCommas(bookDetailInfo.getSellPrice()));
+                bookDetailInfo.setPoint(StringUtils.addThousandSeparatorCommas(bookDetailInfo.getPoint()));
+                bookDetailInfo.setBookImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), bookDetailInfo.getImageList()));
+
+                writerOtherBookInfoList = bookStoreMapper.selectWriterOtherBookInfo(bookDetailInfo.getGKey(), bookDetailInfo.getWriter());
+
+                if (writerOtherBookInfoList.size() > 0) {
+                    Collections.shuffle(writerOtherBookInfoList);
+                    //for (BookListVO writerOtherBookInfo : writerOtherBookInfoList) {
+                    writerOtherBookInfoList.get(0).setDiscountPercent(Util.getProductDiscountRate(Integer.parseInt(writerOtherBookInfoList.get(0).getPrice()), Integer.parseInt(writerOtherBookInfoList.get(0).getSellPrice())));
+
+                        String accrualRate2 = Util.getAccrualRatePoint(Integer.parseInt(writerOtherBookInfoList.get(0).getSellPrice()), Integer.parseInt(writerOtherBookInfoList.get(0).getPoint()));
+                    writerOtherBookInfoList.get(0).setAccrualRate(accrualRate2);
+
+                    writerOtherBookInfoList.get(0).setPrice(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getPrice()));
+                    writerOtherBookInfoList.get(0).setSellPrice(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getSellPrice()));
+                    writerOtherBookInfoList.get(0).setPoint(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getPoint()));
+                    writerOtherBookInfoList.get(0).setBookImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), writerOtherBookInfoList.get(0).getImageList()));
+                    //}
+                }
+            }
+            detailInfoDTO = new BookDetailInfoDTO(bookDetailInfo, writerOtherBookInfoList.get(0));
+        }
+        return new ApiResultObjectDTO(detailInfoDTO, resultCode);
     }
 }

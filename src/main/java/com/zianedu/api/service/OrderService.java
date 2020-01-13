@@ -288,7 +288,9 @@ public class OrderService extends PagingSupport {
                     }
                     //도서 상품 합계
                     if (cartInfo.getType() == 3) {
-                        bookPrice += cartInfo.getSellPrice();
+                        for (int i = 0; i < cartInfo.getCnt(); i++) {
+                            bookPrice += cartInfo.getSellPrice();
+                        }
                     }
                     //모의고사 상품 합계
                     if (cartInfo.getType() == 4) {

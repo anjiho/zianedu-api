@@ -2,6 +2,7 @@ package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.BookStoreService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
@@ -51,7 +52,7 @@ public class BookStoreController {
     @RequestMapping(value = "/getSalesBookList/{bookMenuType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인서점 도서 목록")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "bookMenuType", value = "전체 : ALL", dataType = "string", paramType = "path", required = true),
+            @ApiImplicitParam(name = "bookMenuType", value = "공통과목 : COMMON, 행정직군 : PUBLIC, 기술직군 : TECH, 계리직군 : POST, 자격증 : CERT", dataType = "string", paramType = "path", required = true),
             @ApiImplicitParam(name = "searchText", value = "검색명", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "orderType", value = "출간일순 : date, 저자순 : name", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
@@ -63,5 +64,14 @@ public class BookStoreController {
                                                @RequestParam(value = "sPage") int sPage,
                                                @RequestParam(value = "listLimit") int listLimit) {
         return bookStoreService.getSalesBookList(bookMenuType, searchText, orderType, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/getBookDetailInfo/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("도서 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "gKey", value = "상품 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getBookDetailInfo(@PathVariable(value = "gKey") int gKey) {
+        return bookStoreService.getBookDetailInfo(gKey);
     }
 }

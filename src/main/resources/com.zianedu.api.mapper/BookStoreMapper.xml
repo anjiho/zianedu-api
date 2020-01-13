@@ -246,4 +246,43 @@
         ) TT
        </select>
 
+    <select id="selectBookDetailInfo" resultType="BookListVO">
+        SELECT
+            A.G_KEY, A.NAME as goodsName, A.IMAGE_LIST, B.WRITER,
+            C.NAME, D.PRICE, D.SELL_PRICE, D.POINT, D.PRICE_KEY, B.SUBJECT_CTG_KEY as subjectKey,
+            TO_CHAR(B.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.SUBJECT_CTG_KEY) as subjectName,
+            B.PAGE_CNT, A.DESCRIPTION, B.CONTENT_LIST
+        FROM  T_GOODS A
+        INNER JOIN T_BOOK B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_CP C
+        ON A.CP_KEY = C.CP_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION D
+        ON A.G_KEY = D.G_KEY
+        WHERE 1=1
+        AND A.G_KEY = #{gKey}
+    </select>
+
+    <select id="selectWriterOtherBookInfo" resultType="BookListVO">
+        SELECT
+            A.G_KEY, A.NAME as goodsName, A.IMAGE_LIST, B.WRITER,
+            C.NAME, D.PRICE, D.SELL_PRICE, D.POINT, D.PRICE_KEY, B.SUBJECT_CTG_KEY as subjectKey,
+            TO_CHAR(B.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.SUBJECT_CTG_KEY) as subjectName,
+            B.PAGE_CNT
+        FROM  T_GOODS A
+        INNER JOIN T_BOOK B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_CP C
+        ON A.CP_KEY = C.CP_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION D
+        ON A.G_KEY = D.G_KEY
+        WHERE 1=1
+        AND A.TYPE = 3
+        AND A.IS_SHOW = 1
+        AND A.IS_SELL = 1
+        AND REGEXP_LIKE(B.WRITER, #{writer})
+        AND A.G_KEY NOT IN (#{gKey})
+    </select>
 </mapper>
