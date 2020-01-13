@@ -96,7 +96,14 @@
             <if test="bookMenuType == 'TECH'">
                 AND A.CTG_KEY IN (714)
             </if>
-            --AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            <!-- 계리직 -->
+            <if test="bookMenuType == 'POST'">
+                AND A.CTG_KEY IN (735)
+            </if>
+            <!-- 자격증 -->
+            <if test="bookMenuType == 'CERT'">
+                AND A.CTG_KEY IN (745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            </if>
             AND B.TYPE = 3
             AND B.IS_SHOW = 1
             AND B.IS_SELL = 1
@@ -132,7 +139,14 @@
             <if test="bookMenuType == 'TECH'">
                 AND A.CTG_KEY IN (714)
             </if>
-                --AND A.CTG_KEY IN (701, 705, 714, 735, 746, 745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            <!-- 계리직 -->
+            <if test="bookMenuType == 'POST'">
+                AND A.CTG_KEY IN (735)
+            </if>
+            <!-- 자격증 -->
+            <if test="bookMenuType == 'CERT'">
+                AND A.CTG_KEY IN (745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+            </if>
             AND B.TYPE = 3
             AND B.IS_SHOW = 1
             AND B.IS_SELL = 1
@@ -171,6 +185,14 @@
                 <if test="bookMenuType == 'TECH'">
                     AND A.CTG_KEY IN (714)
                 </if>
+                <!-- 계리직 -->
+                <if test="bookMenuType == 'POST'">
+                    AND A.CTG_KEY IN (735)
+                </if>
+                <!-- 자격증 -->
+                <if test="bookMenuType == 'CERT'">
+                    AND A.CTG_KEY IN (745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
+                </if>
                 AND B.TYPE = 3
                 AND B.IS_SHOW = 1
                 AND B.IS_SELL = 1
@@ -202,6 +224,14 @@
                 <!-- 기술직 -->
                 <if test="bookMenuType == 'TECH'">
                     AND A.CTG_KEY IN (714)
+                </if>
+                <!-- 계리직 -->
+                <if test="bookMenuType == 'POST'">
+                    AND A.CTG_KEY IN (735)
+                </if>
+                <!-- 자격증 -->
+                <if test="bookMenuType == 'CERT'">
+                    AND A.CTG_KEY IN (745, 3748, 3749, 4186, 4230, 4235, 4272, 6436, 4380, 4232)
                 </if>
                 AND B.TYPE = 3
                 AND B.IS_SHOW = 1
