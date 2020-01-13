@@ -4,7 +4,7 @@
 
     <select id="selectCartList" resultType="CartListVO">
         SELECT
-            A.CART_KEY, A.G_KEY, A.PRICE_KEY, A.GROUP_ID, B.KIND, B.PRICE, B.SELL_PRICE, B.POINT, C.NAME as goodsName,
+            A.CART_KEY, A.G_KEY, A.PRICE_KEY, A.GROUP_ID, B.KIND, B.PRICE, B.SELL_PRICE, (B.POINT * A.CNT) as point, C.NAME as goodsName,
             C.TYPE, A.CNT, A.FREEBIE_PARENT_KEY, A.LINK_PRICE, A.LINK_SELL_PRICE, A.LINK_POINT,
             A.EXTEND_DAY, C.IS_FREEBIE_DELIVERY_FREE, A.CTG_KEY, 0 as PM_TYPE
         FROM T_CART A
