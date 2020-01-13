@@ -183,9 +183,9 @@ public class OrderService extends PagingSupport {
             if (bookOrderPrice > 0 && bookOrderPrice < 30000) {
                 deliveryPrice = 2500;
             }
-            int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice + retakeOrderPrice ) + deliveryPrice);
+            int totalPrice = ( ( academyOrderPrice + videoOrderPrice + promotionOrderPrice + bookOrderPrice + examOrderPrice + retakeOrderPrice ));
             CartResultDTO cartResultDTO = new CartResultDTO(
-                    orderPrice, deliveryPrice, totalPrice, totalPoint,
+                    totalPrice, deliveryPrice, (totalPrice + deliveryPrice), totalPoint,
                     academyCartInfo, videoCartInfo, promotionCartInfo, bookCartInfo, examCartInfo, retakeVideoCartInfo
             );
             return new ApiResultObjectDTO(cartResultDTO, resultCode);
