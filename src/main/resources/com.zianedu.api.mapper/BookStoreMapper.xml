@@ -72,8 +72,9 @@
         SELECT T.* FROM (
             SELECT
                 B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER,
-                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY, A.CTG_KEY,
-                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY as subjectKey, A.CTG_KEY,
+                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
+                (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) as subjectName
             FROM T_CATEGORY_GOODS A
             INNER JOIN T_GOODS B
             ON A.G_KEY = B.G_KEY
@@ -115,8 +116,9 @@
 
             SELECT
                 B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER,
-                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY, A.CTG_KEY,
-                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT, E.PRICE_KEY, C.SUBJECT_CTG_KEY as subjectKey, A.CTG_KEY,
+                TO_CHAR(C.PUBLISH_DATE, 'YYYY.MM.DD') as publishDate,
+                (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.SUBJECT_CTG_KEY) as subjectName
             FROM T_CATEGORY_GOODS A
             INNER JOIN T_GOODS B
             ON A.G_KEY = B.G_KEY
@@ -155,7 +157,7 @@
             </if>
         )T
         GROUP BY T.G_KEY, T.goodsName, T.IMAGE_LIST, T.WRITER, T.NAME, T.PRICE, T.SELL_PRICE, T.POINT,
-        T.PRICE_KEY, T.SUBJECT_CTG_KEY, T.CTG_KEY, T.publishDate
+        T.PRICE_KEY, T.subjectKey, T.CTG_KEY, T.publishDate, T.subjectName
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimit} ROWS ONLY
     </select>
 
