@@ -111,7 +111,7 @@ public class BookStoreService extends PagingSupport {
     public ApiResultListDTO getNewBookList() {
         int resultCode = OK.value();
 
-        List<BookListVO> bestBookList = bookStoreMapper.selectBookListFromLeftMenuCtgKeyAtBest();
+        List<BookListVO> bestBookList = bookStoreMapper.selectBookListFromLeftMenuCtgKeyAtNew();
         if (bestBookList.size() > 0) {
             for (BookListVO vo : bestBookList) {
                 String discountPercent = Util.getProductDiscountRate(Integer.parseInt(vo.getPrice()), Integer.parseInt(vo.getSellPrice()));
@@ -186,7 +186,7 @@ public class BookStoreService extends PagingSupport {
                 writerOtherBookInfoList = bookStoreMapper.selectWriterOtherBookInfo(bookDetailInfo.getGKey(), bookDetailInfo.getWriter());
 
                 if (writerOtherBookInfoList.size() > 0) {
-                    Collections.shuffle(writerOtherBookInfoList);
+                    Collections.shuffle(writerOtherBookInfoList);   //랜덤 정렬
                     //for (BookListVO writerOtherBookInfo : writerOtherBookInfoList) {
                     writerOtherBookInfoList.get(0).setDiscountPercent(Util.getProductDiscountRate(Integer.parseInt(writerOtherBookInfoList.get(0).getPrice()), Integer.parseInt(writerOtherBookInfoList.get(0).getSellPrice())));
 
