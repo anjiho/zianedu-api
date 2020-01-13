@@ -186,6 +186,12 @@
         )T
         GROUP BY T.G_KEY, T.goodsName, T.IMAGE_LIST, T.WRITER, T.NAME, T.PRICE, T.SELL_PRICE, T.POINT,
         T.PRICE_KEY, T.subjectKey, T.CTG_KEY, T.publishDate, T.subjectName
+        <if test="orderType == 'DATE'">
+            ORDER BY T.publishDate DESC
+        </if>
+        <if test="orderType == 'NAME'">
+            ORDER BY T.NAME ASC
+        </if>
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimit} ROWS ONLY
     </select>
 
