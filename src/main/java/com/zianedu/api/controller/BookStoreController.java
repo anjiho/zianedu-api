@@ -49,6 +49,12 @@ public class BookStoreController {
         return bookStoreService.getBestBookList();
     }
 
+    @RequestMapping(value = "/getNewBookList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("온라인서점 > 새로나온 책 리스트")
+    public ApiResultListDTO getNewBookList() {
+        return bookStoreService.getNewBookList();
+    }
+
     @RequestMapping(value = "/getSalesBookList/{bookMenuType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인서점 도서 목록")
     @ApiImplicitParams({

@@ -68,6 +68,26 @@
         ORDER BY B.G_KEY DESC
     </select>
 
+    <select id="selectBookListFromLeftMenuCtgKeyAtNew" resultType="BookListVO">
+        SELECT B.G_KEY, B.NAME as goodsName, B.IMAGE_LIST, C.WRITER, TO_CHAR(C.PUBLISH_DATE, 'YYYY-MM-DD') as publishDate,
+                D.NAME, E.PRICE, E.SELL_PRICE, E.POINT,
+                (SELECT PRICE_KEY FROM T_GOODS_PRICE_OPTION T WHERE T.G_KEY = B.G_KEY) as priceKey
+        FROM T_CATEGORY_GOODS A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_BOOK C
+        ON B.G_KEY = C.G_KEY
+        LEFT JOIN T_CP D
+        ON B.CP_KEY = D.CP_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION E
+        ON B.G_KEY = E.G_KEY
+        WHERE A.CTG_KEY IN (839)
+        AND B.TYPE = 3
+        AND B.IS_SHOW = 1
+        AND B.IS_SELL = 1
+        ORDER BY B.G_KEY DESC
+    </select>
+
     <select id="selectSalesBookList" resultType="BookListVO">
         SELECT T.* FROM (
             SELECT

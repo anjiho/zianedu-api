@@ -16,6 +16,8 @@ public interface BookStoreMapper<selectSalesBookListCount> {
 
     List<BookListVO> selectBookListFromLeftMenuCtgKeyAtBest();
 
+    List<BookListVO> selectBookListFromLeftMenuCtgKeyAtNew();
+
     List<BookListVO> selectSalesBookList(@Param("bookMenuType") String bookMenuType, @Param("searchText") String searchText,
                                          @Param("orderType") String orderType, @Param("startNumber") int startNumber, @Param("listLimit") int listLimit);
 
