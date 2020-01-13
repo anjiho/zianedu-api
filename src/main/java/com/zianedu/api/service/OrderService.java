@@ -132,16 +132,15 @@ public class OrderService extends PagingSupport {
             }
 
             if (bookCartInfo.size() > 0) {
-                int bookPrice = 0;
+                //int bookPrice = 0;
                 for (CartListVO bookList : bookCartInfo) {
                     int bookCnt = bookList.getCnt();
                     for (int i = 0; i < bookList.getCnt(); i++) {
-                        bookPrice += bookList.getSellPrice();
-
+                        //bookPrice += bookList.getSellPrice();
                         orderPrice += bookList.getSellPrice();
                         bookOrderPrice += bookList.getSellPrice();
-                        totalPoint += bookList.getPoint();
                     }
+                    totalPoint += bookList.getPoint();
                     bookList.setPrice(bookList.getPrice() * bookCnt);
                     bookList.setSellPrice(bookList.getSellPrice() * bookCnt);
 
