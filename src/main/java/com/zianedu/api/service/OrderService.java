@@ -134,11 +134,16 @@ public class OrderService extends PagingSupport {
             if (bookCartInfo.size() > 0) {
                 int bookPrice = 0;
                 for (CartListVO bookList : bookCartInfo) {
-                    bookPrice += bookList.getSellPrice();
+                    int bookCnt = bookList.getCnt();
+                    for (int i = 0; i < bookList.getCnt(); i++) {
+                        bookPrice += bookList.getSellPrice();
 
-                    orderPrice += bookList.getSellPrice();
-                    bookOrderPrice += bookList.getSellPrice();
-                    totalPoint += bookList.getPoint();
+                        orderPrice += bookList.getSellPrice();
+                        bookOrderPrice += bookList.getSellPrice();
+                        totalPoint += bookList.getPoint();
+                    }
+                    bookList.setPrice(bookList.getPrice() * bookCnt);
+                    bookList.setSellPrice(bookList.getSellPrice() * bookCnt);
 
                     bookList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(bookList.getPrice())) + "원");
                     bookList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(bookList.getSellPrice())) + "원");
@@ -288,9 +293,7 @@ public class OrderService extends PagingSupport {
                     }
                     //도서 상품 합계
                     if (cartInfo.getType() == 3) {
-                        for (int i = 0; i < cartInfo.getCnt(); i++) {
-                            bookPrice += cartInfo.getSellPrice();
-                        }
+                        bookPrice += cartInfo.getSellPrice() * cartInfo.getCnt();
                     }
                     //모의고사 상품 합계
                     if (cartInfo.getType() == 4) {

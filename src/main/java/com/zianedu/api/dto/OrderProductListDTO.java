@@ -42,7 +42,7 @@ public class OrderProductListDTO {
         this.productType = productType;
         this.productName = productName;
         this.count = count;
-        this.sellPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(sellPrice)) + "원";
+        this.sellPriceName = StringUtils.addThousandSeparatorCommas(String.valueOf(sellPrice * count)) + "원";
         this.kind = kind;
         this.extendDay = extendDay;
         this.pmType = pmType;
