@@ -365,11 +365,13 @@ public class OrderService extends PagingSupport {
             if (buyProductList.size() > 0) {
                 int videoProductCnt = 0;
                 for (CartListVO product : buyProductList) {
+                    int count = 0;
+                    if (product.getCnt() == 0) count = 1;
 
                     OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                             product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
                             GoodsType.getGoodsTypeStr(product.getType(), -1), product.getGoodsName(),
-                            product.getCnt(), product.getSellPrice(), product.getKind(), -1, product.getPmType()
+                            count, product.getSellPrice(), product.getKind(), -1, product.getPmType()
                     );
                     //totalProductPrice += product.getSellPrice();
                     totalPoint += product.getPoint();
