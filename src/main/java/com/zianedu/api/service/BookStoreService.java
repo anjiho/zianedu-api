@@ -166,6 +166,7 @@ public class BookStoreService extends PagingSupport {
         int resultCode = OK.value();
 
         BookDetailInfoDTO detailInfoDTO = null;
+        BookListVO otherBookInfo = new BookListVO();
 
         if (gKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -187,20 +188,10 @@ public class BookStoreService extends PagingSupport {
 
                 if (writerOtherBookInfoList.size() > 0) {
                     Collections.shuffle(writerOtherBookInfoList);   //랜덤 정렬
-                    //for (BookListVO writerOtherBookInfo : writerOtherBookInfoList) {
-                    writerOtherBookInfoList.get(0).setDiscountPercent(Util.getProductDiscountRate(Integer.parseInt(writerOtherBookInfoList.get(0).getPrice()), Integer.parseInt(writerOtherBookInfoList.get(0).getSellPrice())));
-
-                        String accrualRate2 = Util.getAccrualRatePoint(Integer.parseInt(writerOtherBookInfoList.get(0).getSellPrice()), Integer.parseInt(writerOtherBookInfoList.get(0).getPoint()));
-                    writerOtherBookInfoList.get(0).setAccrualRate(accrualRate2);
-
-                    writerOtherBookInfoList.get(0).setPrice(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getPrice()));
-                    writerOtherBookInfoList.get(0).setSellPrice(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getSellPrice()));
-                    writerOtherBookInfoList.get(0).setPoint(StringUtils.addThousandSeparatorCommas(writerOtherBookInfoList.get(0).getPoint()));
-                    writerOtherBookInfoList.get(0).setBookImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), writerOtherBookInfoList.get(0).getImageList()));
-                    //}
+                    otherBookInfo = new BookListVO(writerOtherBookInfoList);
                 }
             }
-            detailInfoDTO = new BookDetailInfoDTO(bookDetailInfo, writerOtherBookInfoList.get(0));
+            detailInfoDTO = new BookDetailInfoDTO(bookDetailInfo, otherBookInfo);
         }
         return new ApiResultObjectDTO(detailInfoDTO, resultCode);
     }
