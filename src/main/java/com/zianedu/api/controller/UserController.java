@@ -158,6 +158,26 @@ public class UserController {
         return userService.confirmUserPassword(userKey, userPwd);
     }
 
+    @RequestMapping(value = "/getUserInfoByMobileNumber/{mobileNumber}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("사용자 정보 가져오기(핸드폰 인증)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mobileNumber", value = "사용자 핸드폰 번호", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getUserInfoByMobileNumber(@PathVariable("mobileNumber") String mobileNumber) {
+        return userService.getUserInfoByMobileNumber(mobileNumber);
+    }
+
+    @RequestMapping(value = "/modifyPwdByMobileNumber", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("회원 비밀번호 변경(핸드폰 인증)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "changeUserPwd", value = "변경할 비밀번호", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO modifyPwdByMobileNumber(@RequestParam("userKey") int userKey,
+                                                   @RequestParam("changeUserPwd") String changeUserPwd) {
+        return userService.modifyUserPasswordByMobileNumber(userKey, changeUserPwd);
+    }
+
 }
 
 

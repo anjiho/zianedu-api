@@ -285,5 +285,33 @@ public class UserService extends ApiResultKeyCode {
         return new ApiResultCodeDTO("USER_CONFIRM", isConfirm, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserInfoByMobileNumber(String mobileNumber) {
+        TUserVO userVO = new TUserVO();
+
+        if ("".equals(mobileNumber)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            userVO = userMapper.selectUserInfoByMobileNumber(mobileNumber);
+        }
+        return new ApiResultObjectDTO(userVO, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO modifyUserPasswordByMobileNumber(int userKey, String changeUserPwd) {
+        int resultCode = OK.value();
+
+        if (userKey == 0 && "".equals(Util.isNullValue(changeUserPwd, ""))) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //비밀번호 길이 제한
+            if (changeUserPwd.length() < 4) {
+                resultCode = ZianErrCode.CUSTOM_SHORT_USER_PASSWORD.code();
+            } else {
+                userMapper.updateUserPassword(userKey, SecurityUtil.encryptSHA256(changeUserPwd));
+            }
+        }
+        return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
+    }
 }
 

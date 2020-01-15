@@ -15,6 +15,8 @@ public interface UserMapper {
 
     TUserVO selectUserInfoByUserKey(@Param("userKey") int userKey);
 
+    TUserVO selectUserInfoByMobileNumber(@Param("mobileNumber") String mobileNumber);
+
     TUserVO selectUserInfoAtSecession(@Param("userName") String userName, @Param("userId") String userId,
                                       @Param("userPassword") String userPassword);
 
@@ -40,8 +42,6 @@ public interface UserMapper {
     Integer insertDeviceChangeCode(TDeviceChangeCodeVO tDeviceChangeCodeVO);
 
     void insertTDeviceLimitLog(TDeviceLimitLogVO tDeviceLimitLogVO);
-
-    void insertTDeviceLimitLog2(TDeviceLimitLogVO tDeviceLimitLogVO);
 
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);
