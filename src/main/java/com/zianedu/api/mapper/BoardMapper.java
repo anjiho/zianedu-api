@@ -93,6 +93,8 @@ public interface BoardMapper {
 
     int selectConsultReserveListCount(@Param("userKey") int userKey, @Param("reserveStartDate") String reserveStartDate, @Param("reserveEndDate") String reserveEndDate);
 
+    CounselReserveDetailVO selectConsultReserveDetainInfo(@Param("idx") int idx);
+
     List<TBbsDataVO> selectBoardListAtMyWrite(@Param("userKey") int userKey, @Param("boardType") String boardType,
                                               @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
                                               @Param("searchType") String searchType, @Param("searchText") String searchText);

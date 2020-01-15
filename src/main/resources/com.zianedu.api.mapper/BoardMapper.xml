@@ -580,6 +580,16 @@
         </if>
     </select>
 
+    <select id="selectConsultReserveDetainInfo" resultType="CounselReserveDetailVO">
+        SELECT
+            USER_NAME, MOBILE_NUMBER,RESERVE_CONTENTS,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = A.CTG_KEY_1) as ctgName1,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = A.CTG_KEY_2) as ctgName2,
+            (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = A.CTG_KEY_3) as ctgName3
+        FROM T_CONSULT_RESERVE A
+        WHERE IDX = #{idx}
+    </select>
+
     <select id="selectBoardListAtMyWrite" resultType="TBbsDataVO">
         SELECT BBS_KEY, TITLE, READ_COUNT, TO_CHAR(INDATE, 'YYYY.MM.DD') as indate,
               (SELECT NAME FROM T_USER TU WHERE TU.USER_KEY = WRITE_USER_KEY) as userName

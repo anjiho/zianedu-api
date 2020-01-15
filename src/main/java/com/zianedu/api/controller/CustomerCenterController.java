@@ -3,6 +3,7 @@ package com.zianedu.api.controller;
 import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.CustomerCenterService;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -87,5 +88,14 @@ public class CustomerCenterController {
                                                        @RequestParam("reserveStatusType") int reserveStatusType) {
         Integer[] idxArray = GsonUtil.convertToIntegerArrayFromString(idxList);
         return customerCenterService.changeConsultReserveStatus(idxArray, reserveStatusType);
+    }
+
+    @RequestMapping(value = "/getCounselReserveDetailInfo/{idx}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("상담예약 상세정보 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "idx", value = "상담예약 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getCounselReserveDetailInfo(@PathVariable("idx") int idx) {
+        return customerCenterService.getCounselReserveDetailInfo(idx);
     }
 }

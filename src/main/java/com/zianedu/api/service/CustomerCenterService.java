@@ -10,6 +10,7 @@ import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.vo.CounselReserveDetailVO;
 import com.zianedu.api.vo.TBbsDataVO;
 import com.zianedu.api.vo.TConsultReserveVO;
 import com.zianedu.api.vo.TUserVO;
@@ -112,6 +113,25 @@ public class CustomerCenterService extends PagingSupport {
             }
         }
         return new ApiPagingResultDTO(consultListCount, consultReserveList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getCounselReserveDetailInfo(int idx) {
+        int resultCode = OK.value();
+
+        CounselReserveDetailVO detailVO = new CounselReserveDetailVO();
+
+        if (idx == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            detailVO = boardMapper.selectConsultReserveDetainInfo(idx);
+            if (detailVO != null) {
+                String ctgNameStr = "";
+                ctgNameStr = "1." + detailVO.getCtgName1() + " 2." + detailVO.getCtgName2() + " 3." + detailVO.getCtgName3();
+                detailVO.setCtgNameStr(ctgNameStr);
+            }
+        }
+        return new ApiResultObjectDTO(detailVO, resultCode);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
