@@ -178,6 +178,17 @@ public class UserController {
         return userService.modifyUserPasswordByMobileNumber(userKey, changeUserPwd);
     }
 
+    @RequestMapping(value = "/getUserInfoFromFindPwd/{userId}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("사용자 정보 가져오기(비밀번호 변경 시 핸드폰 인증)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", dataType = "string", paramType = "path", required = true),
+            @ApiImplicitParam(name = "mobileNumber", value = "사용자 핸드폰 번호", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getUserInfoFromFindPwd(@PathVariable("userId") String userId,
+                                                     @RequestParam("mobileNumber") String mobileNumber) {
+        return userService.getUserInfoFromFindPwd(userId, mobileNumber);
+    }
+
 }
 
 

@@ -313,5 +313,17 @@ public class UserService extends ApiResultKeyCode {
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getUserInfoFromFindPwd(String userId, String mobileNumber) {
+        TUserVO userVO = new TUserVO();
+
+        if ("".equals(userId) && "".equals(mobileNumber)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            userVO = userMapper.selectUserInfoFromFindPwd(userId, mobileNumber);
+        }
+        return new ApiResultObjectDTO(userVO, resultCode);
+    }
 }
 

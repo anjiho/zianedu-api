@@ -54,6 +54,17 @@
         AND ROWNUM = 1
     </select>
 
+    <select id="selectUserInfoFromFindPwd" resultType="TUserVO">
+        SELECT
+            USER_KEY, USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,
+            RECV_SMS, RECV_EMAIL, ZIPCODE, ADDRESS_ROAD, ADDRESS_NUMBER, ADDRESS, INTEREST_CTG_KEY_0
+        FROM T_USER
+        WHERE 1=1
+        AND USER_ID = #{userId}
+        AND TELEPHONE_MOBILE = #{mobileNumber}
+        AND ROWNUM = 1
+    </select>
+
     <select id="selectUserInfoAtSecession" resultType="TUserVO">
         SELECT
             USER_KEY, USER_ID, INDATE, NAME, AUTHORITY, BIRTH, EMAIL, LUNAR, TELEPHONE, TELEPHONE_MOBILE, ZIPCODE,

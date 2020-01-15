@@ -17,6 +17,8 @@ public interface UserMapper {
 
     TUserVO selectUserInfoByMobileNumber(@Param("mobileNumber") String mobileNumber);
 
+    TUserVO selectUserInfoFromFindPwd(@Param("userId") String userId, @Param("mobileNumber") String mobileNumber);
+
     TUserVO selectUserInfoAtSecession(@Param("userName") String userName, @Param("userId") String userId,
                                       @Param("userPassword") String userPassword);
 

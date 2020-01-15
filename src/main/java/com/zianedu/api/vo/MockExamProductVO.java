@@ -18,4 +18,6 @@ public class MockExamProductVO {
     private String isOnOff;
 
     private int isSell;
+
+    private int onOffKey;
 }

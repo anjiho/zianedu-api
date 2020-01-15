@@ -92,7 +92,8 @@ public interface ProductMapper {
 
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
-    List<MockExamProductVO> selectMockExamProductList(@Param("ctgKey") int ctgKey);
+    List<MockExamProductVO> selectMockExamProductList(@Param("ctgKey") int ctgKey, @Param("onOffKey") int onOffKey,
+                                                      @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     TGoodsPriceOptionVO selectGoodsPriceOptionByPriceKey(@Param("priceKey") int priceKey);
 
