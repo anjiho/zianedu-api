@@ -10,6 +10,7 @@ import com.zianedu.api.mapper.BoardMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.CounselReserveDetailVO;
 import com.zianedu.api.vo.TBbsDataVO;
 import com.zianedu.api.vo.TConsultReserveVO;
@@ -127,7 +128,9 @@ public class CustomerCenterService extends PagingSupport {
             detailVO = boardMapper.selectConsultReserveDetainInfo(idx);
             if (detailVO != null) {
                 String ctgNameStr = "";
-                ctgNameStr = "1." + detailVO.getCtgName1() + " 2." + detailVO.getCtgName2() + " 3." + detailVO.getCtgName3();
+                ctgNameStr = "1." + Util.isNullValue(detailVO.getCtgName1(), "")
+                        + " 2." + Util.isNullValue(detailVO.getCtgName2(), "")
+                        + " 3." + Util.isNullValue(detailVO.getCtgName3(), "");
                 detailVO.setCtgNameStr(ctgNameStr);
             }
         }
