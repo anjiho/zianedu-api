@@ -50,7 +50,7 @@ public class TeacherService extends PagingSupport {
             //강사기본정보
             TTeacherVO teacherInfo = this.getTeacherInfo(teacherKey);
             //강사 상세설명 정보
-            //teacherInfo.setIntroduce(teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey));
+            teacherInfo.setIntroduce(teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey));
             //학습자료실
             List<TBbsDataVO> referenceRoom = boardMapper.selectTBbsDataList(
                     BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, ZianApiUtils.LIMIT,0, listLimit
