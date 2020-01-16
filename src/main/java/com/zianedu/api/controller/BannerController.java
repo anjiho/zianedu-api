@@ -65,13 +65,12 @@ public class BannerController {
     @ApiOperation("강사(지안교수진) 배너 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ctgKey", value = "카테고리 키(228:지안에듀, 788:행정직학원, 794:행정직동영상, 823:기술직학원, 829:기술직동영상, 1080:계리직학원, 1086:계리직동영상)", dataType = "int", paramType = "path", required = true),
-            @ApiImplicitParam(name = "subjectType", value = "과목타입(0:공통과목, 1:전공과목) ", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "teacherMenuCtgKey", value = "직렬별 교수소개 카테고리 키값", dataType = "int", paramType = "query", required = true)
+            @ApiImplicitParam(name = "subjectType", value = "과목타입(0:공통과목, 1:전공과목) ", dataType = "int", paramType = "query", required = true)
+
     })
     public ApiResultListDTO getTeacherBannerList(@PathVariable("ctgKey") int ctgKey,
-                                                 @RequestParam("subjectType") int subjectType,
-                                                 @RequestParam("teacherMenuCtgKey") int teacherMenuCtgKey) throws Exception {
-        return bannerService.getTeacherBannerList(ctgKey, subjectType, teacherMenuCtgKey);
+                                                 @RequestParam("subjectType") int subjectType) throws Exception {
+        return bannerService.getTeacherBannerList(ctgKey, subjectType);
     }
 
     @RequestMapping(value = "/getPopulateAcademyLectureList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

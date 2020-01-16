@@ -95,7 +95,34 @@ public class BannerService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getTeacherBannerList(int ctgKey, int subjectType, int teacherMenuCtgKey) throws Exception {
+    public ApiResultListDTO getTeacherBannerList(int ctgKey, int subjectType) throws Exception {
+        int resultCode = OK.value();
+
+        List<TeacherBannerVO>teacherBannerList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherBannerList = bannerMapper.selectTeacherBannerList(ctgKey, subjectType);
+            if (teacherBannerList.size() > 0) {
+                for (TeacherBannerVO vo : teacherBannerList) {
+                    if (vo.getTargetUrl().contains("&")) {
+                        URL url = new URL(vo.getTargetUrl());
+                        Map<String, List<String>> urlParamMap = Util.splitQuery(url);
+                        int parentMnk = Integer.parseInt(urlParamMap.get("parent_mnk").get(0));
+                        vo.setParentMnk(parentMnk);
+                    }
+                    vo.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getTeacherImage()));
+
+                    TTeacherVO teacherInfo = teacherService.getTeacherInfo(vo.getTeacherKey());
+                    vo.setTeacherInfo(teacherInfo);
+                }
+            }
+        }
+        return new ApiResultListDTO(teacherBannerList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getTeacherBannerList2(int ctgKey, int subjectType, int teacherMenuCtgKey) throws Exception {
         int resultCode = OK.value();
 
         List<TeacherBannerVO>teacherBannerList = new ArrayList<>();
