@@ -772,6 +772,51 @@
         </if>
     </select>
 
+    <select id="selectFaqList" resultType="CommunityListVO">
+        SELECT /*+index_desc (B PK_T_BBS_DATA) */
+            B.BBS_KEY, B.TITLE, B.CTG_KEY
+        FROM T_BBS_DATA B
+        WHERE B.BBS_MASTER_KEY = #{bbsMasterKey}
+        AND B.IS_NOTICE = 0
+        <if test="faqTypeKey == 0">
+            AND B.CTG_KEY IN (
+            SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = 316
+            )
+        </if>
+        <if test="faqTypeKey > 0">
+            AND B.CTG_KEY = #{faqTypeKey}
+        </if>
+        <if test="searchType == 'title'">
+            AND REGEXP_LIKE(B.TITLE, #{searchText})
+        </if>
+        <if test="searchType == 'contents'">
+            AND REGEXP_LIKE(B.CONTENTS, #{searchText})
+        </if>
+        ORDER BY B.INDATE DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectFaqListCount" resultType="int">
+        SELECT COUNT (B.BBS_KEY)
+        FROM T_BBS_DATA B
+        WHERE B.BBS_MASTER_KEY = #{bbsMasterKey}
+        AND B.IS_NOTICE = 0
+        <if test="faqTypeKey == 0">
+            AND B.CTG_KEY IN (
+            SELECT CTG_KEY FROM T_CATEGORY WHERE PARENT_KEY = 316
+            )
+        </if>
+        <if test="faqTypeKey > 0">
+            AND B.CTG_KEY = #{faqTypeKey}
+        </if>
+        <if test="searchType == 'title'">
+            AND REGEXP_LIKE(B.TITLE, #{searchText})
+        </if>
+        <if test="searchType == 'contents'">
+            AND REGEXP_LIKE(B.CONTENTS, #{searchText})
+        </if>
+    </select>
+
     <insert id="insertTGoodsReview" parameterType="TGoodsReviewVO">
         <selectKey resultType="Integer" keyProperty="gReviewKey" order="BEFORE">
             SELECT T_GOODS_REVIEW_SEQ.NEXTVAL FROM DUAL

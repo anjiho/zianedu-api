@@ -1,6 +1,7 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
+import com.zianedu.api.define.datasource.FaqCtgType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BoardMapper;
@@ -521,6 +522,28 @@ public class BoardService extends PagingSupport {
             }
         }
         return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getFaQList(int faqTypeKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
+        int resultCode = OK.value();
+
+        List<CommunityListVO> faqList = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (faqTypeKey == 0 && sPage == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectFaqListCount(10018, faqTypeKey, Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+            faqList = boardMapper.selectFaqList(10018, faqTypeKey, startNumber, listLimit, Util.isNullValue(searchType, ""), Util.isNullValue(searchText, ""));
+            if (faqList.size() > 0) {
+                for (CommunityListVO vo : faqList) {
+                    vo.setCtgName("[" + FaqCtgType.getFaqCtgName(vo.getCtgKey()) + "]");
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCount, faqList, resultCode);
     }
 
 }

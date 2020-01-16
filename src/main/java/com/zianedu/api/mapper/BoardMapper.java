@@ -117,6 +117,13 @@ public interface BoardMapper {
 
     int selectReviewListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
+    Integer selectFaqListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("faqTypeKey") int faqTypeKey,
+                               @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<CommunityListVO> selectFaqList(@Param("bbsMasterKey") int bbsMasterKey, @Param("faqTypeKey") int faqTypeKey,
+                                        @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
+                                        @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     /** INSERT **/
     void insertTGoodsReview(TGoodsReviewVO tGoodsReviewVO);
 
