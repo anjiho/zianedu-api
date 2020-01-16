@@ -66,14 +66,16 @@ public class BookStoreController {
             @ApiImplicitParam(name = "searchText", value = "검색명", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "orderType", value = "출간일순 : date, 저자순 : name", dataType = "string", paramType = "query", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true)
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "subjectKey", value = "과목 키값", dataType = "int", paramType = "query", required = false)
     })
     public ApiPagingResultDTO getSalesBookList(@PathVariable(value = "bookMenuType") String bookMenuType,
                                                @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
                                                @RequestParam(value = "orderType") String orderType,
                                                @RequestParam(value = "sPage") int sPage,
-                                               @RequestParam(value = "listLimit") int listLimit) {
-        return bookStoreService.getSalesBookList(bookMenuType, searchText, orderType, sPage, listLimit);
+                                               @RequestParam(value = "listLimit") int listLimit,
+                                               @RequestParam(value = "subjectKey", required = false, defaultValue = "0") int subjectKey) {
+        return bookStoreService.getSalesBookList(bookMenuType, searchText, orderType, sPage, listLimit, subjectKey);
     }
 
     @RequestMapping(value = "/getBookDetailInfo/{gKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

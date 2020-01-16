@@ -128,7 +128,7 @@ public class BookStoreService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getSalesBookList(String bookMenuType, String searchText, String orderType, int sPage, int listLimit) {
+    public ApiPagingResultDTO getSalesBookList(String bookMenuType, String searchText, String orderType, int sPage, int listLimit, int subjectKey) {
         int resultCode = OK.value();
 
         int totalCount = 0;
@@ -139,8 +139,8 @@ public class BookStoreService extends PagingSupport {
         if ("".equals(bookMenuType) && sPage == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            totalCount = bookStoreMapper.selectSalesBookListCount(bookMenuType, searchText);
-            bookList = bookStoreMapper.selectSalesBookList(bookMenuType, searchText, orderType.toUpperCase(), startNumber, listLimit);
+            totalCount = bookStoreMapper.selectSalesBookListCount(bookMenuType, searchText, subjectKey);
+            bookList = bookStoreMapper.selectSalesBookList(bookMenuType, searchText, orderType.toUpperCase(), startNumber, listLimit, subjectKey);
             if (bookList.size() > 0) {
                 for (BookListVO vo : bookList) {
                     String discountPercent = Util.getProductDiscountRate(Integer.parseInt(vo.getPrice()), Integer.parseInt(vo.getSellPrice()));

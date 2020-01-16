@@ -139,6 +139,9 @@
             <if test="searchText != ''">
                 AND REGEXP_LIKE(B.NAME, #{searchText})
             </if>
+            <if test="subjectKey > 0">
+                AND C.SUBJECT_CTG_KEY = #{subjectKey}
+            </if>
 
             UNION ALL
 
@@ -182,6 +185,9 @@
             AND B.IS_SELL = 1
             <if test="searchText != ''">
                 AND REGEXP_LIKE(C.WRITER, #{searchText})
+            </if>
+            <if test="subjectKey > 0">
+                AND C.SUBJECT_CTG_KEY = #{subjectKey}
             </if>
         )T
         GROUP BY T.G_KEY, T.goodsName, T.IMAGE_LIST, T.WRITER, T.NAME, T.PRICE, T.SELL_PRICE, T.POINT,
@@ -235,6 +241,9 @@
                 <if test="searchText != ''">
                     AND REGEXP_LIKE(B.NAME, #{searchText})
                 </if>
+                <if test="subjectKey > 0">
+                    AND C.SUBJECT_CTG_KEY = #{subjectKey}
+                </if>
 
                 UNION ALL
 
@@ -274,6 +283,9 @@
                 AND B.IS_SELL = 1
                 <if test="searchText != ''">
                     AND REGEXP_LIKE(C.WRITER, #{searchText})
+                </if>
+                <if test="subjectKey > 0">
+                    AND C.SUBJECT_CTG_KEY = #{subjectKey}
                 </if>
             )T
             GROUP BY T.G_KEY
