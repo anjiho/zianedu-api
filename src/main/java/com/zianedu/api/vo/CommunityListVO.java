@@ -30,4 +30,8 @@ public class CommunityListVO {
     private String fileUrl;
 
     private int isNotice;
+
+    private int ctgKey;
+
+    private String ctgName;
 }
