@@ -620,6 +620,32 @@
         WHERE T.EXAM_KEY = #{examKey} AND T.USER_KEY = #{userKey}
     </select>
 
+    <select id="selectTExamDateInfo" resultType="TExamMasterVO">
+		SELECT
+		    (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = CLASS_CTG_KEY) as className,
+		    TO_CHAR(ACCEPT_START_DATE, 'YYYY-MM-DD HH24:mi:ss') as ACCEPT_START_DATE,
+		    TO_CHAR(ACCEPT_END_DATE, 'YYYY-MM-DD HH24:mi:ss') as ACCEPT_END_DATE,
+		    TO_CHAR(ONLINE_START_DATE, 'YYYY-MM-DD HH24:mi:ss') as ONLINE_START_DATE,
+		    TO_CHAR(ONLINE_END_DATE, 'YYYY-MM-DD HH24:mi:ss') as ONLINE_END_DATE
+		FROM T_EXAM_MASTER WHERE EXAM_KEY = #{examKey}
+	</select>
+
+    <select id="selectTBankSubjectExamLinkList" parameterType="Integer" resultType="TBankSubjectExamLinkVO">
+		SELECT A.*, B.name, C.name as CTG_NAME,
+				(
+						SELECT count(T_BANK_SUBJECT_QUES_LINK.BANK_SUBJECT_QUES_LINK_KEY)
+						FROM T_BANK_SUBJECT_QUES_LINK
+						WHERE EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+				) as QUESTION_NUMBER
+		FROM T_BANK_SUBJECT_EXAM_LINK A
+		INNER JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+		ON A.EXAM_QUESTION_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+		INNER JOIN T_CATEGORY C
+		ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+		WHERE A.exam_key = #{examKey}
+		ORDER BY A.BANK_SUBJECT_EXAM_LINK_KEY ASC
+	</select>
+
     <insert id="insertTExamUser" parameterType="TExamUserVO">
         <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
             SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL

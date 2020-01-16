@@ -1133,11 +1133,21 @@
                 TRIM( (SELECT TO_CHAR(SELL_PRICE, '999,999,999,999,999') FROM T_GOODS_PRICE_OPTION Z WHERE Z.G_KEY = A.G_KEY AND Z.KIND = 0)) as sellPrice,
                 CASE (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) WHEN 2 THEN '온라인' WHEN 3 THEN '오프라인' END as isOnOff,
                 A.IS_SELL,
-                (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey
+                (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                (
+                    SELECT T.RES_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as examKey,
+                A.G_KEY
             FROM T_GOODS A
             WHERE A.TYPE = 4
             AND A.IS_SHOW = 1
             AND A.IS_SELL = 1
+            <if test="searchType == 'name'">
+                AND REGEXP_LIKE(A.NAME, #{searchText})
+            </if>
             ORDER BY A.G_KEY DESC
          )T
         WHERE 1=1

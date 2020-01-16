@@ -4,6 +4,7 @@ import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.BookStoreService;
+import com.zianedu.api.service.CategoryService;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,6 +18,9 @@ public class BookStoreController {
 
     @Autowired
     private BookStoreService bookStoreService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/getBannerList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("온라인서점 도서 배너 목록")
@@ -79,5 +83,14 @@ public class BookStoreController {
     })
     public ApiResultObjectDTO getBookDetailInfo(@PathVariable(value = "gKey") int gKey) {
         return bookStoreService.getBookDetailInfo(gKey);
+    }
+
+    @RequestMapping(value = "/getBookStoreSelectBoxList/{bookStoreType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("도서 과목 종류 셀렉트박스")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bookStoreType", value = "도서 종류 키값(공통과목:COMMON, 기술직:TECH, 행정직:PUBLIC, 계리직:POST, 면접:CERT)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getBookStoreSelectBoxList(@PathVariable(value = "bookStoreType") String bookStoreType) {
+        return categoryService.getBookStoreSelectBoxList(bookStoreType);
     }
 }

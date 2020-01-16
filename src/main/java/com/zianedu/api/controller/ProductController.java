@@ -97,13 +97,21 @@ public class ProductController {
         return productService.getSpecialPackageDetailInfo(gKey);
     }
 
-    @RequestMapping(value = "/getMockExamListFromCategoryMenu/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getMockExamList/{onOffKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("모의고사 상품 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ctgKey", value = "메뉴 카테고리 값", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
     })
-    public ApiResultListDTO getMockExamList(@PathVariable("ctgKey") int ctgKey) {
-        return productService.getMockExamProductList(ctgKey);
+    public ApiResultListDTO getMockExamList(@PathVariable("onOffKey") int onOffKey,
+                                            @RequestParam("sPage") int sPage,
+                                            @RequestParam("listLimit") int listLimit,
+                                            @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                            @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) {
+        return productService.getMockExamProductList(onOffKey, sPage, listLimit, searchType, searchText);
     }
 
     @RequestMapping(value = "/getFreeVideoLectureStepList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

@@ -1,11 +1,9 @@
 package com.zianedu.api.service;
 
 import com.zianedu.api.config.ConfigHolder;
+import com.zianedu.api.define.datasource.BookStoreCommonType;
 import com.zianedu.api.define.err.ZianErrCode;
-import com.zianedu.api.dto.ApiPagingResultDTO;
-import com.zianedu.api.dto.ApiResultListDTO;
-import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.dto.BookDetailInfoDTO;
+import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.BookStoreMapper;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
@@ -194,5 +192,15 @@ public class BookStoreService extends PagingSupport {
             detailInfoDTO = new BookDetailInfoDTO(bookDetailInfo, otherBookInfo);
         }
         return new ApiResultObjectDTO(detailInfoDTO, resultCode);
+    }
+
+    public ApiResultListDTO getBookStoreSelectBoxList(String bookStoreType) {
+        int resultCode = OK.value();
+
+        List<SelectboxDTO> selectBoxList = new ArrayList<>();
+        if ("COMMON".equals(bookStoreType)) {
+            selectBoxList = BookStoreCommonType.getBookStoreCommonTypeList();
+        }
+        return new ApiResultListDTO(selectBoxList, resultCode);
     }
 }

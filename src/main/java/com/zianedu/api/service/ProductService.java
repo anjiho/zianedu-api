@@ -7,6 +7,7 @@ import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.datasource.PromotionPmType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
+import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.FileUtil;
@@ -27,7 +28,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class ProductService {
+public class ProductService extends PagingSupport {
 
     protected final String ZIAN_PASS_HTML_URL = "http://52.79.40.214/views/zianPass/";
 
@@ -43,6 +44,9 @@ public class ProductService {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private ExamMapper examMapper;
 
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getVideoProductDetailInfo(int gKey, int device) {
@@ -420,14 +424,36 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getMockExamProductList(int ctgKey) {
+    public ApiResultListDTO getMockExamProductList(int onOffKey, int sPage, int listLimit, String searchType, String searchText) {
         int resultCode = OK.value();
 
         List<MockExamProductVO> mockExamProductList = new ArrayList<>();
-        if (ctgKey == 0) {
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (onOffKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            mockExamProductList = productMapper.selectMockExamProductList(ctgKey);
+            mockExamProductList = productMapper.selectMockExamProductList(onOffKey, searchType, searchText, startNumber, listLimit);
+            if (mockExamProductList.size() > 0) {
+                for (MockExamProductVO productVO : mockExamProductList) {
+                    TExamMasterVO examVO = examMapper.selectTExamDateInfo(productVO.getExamKey());
+                    if (examVO != null) {
+                        productVO.setAcceptDate(examVO.getAcceptEndDate() + " ~ " + examVO.getAcceptEndDate());
+                        productVO.setStareDate(examVO.getOnlineStartDate() + " ~ " + examVO.getOnlineStartDate());
+                        productVO.setClassName(examVO.getClassName());
+
+                        List<TBankSubjectExamLinkVO> examSubjectList = examMapper.selectExamMasterSubjectList(productVO.getExamKey());
+                        List<String> ctgNameList = new ArrayList<>();
+                        if (examSubjectList.size() > 0) {
+                            for (TBankSubjectExamLinkVO examLinkVO : examSubjectList) {
+                                ctgNameList.add(examLinkVO.getCtgName());
+                            }
+                        }
+                        String ctgNameStr = StringUtils.implodeList(",", ctgNameList);
+                        productVO.setSubjectName(ctgNameStr);
+                    }
+                }
+            }
         }
         return new ApiResultListDTO(mockExamProductList, resultCode);
     }

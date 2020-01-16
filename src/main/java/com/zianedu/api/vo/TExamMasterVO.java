@@ -62,4 +62,6 @@ public class TExamMasterVO {
     private int isRealFree;
     //기출문제 on, off
     private int isGichul;
+
+    private String className;
 }

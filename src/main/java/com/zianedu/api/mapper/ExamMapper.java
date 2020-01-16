@@ -59,6 +59,10 @@ public interface ExamMapper {
 
     List<TExamSubjectUserVO> selectTExamSubjectUserList(@Param("examKey") int examKey, @Param("userKey") int userKey);
 
+    TExamMasterVO selectTExamDateInfo(@Param("examKey") int examKey);
+
+    List<TBankSubjectExamLinkVO> selectTBankSubjectExamLinkList(@Param("examKey") int examKey);
+
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);
 

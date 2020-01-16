@@ -3,6 +3,7 @@ package com.zianedu.api.service;
 import com.zianedu.api.define.datasource.LeftMenuCtgKeyType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultListDTO;
+import com.zianedu.api.dto.SelectboxDTO;
 import com.zianedu.api.mapper.CategoryMapper;
 import com.zianedu.api.vo.TCategoryVO;
 import org.slf4j.Logger;
@@ -97,6 +98,7 @@ public class CategoryService {
         return unitName;
     }
 
+    @Transactional(readOnly = true)
     public ApiResultListDTO getTCategoryListByParentKey(int parentKey) {
         int resultCode = OK.value();
 
@@ -108,6 +110,20 @@ public class CategoryService {
             categoryList = categoryMapper.selectTCategoryListByParentKey(parentKey);
         }
         return new ApiResultListDTO(categoryList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getBookStoreSelectBoxList(String bookStoreType) {
+        int resultCode = OK.value();
+
+        List<SelectboxDTO> selectBoxList = new ArrayList<>();
+
+        if ("".equals(bookStoreType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            selectBoxList = categoryMapper.selectBookStoreSubjectSelectBoxList(bookStoreType);
+        }
+        return new ApiResultListDTO(selectBoxList, resultCode);
     }
 
 }
