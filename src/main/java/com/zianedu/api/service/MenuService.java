@@ -153,4 +153,42 @@ public class MenuService {
         }
         return new ApiResultListDTO(leftMenuSubDepthList, resultCode);
     }
+
+    @Transactional(readOnly = true)
+    public List<TCategoryVO> getTeacherIntroduceLeftMenuByTeacherBanner(int ctgKey) {
+        int resultCode = OK.value();
+
+        List<TCategoryVO> teacherMenuList = new ArrayList<>();
+        if (ctgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            teacherMenuList = menuMapper.selectTCategoryByCtgKey(ctgKey);
+            if (teacherMenuList.size() > 0) {
+                for (TCategoryVO vo : teacherMenuList) {
+                    //전체일때
+                    if (vo.getPos() == 0) {
+                        List<TCategoryVO> leftMenuList = menuMapper.selectTCategoryByParentKey(vo.getParentKey());
+                        List<TeacherVO> teacherInfoList = new ArrayList<>();
+                        for (TCategoryVO tCategoryVO : leftMenuList) {
+                            List<TeacherVO> teacherInfo = menuMapper.selectTeacherListFromTeacherIntroduce(tCategoryVO.getCtgKey());
+                            for (TeacherVO teacherVO : teacherInfo) {
+                                teacherVO.setTeacherImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherVO.getTeacherImage()));
+                            }
+                            teacherInfoList.addAll(teacherInfo);
+                        }
+                        vo.setTeacherList(teacherInfoList);
+                    } else {
+                        List<TeacherVO> teacherInfo = menuMapper.selectTeacherListFromTeacherIntroduce(vo.getCtgKey());
+                        if (teacherInfo.size() > 0) {
+                            for (TeacherVO teacherVO : teacherInfo) {
+                                teacherVO.setTeacherImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), teacherVO.getTeacherImage()));
+                            }
+                        }
+                        vo.setTeacherList(teacherInfo);
+                    }
+                }
+            }
+        }
+        return teacherMenuList;
+    }
 }

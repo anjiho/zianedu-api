@@ -31,6 +31,9 @@ public class BannerService {
     @Autowired
     private TeacherService teacherService;
 
+    @Autowired
+    private MenuService menuService;
+
     @Transactional(readOnly = true)
     public ApiResultListDTO getMainPageCtgKeyInfo(int ctgKey) {
         int resultCode = OK.value();
@@ -92,16 +95,26 @@ public class BannerService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getTeacherBannerList(int ctgKey, int subjectType) throws Exception {
+    public ApiResultListDTO getTeacherBannerList(int ctgKey, int subjectType, int teacherMenuCtgKey) throws Exception {
         int resultCode = OK.value();
 
         List<TeacherBannerVO>teacherBannerList = new ArrayList<>();
         if (ctgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            List<TCategoryVO> teacherIntroduceList = menuService.getTeacherIntroduceLeftMenuByTeacherBanner(teacherMenuCtgKey);
             teacherBannerList = bannerMapper.selectTeacherBannerList(ctgKey, subjectType);
             if (teacherBannerList.size() > 0) {
                 for (TeacherBannerVO vo : teacherBannerList) {
+                    for (TCategoryVO tCategoryVO : teacherIntroduceList) {
+                        List<TeacherVO> teacherList = tCategoryVO.getTeacherList();
+                        for (TeacherVO teacherVO : teacherList) {
+                            if (teacherVO.getTeacherKey() == vo.getTeacherKey()) {
+                                vo.setReqKey(teacherVO.getReqKey());
+                            }
+                        }
+                    }
+
                     if (vo.getTargetUrl().contains("&")) {
                         URL url = new URL(vo.getTargetUrl());
                         Map<String, List<String>> urlParamMap = Util.splitQuery(url);

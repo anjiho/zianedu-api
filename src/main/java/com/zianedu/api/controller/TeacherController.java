@@ -34,6 +34,17 @@ public class TeacherController {
         return teacherService.getTeacherHomeInfo(teacherKey, listLimit, device, menuCtgKey);
     }
 
+    @RequestMapping(value = "/getTeacherHomeInfo2/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사 홈정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "리스트 개수 요청 값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherHome2(@PathVariable("teacherKey") int teacherKey,
+                                             @RequestParam("listLimit") int listLimit) {
+        return teacherService.getTeacherHomeInfo2(teacherKey, listLimit);
+    }
+
     @RequestMapping(value = "/getTeacherVideoLecture/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("강사소개 > 동영상 강좌 정보")
     @ApiImplicitParams({

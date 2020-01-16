@@ -50,7 +50,55 @@ public class TeacherService extends PagingSupport {
             //강사기본정보
             TTeacherVO teacherInfo = this.getTeacherInfo(teacherKey);
             //강사 상세설명 정보
-            teacherInfo.setIntroduce(teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey));
+            //teacherInfo.setIntroduce(teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey));
+            //학습자료실
+            List<TBbsDataVO> referenceRoom = boardMapper.selectTBbsDataList(
+                    BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, ZianApiUtils.LIMIT,0, listLimit
+            );
+            //학습 QNA
+            List<TBbsDataVO> learningQna = boardMapper.selectTBbsDataList(
+                    BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey,ZianApiUtils.LIMIT,0, listLimit
+            );
+            //수강후기
+            List<GoodsReviewVO> lectureReview = boardMapper.selectGoodsReviewList(teacherKey, ZianApiUtils.LIMIT, 0, listLimit);
+            //동영상강좌정보
+            List<GoodsListVO> videoLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 1);
+            if (videoLecture.size() > 0) {
+                for (GoodsListVO vo : videoLecture) {
+                    //할인률 주입(상품이 여러개면 할인률이 제일 큰값으로 가져온다)
+                    CalcPriceVO calcPrice = productMapper.selectTopCalcPrice(vo.getGKey());
+                    String discountPercent = "";
+                    if (calcPrice.getPrice() > 0 && calcPrice.getSellPrice() > 0) {
+                        discountPercent = Util.getProductDiscountRate(calcPrice.getPrice(), calcPrice.getSellPrice());
+                    }
+                    vo.setDiscountPercent("[" + discountPercent + "할인]");
+                }
+            }
+            //학원강좌정보
+            List<GoodsListVO> academyLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 2);
+            //도서정보
+            List<BannerBookVO> teacherBook = teacherMapper.selectTeacherBookList(teacherKey);
+            if (teacherBook.size() > 0) {
+                for (BannerBookVO vo : teacherBook) {
+                    vo.setImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
+                }
+            }
+            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, lectureReview, videoLecture, academyLecture, teacherBook);
+        }
+        return new ApiResultObjectDTO(teacherHomeInfo, resultCode);
+    }
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getTeacherHomeInfo2(int teacherKey, int listLimit) {
+        int resultCode = OK.value();
+
+        TeacherHomeVO teacherHomeInfo = null;
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //강사기본정보
+            TTeacherVO teacherInfo = this.getTeacherInfo(teacherKey);
+            //강사 상세설명 정보
+            //teacherInfo.setIntroduce(teacherMapper.selectTeacherIntroduceInfo(teacherKey, device, menuCtgKey));
             //학습자료실
             List<TBbsDataVO> referenceRoom = boardMapper.selectTBbsDataList(
                     BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, ZianApiUtils.LIMIT,0, listLimit

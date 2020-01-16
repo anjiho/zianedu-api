@@ -25,6 +25,8 @@ public class TeacherBannerVO {
 
     private int parentMnk;
 
+    private int reqKey;
+
     private TTeacherVO teacherInfo;
 
 }
