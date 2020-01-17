@@ -1,5 +1,6 @@
 package com.zianedu.api.mapper;
 
+import com.zianedu.api.dto.SelectboxDTO;
 import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -62,6 +63,8 @@ public interface ExamMapper {
     TExamMasterVO selectTExamDateInfo(@Param("examKey") int examKey);
 
     List<TBankSubjectExamLinkVO> selectTBankSubjectExamLinkList(@Param("examKey") int examKey);
+
+    List<SelectboxDTO> selectMockExamClassCtgSelectBoxList(@Param("onOffKey") int onOffKey);
 
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);

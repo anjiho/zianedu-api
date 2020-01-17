@@ -315,6 +315,20 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO updateFaqBoardInfo(int bbsKey, int faqTypeKey, String title, String content) {
+        int resultCode = OK.value();
+
+        if (bbsKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            TBbsDataVO bbsDataVO = new TBbsDataVO(bbsKey, faqTypeKey, title, content);
+            boardMapper.updateTBbsData(bbsDataVO);
+            bbsKey = bbsDataVO.getBbsKey();
+        }
+        return new ApiResultCodeDTO("bbsKey", bbsKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public ApiResultCodeDTO updateBoardCommentInfo(int bbsCommentKey, String comment) {
         int resultCode = OK.value();
 

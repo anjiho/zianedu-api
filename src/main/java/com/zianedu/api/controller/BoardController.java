@@ -169,6 +169,21 @@ public class BoardController {
         return boardService.updateBoardInfo(bbsKey, title, content, isSecret, fileName);
     }
 
+    @RequestMapping(value = "/updateFaqBoard", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("자주하는 질문 글 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bbsKey", value = "게시판 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "faqTypeKey", value = "자주하는 질문 종류 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "title", value = "게시판 제목", dataType = "String", paramType = "query", required = true),
+            @ApiImplicitParam(name = "content", value = "게시판 내용", dataType = "String", paramType = "query", required = true),
+    })
+    public ApiResultCodeDTO updateFaQBoard(@RequestParam("bbsKey") int bbsKey,
+                                        @RequestParam("faqTypeKey") int faqTypeKey,
+                                        @RequestParam("title") String title,
+                                        @RequestParam("content") String content) {
+        return boardService.updateFaqBoardInfo(bbsKey, faqTypeKey, title, content);
+    }
+
     @RequestMapping(value = "/updateBoardByAlliance", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("제휴 문의 게시글 수정")
     @ApiImplicitParams({

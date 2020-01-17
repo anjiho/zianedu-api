@@ -143,5 +143,13 @@ public class TBbsDataVO {
         this.lectureSubject = lectureSubject;
     }
 
+    public TBbsDataVO(int bbsKey, int faqTypeKey, String title, String contents) {
+        this.bbsKey = bbsKey;
+        this.ctgKey = faqTypeKey;
+        this.title = Util.isNullValue(title, "");
+        this.contents = Util.isNullValue(contents, "");
+        this.pwd = "";
+    }
+
 
 }

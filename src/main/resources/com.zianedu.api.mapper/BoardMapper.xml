@@ -906,6 +906,7 @@
             <if test="title != ''">TITLE = #{title},</if>
             <if test="contents != ''">CONTENTS = #{contents},</if>
             <if test="pwd != ''">PWD = #{pwd},</if>
+            <if test="ctgKey > 0">CTG_KEY = #{ctgKey},</if>
         </set>
         WHERE BBS_KEY = #{bbsKey}
     </update>

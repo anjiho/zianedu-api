@@ -1145,8 +1145,10 @@
             WHERE A.TYPE = 4
             AND A.IS_SHOW = 1
             AND A.IS_SELL = 1
-            <if test="searchType == 'name'">
-                AND REGEXP_LIKE(A.NAME, #{searchText})
+            <if test="searchText != ''">
+                <if test="searchType == 'name'">
+                    AND REGEXP_LIKE(A.NAME, #{searchText})
+                </if>
             </if>
             ORDER BY A.G_KEY DESC
          )T

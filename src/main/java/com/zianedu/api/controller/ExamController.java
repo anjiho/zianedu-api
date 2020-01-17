@@ -154,4 +154,13 @@ public class ExamController {
         List<ExamResultDTO>examResultList = GsonUtil.getObjectFromJsonArray(saveExamResultInfoJson, ExamResultDTO.class);
         return examService.injectUserExamResult(playTime, examResultList);
     }
+
+    @RequestMapping(value = "/getMockExamClassCtgSelectBoxList/{onOffKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("모의고사 리스트 직렬선택 셀렉트 박스")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getMockExamClassCtgSelectBoxList(@PathVariable(value = "onOffKey") int onOffKey) {
+        return examService.getMockExamClassCtgSelectBoxList(onOffKey);
+    }
 }

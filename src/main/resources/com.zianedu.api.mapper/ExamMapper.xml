@@ -646,6 +646,43 @@
 		ORDER BY A.BANK_SUBJECT_EXAM_LINK_KEY ASC
 	</select>
 
+    <!-- 모의고사 리스트 직렬선택 셀렉트 박스 -->
+    <select id="selectMockExamClassCtgSelectBoxList" resultType="com.zianedu.api.dto.SelectboxDTO">
+        SELECT T.classCtgKey as key, T.classCtgName as value FROM (
+            SELECT
+                (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                (
+                    SELECT T.RES_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as examKey,
+
+                (
+                    SELECT TT.CLASS_CTG_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as classCtgKey,
+                 (
+                    SELECT TTT.NAME
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    INNER JOIN T_CATEGORY TTT
+                    ON TT.CLASS_CTG_KEY = TTT.CTG_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as classCtgName
+            FROM T_GOODS A
+            WHERE A.TYPE = 4
+            AND A.IS_SHOW = 1
+            AND A.IS_SELL = 1
+
+         )T
+        WHERE 1=1
+        AND T.onOffKey = #{onOffKey}
+        GROUP BY T.classCtgKey, T.classCtgName
+    </select>
+
     <insert id="insertTExamUser" parameterType="TExamUserVO">
         <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
             SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL

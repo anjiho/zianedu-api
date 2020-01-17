@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -576,6 +577,29 @@ public class ExamService {
     public void updateExamResultStatus(int examUserKey, int isComplete, int playTime, int isStart) {
         TExamUserVO tExamUserVO = new TExamUserVO(examUserKey, isComplete, playTime, isStart);
         examMapper.updateTExamUser(tExamUserVO);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getMockExamClassCtgSelectBoxList(int onOffKey) {
+        int resultCode = OK.value();
+
+        List<SelectboxDTO> selectBoxList = new CopyOnWriteArrayList<>();
+        if (onOffKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<SelectboxDTO> list = examMapper.selectMockExamClassCtgSelectBoxList(onOffKey);
+            if (list.size() > 0) {
+                SelectboxDTO selectboxDTO = new SelectboxDTO();
+                selectboxDTO.setKey("");
+                selectboxDTO.setValue("직렬선택");
+                selectBoxList.add(selectboxDTO);
+                for (SelectboxDTO dto : list) {
+                    selectboxDTO = new SelectboxDTO(dto.getKey(), dto.getValue());
+                    selectBoxList.add(selectboxDTO);
+                }
+            }
+        }
+        return new ApiResultListDTO(selectBoxList, resultCode);
     }
 
 }
