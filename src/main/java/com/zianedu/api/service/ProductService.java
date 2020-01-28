@@ -424,16 +424,17 @@ public class ProductService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getMockExamProductList(int onOffKey, int sPage, int listLimit, String searchType, String searchText) {
+    public ApiPagingResultDTO getMockExamProductList(int onOffKey, int ctgKey, int sPage, int listLimit, String searchType, String searchText) {
         int resultCode = OK.value();
 
+        int totalCnt = 0;
         List<MockExamProductVO> mockExamProductList = new ArrayList<>();
         int startNumber = getPagingStartNumber(sPage, listLimit);
 
         if (onOffKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            mockExamProductList = productMapper.selectMockExamProductList(onOffKey, searchType, searchText, startNumber, listLimit);
+            mockExamProductList = productMapper.selectMockExamProductList(onOffKey, ctgKey, searchType, searchText, startNumber, listLimit);
             if (mockExamProductList.size() > 0) {
                 for (MockExamProductVO productVO : mockExamProductList) {
                     TExamMasterVO examVO = examMapper.selectTExamDateInfo(productVO.getExamKey());
@@ -453,9 +454,10 @@ public class ProductService extends PagingSupport {
                         productVO.setSubjectName(ctgNameStr);
                     }
                 }
+                totalCnt = mockExamProductList.size();
             }
         }
-        return new ApiResultListDTO(mockExamProductList, resultCode);
+        return new ApiPagingResultDTO(totalCnt, mockExamProductList, resultCode);
     }
 
     @Transactional(readOnly = true)

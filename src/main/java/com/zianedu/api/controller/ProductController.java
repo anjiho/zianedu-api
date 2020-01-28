@@ -103,15 +103,17 @@ public class ProductController {
             @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "ctgKey", value = "직렬키 값", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "searchType", value = "검색 종류(name : 시험명) ", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
     })
-    public ApiResultListDTO getMockExamList(@PathVariable("onOffKey") int onOffKey,
+    public ApiPagingResultDTO getMockExamList(@PathVariable("onOffKey") int onOffKey,
                                             @RequestParam("sPage") int sPage,
                                             @RequestParam("listLimit") int listLimit,
+                                            @RequestParam(value = "ctgKey", required = false, defaultValue = "0") int ctgKey,
                                             @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                                             @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) {
-        return productService.getMockExamProductList(onOffKey, sPage, listLimit, searchType, searchText);
+        return productService.getMockExamProductList(onOffKey, ctgKey, sPage, listLimit, searchType, searchText);
     }
 
     @RequestMapping(value = "/getFreeVideoLectureStepList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

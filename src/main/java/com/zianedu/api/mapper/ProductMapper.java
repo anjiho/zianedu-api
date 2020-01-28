@@ -92,8 +92,8 @@ public interface ProductMapper {
 
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
-    List<MockExamProductVO> selectMockExamProductList(@Param("onOffKey") int onOffKey, @Param("searchType") String searchType, @Param("searchText") String searchText,
-                                                      @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+    List<MockExamProductVO> selectMockExamProductList(@Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey, @Param("searchType") String searchType,
+                                                      @Param("searchText") String searchText, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     //List<MockExamProductVO> selectMockExamProductList(@Param("ctgKey") int ctgKey);
 

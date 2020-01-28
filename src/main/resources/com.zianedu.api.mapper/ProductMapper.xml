@@ -1140,6 +1140,12 @@
                     ON T.RES_KEY = TT.EXAM_KEY
                     WHERE T.REQ_KEY = A.G_KEY
                 ) as examKey,
+                (
+                    SELECT TT.CLASS_CTG_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as classCtgKey,
                 A.G_KEY
             FROM T_GOODS A
             WHERE A.TYPE = 4
@@ -1154,6 +1160,9 @@
          )T
         WHERE 1=1
         AND T.onOffKey = #{onOffKey}
+        <if test="ctgKey > 0">
+            AND T.classCtgKey = #{ctgKey}
+        </if>
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
