@@ -23,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
-public class ExamService {
+public class ExamService extends PagingSupport {
 
     @Autowired
     private ExamMapper examMapper;
@@ -600,6 +600,51 @@ public class ExamService {
             }
         }
         return new ApiResultListDTO(selectBoxList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getMockExamListAtBuy(int userKey, int onOffKey, int ctgKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
+        int resultCode = OK.value();
+
+        int totalCnt = 0;
+        List<MockExamProductVO> mockExamProductList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (onOffKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            mockExamProductList = examMapper.selectMockExamListAtBuy(userKey, onOffKey, ctgKey, searchType, searchText, startNumber, listLimit);
+            if (mockExamProductList.size() > 0) {
+                for (MockExamProductVO productVO : mockExamProductList) {
+                    TExamMasterVO examVO = examMapper.selectTExamDateInfo(productVO.getExamKey());
+                    if (examVO != null) {
+                        productVO.setAcceptStartDate(examVO.getAcceptStartDate());
+                        productVO.setAcceptEndDate(examVO.getAcceptEndDate());
+                        productVO.setStareDate(examVO.getOnlineStartDate());
+                        productVO.setEndDate(examVO.getOnlineEndDate());
+                        productVO.setClassName(examVO.getClassName());
+                        //응시가능 여부 주입
+                        if (DateUtils.isBetweenDateFromToday(examVO.getOnlineStartDate(), examVO.getOnlineEndDate())) {
+                            if (productVO.getIsComplete() == 0) {   //응시가능
+                                productVO.setAcceptType(1);
+                            } else if (productVO.getIsComplete() == 1) {    //응시완료
+                                productVO.setAcceptType(2);
+                            }
+                        } else {
+                            productVO.setAcceptType(0); //응시마감
+                        }
+                        //문제지, 해설지 주입
+                        TExamMasterVO examMasterVO = examMapper.selectExamMasterInfo(productVO.getExamKey());
+                        if (examMasterVO != null) {
+                            productVO.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintQuestionFile()));
+                            productVO.setPrintCommentaryFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintCommentaryFile()));
+                        }
+                    }
+                }
+                totalCnt = mockExamProductList.size();
+            }
+        }
+        return new ApiPagingResultDTO(totalCnt, mockExamProductList, resultCode);
     }
 
 }

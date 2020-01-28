@@ -66,6 +66,10 @@ public interface ExamMapper {
 
     List<SelectboxDTO> selectMockExamClassCtgSelectBoxList(@Param("onOffKey") int onOffKey);
 
+    List<MockExamProductVO> selectMockExamListAtBuy(@Param("userKey") int userKey, @Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey,
+                                                    @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                                    @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);
 

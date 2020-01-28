@@ -108,7 +108,6 @@ public class DateUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        //System.out.println(isBetweenDateFromToday("2017-07-01 13:42:00", "2018-07-21 13:42:00"));
-        System.out.println(getYearLastTwo());
+        System.out.println(isBetweenDateFromToday("2019-06-11 00:00:00", "2020-01-28 13:59:59"));
     }
 }

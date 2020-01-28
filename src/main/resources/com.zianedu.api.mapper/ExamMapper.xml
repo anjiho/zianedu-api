@@ -683,6 +683,56 @@
         GROUP BY T.classCtgKey, T.classCtgName
     </select>
 
+    <select id="selectMockExamListAtBuy" resultType="MockExamProductVO">
+        SELECT Z.*, ZZ.EXAM_USER_KEY, NVL(ZZ.ISCOMPLATE, 0) as isComplete
+        FROM (
+               SELECT A.J_KEY, C.NAME as goodsName,
+
+                        (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                        (
+                            SELECT T.RES_KEY
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as examKey,
+                        A.G_KEY,
+                        B.USER_KEY,
+                        A.J_G_KEY,
+                        (
+                            SELECT TT.CLASS_CTG_KEY
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as classCtgKey
+                FROM T_ORDER_GOODS A
+                INNER JOIN T_ORDER B
+                ON A.J_KEY = B.J_KEY
+                INNER JOIN T_GOODS C
+                ON A.G_KEY = C.G_KEY
+                WHERE 1=1
+                AND A.TYPE = 4
+        ) Z
+        LEFT OUTER JOIN T_EXAM_USER ZZ
+        ON Z.J_G_KEY = ZZ.J_G_KEY
+        WHERE 1=1
+        <if test="userKey > 0">
+            AND Z.USER_KEY = #{userKey}
+        </if>
+        <if test="onOffKey > 0">
+            AND Z.onOffKey = #{onOffKey}
+        </if>
+        <if test="ctgKey > 0">
+            AND Z.classCtgKey = #{ctgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND REGEXP_LIKE(Z.goodsName, #{searchText})
+            </if>
+        </if>
+        ORDER BY Z.J_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
     <insert id="insertTExamUser" parameterType="TExamUserVO">
         <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
             SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL
