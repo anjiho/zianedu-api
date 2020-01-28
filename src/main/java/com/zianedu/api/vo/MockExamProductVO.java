@@ -23,9 +23,13 @@ public class MockExamProductVO {
 
     private int examKey;
     //시험신청 기간
-    private String acceptDate;
+    private String acceptStartDate;
+
+    private String acceptEndDate;
     //시험응시 기간
     private String stareDate;
+
+    private String endDate;
     //응시직렬
     private String className;
     //응시과목

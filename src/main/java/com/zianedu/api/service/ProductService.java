@@ -439,8 +439,10 @@ public class ProductService extends PagingSupport {
                 for (MockExamProductVO productVO : mockExamProductList) {
                     TExamMasterVO examVO = examMapper.selectTExamDateInfo(productVO.getExamKey());
                     if (examVO != null) {
-                        productVO.setAcceptDate(examVO.getAcceptEndDate() + " ~ " + examVO.getAcceptEndDate());
-                        productVO.setStareDate(examVO.getOnlineStartDate() + " ~ " + examVO.getOnlineStartDate());
+                        productVO.setAcceptStartDate(examVO.getAcceptStartDate());
+                        productVO.setAcceptEndDate(examVO.getAcceptEndDate());
+                        productVO.setStareDate(examVO.getOnlineStartDate());
+                        productVO.setEndDate(examVO.getOnlineEndDate());
                         productVO.setClassName(examVO.getClassName());
 
                         List<TBankSubjectExamLinkVO> examSubjectList = examMapper.selectExamMasterSubjectList(productVO.getExamKey());
