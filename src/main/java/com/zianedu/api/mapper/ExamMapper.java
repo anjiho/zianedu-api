@@ -20,7 +20,12 @@ public interface ExamMapper {
 
     List<TExamUserVO> selectDiagnosisEvaluationCompleteList(@Param("userKey") int userKey);
 
-    List<TExamUserVO> selectWeekBigExamList(@Param("userKey") int userKey);
+    int selectWeekBigExamListCount(@Param("userKey") int userKey, @Param("ctgKey") int ctgKey,
+                                   @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<TExamUserVO> selectWeekBigExamList(@Param("userKey") int userKey, @Param("ctgKey") int ctgKey,
+                                            @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                            @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     List<TExamUserVO> selectWeekBigExamAchievementManagementList(@Param("userKey") int userKey);
 

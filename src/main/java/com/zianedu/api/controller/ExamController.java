@@ -72,10 +72,20 @@ public class ExamController {
     @RequestMapping(value = "/getWeekBigExamList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("주간모의고사 > 빅모의고사(온라인) 리스트")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "ctgKey", value = "직렬키 값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(name : 시험명) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
     })
-    public ApiResultListDTO getWeekBigExamList(@PathVariable(value = "userKey") int userKey) throws Exception {
-        return examService.getWeekBigExamList(userKey);
+    public ApiPagingResultDTO getWeekBigExamList(@PathVariable(value = "userKey") int userKey,
+                                                 @RequestParam("sPage") int sPage,
+                                                 @RequestParam("listLimit") int listLimit,
+                                                 @RequestParam(value = "ctgKey", required = false, defaultValue = "0") int ctgKey,
+                                                 @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                 @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+        return examService.getWeekBigExamList(userKey, sPage, listLimit, ctgKey, searchType, searchText);
     }
 
     @RequestMapping(value = "/getWeekBigExamAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

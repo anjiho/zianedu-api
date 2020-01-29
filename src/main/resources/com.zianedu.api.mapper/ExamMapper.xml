@@ -88,21 +88,46 @@
        WHERE T.isComplete = 1
     </select>
 
-    <select id="selectWeekBigExamList" resultType="TExamUserVO">
-        SELECT
-            A.EXAM_KEY, A.NAME, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
-            TO_CHAR(A.ACCEPT_START_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptStartDate,
-            TO_CHAR(A.ACCEPT_END_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptEndDate,
-           (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
-           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
-           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
-           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_GROUP_CTG_KEY) as groupCtgName
+    <select id="selectWeekBigExamListCount" resultType="int">
+        SELECT COUNT (A.EXAM_KEY)
         FROM T_EXAM_MASTER A
         WHERE 1=1
         AND A.IS_REAL_FREE = 1
         AND A.IS_GICHUL = 0
         AND A.EXAM_KEY != 212
+        <if test="ctgKey > 0">
+            AND A.CLASS_CTG_KEY = #{ctgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND A.NAME LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
         ORDER BY EXAM_KEY ASC
+    </select>
+
+    <select id="selectWeekBigExamList" resultType="TExamUserVO">
+        SELECT
+            A.EXAM_KEY, A.NAME as goodsName, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
+            TO_CHAR(A.ACCEPT_START_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptStartDate,
+            TO_CHAR(A.ACCEPT_END_DATE, 'YYYY-MM-DD hh24:mi:ss') as acceptEndDate,
+           (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
+           (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName
+        FROM T_EXAM_MASTER A
+        WHERE 1=1
+        AND A.IS_REAL_FREE = 1
+        AND A.IS_GICHUL = 0
+        AND A.EXAM_KEY != 212
+        <if test="ctgKey > 0">
+            AND A.CLASS_CTG_KEY = #{ctgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND A.NAME LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+        ORDER BY EXAM_KEY ASC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
     <select id="selectWeekBigExamAchievementManagementList" resultType="TExamUserVO">

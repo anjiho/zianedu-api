@@ -103,15 +103,18 @@ public class ExamService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getWeekBigExamList(int userKey) throws Exception {
+    public ApiPagingResultDTO getWeekBigExamList(int userKey, int sPage, int listLimit, int ctgKey, String searchType, String searchText) throws Exception {
         int resultCode = OK.value();
 
+        int totalCnt = 0;
         List<TExamUserVO> examList = new ArrayList<>();
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            examList = examMapper.selectWeekBigExamList(userKey);
-            if (userKey != 5) {
+            int startNumber = getPagingStartNumber(sPage, listLimit);
+            totalCnt = examMapper.selectWeekBigExamListCount(userKey, ctgKey, searchType, searchText);
+            examList = examMapper.selectWeekBigExamList(userKey, ctgKey, searchType, searchText, startNumber, listLimit);
+            //if (userKey != 5) {
                 if (examList.size() > 0) {
                     for (TExamUserVO vo : examList) {
                         if (vo.getIscomplete() == 0) {
@@ -123,9 +126,9 @@ public class ExamService extends PagingSupport {
                         }
                     }
                 }
-            }
+            //}
         }
-        return new ApiResultListDTO(examList, resultCode);
+        return new ApiPagingResultDTO(totalCnt, examList, resultCode);
     }
 
     @Transactional(readOnly = true)

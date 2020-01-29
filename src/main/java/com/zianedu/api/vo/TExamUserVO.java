@@ -8,7 +8,7 @@ public class TExamUserVO {
 
     private int examKey;
 
-    private String name;
+    private String goodsName;
 
     private String printQuestionFile;
 

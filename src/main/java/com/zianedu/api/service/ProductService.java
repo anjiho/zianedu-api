@@ -434,6 +434,7 @@ public class ProductService extends PagingSupport {
         if (onOffKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            totalCnt = productMapper.selectMockExamProductListCount(onOffKey, ctgKey, searchType, searchText);
             mockExamProductList = productMapper.selectMockExamProductList(onOffKey, ctgKey, searchType, searchText, startNumber, listLimit);
             if (mockExamProductList.size() > 0) {
                 for (MockExamProductVO productVO : mockExamProductList) {
@@ -456,7 +457,6 @@ public class ProductService extends PagingSupport {
                         productVO.setSubjectName(ctgNameStr);
                     }
                 }
-                totalCnt = mockExamProductList.size();
             }
         }
         return new ApiPagingResultDTO(totalCnt, mockExamProductList, resultCode);
