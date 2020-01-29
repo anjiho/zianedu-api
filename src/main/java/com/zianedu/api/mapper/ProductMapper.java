@@ -92,6 +92,9 @@ public interface ProductMapper {
 
     List<TeacherHomeLectureVO> selectPromotionPackageTeacherList(@Param("gKey") int gKey);
 
+    int selectMockExamProductListCount(@Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey,
+                                                           @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     List<MockExamProductVO> selectMockExamProductList(@Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey, @Param("searchType") String searchType,
                                                       @Param("searchText") String searchText, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 

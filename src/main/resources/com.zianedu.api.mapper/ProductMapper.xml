@@ -1124,6 +1124,27 @@
         AND A.REQ_KEY = #{gKey}
     </select>
 
+    <select id="selectMockExamProductListCount" resultType="int">
+        SELECT T.* FROM (
+            SELECT COUNT (A.G_KEY)
+            FROM T_GOODS A
+            WHERE A.TYPE = 4
+            AND A.IS_SHOW = 1
+            AND A.IS_SELL = 1
+            <if test="searchText != ''">
+                <if test="searchType == 'name'">
+                    AND A.NAME LIKE '%'||#{searchText}||'%'
+                </if>
+            </if>
+            ORDER BY A.G_KEY DESC
+        )T
+        WHERE 1=1
+        AND T.onOffKey = #{onOffKey}
+        <if test="ctgKey > 0">
+            AND T.classCtgKey = #{ctgKey}
+        </if>
+    </select>
+
     <select id="selectMockExamProductList" resultType="MockExamProductVO">
         SELECT T.* FROM (
             SELECT
@@ -1153,7 +1174,7 @@
             AND A.IS_SELL = 1
             <if test="searchText != ''">
                 <if test="searchType == 'name'">
-                    AND REGEXP_LIKE(A.NAME, #{searchText})
+                    AND A.NAME LIKE '%'||#{searchText}||'%'
                 </if>
             </if>
             ORDER BY A.G_KEY DESC

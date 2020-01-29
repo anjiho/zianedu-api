@@ -590,14 +590,20 @@ public class ExamService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getMockExamClassCtgSelectBoxList(int onOffKey) {
+    public ApiResultListDTO getMockExamClassCtgSelectBoxList(int onOffKey, boolean isBuy, int userKey) {
         int resultCode = OK.value();
 
         List<SelectboxDTO> selectBoxList = new CopyOnWriteArrayList<>();
         if (onOffKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            List<SelectboxDTO> list = examMapper.selectMockExamClassCtgSelectBoxList(onOffKey);
+            List<SelectboxDTO> list = new ArrayList<>();
+            if (isBuy) {
+                list = examMapper.selectMockExamBuyClassCtgSelectBoxList(userKey, onOffKey);
+            } else {
+                list = examMapper.selectMockExamClassCtgSelectBoxList(onOffKey);
+            }
+
             if (list.size() > 0) {
                 SelectboxDTO selectboxDTO = new SelectboxDTO();
                 selectboxDTO.setKey("");
@@ -623,6 +629,7 @@ public class ExamService extends PagingSupport {
         if (onOffKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            totalCnt = examMapper.selectMockExamListAtBuyCount(userKey, onOffKey, ctgKey, searchType, searchText);
             mockExamProductList = examMapper.selectMockExamListAtBuy(userKey, onOffKey, ctgKey, searchType, searchText, startNumber, listLimit);
             if (mockExamProductList.size() > 0) {
                 for (MockExamProductVO productVO : mockExamProductList) {
@@ -651,7 +658,6 @@ public class ExamService extends PagingSupport {
                         }
                     }
                 }
-                totalCnt = mockExamProductList.size();
             }
         }
         return new ApiPagingResultDTO(totalCnt, mockExamProductList, resultCode);

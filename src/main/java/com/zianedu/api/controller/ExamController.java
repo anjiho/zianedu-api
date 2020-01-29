@@ -158,7 +158,7 @@ public class ExamController {
             @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "path", required = true)
     })
     public ApiResultListDTO getMockExamClassCtgSelectBoxList(@PathVariable(value = "onOffKey") int onOffKey) {
-        return examService.getMockExamClassCtgSelectBoxList(onOffKey);
+        return examService.getMockExamClassCtgSelectBoxList(onOffKey, false, 0);
     }
 
     @RequestMapping(value = "/getMockExamListAtBuy/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
@@ -180,5 +180,16 @@ public class ExamController {
                                               @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                                               @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
         return examService.getMockExamListAtBuy(userKey, onOffKey, ctgKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/getMockExamBuyClassCtgSelectBoxList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("학원모의고사 구매한 리스트 직렬선택 셀렉트 박스")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getMockExamBuyClassCtgSelectBoxList(@PathVariable(value = "userKey") int userKey,
+                                                                @RequestParam(value = "onOffKey") int onOffKey) {
+        return examService.getMockExamClassCtgSelectBoxList(onOffKey, true, userKey);
     }
 }
