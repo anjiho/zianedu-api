@@ -708,7 +708,7 @@
         GROUP BY T.classCtgKey, T.classCtgName
     </select>
 
-    <!-- 모의고사 리스트 직렬선택 셀렉트 박스 -->
+    <!-- 구매한 모의고사 리스트 직렬선택 셀렉트 박스 -->
     <select id="selectMockExamBuyClassCtgSelectBoxList" resultType="com.zianedu.api.dto.SelectboxDTO">
         SELECT Z.classCtgKey as key, Z.classCtgName as value
         FROM (
@@ -749,6 +749,21 @@
         </if>
         GROUP BY Z.classCtgKey, Z.classCtgName
         ORDER BY Z.classCtgKey ASC
+    </select>
+
+    <select id="selectWeekMockExamClassCtgSelectBoxList" resultType="com.zianedu.api.dto.SelectboxDTO">
+        SELECT T.key, T.value FROM
+            (SELECT
+               (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as key,
+               (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as value
+            FROM T_EXAM_MASTER A
+            WHERE 1=1
+            AND A.IS_REAL_FREE = 1
+            AND A.IS_GICHUL = 0
+            AND A.EXAM_KEY != 212
+            ) T
+            GROUP BY T.key, T.value
+            ORDER BY T.key ASC
     </select>
 
     <select id="selectMockExamListAtBuyCount" resultType="int">

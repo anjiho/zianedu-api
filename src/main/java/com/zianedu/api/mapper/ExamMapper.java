@@ -73,6 +73,8 @@ public interface ExamMapper {
 
     List<SelectboxDTO> selectMockExamBuyClassCtgSelectBoxList(@Param("userKey") int userKey, @Param("onOffKey") int onOffKey);
 
+    List<SelectboxDTO> selectWeekMockExamClassCtgSelectBoxList();
+
     int selectMockExamListAtBuyCount(@Param("userKey") int userKey, @Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey,
                                                     @Param("searchType") String searchType, @Param("searchText") String searchText);
 

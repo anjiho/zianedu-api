@@ -622,6 +622,27 @@ public class ExamService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
+    public ApiResultListDTO getWeekMockExamClassCtgSelectBoxList() {
+        int resultCode = OK.value();
+
+        List<SelectboxDTO> selectBoxList = new CopyOnWriteArrayList<>();
+        List<SelectboxDTO> list = examMapper.selectWeekMockExamClassCtgSelectBoxList();
+
+        SelectboxDTO selectboxDTO = new SelectboxDTO();
+        selectboxDTO.setKey("");
+        selectboxDTO.setValue("직렬선택");
+        selectBoxList.add(selectboxDTO);
+
+        if (list.size() > 0) {
+            for (SelectboxDTO dto : list) {
+                selectboxDTO = new SelectboxDTO(dto.getKey(), dto.getValue());
+                selectBoxList.add(selectboxDTO);
+            }
+        }
+        return new ApiResultListDTO(selectBoxList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
     public ApiPagingResultDTO getMockExamListAtBuy(int userKey, int onOffKey, int ctgKey, int sPage, int listLimit, String searchType, String searchText) throws Exception {
         int resultCode = OK.value();
 

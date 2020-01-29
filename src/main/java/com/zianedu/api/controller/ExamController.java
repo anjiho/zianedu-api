@@ -171,6 +171,12 @@ public class ExamController {
         return examService.getMockExamClassCtgSelectBoxList(onOffKey, false, 0);
     }
 
+    @RequestMapping(value = "/getWeekMockExamClassCtgSelectBoxList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("주간 모의고사 리스트 직렬선택 셀렉트 박스")
+    public ApiResultListDTO getWeekMockExamClassCtgSelectBoxList() {
+        return examService.getWeekMockExamClassCtgSelectBoxList();
+    }
+
     @RequestMapping(value = "/getMockExamListAtBuy/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("학원모의고사 구매한 시험 리스트")
     @ApiImplicitParams({
