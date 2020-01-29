@@ -42,12 +42,15 @@ public class TExamUserVO {
 
     private int isstart;
 
+    private int isOnline;
+
     public TExamUserVO(){}
 
-    public TExamUserVO(int examKey, int userKey, String serial) {
+    public TExamUserVO(int examKey, int userKey, String serial, String onOff) {
         this.examKey = examKey;
         this.userKey = userKey;
         this.serial = serial;
+        this.isOnline = "1".equals(onOff) ? 0 : 1;
     }
 
     public TExamUserVO(int examUserKey, int isComplete, int playTime, int isStart) {

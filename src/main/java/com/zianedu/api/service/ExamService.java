@@ -525,7 +525,7 @@ public class ExamService extends PagingSupport {
         //'응시하기'를 한번도 안했을때 시험정보 저장하기
         if (tExamUserVO == null) {
             String serial = onOff + examMapper.selectTExamUserSerial();
-            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey, serial);
+            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey, serial, onOff);
             examMapper.insertTExamUser(examUserVO);
             examUserKey = examUserVO.getExamUserKey();
 

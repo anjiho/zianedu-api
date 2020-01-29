@@ -754,7 +754,7 @@
         )
         VALUES
         (
-            #{examUserKey}, #{examKey}, #{userKey}, 0, 0, sysdate, 0, #{serial}, 0, 1
+            #{examUserKey}, #{examKey}, #{userKey}, 0, 0, sysdate, 0, #{serial}, 0, #{isOnline}
         )
     </insert>
 
