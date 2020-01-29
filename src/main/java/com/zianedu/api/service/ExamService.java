@@ -115,17 +115,17 @@ public class ExamService extends PagingSupport {
             totalCnt = examMapper.selectWeekBigExamListCount(userKey, ctgKey, searchType, searchText);
             examList = examMapper.selectWeekBigExamList(userKey, ctgKey, searchType, searchText, startNumber, listLimit);
             //if (userKey != 5) {
-                if (examList.size() > 0) {
-                    for (TExamUserVO vo : examList) {
-                        if (vo.getIscomplete() == 0) {
-                            //시험 날짜가 오늘기준 이전이면 2로 변경('종료')
-                            boolean isBetweenDate = DateUtils.isBetweenDateFromToday(vo.getAcceptStartDate(), vo.getAcceptEndDate());
-                            if (!isBetweenDate) {
-                                vo.setIscomplete(2);
-                            }
-                        }
-                    }
-                }
+//                if (examList.size() > 0) {
+//                    for (TExamUserVO vo : examList) {
+//                        if (vo.getIscomplete() == 0) {
+//                            //시험 날짜가 오늘기준 이전이면 2로 변경('종료')
+//                            boolean isBetweenDate = DateUtils.isBetweenDateFromToday(vo.getAcceptStartDate(), vo.getAcceptEndDate());
+//                            if (!isBetweenDate) {
+//                                vo.setIscomplete(2);
+//                            }
+//                        }
+//                    }
+//                }
             //}
         }
         return new ApiPagingResultDTO(totalCnt, examList, resultCode);
