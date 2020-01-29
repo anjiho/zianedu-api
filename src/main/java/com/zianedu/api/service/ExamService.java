@@ -5,6 +5,7 @@ import com.zianedu.api.define.datasource.ZianCoreCode;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ExamMapper;
+import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ExamService extends PagingSupport {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -462,7 +466,12 @@ public class ExamService extends PagingSupport {
         if (examKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            Integer examUserKey = this.injectUserExamInfo(examKey, userKey);
+            String onOff = "";
+            TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKeyByExamKey(examKey);
+            if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
+            else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
+
+            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, onOff);
             if (examUserKey != null) {
                 tExamMasterVO = examMapper.selectExamMasterInfo(examKey);
                 subjectExamLinkList = examMapper.selectExamMasterSubjectList(examKey);
@@ -509,13 +518,14 @@ public class ExamService extends PagingSupport {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public Integer injectUserExamInfo(int examKey, int userKey) {
+    public Integer injectUserExamInfo(int examKey, int userKey, String onOff) {
         if (examKey == 0 && userKey == 0) return null;
         Integer examUserKey = null;
         TExamUserVO tExamUserVO = examMapper.selectTExamUserInfo(examKey, userKey);
         //'응시하기'를 한번도 안했을때 시험정보 저장하기
         if (tExamUserVO == null) {
-            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey);
+            String serial = onOff + examMapper.selectTExamUserSerial();
+            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey, serial);
             examMapper.insertTExamUser(examUserVO);
             examUserKey = examUserVO.getExamUserKey();
 

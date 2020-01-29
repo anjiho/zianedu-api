@@ -202,6 +202,10 @@ public interface ProductMapper {
 
     VideoLectureDetailVO selectGoodsInfoByJLecKey(@Param("jLecKey") int jLecKey);
 
+    TLinkKeyVO selectExamOnOffKey(@Param("gKey") int gKey);
+
+    TLinkKeyVO selectExamOnOffKeyByExamKey(@Param("examKey") int examKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

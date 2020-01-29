@@ -70,6 +70,8 @@ public interface ExamMapper {
                                                     @Param("searchType") String searchType, @Param("searchText") String searchText,
                                                     @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
+    String selectTExamUserSerial();
+
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);
 

@@ -733,6 +733,17 @@
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
+    <select id="selectTExamUserSerial" resultType="String">
+        SELECT CONCAT('0', (T.serial + 1)) as serial
+        FROM
+        (
+            SELECT SUBSTR(SERIAL, 2) as serial
+            FROM T_EXAM_USER
+            ORDER BY T_EXAM_USER.EXAM_USER_KEY DESC
+        ) T
+        WHERE ROWNUM = 1
+    </select>
+
     <insert id="insertTExamUser" parameterType="TExamUserVO">
         <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
             SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL

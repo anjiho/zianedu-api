@@ -32,7 +32,7 @@ public class TExamUserVO {
 
     private String acceptEndDate;
 
-    private Integer serial;
+    private String serial;
 
     private String userName;
 
@@ -44,10 +44,10 @@ public class TExamUserVO {
 
     public TExamUserVO(){}
 
-    public TExamUserVO(int examKey, int userKey) {
+    public TExamUserVO(int examKey, int userKey, String serial) {
         this.examKey = examKey;
         this.userKey = userKey;
-        this.serial = ZianUtils.getExamSerialNumber();
+        this.serial = serial;
     }
 
     public TExamUserVO(int examUserKey, int isComplete, int playTime, int isStart) {

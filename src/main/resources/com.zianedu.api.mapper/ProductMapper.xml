@@ -2540,6 +2540,14 @@
         )
     </select>
 
+    <select id="selectExamOnOffKey" resultType="TLinkKeyVO">
+        SELECT * FROM T_LINK_KEY WHERE REQ_KEY = #{gKey}
+    </select>
+
+    <select id="selectExamOnOffKeyByExamKey" resultType="TLinkKeyVO">
+        SELECT * FROM T_LINK_KEY WHERE RES_KEY = #{examKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

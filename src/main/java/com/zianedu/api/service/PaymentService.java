@@ -37,6 +37,9 @@ public class PaymentService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private ExamService examService;
+
     /**
      * T_ORDER 테이블 정보 저장하기
      * @param orderVO
@@ -311,6 +314,14 @@ public class PaymentService {
                             }
                         }
                     }
+                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 4) {
+                    String onOff = "";
+                    TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKey(vo.getGKey());
+                    if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
+                    else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
+
+                    examService.injectUserExamInfo(linkKeyVO.getResKey(), orderVO.getUserKey(), onOff);
+
                 }
             }
         }
