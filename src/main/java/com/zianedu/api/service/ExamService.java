@@ -5,6 +5,7 @@ import com.zianedu.api.define.datasource.ZianCoreCode;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ExamMapper;
+import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
@@ -34,6 +35,9 @@ public class ExamService extends PagingSupport {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -697,4 +701,37 @@ public class ExamService extends PagingSupport {
         return new ApiPagingResultDTO(totalCnt, mockExamProductList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getGichulSelectBoxList(String selectBoxType) {
+        int resultCode = OK.value();
+
+        List<SelectboxDTO> selectBoxList = new ArrayList<>();
+        if ("".equals(selectBoxType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            List<TCategoryVO> list = new ArrayList<>();
+            SelectboxDTO selectboxDTO = new SelectboxDTO();
+
+            selectboxDTO.setKey("");
+            if ("SERIAL".equals(selectBoxType)) {
+                list = menuMapper.selectTCategoryByParentKey(133);
+                selectboxDTO.setValue("직렬선택");
+            } else if ("RATING".equals(selectBoxType)) {
+                list = menuMapper.selectTCategoryByParentKey(4309);
+                selectboxDTO.setValue("급수선택");
+            } else if ("SUBJECT".equals(selectBoxType)) {
+                list = menuMapper.selectTCategoryByParentKey(70);
+                selectboxDTO.setValue("과목선택");
+            }
+            selectBoxList.add(selectboxDTO);
+
+            if (list.size() > 0) {
+                for (TCategoryVO vo : list) {
+                    selectboxDTO = new SelectboxDTO(vo.getCtgKey(), vo.getName());
+                    selectBoxList.add(selectboxDTO);
+                }
+            }
+        }
+        return new ApiResultListDTO(selectBoxList, resultCode);
+    }
 }

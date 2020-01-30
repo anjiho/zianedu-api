@@ -216,4 +216,13 @@ public class ExamController {
                                                                 @RequestParam(value = "onOffKey") int onOffKey) {
         return examService.getMockExamClassCtgSelectBoxList(onOffKey, true, userKey);
     }
+
+    @RequestMapping(value = "/getGichulSelectBoxList/{selectBoxType}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("기출문제 직렬선택 셀렉트 박스")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "selectBoxType", value = "셀렉트박스 종류(SERIAL:직렬, RATING:급수, SUBJECT:과목)", dataType = "string", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getMockExamClassCtgSelectBoxList(@PathVariable(value = "selectBoxType") String selectBoxType) {
+        return examService.getGichulSelectBoxList(selectBoxType);
+    }
 }
