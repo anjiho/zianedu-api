@@ -1125,8 +1125,10 @@
     </select>
 
     <select id="selectMockExamProductListCount" resultType="int">
-        SELECT T.* FROM (
-            SELECT COUNT (A.G_KEY)
+        SELECT COUNT(T.G_KEY) FROM (
+            SELECT
+                (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                A.G_KEY
             FROM T_GOODS A
             WHERE A.TYPE = 4
             AND A.IS_SHOW = 1
