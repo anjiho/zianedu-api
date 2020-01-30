@@ -2,9 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zianedu.api.mapper.ExamMapper">
 
+    <select id="selectGiChulProblemListCount" resultType="int">
+        SELECT COUNT (A.EXAM_KEY)
+        FROM T_EXAM_MASTER A
+        WHERE 1=1
+        AND IS_GICHUL = 1
+        <!-- 급수 검색 -->
+        <if test="groupCtgKey > 0">
+            AND A.CLASS_GROUP_CTG_KEY = #{groupCtgKey}
+        </if>
+        <!-- 직렬 검색 -->
+        <if test="classCtgKey > 0">
+            AND A.CLASS_CTG_KEY = #{classCtgKey}
+        </if>
+        <!-- 과목 검색 -->
+        <if test="subjectCtgKey > 0">
+            AND A.SUBJECT_CTG_KEY = #{subjectCtgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND A.NAME LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+        ORDER BY EXAM_KEY ASC
+    </select>
+
     <select id="selectGiChulProblemList" resultType="TExamUserVO">
         SELECT
-            A.EXAM_KEY, A.NAME, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
+            A.EXAM_KEY, A.NAME as goodsName, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
            (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
@@ -24,7 +49,13 @@
         <if test="subjectCtgKey > 0">
             AND A.SUBJECT_CTG_KEY = #{subjectCtgKey}
         </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND A.NAME LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
         ORDER BY EXAM_KEY ASC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
     <select id="selectGiChulProblemListByComplete" resultType="TExamUserVO">
@@ -651,7 +682,8 @@
 		    TO_CHAR(ACCEPT_START_DATE, 'YYYY-MM-DD HH24:mi:ss') as ACCEPT_START_DATE,
 		    TO_CHAR(ACCEPT_END_DATE, 'YYYY-MM-DD HH24:mi:ss') as ACCEPT_END_DATE,
 		    TO_CHAR(ONLINE_START_DATE, 'YYYY-MM-DD HH24:mi:ss') as ONLINE_START_DATE,
-		    TO_CHAR(ONLINE_END_DATE, 'YYYY-MM-DD HH24:mi:ss') as ONLINE_END_DATE
+		    TO_CHAR(ONLINE_END_DATE, 'YYYY-MM-DD HH24:mi:ss') as ONLINE_END_DATE,
+		    PRINT_COMMENTARY_FILE, PRINT_QUESTION_FILE
 		FROM T_EXAM_MASTER WHERE EXAM_KEY = #{examKey}
 	</select>
 

@@ -9,8 +9,14 @@ import java.util.List;
 public interface ExamMapper {
 
     /** SELECT **/
+    int selectGiChulProblemListCount(@Param("userKey") int userKey, @Param("groupCtgKey") int groupCtgKey,
+                                @Param("classCtgKey") int classCtgKey, @Param("subjectCtgKey") int subjectCtgKey,
+                                @Param("searchType") String searchType, @Param("searchText") String searchText);
+
     List<TExamUserVO> selectGiChulProblemList(@Param("userKey") int userKey, @Param("groupCtgKey") int groupCtgKey,
-                                              @Param("classCtgKey") int classCtgKey, @Param("subjectCtgKey") int subjectCtgKey);
+                                              @Param("classCtgKey") int classCtgKey, @Param("subjectCtgKey") int subjectCtgKey,
+                                              @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                              @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     List<TExamUserVO> selectGiChulProblemListByComplete(@Param("userKey") int userKey, @Param("groupCtgKey") int groupCtgKey,
                                               @Param("classCtgKey") int classCtgKey, @Param("subjectCtgKey") int subjectCtgKey);

@@ -46,4 +46,8 @@ public class MockExamProductVO {
     // 해설지 파일명
     private String printCommentaryFileUrl;
 
+    private String printQuestionFile;
+
+    private String printCommentaryFile;
+
 }

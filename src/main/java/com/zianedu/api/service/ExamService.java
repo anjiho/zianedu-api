@@ -39,14 +39,18 @@ public class ExamService extends PagingSupport {
     private JdbcTemplate jdbcTemplate;
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getGichulProblemList(int userKey, int groupCtgKey, int classCtgKey, int subjectCtgKey) {
+    public ApiPagingResultDTO getGichulProblemList(int userKey, int groupCtgKey, int classCtgKey, int subjectCtgKey,
+                                                 int sPage, int listLimit, String searchType, String searchText) {
         int resultCode = OK.value();
 
+        int totalCnt = 0;
         List<TExamUserVO> gichulProblemList = new ArrayList<>();
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            gichulProblemList = examMapper.selectGiChulProblemList(userKey, groupCtgKey, classCtgKey, subjectCtgKey);
+            int startNumber = getPagingStartNumber(sPage, listLimit);
+            totalCnt = examMapper.selectGiChulProblemListCount(userKey, groupCtgKey, classCtgKey, subjectCtgKey, searchType, searchText);
+            gichulProblemList = examMapper.selectGiChulProblemList(userKey, groupCtgKey, classCtgKey, subjectCtgKey, searchType, searchText, startNumber, listLimit);
             if (gichulProblemList.size() > 0) {
                 for (TExamUserVO vo : gichulProblemList) {
                     vo.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getPrintQuestionFile()));
@@ -54,7 +58,7 @@ public class ExamService extends PagingSupport {
                 }
             }
         }
-        return new ApiResultListDTO(gichulProblemList, resultCode);
+        return new ApiPagingResultDTO(totalCnt, gichulProblemList, resultCode);
     }
 
     @Transactional(readOnly = true)
@@ -114,6 +118,10 @@ public class ExamService extends PagingSupport {
             int startNumber = getPagingStartNumber(sPage, listLimit);
             totalCnt = examMapper.selectWeekBigExamListCount(userKey, ctgKey, searchType, searchText);
             examList = examMapper.selectWeekBigExamList(userKey, ctgKey, searchType, searchText, startNumber, listLimit);
+            for (TExamUserVO vo : examList) {
+                vo.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getPrintQuestionFile()));
+                vo.setPrintCommentaryFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getPrintCommentaryFile()));
+            }
             //if (userKey != 5) {
 //                if (examList.size() > 0) {
 //                    for (TExamUserVO vo : examList) {
@@ -664,6 +672,8 @@ public class ExamService extends PagingSupport {
                         productVO.setStareDate(examVO.getOnlineStartDate());
                         productVO.setEndDate(examVO.getOnlineEndDate());
                         productVO.setClassName(examVO.getClassName());
+                        productVO.setPrintCommentaryFile(examVO.getPrintCommentaryFile());
+                        productVO.setPrintQuestionFile(examVO.getPrintQuestionFile());
                         //응시가능 여부 주입
                         if (DateUtils.isBetweenDateFromToday(examVO.getOnlineStartDate(), examVO.getOnlineEndDate())) {
                             if (productVO.getIsComplete() == 0) {   //응시가능

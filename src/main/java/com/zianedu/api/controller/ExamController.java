@@ -25,15 +25,23 @@ public class ExamController {
     @ApiOperation("기출문제 > 기출문제 리스트")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(name : 시험명) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "groupCtgKey", value = "급수 카테고리 키", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "classCtgKey", value = "직렬 카테고리 키", dataType = "int", paramType = "query", required = false),
-            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 카테고리 키", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 카테고리 키", dataType = "int", paramType = "query", required = false)
     })
-    public ApiResultListDTO getGichulProblemList(@PathVariable(value = "userKey") int userKey,
+    public ApiPagingResultDTO getGichulProblemList(@PathVariable(value = "userKey") int userKey,
+                                                 @RequestParam("sPage") int sPage,
+                                                 @RequestParam("listLimit") int listLimit,
+                                                 @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                 @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
                                                  @RequestParam(value = "groupCtgKey", required = false, defaultValue = "0") int groupCtgKey,
                                                  @RequestParam(value = "classCtgKey", required = false, defaultValue = "0") int classCtgKey,
                                                  @RequestParam(value = "subjectCtgKey", required = false, defaultValue = "0") int subjectCtgKey) {
-        return examService.getGichulProblemList(userKey, groupCtgKey, classCtgKey, subjectCtgKey);
+        return examService.getGichulProblemList(userKey, groupCtgKey, classCtgKey, subjectCtgKey, sPage, listLimit, searchType, searchText);
     }
 
     @RequestMapping(value = "/getGichulAchievementManagementList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
