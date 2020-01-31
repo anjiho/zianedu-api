@@ -269,7 +269,7 @@
             )T
     </select>
 
-    <select id="selectSubjectTopPercentScore" resultType="Integer">
+    <select id="selectSubjectTopPercentScore" resultType="double">
         SELECT
                 (
                     SELECT ( (SUM(score)) / COUNT(*)) as cnt

@@ -41,11 +41,11 @@ public interface ExamMapper {
 
     List<ExamSubjectStaticsVO> selectExamSubjectStaticsList(@Param("examUserKey") int examUserKey);
 
-    int selectExamSubjectGrade(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examKey") int examKey, @Param("userKey") int userKey);
+    Integer selectExamSubjectGrade(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examKey") int examKey, @Param("userKey") int userKey);
 
     int selectSubjectStaticsSum(@Param("examKey") int examKey, @Param("examQuesBankSubjectKey") int examQuesBankSubjectKey);
 
-    int selectSubjectTopPercentScore(@Param("examUserKey") int examUserKey, @Param("examKey") int examKey,
+    double selectSubjectTopPercentScore(@Param("examUserKey") int examUserKey, @Param("examKey") int examKey,
                                      @Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("percentType") int percentType);
 
     List<ScoreRateGraphVO> selectScoreRateByStepCtgKey(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey);

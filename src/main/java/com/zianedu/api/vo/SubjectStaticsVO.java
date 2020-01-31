@@ -7,9 +7,9 @@ public class SubjectStaticsVO {
 
     private String subjectName;
 
-    private int tenPercentScore;
+    private double tenPercentScore;
 
-    private int thirtyPercentScore;
+    private double thirtyPercentScore;
 
     private int myScore;
 
@@ -17,7 +17,7 @@ public class SubjectStaticsVO {
 
     public SubjectStaticsVO(){}
 
-    public SubjectStaticsVO(String subjectName, int tenPercentScore, int thirtyPercentScore, int myScore, double totalScore) {
+    public SubjectStaticsVO(String subjectName, double tenPercentScore, double thirtyPercentScore, int myScore, double totalScore) {
         this.subjectName = subjectName;
         this.tenPercentScore = tenPercentScore;
         this.thirtyPercentScore = thirtyPercentScore;

@@ -24,7 +24,8 @@ public class AchievementManagementDTO {
 
     private StaticsGraphVO subjectStaticsGraphInfo;
 
-    private StaticsGraphVO compareScoreGraphInfo;
+    //private StaticsGraphVO compareScoreGraphInfo;
+    private CompareScoreSubjectGraphVO compareScoreGraphInfo;
     //유형별 정답률
     private List<ScoreRateGraphVO> scoreRateByTypeInfo;
     //패턴별 정답률
@@ -33,15 +34,20 @@ public class AchievementManagementDTO {
     private List<ScoreRateGraphVO> scoreRateByUnitInfo;
 
     private List<ScoreRateDTO> scoreRateInfo;
+    //개인성적 종합분석 옆 방사형 그래프
+    private RadialGraphVO radialGraphInfo;
+
+    private CompareScoreSubjectGraphVO compareScoreSubjectGraphInfo;
 
     public AchievementManagementDTO() {}
 
     public AchievementManagementDTO(AchievementTopInfoVO achievementTopInfo, List<ExamSubjectStaticsVO> examSubjectStaticsInfo,
                                     ExamSubjectTotalVO examSubjectTotalInfo, List<ExamCompareTotalStaticsVO> examCompareTotalStaticsInfo,
                                     List<SubjectStaticsVO> subjectStaticsInfo, StaticsGraphVO subjectStaticsGraphInfo,
-                                    StaticsGraphVO compareScoreGraphInfo, List<ScoreRateGraphVO> scoreRateByTypeInfo,
+                                    CompareScoreSubjectGraphVO compareScoreGraphInfo, List<ScoreRateGraphVO> scoreRateByTypeInfo,
                                     List<ScoreRateGraphVO> scoreRateByPatternInfo, List<ScoreRateGraphVO> scoreRateByUnitInfo,
-                                    List<ScoreRateDTO> scoreRateInfo) {
+                                    List<ScoreRateDTO> scoreRateInfo, RadialGraphVO radialGraphInfo,
+                                    CompareScoreSubjectGraphVO compareScoreSubjectGraphInfo) {
         this.achievementTopInfo = achievementTopInfo;
         this.examSubjectStaticsInfo = examSubjectStaticsInfo;
         this.examSubjectTotalInfo = examSubjectTotalInfo;
@@ -53,6 +59,8 @@ public class AchievementManagementDTO {
         this.scoreRateByPatternInfo = scoreRateByPatternInfo;
         this.scoreRateByUnitInfo = scoreRateByUnitInfo;
         this.scoreRateInfo = scoreRateInfo;
+        this.radialGraphInfo = radialGraphInfo;
+        this.compareScoreSubjectGraphInfo = compareScoreSubjectGraphInfo;
     }
 
 }

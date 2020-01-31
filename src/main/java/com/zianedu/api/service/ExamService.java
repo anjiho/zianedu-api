@@ -9,6 +9,7 @@ import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
@@ -173,6 +174,9 @@ public class ExamService extends PagingSupport {
         List<ScoreRateGraphVO> scoreRateByPatternInfo = new ArrayList<>();
         List<ScoreRateGraphVO> scoreRateByUnitInfo = new ArrayList<>();
         List<ScoreRateDTO>scoreRateInfo = new ArrayList<>();
+        RadialGraphVO radialGraphVO = new RadialGraphVO();
+        CompareScoreSubjectGraphVO compareScoreSubjectGraphVO = new CompareScoreSubjectGraphVO();
+        CompareScoreSubjectGraphVO compareScoreSubjectGraphVO2 = new CompareScoreSubjectGraphVO();
 
         int totalStaticsScore = 0;
         int topTenSumScore = 0;
@@ -181,8 +185,8 @@ public class ExamService extends PagingSupport {
         int totalSumScore = 0;
 
         List<String> subjectStaticsGraphCategoryNameList = new ArrayList<>();
-        List<Integer> subjectStaticsGraphTopTenDataList = new ArrayList<>();
-        List<Integer> subjectStaticsGraphTopThirtyDataList = new ArrayList<>();
+        List<Double> subjectStaticsGraphTopTenDataList = new ArrayList<>();
+        List<Double> subjectStaticsGraphTopThirtyDataList = new ArrayList<>();
         List<Double> subjectStaticsGraphMyDataList = new ArrayList<>();
 
         if (examUserKey == 0) {
@@ -205,15 +209,23 @@ public class ExamService extends PagingSupport {
                 int staticsUserGrade = 0;
                 int staticsTotalAnswerCnt = 0;
 
+                List<String> radialSubjectNameList = new ArrayList<>();
+                List<Integer> radialSubjectScoreList = new ArrayList<>();
+                List<Integer> topTenScoreList = new ArrayList<>();
+                List<LineGraphDataVO> lineGraphDataList = new ArrayList<>();
+                List<LineGraphDataVO> lineGraphDataList2 = new ArrayList<>();
+
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
+                    int i=0;
                     ScoreRateDTO scoreRateDTO = new ScoreRateDTO();
                     ScoreRateGraphVO scoreRateByTypeVo = new ScoreRateGraphVO();
                     ScoreRateGraphVO scoreRateByPatternVo = new ScoreRateGraphVO();
                     ScoreRateGraphVO scoreRateByUnitVo = new ScoreRateGraphVO();
+                    LineGraphDataVO lineGraphDataVO = new LineGraphDataVO();
 
                     vo.setAnswerScore(vo.getAnswerCnt() * 5);   //원점수 계산
-                    int userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
-                    vo.setUserGrade(userGrade); //석차 주입
+                    Integer userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
+                    vo.setUserGrade(Util.isIntegerNullValue(userGrade)); //석차 주입
                     //상위누적%
                     vo.setTopAccumulatePercent(ZianUtils.getTopAccumulatePercent(vo.getTotalAnswerCnt(), vo.getUserGrade()));
                     if (ZianCoreCode.IS_PASS_SCORE > vo.getAnswerScore()) vo.setIsPass("과락");
@@ -230,9 +242,13 @@ public class ExamService extends PagingSupport {
 
                     totalStaticsScore += examCompareTotalStaticsVO.getTotalSubjectScore();
 
+                    //방사형 그래프 데이터작업
+                    radialSubjectNameList.add(vo.getSubjectName());
+                    radialSubjectScoreList.add(vo.getAnswerScore());
+
                     //과목별 평균
-                    int tenPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 10);
-                    int thirtyPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 30);
+                    double tenPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 10);
+                    double thirtyPercentScore = examMapper.selectSubjectTopPercentScore(examUserKey, vo.getExamKey(), vo.getExamQuesBankSubjectKey(), 30);
                     SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
                         vo.getSubjectName(), tenPercentScore, thirtyPercentScore, vo.getAnswerScore(), examCompareTotalStaticsVO.getTotalSubjectScore()
                     );
@@ -244,7 +260,7 @@ public class ExamService extends PagingSupport {
 
                     subjectStaticsList.add(subjectStaticsVO);
 
-                    //
+
                     subjectStaticsGraphCategoryNameList.add(vo.getSubjectName());
                     subjectStaticsGraphTopTenDataList.add(tenPercentScore);
                     subjectStaticsGraphTopThirtyDataList.add(thirtyPercentScore);
@@ -314,6 +330,7 @@ public class ExamService extends PagingSupport {
                     //과목별 유형별, 패턴별, 대단원별 주입
                     scoreRateDTO = new ScoreRateDTO(scoreRateByTypeVo, scoreRateByPatternVo, scoreRateByUnitVo);
                     scoreRateInfo.add(scoreRateDTO);
+
                 }
                 //과목별 평군의 '전체' 주입
                 SubjectStaticsVO subjectStaticsVO = new SubjectStaticsVO(
@@ -329,19 +346,43 @@ public class ExamService extends PagingSupport {
                 );
                 //과목별 평균 그래프 (과목별 평균 옆 그래프)
                 String[] subjectStaticsGraphCategoryNames = StringUtils.arrayListToStringArray(subjectStaticsGraphCategoryNameList);
-                Integer[] subjectStaticsGraphTopTenData = StringUtils.arrayIntegerListToStringArray(subjectStaticsGraphTopTenDataList);
-                Integer[] subjectStaticsGraphTopThirtyData = StringUtils.arrayIntegerListToStringArray(subjectStaticsGraphTopThirtyDataList);
+                double[] subjectStaticsGraphTopTenData = StringUtils.arrayListToDoubleArray(subjectStaticsGraphTopTenDataList);
+                double[] subjectStaticsGraphTopThirtyData = StringUtils.arrayListToDoubleArray(subjectStaticsGraphTopThirtyDataList);
                 double[] subjectStaticsGraphMyData = StringUtils.arrayListToDoubleArray(subjectStaticsGraphMyDataList);
                 subjectStaticsGraphVO = new StaticsGraphVO(
                         subjectStaticsGraphCategoryNames, subjectStaticsGraphTopTenData, subjectStaticsGraphTopThirtyData, subjectStaticsGraphMyData
                 );
                 //점수비교 그래프
-                Integer[] scoreCompareGraphTopTenData = {topTenSumScore / examSubjectStaticsList.size()};
-                Integer[] scoreCompareGraphStaticsData = {totalStaticsScore / examSubjectStaticsList.size()};
+                double[] scoreCompareGraphTopTenData = {topTenSumScore / examSubjectStaticsList.size()};
+                double[] scoreCompareGraphStaticsData = {totalStaticsScore / examSubjectStaticsList.size()};
                 double[] scoreCompareGraphMyData = {examSubjectTotalVO.getStaticsAnswerScore()};
                 compareScoreStaticsGraphVO = new StaticsGraphVO(
                         scoreCompareGraphTopTenData, scoreCompareGraphStaticsData, scoreCompareGraphMyData
                 );
+                //방사형 그래프
+                String[] radialSubjectNames = StringUtils.arrayListToStringArray(radialSubjectNameList);
+                Integer[] radialSubjectScores = StringUtils.arrayIntegerListToStringArray(radialSubjectScoreList);
+                radialGraphVO = new RadialGraphVO(radialSubjectNames, radialSubjectScores);
+                //과목별 평균 옆 라인 그래프
+                for (int i=0; i<subjectStaticsGraphVO.getCategoryName().length; i++) {
+                    double data[] = null;
+                    if (i == 0) data = subjectStaticsGraphVO.getCategoryTopTenData();
+                    else if (i == 1) data = subjectStaticsGraphVO.getCategoryTopThirtyData();
+                    else if (i == 2) data = subjectStaticsGraphVO.getCategoryMyData();
+                    LineGraphDataVO lineGraphDataVO = new LineGraphDataVO(ZianApiUtils.TOP_DATA_NAMES[i], data);
+                    lineGraphDataList.add(lineGraphDataVO);
+                }
+                compareScoreSubjectGraphVO = new CompareScoreSubjectGraphVO(radialSubjectNames, lineGraphDataList);
+                //점수비교 라인 그래프
+                for (int j=0; j<3; j++) {
+                    double data2[] = null;
+                    if (j == 0) data2 =  compareScoreStaticsGraphVO.getCategoryTopTenData();
+                    else if (j == 1) data2 = compareScoreStaticsGraphVO.getCategoryStaticsData();
+                    else if (j == 2) data2 = compareScoreStaticsGraphVO.getCategoryMyData();
+                    LineGraphDataVO lineGraphDataVO2 = new LineGraphDataVO(ZianApiUtils.TOP_DATA_NAMES2[j], data2);
+                    lineGraphDataList2.add(lineGraphDataVO2);
+                }
+                compareScoreSubjectGraphVO2 = new CompareScoreSubjectGraphVO(null, lineGraphDataList2);
 
             }
         }
@@ -352,11 +393,13 @@ public class ExamService extends PagingSupport {
                 examCompareTotalStaticsList,
                 subjectStaticsList,
                 subjectStaticsGraphVO,
-                compareScoreStaticsGraphVO,
+                compareScoreSubjectGraphVO2,
                 scoreRateByTypeInfo,
                 scoreRateByPatternInfo,
                 scoreRateByUnitInfo,
-                scoreRateInfo
+                scoreRateInfo,
+                radialGraphVO,
+                compareScoreSubjectGraphVO
         );
         //본인관 평균성적 비교 값 주입
         achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());

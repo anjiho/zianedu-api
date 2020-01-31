@@ -7,24 +7,24 @@ public class StaticsGraphVO {
 
     private String[] categoryName;
 
-    private Integer[] categoryTopTenData;
+    private double[] categoryTopTenData;
 
-    private Integer[] categoryTopThirtyData;
+    private double[] categoryTopThirtyData;
 
     private double[] categoryMyData;
 
-    private Integer[] categoryStaticsData;
+    private double[] categoryStaticsData;
 
     public StaticsGraphVO() {}
 
-    public StaticsGraphVO(String[] categoryName, Integer[] categoryTopTenData, Integer[] categoryTopThirtyData, double[] categoryMyData) {
+    public StaticsGraphVO(String[] categoryName, double[] categoryTopTenData, double[] categoryTopThirtyData, double[] categoryMyData) {
         this.categoryName = categoryName;
         this.categoryTopTenData = categoryTopTenData;
         this.categoryTopThirtyData = categoryTopThirtyData;
         this.categoryMyData = categoryMyData;
     }
 
-    public StaticsGraphVO(Integer[] categoryTopTenData, Integer[] categoryStaticsData, double[] categoryMyData) {
+    public StaticsGraphVO(double[] categoryTopTenData, double[] categoryStaticsData, double[] categoryMyData) {
         this.categoryTopTenData = categoryTopTenData;
         this.categoryStaticsData = categoryStaticsData;
         this.categoryMyData = categoryMyData;

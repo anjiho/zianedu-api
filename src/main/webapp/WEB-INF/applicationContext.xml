@@ -81,6 +81,8 @@
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
+<!--    <bean id="fileDownload" class="com.epplt.app.util.DownloadView"/>-->
+
     <!-- Filter -->
 <!--    <bean id="userSessionFilter" class="com.zianedu.lms.filter.UserSessionFilter"/>-->
 <!--     @ResponseBoby 한글 깨짐 처리-->

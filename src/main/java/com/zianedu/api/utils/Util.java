@@ -1020,6 +1020,14 @@ public class Util {
         return query_pairs;
     }
 
+    public static Integer isIntegerNullValue(Integer num) {
+        Integer num2 = 0;
+        if (num != null){
+            num2 = num;
+        }
+        return num2;
+    }
+
     public static void main(String[] args) throws Exception {
         System.out.println(ConsultReserveTimeType.values().length);
 
