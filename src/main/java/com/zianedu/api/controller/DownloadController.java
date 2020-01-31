@@ -2,6 +2,8 @@ package com.zianedu.api.controller;
 
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.utils.ZianApiUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,16 +15,21 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping(value = "/download")
 public class DownloadController {
 
+    private static final Logger logger = LoggerFactory.getLogger(DownloadController.class);
+
     @RequestMapping(value = "/fileDownload", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     public ApiResultObjectDTO download(@RequestParam(value = "filePath") String filePath, HttpServletResponse response) {
-        StringBuilder sb = new StringBuilder("C:/fileServer/");
+        StringBuilder sb = new StringBuilder("C:/fileServer/Upload/100/bbs/");
         //StringBuilder sb = new StringBuilder("/Users/jihoan/Documents/100/bbs/");
         sb.append(filePath);
         String saveFileName = sb.toString();
+
+        logger.info("-------------------> filePath :: " + saveFileName);
 
         String contentType = ZianApiUtils.DOWNLOAD_FORM_DATA;
 
