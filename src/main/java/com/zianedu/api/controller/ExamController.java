@@ -147,15 +147,15 @@ public class ExamController {
         return examService.getExamMasterGateInfo(examKey, userKey);
     }
 
-    @RequestMapping(value = "/getUserExamList/{examKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/getUserExamList/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("시험 시작 버튼 후 시험정보 리스트 가져오기")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "examKey", value = "시험 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "examUserKey", value = "사용자 시험 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "query", required = true)
     })
-    public ApiResultObjectDTO getUserExamList(@PathVariable(value = "examKey") int examKey,
+    public ApiResultObjectDTO getUserExamList(@PathVariable(value = "examUserKey") int examUserKey,
                                               @RequestParam(value = "userKey") int userKey) {
-        return examService.getUserExamList(examKey, userKey);
+        return examService.getUserExamList(examUserKey, userKey);
     }
 
     @RequestMapping(value = "/saveExamResult", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)

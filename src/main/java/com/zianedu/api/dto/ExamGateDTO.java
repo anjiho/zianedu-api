@@ -9,6 +9,8 @@ import java.util.List;
 @Data
 public class ExamGateDTO {
 
+    private int examUserKey;
+
     private TExamMasterVO examBasicInfo;
 
     //private List<TBankSubjectExamLinkVO> examSubjectInfo;
@@ -17,7 +19,8 @@ public class ExamGateDTO {
 
     public ExamGateDTO(){}
 
-    public ExamGateDTO(TExamMasterVO examBasicInfo, String examSubjectName) {
+    public ExamGateDTO(int examUserKey, TExamMasterVO examBasicInfo, String examSubjectName) {
+        this.examUserKey = examUserKey;
         this.examBasicInfo = examBasicInfo;
         this.examSubjectName = examSubjectName;
     }

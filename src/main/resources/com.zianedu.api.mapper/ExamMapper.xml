@@ -673,7 +673,7 @@
                     WHERE B.EXAM_QUESTION_BANK_SUBJECT_KEY = T.EXAM_QUES_BANK_SUBJECT_KEY
                 )as subjectName
         FROM T_EXAM_SUBJECT_USER T
-        WHERE T.EXAM_KEY = #{examKey} AND T.USER_KEY = #{userKey}
+        WHERE T.EXAM_USER_KEY = #{examUserKey} AND T.USER_KEY = #{userKey}
     </select>
 
     <select id="selectTExamDateInfo" resultType="TExamMasterVO">

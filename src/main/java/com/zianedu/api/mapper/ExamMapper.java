@@ -69,7 +69,7 @@ public interface ExamMapper {
 
     List<ExamListVO> selectExamList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey);
 
-    List<TExamSubjectUserVO> selectTExamSubjectUserList(@Param("examKey") int examKey, @Param("userKey") int userKey);
+    List<TExamSubjectUserVO> selectTExamSubjectUserList(@Param("examUserKey") int examUserKey, @Param("userKey") int userKey);
 
     TExamMasterVO selectTExamDateInfo(@Param("examKey") int examKey);
 
@@ -89,6 +89,7 @@ public interface ExamMapper {
                                                     @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     String selectTExamUserSerial();
+
 
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);

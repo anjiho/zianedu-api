@@ -519,6 +519,7 @@ public class ExamService extends PagingSupport {
     public ApiResultObjectDTO getExamMasterGateInfo(int examKey, int userKey) {
         int resultCode = OK.value();
 
+        Integer examUserKey = null;
         TExamMasterVO tExamMasterVO = new TExamMasterVO();
         String subjectName = "";
         if (examKey == 0) {
@@ -529,7 +530,7 @@ public class ExamService extends PagingSupport {
 //            if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
 //            else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
 
-            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, "2", 0);
+            examUserKey = this.injectUserExamInfo(examKey, userKey, "2", 0);
             if (examUserKey != null) {
                 tExamMasterVO = examMapper.selectExamMasterInfo(examKey);
                 List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
@@ -538,31 +539,34 @@ public class ExamService extends PagingSupport {
                 }
             }
         }
-        ExamGateDTO examGateDTO = new ExamGateDTO(tExamMasterVO, subjectName);
+        ExamGateDTO examGateDTO = new ExamGateDTO(examUserKey, tExamMasterVO, subjectName);
         return new ApiResultObjectDTO(examGateDTO, resultCode);
     }
 
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getUserExamList(int examKey, int userKey) {
+    public ApiResultObjectDTO getUserExamList(int examUserKey, int userKey) {
         int resultCode = OK.value();
 
+        List<String> subjectNameList = new ArrayList<>();
+        List<String> examImageList = new ArrayList<>();
         List<ExamListDTO> examDTOList = new ArrayList<>();
         List<TExamSubjectUserVO> examSubjectUserList = new ArrayList<>();
-        if (examKey == 0 && userKey == 0) {
+        if (examUserKey == 0 && userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            examSubjectUserList = examMapper.selectTExamSubjectUserList(examKey, userKey);
+            examSubjectUserList = examMapper.selectTExamSubjectUserList(examUserKey, userKey);
             if (examSubjectUserList.size() > 0) {
                 //시험시작 상태로 업데이트
-                int examUserKey = examSubjectUserList.get(0).getExamUserKey();
                 this.updateExamResultStatus(examUserKey, 0, 0, 1);
 
                 for (TExamSubjectUserVO subjectUserVO : examSubjectUserList) {
+                    subjectNameList.add(subjectUserVO.getSubjectName());
                     List<ExamListVO> examList = examMapper.selectExamList(subjectUserVO.getExamQuesBankSubjectKey());
                     for (ExamListVO examListVO : examList) {
                         examListVO.setExamUserKey(subjectUserVO.getExamUserKey());
                         examListVO.setExamSbjUserKey(subjectUserVO.getExamSbjUserKey());
                         examListVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examListVO.getQuestionImage()));
+
                     }
                     ExamListDTO examListDTO = new ExamListDTO(subjectUserVO.getSubjectName(), examList);
                     examDTOList.add(examListDTO);

@@ -1,5 +1,6 @@
 package com.zianedu.api.vo;
 
+import com.zianedu.api.utils.DateUtils;
 import com.zianedu.api.utils.ZianUtils;
 import lombok.Data;
 
@@ -45,6 +46,10 @@ public class TExamUserVO {
     private int isOnline;
 
     private int jGKey;
+
+    private String subjectNameList;
+
+    private String examDate = DateUtils.todayToStrKor();
 
     public TExamUserVO(){}
 

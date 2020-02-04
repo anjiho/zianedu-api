@@ -1,6 +1,7 @@
 package com.zianedu.api.dto;
 
 import com.zianedu.api.vo.ExamListVO;
+import com.zianedu.api.vo.TExamUserVO;
 import lombok.Data;
 
 import java.util.List;
