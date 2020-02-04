@@ -548,16 +548,14 @@ public class ExamService extends PagingSupport {
         int resultCode = OK.value();
 
         List<String> subjectNameList = new ArrayList<>();
-        List<String> examImageList = new ArrayList<>();
         List<ExamListDTO> examDTOList = new ArrayList<>();
-        List<TExamSubjectUserVO> examSubjectUserList = new ArrayList<>();
         if (examUserKey == 0 && userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            examSubjectUserList = examMapper.selectTExamSubjectUserList(examUserKey, userKey);
+            List<TExamSubjectUserVO> examSubjectUserList = examMapper.selectTExamSubjectUserList(examUserKey, userKey);
             if (examSubjectUserList.size() > 0) {
                 //시험시작 상태로 업데이트
-                this.updateExamResultStatus(examUserKey, 0, 0, 1);
+                this.updateExamResultStatus(examUserKey, 0, 0, 0);
 
                 for (TExamSubjectUserVO subjectUserVO : examSubjectUserList) {
                     subjectNameList.add(subjectUserVO.getSubjectName());
@@ -571,6 +569,9 @@ public class ExamService extends PagingSupport {
                     ExamListDTO examListDTO = new ExamListDTO(subjectUserVO.getSubjectName(), examList);
                     examDTOList.add(examListDTO);
                 }
+                TExamUserVO examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+                examHeaderInfo.setSubjectNameList(StringUtils.implodeList(",", subjectNameList));
+                examDTOList.get(0).setExamHeaderInfo(examHeaderInfo);
             }
         }
         return new ApiResultObjectDTO(examDTOList, resultCode);

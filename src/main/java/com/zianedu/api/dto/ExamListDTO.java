@@ -9,6 +9,8 @@ import java.util.List;
 @Data
 public class ExamListDTO {
 
+    private TExamUserVO examHeaderInfo;
+
     private String subjectName;
 
     private List<ExamListVO> examInfo;
