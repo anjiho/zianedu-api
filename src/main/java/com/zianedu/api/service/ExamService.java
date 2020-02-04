@@ -555,7 +555,7 @@ public class ExamService extends PagingSupport {
             List<TExamSubjectUserVO> examSubjectUserList = examMapper.selectTExamSubjectUserList(examUserKey, userKey);
             if (examSubjectUserList.size() > 0) {
                 //시험시작 상태로 업데이트
-                this.updateExamResultStatus(examUserKey, 0, 0, 0);
+                this.updateExamResultStatus(examUserKey, 0, 0, 1);
 
                 for (TExamSubjectUserVO subjectUserVO : examSubjectUserList) {
                     subjectNameList.add(subjectUserVO.getSubjectName());
