@@ -49,6 +49,8 @@ public class TExamUserVO {
 
     private String subjectNameList;
 
+    private String examName;
+
     private String examDate = DateUtils.todayToStrKor();
 
     public TExamUserVO(){}

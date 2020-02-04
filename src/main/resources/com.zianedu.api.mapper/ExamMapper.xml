@@ -187,8 +187,11 @@
     <select id="selectExamResultHeaderInfo" resultType="TExamUserVO">
         SELECT
             A.*,
-            (SELECT NAME FROM T_USER WHERE USER_KEY = A.USER_KEY) as userName
+            (SELECT NAME FROM T_USER WHERE USER_KEY = A.USER_KEY) as userName,
+            B.NAME as examName
         FROM T_EXAM_USER A
+        LEFT OUTER JOIN T_EXAM_MASTER B
+        ON A.EXAM_KEY = B.EXAM_KEY
         WHERE A.EXAM_USER_KEY = #{examUserKey}
     </select>
     <!-- 모의고사 성적보기 상세 화면 상단 응시과목 정보 -->
