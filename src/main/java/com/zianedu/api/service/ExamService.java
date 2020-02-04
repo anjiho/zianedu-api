@@ -520,22 +520,25 @@ public class ExamService extends PagingSupport {
         int resultCode = OK.value();
 
         TExamMasterVO tExamMasterVO = new TExamMasterVO();
-        List<TBankSubjectExamLinkVO> subjectExamLinkList = new ArrayList<>();
+        String subjectName = "";
         if (examKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            String onOff = "";
-            TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKeyByExamKey(examKey);
-            if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
-            else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
+//            String onOff = "";
+//            TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKeyByExamKey(examKey);
+//            if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
+//            else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
 
-            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, onOff);
+            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, "2");
             if (examUserKey != null) {
                 tExamMasterVO = examMapper.selectExamMasterInfo(examKey);
-                subjectExamLinkList = examMapper.selectExamMasterSubjectList(examKey);
+                List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+                if (subjectNameList.size() > 0) {
+                    subjectName = StringUtils.implodeList(",", subjectNameList);
+                }
             }
         }
-        ExamGateDTO examGateDTO = new ExamGateDTO(tExamMasterVO, subjectExamLinkList);
+        ExamGateDTO examGateDTO = new ExamGateDTO(tExamMasterVO, subjectName);
         return new ApiResultObjectDTO(examGateDTO, resultCode);
     }
 

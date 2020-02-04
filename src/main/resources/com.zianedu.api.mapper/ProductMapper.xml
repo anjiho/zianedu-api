@@ -2568,7 +2568,7 @@
     </select>
 
     <select id="selectExamOnOffKeyByExamKey" resultType="TLinkKeyVO">
-        SELECT * FROM T_LINK_KEY WHERE RES_KEY = #{examKey}
+        SELECT * FROM T_LINK_KEY WHERE RES_KEY = #{examKey} AND RES_TYPE = 2
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
