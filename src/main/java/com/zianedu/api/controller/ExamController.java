@@ -147,6 +147,15 @@ public class ExamController {
         return examService.getExamMasterGateInfo(examKey, userKey);
     }
 
+    @RequestMapping(value = "/getExamMasterGateInfoFromBuy/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("구매한 학원모의고사 시험 입구 페이지 정보 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examUserKey", value = "사용자 시험 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getExamMasterGateInfo(@PathVariable(value = "examUserKey") int examUserKey) {
+        return examService.getExamMasterGateInfoByExamUserKey(examUserKey);
+    }
+
     @RequestMapping(value = "/getUserExamList/{examUserKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("시험 시작 버튼 후 시험정보 리스트 가져오기")
     @ApiImplicitParams({

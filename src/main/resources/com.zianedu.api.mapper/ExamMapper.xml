@@ -634,6 +634,14 @@
         SELECT * FROM T_EXAM_MASTER WHERE EXAM_KEY = #{examKey}
     </select>
 
+    <select id="selectExamMasterInfoByExamUserKey" resultType="TExamMasterVO">
+        SELECT * FROM T_EXAM_MASTER
+        WHERE EXAM_KEY =
+        (
+            SELECT EXAM_KEY FROM T_EXAM_USER WHERE EXAM_USER_KEY = #{examUserKey}
+        )
+    </select>
+
     <select id="selectExamMasterSubjectList" resultType="TBankSubjectExamLinkVO">
         SELECT A.*, B.name, C.name as CTG_NAME,
         (
@@ -843,7 +851,6 @@
         SELECT Z.*, ZZ.EXAM_USER_KEY, NVL(ZZ.ISCOMPLATE, 0) as isComplete
         FROM (
                SELECT A.J_KEY, C.NAME as goodsName,
-
                         (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
                         (
                             SELECT T.RES_KEY

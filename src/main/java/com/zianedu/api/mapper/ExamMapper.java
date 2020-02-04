@@ -63,6 +63,8 @@ public interface ExamMapper {
 
     TExamMasterVO selectExamMasterInfo(@Param("examKey") int examKey);
 
+    TExamMasterVO selectExamMasterInfoByExamUserKey(@Param("examUserKey") int examUserKey);
+
     List<TBankSubjectExamLinkVO> selectExamMasterSubjectList(@Param("examKey") int examKey);
 
     TExamUserVO selectTExamUserInfo(@Param("examKey") int examKey, @Param("userKey") int userKey);

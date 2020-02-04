@@ -544,6 +544,27 @@ public class ExamService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
+    public ApiResultObjectDTO getExamMasterGateInfoByExamUserKey(int examUserKey) {
+        int resultCode = OK.value();
+
+        TExamMasterVO tExamMasterVO = new TExamMasterVO();
+        String subjectName = "";
+        if (examUserKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            if (examUserKey > 0) {
+                tExamMasterVO = examMapper.selectExamMasterInfoByExamUserKey(examUserKey);
+                List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+                if (subjectNameList.size() > 0) {
+                    subjectName = StringUtils.implodeList(",", subjectNameList);
+                }
+            }
+        }
+        ExamGateDTO examGateDTO = new ExamGateDTO(examUserKey, tExamMasterVO, subjectName);
+        return new ApiResultObjectDTO(examGateDTO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
     public ApiResultObjectDTO getUserExamList(int examUserKey, int userKey) {
         int resultCode = OK.value();
 

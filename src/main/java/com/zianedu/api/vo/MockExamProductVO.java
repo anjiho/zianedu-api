@@ -50,4 +50,6 @@ public class MockExamProductVO {
 
     private String printCommentaryFile;
 
+    private int examUserKey;
+
 }
