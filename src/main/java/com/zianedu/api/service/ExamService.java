@@ -529,7 +529,7 @@ public class ExamService extends PagingSupport {
 //            if ("2".equals(linkKeyVO.getReqType())) onOff = "2";
 //            else if ("3".equals(linkKeyVO.getReqType())) onOff = "1";
 
-            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, "2");
+            Integer examUserKey = this.injectUserExamInfo(examKey, userKey, "2", 0);
             if (examUserKey != null) {
                 tExamMasterVO = examMapper.selectExamMasterInfo(examKey);
                 List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
@@ -579,14 +579,14 @@ public class ExamService extends PagingSupport {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public Integer injectUserExamInfo(int examKey, int userKey, String onOff) {
+    public Integer injectUserExamInfo(int examKey, int userKey, String onOff, int jGKey) {
         if (examKey == 0 && userKey == 0) return null;
         Integer examUserKey = null;
         TExamUserVO tExamUserVO = examMapper.selectTExamUserInfo(examKey, userKey);
         //'응시하기'를 한번도 안했을때 시험정보 저장하기
         if (tExamUserVO == null) {
             String serial = onOff + examMapper.selectTExamUserSerial();
-            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey, serial, onOff);
+            TExamUserVO examUserVO = new TExamUserVO(examKey, userKey, serial, onOff, jGKey);
             examMapper.insertTExamUser(examUserVO);
             examUserKey = examUserVO.getExamUserKey();
 

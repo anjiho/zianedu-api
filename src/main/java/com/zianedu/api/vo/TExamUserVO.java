@@ -44,12 +44,15 @@ public class TExamUserVO {
 
     private int isOnline;
 
+    private int jGKey;
+
     public TExamUserVO(){}
 
-    public TExamUserVO(int examKey, int userKey, String serial, String onOff) {
+    public TExamUserVO(int examKey, int userKey, String serial, String onOff, int jGKey) {
         this.examKey = examKey;
         this.userKey = userKey;
         this.serial = serial;
+        this.jGKey = jGKey;
         this.isOnline = "1".equals(onOff) ? 0 : 1;
     }
 

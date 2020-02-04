@@ -320,7 +320,7 @@ public class PaymentService {
                     if (linkKeyVO.getResType() == 2) onOff = "2";
                     else if (linkKeyVO.getResType() == 3) onOff = "1";
 
-                    examService.injectUserExamInfo(linkKeyVO.getResKey(), orderVO.getUserKey(), onOff);
+                    examService.injectUserExamInfo(linkKeyVO.getResKey(), orderVO.getUserKey(), onOff, jGKey);
 
                 }
             }
