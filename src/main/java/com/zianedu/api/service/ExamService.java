@@ -407,9 +407,9 @@ public class ExamService extends PagingSupport {
                 //점수비교 라인 그래프
                 for (int j=0; j<3; j++) {
                     double data2[] = null;
-                    if (j == 0) data2 =  compareScoreStaticsGraphVO.getCategoryTopTenData();
-                    else if (j == 1) data2 = compareScoreStaticsGraphVO.getCategoryStaticsData();
-                    else if (j == 2) data2 = compareScoreStaticsGraphVO.getCategoryMyData();
+                    if (j == 0) data2 =  compareScoreStaticsGraphVO.getCategoryTopTenData();    //상위10%
+                    else if (j == 1) data2 = compareScoreStaticsGraphVO.getCategoryStaticsData();   //상위30%
+                    else if (j == 2) data2 = compareScoreStaticsGraphVO.getCategoryMyData();    //내점수
                     LineGraphDataVO lineGraphDataVO2 = new LineGraphDataVO(ZianApiUtils.TOP_DATA_NAMES[j], data2);
                     lineGraphDataList2.add(lineGraphDataVO2);
                 }
