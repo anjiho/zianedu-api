@@ -234,4 +234,5 @@ public class ExamController {
     public ApiResultListDTO getMockExamClassCtgSelectBoxList(@PathVariable(value = "selectBoxType") String selectBoxType) {
         return examService.getGichulSelectBoxList(selectBoxType);
     }
+
 }

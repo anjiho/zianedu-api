@@ -5,6 +5,7 @@ import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.service.BoardService;
+import com.zianedu.api.service.ExamService;
 import com.zianedu.api.service.MyPageService;
 import com.zianedu.api.service.OrderService;
 import com.zianedu.api.utils.ZianApiUtils;
@@ -27,6 +28,9 @@ public class MyPageController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ExamService examService;
 
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
@@ -381,5 +385,65 @@ public class MyPageController {
         return myPageService.getBoardListAtMyWrite(userKey, boardType, sPage, listLimit, searchType, searchText);
     }
 
+    @RequestMapping(value = "/getUserMockExamResultListAtBuy/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("성적관리 > 학원모의고사(온,오프라인)리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "onOffKey", value = "온.오프라인 키 값(온라인:2, 오프라인:3)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "ctgKey", value = "직렬키 값", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(name : 시험명) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+    })
+    public ApiPagingResultDTO getUserMockExamResultListAtBuy(@PathVariable("userKey") int userKey,
+                                                             @RequestParam("onOffKey") int onOffKey,
+                                                             @RequestParam("sPage") int sPage,
+                                                             @RequestParam("listLimit") int listLimit,
+                                                             @RequestParam(value = "ctgKey", required = false, defaultValue = "0") int ctgKey,
+                                                             @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                             @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
+        return examService.getUserMockExamResultListAtBuy(userKey, onOffKey, ctgKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/getUserFreeExamResultList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("성적관리 > 무료모의고사 리스트(주간모의고사, 기출문제)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "examType", value = "시험종류(GICHUL : 기출문제, WEEK : 주간모의고사)", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+
+            @ApiImplicitParam(name = "groupCtgKey", value = "급수 카테고리 키", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "classCtgKey", value = "직렬 카테고리 키", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 카테고리 키", dataType = "int", paramType = "query", required = false),
+
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(name : 시험명) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+    })
+    public ApiPagingResultDTO getUserFreeExamResultList(@PathVariable("userKey") int userKey,
+                                                      @RequestParam("examType") String examType,
+                                                      @RequestParam("sPage") int sPage,
+                                                      @RequestParam("listLimit") int listLimit,
+                                                        @RequestParam(value = "groupCtgKey", required = false, defaultValue = "0") int groupCtgKey,
+                                                        @RequestParam(value = "classCtgKey", required = false, defaultValue = "0") int classCtgKey,
+                                                        @RequestParam(value = "subjectCtgKey", required = false, defaultValue = "0") int subjectCtgKey,
+                                                      @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                                                      @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) {
+        return examService.getUserFreeExamResultList(userKey, examType, classCtgKey, groupCtgKey, subjectCtgKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/getUserExamLogList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("성적관리 > 최근응시내역")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getUserExamLogList(@PathVariable("userKey") int userKey,
+                                                        @RequestParam("sPage") int sPage,
+                                                        @RequestParam("listLimit") int listLimit) {
+        return examService.getUserExamLogList(userKey, sPage, listLimit);
+    }
 
 }

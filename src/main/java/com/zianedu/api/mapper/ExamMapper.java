@@ -92,6 +92,26 @@ public interface ExamMapper {
 
     String selectTExamUserSerial();
 
+    List<TExamUserVO> selectUserMockExamResultListAtBuy(@Param("userKey") int userKey, @Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey,
+                                                  @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                                  @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectUserMockExamResultCountAtBuy(@Param("userKey") int userKey, @Param("onOffKey") int onOffKey, @Param("ctgKey") int ctgKey,
+                                           @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<TExamUserVO> selectUserFreeExamResult(@Param("userKey") int userKey, @Param("isGichul") int isGichul, @Param("classCtgKey") int classCtgKey,
+                                               @Param("groupCtgKey") int groupCtgKey, @Param("subjectCtgKey") int subjectCtgKey,
+                                               @Param("searchType") String searchType, @Param("searchText") String searchText,
+                                               @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectUserFreeExamResultCount(@Param("userKey") int userKey, @Param("isGichul") int isGichul, @Param("classCtgKey") int classCtgKey,
+                                      @Param("groupCtgKey") int groupCtgKey, @Param("subjectCtgKey") int subjectCtgKey,
+                                      @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+    List<ExamLogVO> selectUserExamApplyLogList(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectUserExamApplyLogListCount(@Param("userKey") int userKey);
+
 
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);

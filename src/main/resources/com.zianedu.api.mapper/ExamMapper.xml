@@ -909,6 +909,253 @@
         WHERE ROWNUM = 1
     </select>
 
+    <select id="selectUserMockExamResultListAtBuy" resultType="TExamUserVO">
+        SELECT Z.*, ZZ.EXAM_USER_KEY, NVL(ZZ.ISCOMPLATE, 0) as isComplete
+        FROM (
+               SELECT A.J_KEY, C.NAME as goodsName,
+                        (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                        (
+                            SELECT T.RES_KEY
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as examKey,
+                        A.G_KEY,
+                        B.USER_KEY,
+                        A.J_G_KEY,
+                        (
+                            SELECT TT.CLASS_CTG_KEY
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as classCtgKey,
+                        (
+                            SELECT TTT.NAME
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            INNER JOIN T_CATEGORY TTT
+                            ON TT.CLASS_CTG_KEY = TTT.CTG_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as classCtgName,
+                        (
+                            SELECT TO_CHAR(TT.ACCEPT_START_DATE, 'YYYY-MM-DD hh24:mi:ss')
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as ACCEPT_START_DATE,
+                        (
+                            SELECT TO_CHAR(TT.ACCEPT_END_DATE, 'YYYY-MM-DD hh24:mi:ss')
+                            FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                            ON T.RES_KEY = TT.EXAM_KEY
+                            WHERE T.REQ_KEY = A.G_KEY
+                        ) as ACCEPT_END_DATE
+                FROM T_ORDER_GOODS A
+                INNER JOIN T_ORDER B
+                ON A.J_KEY = B.J_KEY
+                INNER JOIN T_GOODS C
+                ON A.G_KEY = C.G_KEY
+                WHERE 1=1
+                AND A.TYPE = 4
+        ) Z
+        LEFT OUTER JOIN T_EXAM_USER ZZ
+        ON Z.J_G_KEY = ZZ.J_G_KEY
+        WHERE 1=1
+        AND ZZ.ISCOMPLATE = 1
+        <if test="userKey > 0">
+            AND Z.USER_KEY = #{userKey}
+        </if>
+        <if test="onOffKey > 0">
+            AND Z.onOffKey = #{onOffKey}
+        </if>
+        <if test="ctgKey > 0">
+            AND Z.classCtgKey = #{ctgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND Z.goodsName LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+        ORDER BY Z.J_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectUserMockExamResultCountAtBuy" resultType="int">
+        SELECT COUNT(ZZ.EXAM_USER_KEY)
+        FROM (
+            SELECT
+                A.J_G_KEY, C.NAME as goodsName,
+                (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
+                B.USER_KEY,
+                (
+                    SELECT TT.CLASS_CTG_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as classCtgKey
+            FROM T_ORDER_GOODS A
+            INNER JOIN T_ORDER B
+            ON A.J_KEY = B.J_KEY
+            INNER JOIN T_GOODS C
+            ON A.G_KEY = C.G_KEY
+            WHERE 1=1
+            AND A.TYPE = 4
+        ) Z
+        LEFT OUTER JOIN T_EXAM_USER ZZ
+        ON Z.J_G_KEY = ZZ.J_G_KEY
+        WHERE 1=1
+        AND ZZ.ISCOMPLATE = 1
+        <if test="userKey > 0">
+            AND Z.USER_KEY = #{userKey}
+        </if>
+        <if test="onOffKey > 0">
+            AND Z.onOffKey = #{onOffKey}
+        </if>
+        <if test="ctgKey > 0">
+            AND Z.classCtgKey = #{ctgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND Z.goodsName LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+    </select>
+
+    <select id="selectUserFreeExamResult" resultType="TExamUserVO">
+        SELECT Z.* FROM (
+            SELECT
+                    A.EXAM_KEY, B.NAME as goodsName, B.PRINT_QUESTION_FILE, B.PRINT_COMMENTARY_FILE,
+                    TO_CHAR(B.ACCEPT_START_DATE, 'YYYY-MM-DD hh24:mi:ss') as ACCEPT_START_DATE,
+                    TO_CHAR(B.ACCEPT_END_DATE, 'YYYY-MM-DD hh24:mi:ss') as ACCEPT_END_DATE, A.EXAM_USER_KEY,
+                    (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_CTG_KEY) as classCtgName,
+                    (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_CTG_KEY) as classCtgKey,
+                    (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.SUBJECT_CTG_KEY) as subjectCtgKey,
+                    (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_GROUP_CTG_KEY) as groupCtgKey,
+                    (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = B.SUBJECT_CTG_KEY) as subjectCtgName,
+                    (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_GROUP_CTG_KEY) as groupCtgName,
+                    A.ISCOMPLATE
+            FROM T_EXAM_USER A
+            INNER JOIN T_EXAM_MASTER B
+            ON A.EXAM_KEY = B.EXAM_KEY
+            WHERE 1=1
+            AND A.ISCOMPLATE = 1
+            AND A.J_G_KEY = 0
+            AND B.IS_GICHUL = #{isGichul}
+            <if test="userKey > 0">
+                AND A.USER_KEY = #{userKey}
+            </if>
+            ORDER BY A.EXAM_USER_KEY DESC
+        )Z
+        WHERE 1=1
+        <!-- 급수 검색 -->
+        <if test="groupCtgKey > 0">
+            AND Z.groupCtgKey = #{groupCtgKey}
+        </if>
+        <!-- 직렬 검색 -->
+        <if test="classCtgKey > 0">
+            AND Z.classCtgKey = #{classCtgKey}
+        </if>
+        <!-- 과목 검색 -->
+        <if test="subjectCtgKey > 0">
+            AND Z.subjectCtgKey = #{subjectCtgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND Z.goodsName LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectUserFreeExamResultCount" resultType="int">
+        SELECT COUNT(Z.EXAM_KEY) FROM (
+            SELECT
+            A.EXAM_KEY, B.NAME as goodsName,
+            A.EXAM_USER_KEY, A.ISCOMPLATE,
+            (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_CTG_KEY) as classCtgKey,
+            (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.SUBJECT_CTG_KEY) as subjectCtgKey,
+            (SELECT CTG_KEY FROM T_CATEGORY WHERE CTG_KEY = B.CLASS_GROUP_CTG_KEY) as groupCtgKey
+            FROM T_EXAM_USER A
+            INNER JOIN T_EXAM_MASTER B
+            ON A.EXAM_KEY = B.EXAM_KEY
+            WHERE 1=1
+            AND A.ISCOMPLATE = 1
+            AND A.J_G_KEY = 0
+            AND B.IS_GICHUL = #{isGichul}
+            <if test="userKey > 0">
+                AND A.USER_KEY = #{userKey}
+            </if>
+        )Z
+        WHERE 1=1
+        <!-- 급수 검색 -->
+        <if test="groupCtgKey > 0">
+            AND Z.groupCtgKey = #{groupCtgKey}
+        </if>
+        <!-- 직렬 검색 -->
+        <if test="classCtgKey > 0">
+            AND Z.classCtgKey = #{classCtgKey}
+        </if>
+        <!-- 과목 검색 -->
+        <if test="subjectCtgKey > 0">
+            AND Z.subjectCtgKey = #{subjectCtgKey}
+        </if>
+        <if test="searchText != ''">
+            <if test="searchType == 'name'">
+                AND Z.goodsName LIKE '%'||#{searchText}||'%'
+            </if>
+        </if>
+    </select>
+
+    <select id="selectUserExamApplyLogList" resultType="ExamLogVO">
+        SELECT Z.* FROM (
+            SELECT
+                    A.EXAM_KEY, B.NAME as goodsName,
+                   A.EXAM_USER_KEY,
+                              A.COMPLATEDATE,
+                    TO_CHAR(A.COMPLATEDATE, 'YYYY-MM-DD hh24:mi:ss') as examDate,
+                    B.IS_GICHUL,
+                    B.IS_REAL_FREE,
+                    NVL( (
+                        SELECT TTT.RES_TYPE FROM T_ORDER_GOODS T
+                        INNER JOIN T_GOODS TT
+                        ON T.G_KEY = TT.G_KEY
+                        INNER JOIN T_LINK_KEY TTT
+                        ON T.G_KEY = TTT.REQ_KEY
+                        WHERE T.J_G_KEY =  A.J_G_KEY
+                    ), 0) as isOnOff
+            FROM T_EXAM_USER A
+            INNER JOIN T_EXAM_MASTER B
+            ON A.EXAM_KEY = B.EXAM_KEY
+            WHERE 1=1
+            AND A.ISCOMPLATE = 1
+            <if test="userKey > 0">
+                AND A.USER_KEY = 5
+            </if>
+            ORDER BY A.EXAM_USER_KEY DESC
+        )Z
+        WHERE 1=1
+        AND Z.COMPLATEDATE >= ADD_MONTHS(sysdate, -3)
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectUserExamApplyLogListCount" resultType="int">
+        SELECT COUNT (Z.EXAM_KEY) FROM (
+            SELECT
+            A.EXAM_KEY,
+            A.COMPLATEDATE
+            FROM T_EXAM_USER A
+            INNER JOIN T_EXAM_MASTER B
+            ON A.EXAM_KEY = B.EXAM_KEY
+            WHERE 1=1
+            AND A.ISCOMPLATE = 1
+            <if test="userKey > 0">
+                AND A.USER_KEY = #{userKey}
+            </if>
+            ORDER BY A.EXAM_USER_KEY DESC
+        )Z
+        WHERE 1=1
+        AND Z.COMPLATEDATE >= ADD_MONTHS(sysdate, -3)
+    </select>
+
     <insert id="insertTExamUser" parameterType="TExamUserVO">
         <selectKey resultType="Integer" keyProperty="examUserKey" order="BEFORE">
             SELECT T_EXAM_USER_SEQ.NEXTVAL FROM DUAL

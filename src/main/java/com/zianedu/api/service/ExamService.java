@@ -388,7 +388,7 @@ public class ExamService extends PagingSupport {
                 Integer[] radialSubjectScores = StringUtils.arrayIntegerListToStringArray(radialSubjectScoreList);
                 radialGraphVO = new RadialGraphVO(radialSubjectNames, radialSubjectScores);
                 //과목별 평균 옆 라인 그래프
-                for (int i=0; i<subjectStaticsGraphVO.getCategoryName().length; i++) {
+                for (int i=0; i<3; i++) {
                     double data[] = null;
                     if (i == 0) data = subjectStaticsGraphVO.getCategoryTopTenData();
                     else if (i == 1) data = subjectStaticsGraphVO.getCategoryTopThirtyData();
@@ -872,5 +872,96 @@ public class ExamService extends PagingSupport {
             }
         }
         return new ApiResultListDTO(selectBoxList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getUserMockExamResultListAtBuy(int userKey, int onOffKey, int ctgKey, int sPage, int listLimit, String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        int totalCnt = 0;
+        List<TExamUserVO> resultList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (userKey == 0 && onOffKey < 2) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCnt = examMapper.selectUserMockExamResultCountAtBuy(userKey, onOffKey, ctgKey, searchType, searchText);
+            resultList = examMapper.selectUserMockExamResultListAtBuy(userKey, onOffKey, ctgKey, searchType, searchText, startNumber, listLimit);
+            if (resultList.size() > 0) {
+                for (TExamUserVO vo : resultList) {
+                    //문제지, 해설지 주입
+                    TExamMasterVO examMasterVO = examMapper.selectExamMasterInfo(vo.getExamKey());
+                    if (examMasterVO != null) {
+                        vo.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintQuestionFile()));
+                        vo.setPrintCommentaryFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintCommentaryFile()));
+                    }
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCnt, resultList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getUserFreeExamResultList(int userKey, String examType, int classCtgKey, int groupCtgKey, int subjectCtgKey,
+                                                        int sPage, int listLimit, String searchType, String searchText) {
+        int resultCode = OK.value();
+
+        int totalCnt = 0;
+        List<TExamUserVO> resultList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (userKey == 0 && "".equals(examType)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            if ("GICHUL".equals(examType)) {
+                totalCnt = examMapper.selectUserFreeExamResultCount(userKey, 1, classCtgKey, groupCtgKey, subjectCtgKey, searchType, searchText);
+                resultList = examMapper.selectUserFreeExamResult(userKey, 1, classCtgKey, groupCtgKey, subjectCtgKey, searchType, searchText, startNumber, listLimit);
+            } else if ("WEEK".equals(examType)) {
+                totalCnt = examMapper.selectUserFreeExamResultCount(userKey, 0, classCtgKey, groupCtgKey, subjectCtgKey, searchType, searchText);
+                resultList = examMapper.selectUserFreeExamResult(userKey, 0, classCtgKey, groupCtgKey, subjectCtgKey, searchType, searchText, startNumber, listLimit);
+            }
+            if (resultList.size() > 0) {
+                for (TExamUserVO vo : resultList) {
+                    //문제지, 해설지 주입
+                    TExamMasterVO examMasterVO = examMapper.selectExamMasterInfo(vo.getExamKey());
+                    if (examMasterVO != null) {
+                        vo.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintQuestionFile()));
+                        vo.setPrintCommentaryFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintCommentaryFile()));
+                    }
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCnt, resultList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getUserExamLogList(int userKey, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int totalCnt = 0;
+        List<ExamLogVO> logList = new ArrayList<>();
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCnt = examMapper.selectUserExamApplyLogListCount(userKey);
+            logList = examMapper.selectUserExamApplyLogList(userKey, startNumber, listLimit);
+            if (logList.size() > 0) {
+                for (ExamLogVO logVO : logList) {
+                    String examType = "";
+                    if (logVO.getIsOnOff() == 0) {
+                        if (logVO.getIsGichul() == 1 && logVO.getIsRealFree() == 0) examType = "기출문제";
+                        else examType = "주간모의고사";
+                    } else if (logVO.getIsOnOff() == 2) {
+                        examType = "학원모의고사(온)";
+                    } else if (logVO.getIsOnOff() == 3) {
+                        examType = "학원모의고사(오프)";
+                    }
+                    logVO.setExamType(examType);
+                }
+            }
+        }
+        return new ApiPagingResultDTO(totalCnt, logList, resultCode);
     }
 }
