@@ -1128,7 +1128,7 @@
             WHERE 1=1
             AND A.ISCOMPLATE = 1
             <if test="userKey > 0">
-                AND A.USER_KEY = 5
+                AND A.USER_KEY = #{userKey}
             </if>
             ORDER BY A.EXAM_USER_KEY DESC
         )Z
