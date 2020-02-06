@@ -60,7 +60,7 @@ public class AchievementManagementDTO {
         this.subjectStaticsInfo = subjectStaticsInfo;
         this.subjectStaticsGraphInfo = subjectStaticsGraphInfo;
         this.compareScoreGraphInfo = compareScoreGraphInfo;
-        this.compareScoreGraphInfo = compareScoreGraphInfo;
+        //this.compareScoreGraphInfo = compareScoreGraphInfo;
         this.episodeCompareScoreGraphInfo = episodeCompareScoreGraphInfo;
         this.scoreRateByTypeInfo = scoreRateByTypeInfo;
         this.scoreRateByPatternInfo = scoreRateByPatternInfo;
