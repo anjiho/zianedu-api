@@ -9,6 +9,8 @@ public class ExamWrongAnswerVO {
 
     private int num;
 
+    private int examQuestionUserKey;
+
     private int examQuesBankKey;
 
     private int bankSubjectQuesLinkKey;

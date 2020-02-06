@@ -30,7 +30,7 @@
     <select id="selectGiChulProblemList" resultType="TExamUserVO">
         SELECT
             A.EXAM_KEY, A.NAME as goodsName, A.PRINT_QUESTION_FILE, A.PRINT_COMMENTARY_FILE,
-           (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
+           (SELECT COUNT(EXAM_USER_KEY) FROM T_EXAM_USER WHERE J_G_KEY = 0 AND USER_KEY = #{userKey} AND ISCOMPLATE = 1 AND EXAM_KEY = A.EXAM_KEY) AS isComplete,
            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_CTG_KEY) as classCtgName,
            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.SUBJECT_CTG_KEY) as subjectCtgName,
            (SELECT NAME FROM T_CATEGORY WHERE CTG_KEY = A.CLASS_GROUP_CTG_KEY) as groupCtgName
@@ -566,6 +566,7 @@
         FROM
         (
             SELECT
+            C.EXAM_QUESTION_USER_KEY,
             A.EXAM_QUES_BANK_KEY,
             A.BANK_SUBJECT_QUES_LINK_KEY,
             B.QUESTION_IMAGE, B.COMMENTARY_IMAGE, B.REVIEW, A.POS,
@@ -610,7 +611,8 @@
                 AND T.EXAM_QUES_BANK_KEY = A.EXAM_QUES_BANK_KEY
                 AND TTT.SCORE = 1
             ) as totalScoreCnt,
-            D.VALUE as theoryLearningUrl
+            D.VALUE as theoryLearningUrl,
+            SUBSTR(B.ANSWER, 1, 1) as answer
         FROM T_BANK_SUBJECT_QUES_LINK A
         LEFT JOIN T_EXAM_QUESTION_BANK B
         ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY

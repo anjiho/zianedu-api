@@ -26,6 +26,9 @@ public class AchievementManagementDTO {
 
     //private StaticsGraphVO compareScoreGraphInfo;
     private CompareScoreSubjectGraphVO compareScoreGraphInfo;
+    //회차별 점수비교
+    private CompareScoreSubjectGraphVO episodeCompareScoreGraphInfo;
+
     //유형별 정답률
     private List<ScoreRateGraphVO> scoreRateByTypeInfo;
     //패턴별 정답률
@@ -39,15 +42,17 @@ public class AchievementManagementDTO {
 
     private CompareScoreSubjectGraphVO compareScoreSubjectGraphInfo;
 
+    private List<SubjectAnalysisGraphDTO> subjectAnalysisGraphInfo;
+
     public AchievementManagementDTO() {}
 
     public AchievementManagementDTO(AchievementTopInfoVO achievementTopInfo, List<ExamSubjectStaticsVO> examSubjectStaticsInfo,
                                     ExamSubjectTotalVO examSubjectTotalInfo, List<ExamCompareTotalStaticsVO> examCompareTotalStaticsInfo,
                                     List<SubjectStaticsVO> subjectStaticsInfo, StaticsGraphVO subjectStaticsGraphInfo,
-                                    CompareScoreSubjectGraphVO compareScoreGraphInfo, List<ScoreRateGraphVO> scoreRateByTypeInfo,
-                                    List<ScoreRateGraphVO> scoreRateByPatternInfo, List<ScoreRateGraphVO> scoreRateByUnitInfo,
-                                    List<ScoreRateDTO> scoreRateInfo, RadialGraphVO radialGraphInfo,
-                                    CompareScoreSubjectGraphVO compareScoreSubjectGraphInfo) {
+                                    CompareScoreSubjectGraphVO compareScoreGraphInfo, CompareScoreSubjectGraphVO episodeCompareScoreGraphInfo,
+                                    List<ScoreRateGraphVO> scoreRateByTypeInfo, List<ScoreRateGraphVO> scoreRateByPatternInfo, List<ScoreRateGraphVO> scoreRateByUnitInfo,
+                                    List<ScoreRateDTO> scoreRateInfo, RadialGraphVO radialGraphInfo, CompareScoreSubjectGraphVO compareScoreSubjectGraphInfo,
+                                    List<SubjectAnalysisGraphDTO> subjectAnalysisGraphInfo) {
         this.achievementTopInfo = achievementTopInfo;
         this.examSubjectStaticsInfo = examSubjectStaticsInfo;
         this.examSubjectTotalInfo = examSubjectTotalInfo;
@@ -55,12 +60,15 @@ public class AchievementManagementDTO {
         this.subjectStaticsInfo = subjectStaticsInfo;
         this.subjectStaticsGraphInfo = subjectStaticsGraphInfo;
         this.compareScoreGraphInfo = compareScoreGraphInfo;
+        this.compareScoreGraphInfo = compareScoreGraphInfo;
+        this.episodeCompareScoreGraphInfo = episodeCompareScoreGraphInfo;
         this.scoreRateByTypeInfo = scoreRateByTypeInfo;
         this.scoreRateByPatternInfo = scoreRateByPatternInfo;
         this.scoreRateByUnitInfo = scoreRateByUnitInfo;
         this.scoreRateInfo = scoreRateInfo;
         this.radialGraphInfo = radialGraphInfo;
         this.compareScoreSubjectGraphInfo = compareScoreSubjectGraphInfo;
+        this.subjectAnalysisGraphInfo = subjectAnalysisGraphInfo;
     }
 
 }

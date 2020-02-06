@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.Subject;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -162,8 +163,6 @@ public class ExamService extends PagingSupport {
         int resultCode = OK.value();
 
         AchievementTopInfoVO achievementTopInfoVO = new AchievementTopInfoVO();
-        TExamUserVO examHeaderInfo = new TExamUserVO();
-        List<String> subjectNameList = new ArrayList<>();
         List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
         ExamSubjectTotalVO examSubjectTotalVO = new ExamSubjectTotalVO();
         List<ExamCompareTotalStaticsVO> examCompareTotalStaticsList = new ArrayList<>();
@@ -171,12 +170,17 @@ public class ExamService extends PagingSupport {
         StaticsGraphVO subjectStaticsGraphVO = new StaticsGraphVO();
         StaticsGraphVO compareScoreStaticsGraphVO = new StaticsGraphVO();
         List<ScoreRateGraphVO> scoreRateByTypeInfo = new ArrayList<>();
+        List<ScoreRateGraphVO> scoreRateByTypeInfo2 = new ArrayList<>();
         List<ScoreRateGraphVO> scoreRateByPatternInfo = new ArrayList<>();
+        List<ScoreRateGraphVO> scoreRateByPatternInfo2 = new ArrayList<>();
         List<ScoreRateGraphVO> scoreRateByUnitInfo = new ArrayList<>();
+        List<ScoreRateGraphVO> scoreRateByUnitInfo2 = new ArrayList<>();
         List<ScoreRateDTO>scoreRateInfo = new ArrayList<>();
         RadialGraphVO radialGraphVO = new RadialGraphVO();
         CompareScoreSubjectGraphVO compareScoreSubjectGraphVO = new CompareScoreSubjectGraphVO();
         CompareScoreSubjectGraphVO compareScoreSubjectGraphVO2 = new CompareScoreSubjectGraphVO();
+        CompareScoreSubjectGraphVO compareScoreSubjectGraphVO3 = new CompareScoreSubjectGraphVO();
+        List<SubjectAnalysisGraphDTO> subjectAnalysisGraphInfo = new ArrayList<>();
 
         int totalStaticsScore = 0;
         int topTenSumScore = 0;
@@ -192,14 +196,14 @@ public class ExamService extends PagingSupport {
         if (examUserKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
-            subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+            TExamUserVO examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+            List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
             String subjectName = "";
 
             if (subjectNameList.size() > 0) {
                  subjectName = StringUtils.implodeList(",", subjectNameList);
             }
-            achievementTopInfoVO.setSerial(String.valueOf(examHeaderInfo.getSerial()));
+            achievementTopInfoVO.setSerial(("0" + examHeaderInfo.getSerial()));
             achievementTopInfoVO.setSubjectName(subjectName);
 
             examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
@@ -214,14 +218,17 @@ public class ExamService extends PagingSupport {
                 List<Integer> topTenScoreList = new ArrayList<>();
                 List<LineGraphDataVO> lineGraphDataList = new ArrayList<>();
                 List<LineGraphDataVO> lineGraphDataList2 = new ArrayList<>();
+                List<LineGraphDataVO> lineGraphDataList3 = new ArrayList<>();
 
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
                     int i=0;
                     ScoreRateDTO scoreRateDTO = new ScoreRateDTO();
                     ScoreRateGraphVO scoreRateByTypeVo = new ScoreRateGraphVO();
+                    ScoreRateGraphVO scoreRateByTypeVo2 = new ScoreRateGraphVO();
                     ScoreRateGraphVO scoreRateByPatternVo = new ScoreRateGraphVO();
                     ScoreRateGraphVO scoreRateByUnitVo = new ScoreRateGraphVO();
                     LineGraphDataVO lineGraphDataVO = new LineGraphDataVO();
+                    SubjectAnalysisGraphDTO subjectAnalysisGraphDTO = new SubjectAnalysisGraphDTO();
 
                     vo.setAnswerScore(vo.getAnswerCnt() * 5);   //원점수 계산
                     Integer userGrade = examMapper.selectExamSubjectGrade(vo.getExamQuesBankSubjectKey(), vo.getExamKey(), vo.getUserKey());
@@ -271,39 +278,50 @@ public class ExamService extends PagingSupport {
                     if (scoreRateByTypeList.size() > 0) {
                         List<String> scoreRateByTypeNameList = new ArrayList<>();
                         List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList2 = new ArrayList<>();
                         List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
                         for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByTypeList) {
                             scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
                             scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeProblemList2.add((scoreRateGraphVO.getProblemCnt() * 2));
                             scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
                         }
 
                         String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
                         Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeProblems2 = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList2);
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        ScoreRateGraphVO scoreRateGraphVO2 = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems2, scoreRateByTypeScores);
+
                         scoreRateByTypeInfo.add(scoreRateGraphVO);
+                        scoreRateByTypeInfo2.add(scoreRateGraphVO2);    //누적
 
                         scoreRateByTypeVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
-
                     }
                     //패턴별 정답률
                     List<ScoreRateGraphVO> scoreRateByPatternList = examMapper.selectScoreRateByPatternCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
                     if (scoreRateByPatternList.size() > 0) {
                         List<String> scoreRateByTypeNameList = new ArrayList<>();
                         List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList2 = new ArrayList<>();
                         List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
                         for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByPatternList) {
                             scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
                             scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeProblemList2.add((scoreRateGraphVO.getProblemCnt() * 2));
                             scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
                         }
 
                         String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
                         Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeProblems2 = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList2);
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        ScoreRateGraphVO scoreRateGraphVO2 = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems2, scoreRateByTypeScores);
+
                         scoreRateByPatternInfo.add(scoreRateGraphVO);
+                        scoreRateByPatternInfo2.add(scoreRateGraphVO2);     //누적
 
                         scoreRateByPatternVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                     }
@@ -312,18 +330,24 @@ public class ExamService extends PagingSupport {
                     if (scoreRateByUnitList.size() > 0) {
                         List<String> scoreRateByTypeNameList = new ArrayList<>();
                         List<Integer> scoreRateByTypeProblemList = new ArrayList<>();
+                        List<Integer> scoreRateByTypeProblemList2 = new ArrayList<>();
                         List<Integer> scoreRateByTypeScoreList = new ArrayList<>();
                         for (ScoreRateGraphVO scoreRateGraphVO : scoreRateByUnitList) {
                             scoreRateByTypeNameList.add(scoreRateGraphVO.getCtgName());
                             scoreRateByTypeProblemList.add(scoreRateGraphVO.getProblemCnt());
+                            scoreRateByTypeProblemList2.add((scoreRateGraphVO.getProblemCnt() * 2));
                             scoreRateByTypeScoreList.add(scoreRateGraphVO.getScoreCnt());
                         }
 
                         String[] scoreRateByTypeNames = StringUtils.arrayListToStringArray(scoreRateByTypeNameList);
                         Integer[] scoreRateByTypeProblems = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList);
+                        Integer[] scoreRateByTypeProblems2 = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeProblemList2);
                         Integer[] scoreRateByTypeScores = StringUtils.arrayIntegerListToStringArray(scoreRateByTypeScoreList);
                         ScoreRateGraphVO scoreRateGraphVO = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
+                        ScoreRateGraphVO scoreRateGraphVO2 = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems2, scoreRateByTypeScores);
+
                         scoreRateByUnitInfo.add(scoreRateGraphVO);
+                        scoreRateByUnitInfo2.add(scoreRateGraphVO2);
 
                         scoreRateByUnitVo = new ScoreRateGraphVO(vo.getSubjectName(), scoreRateByTypeNames, scoreRateByTypeProblems, scoreRateByTypeScores);
                     }
@@ -383,7 +407,52 @@ public class ExamService extends PagingSupport {
                     lineGraphDataList2.add(lineGraphDataVO2);
                 }
                 compareScoreSubjectGraphVO2 = new CompareScoreSubjectGraphVO(null, lineGraphDataList2);
+                //회차별 점수비교 그래프
+                for (int k=0; k<3; k++) {
+                    double data3[] = null;
+                    List<Double> dataList = new ArrayList<>();
+                    if (k == 0 ) {
+                        data3 = compareScoreStaticsGraphVO.getCategoryTopTenData();
+                        for (int k2=0; k2<2; k2++) {
+                            if (k2 == 0) dataList.add(0d);
+                            else dataList.add(data3[0]);
+                        }
+                    } else if (k == 1) {
+                        data3 = compareScoreStaticsGraphVO.getCategoryStaticsData();
+                        for (int k2=0; k2<2; k2++) {
+                            if (k2 == 0) dataList.add(0d);
+                            else dataList.add(data3[0]);
+                        }
+                    } else if (k == 2) {
+                        data3 = compareScoreStaticsGraphVO.getCategoryMyData();
+                        for (int k2=0; k2<2; k2++) {
+                            if (k2 == 0) dataList.add(0d);
+                            else dataList.add(data3[0]);
+                        }
+                    }
+                    LineGraphDataVO lineGraphDataVO3 = new LineGraphDataVO(ZianApiUtils.TOP_DATA_NAMES2[k], StringUtils.arrayListToDoubleArray(dataList));
+                    lineGraphDataList3.add(lineGraphDataVO3);
+                }
+                compareScoreSubjectGraphVO3 = new CompareScoreSubjectGraphVO(null, lineGraphDataList3);
 
+
+                for(ScoreRateGraphVO scoreRateGraphVO : scoreRateByTypeInfo) {
+                    int i=0;
+                    SubjectAnalysisGraphDTO subjectAnalysisGraphDTO = new SubjectAnalysisGraphDTO();
+                    subjectAnalysisGraphDTO.setSubjectName(scoreRateGraphVO.getSubjectName());
+
+                    subjectAnalysisGraphDTO.setScoreRateByTypeInfo(scoreRateGraphVO);
+                    subjectAnalysisGraphDTO.setScoreRateByTypeInfo2(scoreRateByTypeInfo2.get(i));
+
+                    subjectAnalysisGraphDTO.setScoreRateByPatternInfo(scoreRateByPatternInfo.get(i));
+                    subjectAnalysisGraphDTO.setScoreRateByPatternInfo2(scoreRateByPatternInfo2.get(i));
+
+                    subjectAnalysisGraphDTO.setScoreRateByUnitInfo(scoreRateByUnitInfo.get(i));
+                    subjectAnalysisGraphDTO.setScoreRateByUnitInfo2(scoreRateByUnitInfo2.get(i));
+
+                    subjectAnalysisGraphInfo.add(subjectAnalysisGraphDTO);
+                    i++;
+                }
             }
         }
         AchievementManagementDTO achievementManagementDTO = new AchievementManagementDTO(
@@ -394,12 +463,14 @@ public class ExamService extends PagingSupport {
                 subjectStaticsList,
                 subjectStaticsGraphVO,
                 compareScoreSubjectGraphVO2,
+                compareScoreSubjectGraphVO3,
                 scoreRateByTypeInfo,
                 scoreRateByPatternInfo,
                 scoreRateByUnitInfo,
                 scoreRateInfo,
                 radialGraphVO,
-                compareScoreSubjectGraphVO
+                compareScoreSubjectGraphVO,
+                subjectAnalysisGraphInfo
         );
         //본인관 평균성적 비교 값 주입
         achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());
@@ -472,23 +543,19 @@ public class ExamService extends PagingSupport {
         int resultCode = OK.value();
 
         List<WrongNoteDTO> resultList = new ArrayList<>();
-        TExamUserVO examHeaderInfo = new TExamUserVO();
-        List<String> subjectNameList = new ArrayList<>();
-        List<ExamSubjectStaticsVO> examSubjectStaticsList = new ArrayList<>();
-        List<ExamWrongAnswerVO> examWrongAnswerList = new ArrayList<>();
 
         if (examUserKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
-            subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
+            TExamUserVO examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+            List<String> subjectNameList = examMapper.selectExamSubjectNameList(examUserKey);
             String subjectName = "";
 
             if (subjectNameList.size() > 0) {
                 subjectName = StringUtils.implodeList(",", subjectNameList);
             }
 
-            examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
+            List<ExamSubjectStaticsVO> examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
             if (examSubjectStaticsList.size() > 0) {
                 //과목별 리스트
                 for (ExamSubjectStaticsVO vo : examSubjectStaticsList) {
@@ -497,7 +564,7 @@ public class ExamService extends PagingSupport {
                     wrongNoteDTO.setSubjectNameList(subjectName);
                     wrongNoteDTO.setSubjectName(vo.getSubjectName());
 
-                    examWrongAnswerList = examMapper.selectWrongAnswerList(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), isScore, isInterest);
+                    List<ExamWrongAnswerVO> examWrongAnswerList = examMapper.selectWrongAnswerList(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), isScore, isInterest);
                     //시험문제 개수만큼
                     for (ExamWrongAnswerVO wrongAnswerVO : examWrongAnswerList) {
                         String unitName = categoryService.getMakeUnitName(wrongAnswerVO.getUnitCtgKey());
