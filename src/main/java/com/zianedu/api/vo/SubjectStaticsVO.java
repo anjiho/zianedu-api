@@ -19,9 +19,9 @@ public class SubjectStaticsVO {
 
     public SubjectStaticsVO(String subjectName, double tenPercentScore, double thirtyPercentScore, int myScore, double totalScore) {
         this.subjectName = subjectName;
-        this.tenPercentScore = tenPercentScore;
-        this.thirtyPercentScore = thirtyPercentScore;
+        this.tenPercentScore = Double.parseDouble(String.format("%.1f", tenPercentScore));
+        this.thirtyPercentScore = Double.parseDouble(String.format("%.1f", thirtyPercentScore));
         this.myScore = myScore;
-        this.totalScore = totalScore;
+        this.totalScore = Double.parseDouble(String.format("%.2f", totalScore));
     }
 }
