@@ -3,6 +3,8 @@ package com.zianedu.api.controller;
 import com.google.gson.JsonArray;
 import com.zianedu.api.dto.*;
 import com.zianedu.api.service.ExamService;
+import com.zianedu.api.service.ExcelReadService;
+import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.ZianApiUtils;
 import com.zianedu.api.vo.SaveCartVO;
@@ -11,7 +13,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
 import java.util.List;
 
 @RestController
@@ -20,6 +25,9 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ExcelReadService excelReadService;
 
     @RequestMapping(value = "/getGichulProblemList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("기출문제 > 기출문제 리스트")
@@ -233,6 +241,35 @@ public class ExamController {
     })
     public ApiResultListDTO getMockExamClassCtgSelectBoxList(@PathVariable(value = "selectBoxType") String selectBoxType) {
         return examService.getGichulSelectBoxList(selectBoxType);
+    }
+
+    @RequestMapping(value = "/addFavoriteExamProblem", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("시험문제 즐겨찾기 추가및 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "examQuestionUserKey", value = "시험결과 문제 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "isInterest", value = "즐겨찾기 키값(즐겨찾기 : 1, 즐겨찾기 취소 : 0)", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO addFavoriteExamProblem(@RequestParam(value = "examQuestionUserKey") int examQuestionUserKey,
+                                                   @RequestParam(value = "isInterest") int isInterest) {
+        return examService.addFavoriteExamProblem(examQuestionUserKey, isInterest);
+    }
+
+    @RequestMapping(value = "/injectOfflineExamResult", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("오프라인 시험결과 엑셀 업로드")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "엑셀 파일", dataType = "file", paramType = "form", required = true)
+    })
+    public ApiResultCodeDTO injectOfflineExamResult(MultipartHttpServletRequest servletRequest) throws Exception {
+        MultipartFile excelFile = servletRequest.getFile("file");
+
+        if (excelFile == null || excelFile.isEmpty()) {
+            throw new RuntimeException("엑셀파일을 선택 해 주세요");
+        }
+        File destFile = new File(excelFile.getOriginalFilename());
+        excelFile.transferTo(destFile);
+        int result = excelReadService.readOffLineExamResult(destFile);
+        FileUtil.fileDelete(excelFile.getOriginalFilename());
+        return null;
     }
 
 }

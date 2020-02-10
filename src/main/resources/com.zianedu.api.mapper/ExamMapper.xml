@@ -626,7 +626,7 @@
             AND C.SCORE = #{isScore}
         </if>
         <if test="isInterest > -1">
-            AND C.IS_INTEREST = #{isInterest}
+            AND NVL(C.IS_INTEREST, 0) = #{isInterest}
         </if>
         ORDER BY A.POS ASC
         ) Z
@@ -1194,6 +1194,12 @@
             <if test="playTime > 0">PLAY_TIME = #{playTime},</if>
         </set>
         WHERE EXAM_USER_KEY = #{examUserKey}
+    </update>
+    
+    <update id="updateTExamQuestionUserInterest" parameterType="int">
+        UPDATE T_EXAM_QUESTION_USER
+        SET IS_INTEREST = #{isInterest}
+        WHERE EXAM_QUESTION_USER_KEY = #{examQuestionUserKey}
     </update>
 
 </mapper>

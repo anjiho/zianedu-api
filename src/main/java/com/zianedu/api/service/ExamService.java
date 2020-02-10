@@ -204,6 +204,7 @@ public class ExamService extends PagingSupport {
             if (subjectNameList.size() > 0) {
                  subjectName = StringUtils.implodeList(",", subjectNameList);
             }
+            achievementTopInfoVO.setExamName(examHeaderInfo.getExamName());
             achievementTopInfoVO.setSerial(("0" + examHeaderInfo.getSerial()));
             achievementTopInfoVO.setSubjectName(subjectName);
 
@@ -398,7 +399,6 @@ public class ExamService extends PagingSupport {
                     if (i == 0) data = subjectStaticsGraphVO.getCategoryTopTenData();
                     else if (i == 1) data = subjectStaticsGraphVO.getCategoryTopThirtyData();
                     else if (i == 2) data = subjectStaticsGraphVO.getCategoryMyData();
-
 
                     LineGraphDataVO lineGraphDataVO = new LineGraphDataVO(ZianApiUtils.TOP_DATA_NAMES[i], data);
                     lineGraphDataList.add(lineGraphDataVO);
@@ -970,5 +970,17 @@ public class ExamService extends PagingSupport {
             }
         }
         return new ApiPagingResultDTO(totalCnt, logList, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO addFavoriteExamProblem(int examQuestionUserKey, int isInterest) {
+        int resultCode = OK.value();
+
+        if (examQuestionUserKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            examMapper.updateTExamQuestionUserInterest(examQuestionUserKey, isInterest);
+        }
+        return new ApiResultCodeDTO("EXAM_QUESTION_USER_KEY", examQuestionUserKey, resultCode);
     }
 }

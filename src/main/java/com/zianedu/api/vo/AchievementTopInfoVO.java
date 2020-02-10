@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class AchievementTopInfoVO {
 
+    private String examName;
+
     private String subjectName;
 
     private String serial;

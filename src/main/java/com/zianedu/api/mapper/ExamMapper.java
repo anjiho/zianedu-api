@@ -120,4 +120,6 @@ public interface ExamMapper {
 
     /** UPDATE **/
     void updateTExamUser(TExamUserVO tExamUserVO);
+
+    void updateTExamQuestionUserInterest(@Param("examQuestionUserKey") int examQuestionUserKey, @Param("isInterest") int isInterest);
 }
