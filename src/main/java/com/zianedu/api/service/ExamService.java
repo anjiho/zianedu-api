@@ -572,7 +572,7 @@ public class ExamService extends PagingSupport {
                     wrongNoteDTO.setSubjectNameList(subjectName);
                     wrongNoteDTO.setSubjectName(vo.getSubjectName());
 
-                    List<ExamWrongAnswerVO> examWrongAnswerList = examMapper.selectWrongAnswerList(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), isScore, isInterest);
+                    List<ExamWrongAnswerVO> examWrongAnswerList = examMapper.selectWrongAnswerList(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), isScore, isInterest, examUserKey);
                     //시험문제 개수만큼
                     for (ExamWrongAnswerVO wrongAnswerVO : examWrongAnswerList) {
                         String unitName = categoryService.getMakeUnitName(wrongAnswerVO.getUnitCtgKey());

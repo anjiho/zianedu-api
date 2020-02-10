@@ -622,6 +622,7 @@
         LEFT OUTER JOIN T_RES D
         ON B.UNIT_CTG_KEY = D.KEY_00
         WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+        AND C.EXAM_USER_KEY = #{examUserKey}
         AND C.USER_KEY = #{userKey}
         <if test="isScore > -1">
             AND C.SCORE = #{isScore}

@@ -60,7 +60,7 @@ public interface ExamMapper {
     List<ProblemNumberScoreVO> selectProblemNumberScoreList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("examQuesBankKey") int examQuesBankKey);
 
     List<ExamWrongAnswerVO> selectWrongAnswerList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey, @Param("userKey") int userKey,
-                                                  @Param("isScore") int isScore, @Param("isInterest") int isInterest);
+                                                  @Param("isScore") int isScore, @Param("isInterest") int isInterest, @Param("examUserKey") int examUserKey);
 
     TExamMasterVO selectExamMasterInfo(@Param("examKey") int examKey);
 
