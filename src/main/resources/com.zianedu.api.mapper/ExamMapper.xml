@@ -507,6 +507,7 @@
                  LEFT JOIN T_EXAM_QUESTION_USER C
                  ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
                  WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
+                 AND C.EXAM_USER_KEY = #{examUserKey}
                  AND C.USER_KEY = #{userKey}
              ) TT
              ON T.BANK_SUBJECT_QUES_LINK_KEY = TT.BANK_SUBJECT_QUES_LINK_KEY

@@ -518,7 +518,7 @@ public class ExamService extends PagingSupport {
                     achievementSubjectDTO.setSubjectName(vo.getSubjectName());
 
 
-                    examStaticsDetailSubjectList = examMapper.selectExamStaticsDetailInfoBySubject(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
+                    examStaticsDetailSubjectList = examMapper.selectExamStaticsDetailInfoBySubject(vo.getExamQuesBankSubjectKey(), vo.getUserKey(), examUserKey);
                     //시험문제 개수만큼
                     for (ExamStaticsDetailSubjectVO subjectVO : examStaticsDetailSubjectList) {
                         String unitName = categoryService.getMakeUnitName(subjectVO.getUnitCtgKey());
