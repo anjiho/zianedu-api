@@ -580,7 +580,11 @@ public class ExamService extends PagingSupport {
                         wrongAnswerVO.setScorePercent(ZianUtils.getTopAccumulatePercent(wrongAnswerVO.getTotalCnt(), wrongAnswerVO.getTotalScoreCnt()));
                         wrongAnswerVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getQuestionImage()));
                         wrongAnswerVO.setCommentaryImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getCommentaryImage()));
-                        wrongAnswerVO.setTheoryLearningUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getTheoryLearningUrl()));
+                        if (wrongAnswerVO.getUnitCtgKey() > 0) {
+                            String theoryLearningUrl = examMapper.selectTResByWrongNote(wrongAnswerVO.getUnitCtgKey());
+                            wrongAnswerVO.setTheoryLearningUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), theoryLearningUrl));
+                        }
+
                     }
                     wrongNoteDTO.setResultList(examWrongAnswerList);
                     resultList.add(wrongNoteDTO);

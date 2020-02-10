@@ -612,15 +612,12 @@
                 AND T.EXAM_QUES_BANK_KEY = A.EXAM_QUES_BANK_KEY
                 AND TTT.SCORE = 1
             ) as totalScoreCnt,
-            D.VALUE as theoryLearningUrl,
             SUBSTR(B.ANSWER, 1, 1) as answer
         FROM T_BANK_SUBJECT_QUES_LINK A
         LEFT JOIN T_EXAM_QUESTION_BANK B
         ON A.EXAM_QUES_BANK_KEY = B.EXAM_QUESTION_BANK_KEY
         LEFT JOIN T_EXAM_QUESTION_USER C
         ON A.EXAM_QUES_BANK_KEY = C.EXAM_QUESTION_BANK_KEY
-        LEFT OUTER JOIN T_RES D
-        ON B.UNIT_CTG_KEY = D.KEY_00
         WHERE A.EXAM_QUES_BANK_SUBJECT_KEY = #{examQuesBankSubjectKey}
         AND C.EXAM_USER_KEY = #{examUserKey}
         AND C.USER_KEY = #{userKey}
@@ -632,6 +629,11 @@
         </if>
         ORDER BY A.POS ASC
         ) Z
+    </select>
+
+    <select id="selectTResByWrongNote" resultType="String">
+        SELECT VALUE FROM T_RES WHERE 1=1
+        AND KEY_00 = #{key}
     </select>
 
     <select id="selectExamMasterInfo" resultType="TExamMasterVO">
