@@ -14,6 +14,8 @@ public class AchievementTopInfoVO {
 
     private String examDate = DateUtils.todayToStrKor();
 
+    private String examUserName;
+
     public AchievementTopInfoVO(){}
 
     public AchievementTopInfoVO(String subjectName, String serial) {

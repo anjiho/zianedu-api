@@ -207,6 +207,7 @@ public class ExamService extends PagingSupport {
             achievementTopInfoVO.setExamName(examHeaderInfo.getExamName());
             achievementTopInfoVO.setSerial(("0" + examHeaderInfo.getSerial()));
             achievementTopInfoVO.setSubjectName(subjectName);
+            achievementTopInfoVO.setExamUserName(examHeaderInfo.getUserName());
 
             examSubjectStaticsList = examMapper.selectExamSubjectStaticsList(examUserKey);
             if (examSubjectStaticsList.size() > 0) {
