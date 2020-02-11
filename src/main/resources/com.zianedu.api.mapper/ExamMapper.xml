@@ -632,7 +632,7 @@
     </select>
 
     <select id="selectTResByWrongNote" resultType="String">
-        SELECT VALUE FROM T_RES WHERE 1=1
+        SELECT VALUE FROM T_RES WHERE ROWNUM = 1
         AND KEY_00 = #{key}
     </select>
 
@@ -1199,7 +1199,7 @@
         </set>
         WHERE EXAM_USER_KEY = #{examUserKey}
     </update>
-    
+
     <update id="updateTExamQuestionUserInterest" parameterType="int">
         UPDATE T_EXAM_QUESTION_USER
         SET IS_INTEREST = #{isInterest}
