@@ -1721,14 +1721,14 @@
             SELECT
             ROW_NUMBER() OVER(ORDER BY Z.CURRI_KEY) NUM,
             Z.CURRI_KEY, Z.NAME, Z.VOD_TIME, Z.LEC_KEY,
-            <if test="deviceType == 'PC'">Z.VOD_FILE_LOW as vodFileLow,
-                Z.VOD_FILE_HIGH
-                as vodFileHigh,
+            <if test="deviceType == 'PC'">
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_LOW) as vodFileLow,
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_HIGH) as vodFileHigh,
             </if>
-                    <if test="deviceType == 'MOBILE'">
-                        Z.VOD_FILE_MOBILE_LOW as vodFileLow,
-                        Z.VOD_FILE_MOBILE_HIGH as vodFileHigh,
-                    </if>
+            <if test="deviceType == 'MOBILE'">
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_MOBILE_LOW) as vodFileLow,
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_MOBILE_HIGH) as vodFileHigh,
+            </if>
             Z.DATA_FILE,
             NVL((SELECT J_CURRI_KEY FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0)
             as J_CURRI_KEY,

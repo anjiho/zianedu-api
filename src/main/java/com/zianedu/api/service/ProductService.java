@@ -646,10 +646,6 @@ public class ProductService extends PagingSupport {
             if (lectureList.size() > 0) {
                 for (TLecCurriVO vo : lectureList) {
                     vo.setNumStr(StringUtils.addZeroTwoDigitUnder(vo.getNum()));
-                    vo.setVodFileLow(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileLow()));
-                    vo.setVodFileHigh(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileHigh()));
-                    vo.setVodFileMobileLow(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileMobileLow()));
-                    vo.setVodFileMobileHigh(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileMobileHigh()));
                 }
             }
             dto = new MyLectureListDTO(totalCnt, lectureList);
