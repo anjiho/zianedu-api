@@ -443,9 +443,8 @@ public class ExamService extends PagingSupport {
                 }
                 compareScoreSubjectGraphVO3 = new CompareScoreSubjectGraphVO(null, lineGraphDataList3);
 
-
+                int i=0;
                 for(ScoreRateGraphVO scoreRateGraphVO : scoreRateByTypeInfo) {
-                    int i=0;
                     SubjectAnalysisGraphDTO subjectAnalysisGraphDTO = new SubjectAnalysisGraphDTO();
                     subjectAnalysisGraphDTO.setSubjectName(scoreRateGraphVO.getSubjectName());
 
