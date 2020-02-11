@@ -813,4 +813,22 @@ public class ProductService extends PagingSupport {
         return new ApiResultObjectDTO(vo, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO confirmVideoPlay(int jLecKey, int curriKey) {
+        boolean bl = true;
+
+        if (jLecKey == 0 && curriKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
+            TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
+            //무제한
+            if (multiple > 0) {
+                int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
+                if (lecCurriVO.getRemainTime() >= limitTime) bl = false;
+            }
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
+    }
+
 }

@@ -1749,6 +1749,32 @@
         )TT
     </select>
 
+    <select id="selectVideoLectureRemainTimeByJLecKeyAndCurriKey" resultType="TLecCurriVO">
+        SELECT TT.*
+        FROM (
+            SELECT
+                Z.CURRI_KEY,
+                NVL((SELECT TIME FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as REMAIN_TIME,
+                Z.VOD_TIME
+            FROM T_LEC_CURRI Z
+            WHERE Z.LEC_KEY = (
+            SELECT C.LEC_KEY
+            FROM T_ORDER_LEC A
+            INNER JOIN T_ORDER_GOODS B
+            ON A.J_G_KEY = B.J_G_KEY
+            INNER JOIN T_LEC C
+            ON B.G_KEY = C.G_KEY
+            WHERE A.J_LEC_KEY = #{jLecKey}
+            )
+            AND Z.IS_SHOW = 1
+            ORDER BY Z.CURRI_KEY ASC
+        )TT
+        WHERE 1=1
+        <if test="curriKey > 0">
+            AND TT.CURRI_KEY = #{curriKey}
+        </if>
+    </select>
+
     <select id="selectSignUpAcademyTypeList" resultType="com.zianedu.api.dto.TypeDTO">
         SELECT
             ( SELECT Z.name FROM t_category Z WHERE Z.ctg_key = D.step_ctg_key ) as ctgName,
@@ -2571,6 +2597,16 @@
         SELECT * FROM T_LINK_KEY WHERE RES_KEY = #{examKey} AND RES_TYPE = 2
     </select>
 
+    <select id="selectVideoGoodsMultiple" resultType="double">
+        SELECT C.MULTIPLE
+        FROM T_ORDER_LEC A
+        LEFT JOIN T_ORDER_GOODS B
+        ON A.J_G_KEY = B.J_G_KEY
+        LEFT JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
@@ -2597,6 +2633,20 @@
         VALUES
         (
             #{idx}, #{jLecKey}, #{logType}
+        )
+    </insert>
+
+    <insert id="insertTOrderLecCurri" parameterType="TOrderLecCurriVO">
+        <selectKey resultType="Long" keyProperty="jCurriKey" order="BEFORE">
+            SELECT T_ORDER_LEC_CURRI_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_LEC_CURRI
+        (
+            J_CURRI_KEY, J_LEC_KEY, CURRI_KEY, "TIME", MOBILE_TIME, MAX_READ_COUNT, EXAM_EXPECTATION_KEY, EXAM_OTHER_KEY, EXAM_QUESTION_EXPECT_COUNT, EXAM_QUESTION_OTHER_COUNT
+        )
+        VALUES
+        (
+            #{jCurriKey}, #{jLecKey}, #{curriKey}, #{time}, 0, 0, 0, 0, 0, 0
         )
     </insert>
 </mapper>

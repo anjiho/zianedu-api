@@ -4,10 +4,7 @@ import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.service.BoardService;
-import com.zianedu.api.service.ExamService;
-import com.zianedu.api.service.MyPageService;
-import com.zianedu.api.service.OrderService;
+import com.zianedu.api.service.*;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,6 +28,9 @@ public class MyPageController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
@@ -444,6 +444,17 @@ public class MyPageController {
                                                         @RequestParam("sPage") int sPage,
                                                         @RequestParam("listLimit") int listLimit) {
         return examService.getUserExamLogList(userKey, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/confirmVideoPlay", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("구매한 동영상 플레이가 가능한지 여부 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "curriKey", value = "커리큘럽 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO confirmVideoPlay(@RequestParam(value = "jLecKey") int jLecKey,
+                                             @RequestParam(value = "curriKey") int curriKey) {
+        return productService.confirmVideoPlay(jLecKey, curriKey);
     }
 
 }
