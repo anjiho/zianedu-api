@@ -10,10 +10,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
-import com.zianedu.api.utils.FileUtil;
-import com.zianedu.api.utils.PagingSupport;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -649,6 +646,10 @@ public class ProductService extends PagingSupport {
             if (lectureList.size() > 0) {
                 for (TLecCurriVO vo : lectureList) {
                     vo.setNumStr(StringUtils.addZeroTwoDigitUnder(vo.getNum()));
+                    vo.setVodFileLow(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileLow()));
+                    vo.setVodFileHigh(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileHigh()));
+                    vo.setVodFileMobileLow(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileMobileLow()));
+                    vo.setVodFileMobileHigh(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, vo.getVodFileMobileHigh()));
                 }
             }
             dto = new MyLectureListDTO(totalCnt, lectureList);
