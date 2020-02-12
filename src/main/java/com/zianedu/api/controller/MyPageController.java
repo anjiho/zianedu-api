@@ -475,7 +475,7 @@ public class MyPageController {
         return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey);
     }
 
-    @RequestMapping(value = "/injectVideoPlayTime", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @RequestMapping(value = "/injectVideoPlayTime", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("동영상 플레이시간 주입")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
