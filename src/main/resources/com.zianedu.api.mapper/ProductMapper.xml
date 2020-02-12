@@ -2607,6 +2607,16 @@
         WHERE J_LEC_KEY = #{jLecKey}
     </select>
 
+    <select id="selectVideoGoodsJGKey" resultType="int">
+        SELECT B.J_G_KEY
+        FROM T_ORDER_LEC A
+        LEFT JOIN T_ORDER_GOODS B
+        ON A.J_G_KEY = B.J_G_KEY
+        LEFT JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        WHERE A.J_LEC_KEY = #{jLecKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

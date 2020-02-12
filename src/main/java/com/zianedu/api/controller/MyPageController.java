@@ -32,6 +32,9 @@ public class MyPageController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
     @ApiImplicitParams({
@@ -455,6 +458,21 @@ public class MyPageController {
     public ApiResultCodeDTO confirmVideoPlay(@RequestParam(value = "jLecKey") int jLecKey,
                                              @RequestParam(value = "curriKey") int curriKey) {
         return productService.confirmVideoPlay(jLecKey, curriKey);
+    }
+
+    @RequestMapping(value = "/confirmDuplicateDevice/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("동영상 플레이시 기기중복 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "deviceId", value = "기기값", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO confirmDuplicateDevice(@PathVariable("userKey") int userKey,
+                                                   @RequestParam("deviceType") int deviceType,
+                                                   @RequestParam("deviceId") String deviceId,
+                                                   @RequestParam("jLecKey") int jLecKey) {
+        return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey);
     }
 
 }

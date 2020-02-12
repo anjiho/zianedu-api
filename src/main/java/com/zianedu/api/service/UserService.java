@@ -5,6 +5,7 @@ import com.zianedu.api.define.datasource.DeviceLimitDeviceType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
+import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.RandomUtil;
 import com.zianedu.api.utils.SecurityUtil;
@@ -32,6 +33,9 @@ public class UserService extends ApiResultKeyCode {
 
     @Autowired
     private EmailSendService emailSendService;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     /**
      * 사용자 로그인
@@ -324,6 +328,41 @@ public class UserService extends ApiResultKeyCode {
             userVO = userMapper.selectUserInfoFromFindPwd(userId, mobileNumber);
         }
         return new ApiResultObjectDTO(userVO, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultCodeDTO confirmDuplicateDevice(int userKey, int deviceType, String deviceId, int jLecKey) {
+        boolean bl = false;
+        int resultCode = OK.value();
+
+        if (userKey == 0 && "".equals(deviceId)) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int deviceLimitCountByUserKey = userMapper.selectTDeviceLimitCountByDeviceId(userKey, deviceType, "");
+            int deviceLimitCountByDeviceId = userMapper.selectTDeviceLimitCountByDeviceId(0, deviceType, deviceId);
+            if (deviceLimitCountByUserKey > 0 && deviceLimitCountByDeviceId > 0) {  //사용자 키와 사용자 기기가 일치할때
+                bl = true;
+            } else if (deviceLimitCountByUserKey == 0 && deviceLimitCountByDeviceId == 0) { //사용자가 처음 기기로 동영상을 플레이할때
+                if (deviceType == 0) {
+                    int jGKey = productMapper.selectVideoGoodsJGKey(jLecKey);
+                    TDeviceLimitVO limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId);
+                    userMapper.insertTDeviceLimit(limitVO);
+
+                    TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
+                    if (deviceLimitVO != null) {
+                        String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
+                        TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
+                                deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
+                                deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
+                                deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
+                        );
+                        userMapper.insertTDeviceLimitLog(limitLogVO);
+                    }
+                }
+                bl = true;
+            }
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
     }
 }
 

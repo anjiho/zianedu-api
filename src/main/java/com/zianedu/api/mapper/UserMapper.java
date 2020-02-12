@@ -36,6 +36,8 @@ public interface UserMapper {
 
     TDeviceLimitVO selectTDeviceLimitInfo(@Param("userKey") int userKey, @Param("deviceType") int deviceType);
 
+    int selectTDeviceLimitCountByDeviceId(@Param("userKey") int userKey, @Param("deviceType") int deviceType, @Param("deviceId") String deviceId);
+
     /** INSERT **/
     Integer insertUserInfo(TUserVO tUserVO);
 
@@ -44,6 +46,8 @@ public interface UserMapper {
     Integer insertDeviceChangeCode(TDeviceChangeCodeVO tDeviceChangeCodeVO);
 
     void insertTDeviceLimitLog(TDeviceLimitLogVO tDeviceLimitLogVO);
+
+    void insertTDeviceLimit(TDeviceLimitVO tDeviceLimitVO);
 
     /** UPDATE **/
     void updateUserInfo(TUserVO tUserVO);

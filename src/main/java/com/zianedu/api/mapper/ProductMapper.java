@@ -213,6 +213,8 @@ public interface ProductMapper {
 
     double selectVideoGoodsMultiple(@Param("jLecKey") int jLecKey);
 
+    int selectVideoGoodsJGKey(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
