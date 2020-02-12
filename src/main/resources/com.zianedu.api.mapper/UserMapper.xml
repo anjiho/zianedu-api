@@ -84,7 +84,7 @@
     </select>
 
     <select id="selectUserCurrentPoint" resultType="Integer">
-        SELECT SUM(POINT)
+        SELECT NVL(SUM(POINT), 0) as point
         FROM T_POINT Z
         WHERE Z.USER_KEY = #{userKey}
         AND TYPE IN (0,1)
