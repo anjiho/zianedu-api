@@ -7,16 +7,15 @@ public class TOrderLecCurriVO {
 
     private Long jCurriKey;
 
-    private Long jLecKey;
+    private int jLecKey;
 
-    private Long curriKey;
+    private int curriKey;
 
-    private Integer time;
+    private int time;
 
     public TOrderLecCurriVO(){}
 
-    public TOrderLecCurriVO(Long jCurriKey, Long jLecKey, Long curriKey, Integer time) {
-        this.jCurriKey = jCurriKey;
+    public TOrderLecCurriVO(int jLecKey, int curriKey, int time) {
         this.jLecKey = jLecKey;
         this.curriKey = curriKey;
         this.time = time;

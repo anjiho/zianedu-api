@@ -822,10 +822,46 @@ public class ProductService extends PagingSupport {
         } else {
             double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
             TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
-            //무제한
+            //무제한이 아닐때
             if (multiple > 0) {
                 int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
                 if (lecCurriVO.getRemainTime() >= limitTime) bl = false;
+            }
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey) {
+        boolean bl = true;
+
+        if (jLecKey == 0 && curriKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
+            TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
+            //무제한이 아니면
+            if (multiple > 0) {
+                int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
+                if (lecCurriVO.getRemainTime() < limitTime) {
+                    TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
+                    TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, 1);
+                    if (selectTOrderLecCurriVO == null) {
+                        productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
+                    } else {
+                        productMapper.updateTOrderLecCurri(jLecKey, curriKey);
+                    }
+                } else {
+                    bl = false;
+                }
+            } else if (multiple == 0) { //무제한
+                TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
+                TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, 1);
+                if (selectTOrderLecCurriVO == null) {
+                    productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
+                } else {
+                    productMapper.updateTOrderLecCurri(jLecKey, curriKey);
+                }
             }
         }
         return new ApiResultCodeDTO("RESULT", bl, resultCode);

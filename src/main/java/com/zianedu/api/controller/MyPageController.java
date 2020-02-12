@@ -475,4 +475,15 @@ public class MyPageController {
         return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey);
     }
 
+    @RequestMapping(value = "/injectVideoPlayTime", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("동영상 플레이시간 주입")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "curriKey", value = "커리큘럽 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO injectVideoPlayTime(@RequestParam(value = "jLecKey") int jLecKey,
+                                             @RequestParam(value = "curriKey") int curriKey) {
+        return productService.injectVideoPlayTime(jLecKey, curriKey);
+    }
+
 }

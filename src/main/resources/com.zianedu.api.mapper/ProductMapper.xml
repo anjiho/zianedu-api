@@ -2617,6 +2617,13 @@
         WHERE A.J_LEC_KEY = #{jLecKey}
     </select>
 
+    <select id="selectTOrderLecCurriInfo" resultType="TOrderLecCurriVO">
+        SELECT * FROM T_ORDER_LEC_CURRI
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
@@ -2630,6 +2637,14 @@
             PAUSE_DAY = #{pauseDay}
         </set>
         WHERE J_LEC_KEY = #{jLecKey}
+    </update>
+
+    <update id="updateTOrderLecCurri" parameterType="TOrderLecCurriVO">
+        UPDATE T_ORDER_LEC_CURRI
+        SET TIME = TIME + 1
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
     </update>
 
     <insert id="insertTOrderLecStartStopLog" parameterType="TOrderLecStartStopLogVO">
