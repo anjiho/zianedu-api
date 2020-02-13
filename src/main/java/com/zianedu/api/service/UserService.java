@@ -331,7 +331,7 @@ public class UserService extends ApiResultKeyCode {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO confirmDuplicateDevice(int userKey, int deviceType, String deviceId, int jLecKey) {
+    public ApiResultCodeDTO confirmDuplicateDevice(int userKey, int deviceType, String deviceId, int jLecKey, String osVersion, String appVersion) {
         boolean bl = false;
         int resultCode = OK.value();
 
@@ -343,21 +343,23 @@ public class UserService extends ApiResultKeyCode {
             if (deviceLimitCountByUserKey > 0 && deviceLimitCountByDeviceId > 0) {  //사용자 키와 사용자 기기가 일치할때
                 bl = true;
             } else if (deviceLimitCountByUserKey == 0 && deviceLimitCountByDeviceId == 0) { //사용자가 처음 기기로 동영상을 플레이할때
+                int jGKey = productMapper.selectVideoGoodsJGKey(jLecKey);
+                TDeviceLimitVO limitVO = new TDeviceLimitVO();
                 if (deviceType == 0) {
-                    int jGKey = productMapper.selectVideoGoodsJGKey(jLecKey);
-                    TDeviceLimitVO limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId);
-                    userMapper.insertTDeviceLimit(limitVO);
-
-                    TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
-                    if (deviceLimitVO != null) {
-                        String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
-                        TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
-                                deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
-                                deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
-                                deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
-                        );
-                        userMapper.insertTDeviceLimitLog(limitLogVO);
-                    }
+                    limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId);
+                } else if (deviceType == 1) {
+                    limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId, osVersion, appVersion);
+                }
+                userMapper.insertTDeviceLimit(limitVO);
+                TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
+                if (deviceLimitVO != null) {
+                    String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
+                    TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
+                            deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
+                            deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
+                            deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
+                    );
+                    userMapper.insertTDeviceLimitLog(limitLogVO);
                 }
                 bl = true;
             }

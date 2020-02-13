@@ -466,13 +466,17 @@ public class MyPageController {
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "deviceId", value = "기기값", dataType = "string", paramType = "query", required = true),
-            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true)
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "osVersion", value = "모바일 버전", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "appVersion", value = "모바일 앱 버전", dataType = "string", paramType = "query", required = false),
     })
     public ApiResultCodeDTO confirmDuplicateDevice(@PathVariable("userKey") int userKey,
                                                    @RequestParam("deviceType") int deviceType,
                                                    @RequestParam("deviceId") String deviceId,
-                                                   @RequestParam("jLecKey") int jLecKey) {
-        return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey);
+                                                   @RequestParam("jLecKey") int jLecKey,
+                                                   @RequestParam(value = "osVersion", required = false, defaultValue = "") String osVersion,
+                                                   @RequestParam(value = "appVersion", required = false, defaultValue = "") String appVersion) {
+        return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey, osVersion, appVersion);
     }
 
     @RequestMapping(value = "/injectVideoPlayTime", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
