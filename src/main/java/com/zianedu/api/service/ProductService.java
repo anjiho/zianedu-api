@@ -832,12 +832,16 @@ public class ProductService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey) {
+    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey, int deviceType) {
         boolean bl = true;
 
         if (jLecKey == 0 && curriKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
+            int time = 0;
+            if (deviceType == 0) time = 1;
+            else if (deviceType == 1) time = 3;
+
             double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
             TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
             //무제한이 아니면
@@ -845,7 +849,7 @@ public class ProductService extends PagingSupport {
                 int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
                 if (lecCurriVO.getRemainTime() < limitTime) {
                     TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
-                    TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, 1);
+                    TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, time);
                     if (selectTOrderLecCurriVO == null) {
                         productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                     } else {
@@ -856,7 +860,7 @@ public class ProductService extends PagingSupport {
                 }
             } else if (multiple == 0) { //무제한
                 TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
-                TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, 1);
+                TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, time);
                 if (selectTOrderLecCurriVO == null) {
                     productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                 } else {
