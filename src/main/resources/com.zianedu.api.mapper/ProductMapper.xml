@@ -1984,7 +1984,7 @@
     </select>
 
     <select id="selectLectureApplyTeacherList" resultType="LectureApplyTeacherVO">
-        SELECT T.TEACHER_KEY, T.teacherName, T.SUBJECT_CTG_KEY as subjectKey FROM
+        SELECT T.TEACHER_KEY, T.teacherName FROM
         (
             SELECT
                     F.TEACHER_KEY, (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) as teacherName,
@@ -2009,8 +2009,7 @@
             AND B.IS_SELL =1
             ORDER BY C.SUBJECT_CTG_KEY ASC
         )T
-        GROUP BY T.TEACHER_KEY, T.teacherName, T.SUBJECT_CTG_KEY
-        ORDER BY T.SUBJECT_CTG_KEY ASC
+        GROUP BY T.TEACHER_KEY, T.teacherName
     </select>
 
     <select id="selectLectureApplyTeacherTypeList" resultType="LectureApplyTeacherTypeVO">
