@@ -853,7 +853,7 @@ public class ProductService extends PagingSupport {
                     if (selectTOrderLecCurriVO == null) {
                         productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                     } else {
-                        productMapper.updateTOrderLecCurri(jLecKey, curriKey);
+                        productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
                     }
                 } else {
                     bl = false;
@@ -864,7 +864,7 @@ public class ProductService extends PagingSupport {
                 if (selectTOrderLecCurriVO == null) {
                     productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                 } else {
-                    productMapper.updateTOrderLecCurri(jLecKey, curriKey);
+                    productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
                 }
             }
         }

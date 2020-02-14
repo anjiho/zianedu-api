@@ -2641,7 +2641,7 @@
 
     <update id="updateTOrderLecCurri" parameterType="TOrderLecCurriVO">
         UPDATE T_ORDER_LEC_CURRI
-        SET TIME = TIME + 1
+        SET TIME = TIME + #{time}
         WHERE 1=1
         AND J_LEC_KEY = #{jLecKey}
         AND CURRI_KEY = #{curriKey}

@@ -225,5 +225,5 @@ public interface ProductMapper {
     /** UPDATE **/
     void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
 
-    void updateTOrderLecCurri(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey);
+    void updateTOrderLecCurri(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
 }
