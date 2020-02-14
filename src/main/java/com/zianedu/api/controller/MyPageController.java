@@ -484,12 +484,14 @@ public class MyPageController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "curriKey", value = "커리큘럽 키값", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "string", paramType = "query", required = false)
+            @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "mobileTime", value = "모바일 시간", dataType = "string", paramType = "query", required = false)
     })
     public ApiResultCodeDTO injectVideoPlayTime(@RequestParam(value = "jLecKey") int jLecKey,
                                                 @RequestParam(value = "curriKey") int curriKey,
-                                                @RequestParam(value = "deviceType", required = false, defaultValue = "0") String deviceType) {
-        return productService.injectVideoPlayTime(jLecKey, curriKey, Integer.parseInt(deviceType));
+                                                @RequestParam(value = "deviceType", required = false, defaultValue = "0") String deviceType,
+                                                @RequestParam(value = "mobileTime", required = false, defaultValue = "0") String mobileTime) {
+        return productService.injectVideoPlayTime(jLecKey, curriKey, Integer.parseInt(deviceType), Integer.parseInt(mobileTime));
     }
 
 }

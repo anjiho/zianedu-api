@@ -832,7 +832,7 @@ public class ProductService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey, int deviceType) {
+    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey, int deviceType, int mobileTime) {
         boolean bl = true;
 
         if (jLecKey == 0 && curriKey == 0) {
@@ -840,7 +840,9 @@ public class ProductService extends PagingSupport {
         } else {
             int time = 0;
             if (deviceType == 0) time = 1;
-            else if (deviceType == 1) time = 3;
+            else if (deviceType == 1) {
+                time = (mobileTime / 60);
+            }
 
             double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
             TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
@@ -853,7 +855,8 @@ public class ProductService extends PagingSupport {
                     if (selectTOrderLecCurriVO == null) {
                         productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                     } else {
-                        productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                        if (deviceType == 0) productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                        else if (deviceType == 1) productMapper.updateTOrderLecCurriByMobile(jLecKey, curriKey, time);
                     }
                 } else {
                     bl = false;
@@ -864,7 +867,8 @@ public class ProductService extends PagingSupport {
                 if (selectTOrderLecCurriVO == null) {
                     productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
                 } else {
-                    productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                    if (deviceType == 0) productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                    else if (deviceType == 1) productMapper.updateTOrderLecCurriByMobile(jLecKey, curriKey, time);
                 }
             }
         }

@@ -2647,6 +2647,14 @@
         AND CURRI_KEY = #{curriKey}
     </update>
 
+    <update id="updateTOrderLecCurriByMobile" parameterType="TOrderLecCurriVO">
+        UPDATE T_ORDER_LEC_CURRI
+        SET TIME = #{time}
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
+    </update>
+
     <insert id="insertTOrderLecStartStopLog" parameterType="TOrderLecStartStopLogVO">
         <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
             SELECT T_ORDER_LEC_START_STOP_LOG_SEQ.NEXTVAL FROM DUAL
