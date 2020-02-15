@@ -1721,14 +1721,14 @@
             SELECT
             ROW_NUMBER() OVER(ORDER BY Z.CURRI_KEY) NUM,
             Z.CURRI_KEY, Z.NAME, Z.VOD_TIME, Z.LEC_KEY,
-            <if test="deviceType == 'PC'">Z.VOD_FILE_LOW as vodFileLow,
-                Z.VOD_FILE_HIGH
-                as vodFileHigh,
+            <if test="deviceType == 'PC'">
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_LOW) as vodFileLow,
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_HIGH) as vodFileHigh,
             </if>
-                    <if test="deviceType == 'MOBILE'">
-                        Z.VOD_FILE_MOBILE_LOW as vodFileLow,
-                        Z.VOD_FILE_MOBILE_HIGH as vodFileHigh,
-                    </if>
+            <if test="deviceType == 'MOBILE'">
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_MOBILE_LOW) as vodFileLow,
+                CONCAT('http://zianedu.star.skcdn.com/', Z.VOD_FILE_MOBILE_HIGH) as vodFileHigh,
+            </if>
             Z.DATA_FILE,
             NVL((SELECT J_CURRI_KEY FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0)
             as J_CURRI_KEY,
@@ -1747,6 +1747,32 @@
             AND Z.IS_SHOW = 1
             ORDER BY Z.CURRI_KEY ASC
         )TT
+    </select>
+
+    <select id="selectVideoLectureRemainTimeByJLecKeyAndCurriKey" resultType="TLecCurriVO">
+        SELECT TT.*
+        FROM (
+            SELECT
+                Z.CURRI_KEY,
+                NVL((SELECT TIME FROM T_ORDER_LEC_CURRI WHERE CURRI_KEY = Z.CURRI_KEY AND J_LEC_KEY = #{jLecKey}), 0) as REMAIN_TIME,
+                Z.VOD_TIME
+            FROM T_LEC_CURRI Z
+            WHERE Z.LEC_KEY = (
+            SELECT C.LEC_KEY
+            FROM T_ORDER_LEC A
+            INNER JOIN T_ORDER_GOODS B
+            ON A.J_G_KEY = B.J_G_KEY
+            INNER JOIN T_LEC C
+            ON B.G_KEY = C.G_KEY
+            WHERE A.J_LEC_KEY = #{jLecKey}
+            )
+            AND Z.IS_SHOW = 1
+            ORDER BY Z.CURRI_KEY ASC
+        )TT
+        WHERE 1=1
+        <if test="curriKey > 0">
+            AND TT.CURRI_KEY = #{curriKey}
+        </if>
     </select>
 
     <select id="selectSignUpAcademyTypeList" resultType="com.zianedu.api.dto.TypeDTO">
@@ -1958,7 +1984,7 @@
     </select>
 
     <select id="selectLectureApplyTeacherList" resultType="LectureApplyTeacherVO">
-        SELECT T.TEACHER_KEY, T.teacherName, T.SUBJECT_CTG_KEY as subjectKey FROM
+        SELECT T.TEACHER_KEY, T.teacherName FROM
         (
             SELECT
                     F.TEACHER_KEY, (SELECT NAME FROM T_USER Z WHERE Z.USER_KEY = F.USER_KEY) as teacherName,
@@ -1983,8 +2009,7 @@
             AND B.IS_SELL =1
             ORDER BY C.SUBJECT_CTG_KEY ASC
         )T
-        GROUP BY T.TEACHER_KEY, T.teacherName, T.SUBJECT_CTG_KEY
-        ORDER BY T.SUBJECT_CTG_KEY ASC
+        GROUP BY T.TEACHER_KEY, T.teacherName
     </select>
 
     <select id="selectLectureApplyTeacherTypeList" resultType="LectureApplyTeacherTypeVO">
@@ -2571,6 +2596,33 @@
         SELECT * FROM T_LINK_KEY WHERE RES_KEY = #{examKey} AND RES_TYPE = 2
     </select>
 
+    <select id="selectVideoGoodsMultiple" resultType="double">
+        SELECT C.MULTIPLE
+        FROM T_ORDER_LEC A
+        LEFT JOIN T_ORDER_GOODS B
+        ON A.J_G_KEY = B.J_G_KEY
+        LEFT JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
+    <select id="selectVideoGoodsJGKey" resultType="int">
+        SELECT B.J_G_KEY
+        FROM T_ORDER_LEC A
+        LEFT JOIN T_ORDER_GOODS B
+        ON A.J_G_KEY = B.J_G_KEY
+        LEFT JOIN T_LEC C
+        ON B.G_KEY = C.G_KEY
+        WHERE A.J_LEC_KEY = #{jLecKey}
+    </select>
+
+    <select id="selectTOrderLecCurriInfo" resultType="TOrderLecCurriVO">
+        SELECT * FROM T_ORDER_LEC_CURRI
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
@@ -2586,6 +2638,22 @@
         WHERE J_LEC_KEY = #{jLecKey}
     </update>
 
+    <update id="updateTOrderLecCurri" parameterType="TOrderLecCurriVO">
+        UPDATE T_ORDER_LEC_CURRI
+        SET TIME = TIME + #{time}
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
+    </update>
+
+    <update id="updateTOrderLecCurriByMobile" parameterType="TOrderLecCurriVO">
+        UPDATE T_ORDER_LEC_CURRI
+        SET TIME = #{time}
+        WHERE 1=1
+        AND J_LEC_KEY = #{jLecKey}
+        AND CURRI_KEY = #{curriKey}
+    </update>
+
     <insert id="insertTOrderLecStartStopLog" parameterType="TOrderLecStartStopLogVO">
         <selectKey resultType="Integer" keyProperty="idx" order="BEFORE">
             SELECT T_ORDER_LEC_START_STOP_LOG_SEQ.NEXTVAL FROM DUAL
@@ -2597,6 +2665,20 @@
         VALUES
         (
             #{idx}, #{jLecKey}, #{logType}
+        )
+    </insert>
+
+    <insert id="insertTOrderLecCurri" parameterType="TOrderLecCurriVO">
+        <selectKey resultType="Long" keyProperty="jCurriKey" order="BEFORE">
+            SELECT T_ORDER_LEC_CURRI_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_ORDER_LEC_CURRI
+        (
+            J_CURRI_KEY, J_LEC_KEY, CURRI_KEY, "TIME", MOBILE_TIME, MAX_READ_COUNT, EXAM_EXPECTATION_KEY, EXAM_OTHER_KEY, EXAM_QUESTION_EXPECT_COUNT, EXAM_QUESTION_OTHER_COUNT
+        )
+        VALUES
+        (
+            #{jCurriKey}, #{jLecKey}, #{curriKey}, #{time}, 0, 0, 0, 0, 0, 0
         )
     </insert>
 </mapper>

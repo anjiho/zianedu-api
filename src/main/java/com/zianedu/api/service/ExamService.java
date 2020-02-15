@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.auth.Subject;
+import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -443,9 +444,8 @@ public class ExamService extends PagingSupport {
                 }
                 compareScoreSubjectGraphVO3 = new CompareScoreSubjectGraphVO(null, lineGraphDataList3);
 
-
+                int i=0;
                 for(ScoreRateGraphVO scoreRateGraphVO : scoreRateByTypeInfo) {
-                    int i=0;
                     SubjectAnalysisGraphDTO subjectAnalysisGraphDTO = new SubjectAnalysisGraphDTO();
                     subjectAnalysisGraphDTO.setSubjectName(scoreRateGraphVO.getSubjectName());
 
@@ -580,6 +580,7 @@ public class ExamService extends PagingSupport {
                         wrongAnswerVO.setScorePercent(ZianUtils.getTopAccumulatePercent(wrongAnswerVO.getTotalCnt(), wrongAnswerVO.getTotalScoreCnt()));
                         wrongAnswerVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getQuestionImage()));
                         wrongAnswerVO.setCommentaryImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), wrongAnswerVO.getCommentaryImage()));
+                        wrongAnswerVO.setCommentaryUrl(FileUtil.concatPath(ZianApiUtils.ZIAN_CDN_HOST, wrongAnswerVO.getCommentaryUrl()));
                         if (wrongAnswerVO.getUnitCtgKey() > 0) {
                             String theoryLearningUrl = examMapper.selectTResByWrongNote(wrongAnswerVO.getUnitCtgKey());
                             wrongAnswerVO.setTheoryLearningUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), theoryLearningUrl));

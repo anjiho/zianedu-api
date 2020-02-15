@@ -25,4 +25,28 @@ public class TDeviceLimitVO {
 
     private String appVersion;
 
+    public TDeviceLimitVO(){}
+
+    public TDeviceLimitVO(int userKey, int type, int jGKey, String deviceId) {
+        this.cKey = 100;
+        this.userKey = userKey;
+        this.type = type;
+        this.dataKey = jGKey;
+        this.deviceId = deviceId;
+        this.deviceModel = "";
+        this.osVersion = "";
+        this.appVersion = "";
+    }
+
+    public TDeviceLimitVO(int userKey, int type, int jGKey, String deviceId, String osVersion, String appVersion) {
+        this.cKey = 100;
+        this.userKey = userKey;
+        this.type = type;
+        this.dataKey = jGKey;
+        this.deviceId = deviceId;
+        this.deviceModel = "";
+        this.osVersion = osVersion;
+        this.appVersion = appVersion;
+    }
+
 }

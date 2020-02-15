@@ -10,10 +10,7 @@ import com.zianedu.api.dto.*;
 import com.zianedu.api.mapper.ExamMapper;
 import com.zianedu.api.mapper.MenuMapper;
 import com.zianedu.api.mapper.ProductMapper;
-import com.zianedu.api.utils.FileUtil;
-import com.zianedu.api.utils.PagingSupport;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -814,6 +811,68 @@ public class ProductService extends PagingSupport {
             vo = productMapper.selectGoodsInfoByJLecKey(jLecKey);
         }
         return new ApiResultObjectDTO(vo, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO confirmVideoPlay(int jLecKey, int curriKey) {
+        boolean bl = true;
+
+        if (jLecKey == 0 && curriKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
+            TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
+            //무제한이 아닐때
+            if (multiple > 0) {
+                int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
+                if (lecCurriVO.getRemainTime() >= limitTime) bl = false;
+            }
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO injectVideoPlayTime(int jLecKey, int curriKey, int deviceType, int mobileTime) {
+        boolean bl = true;
+
+        if (jLecKey == 0 && curriKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int time = 0;
+            if (deviceType == 0) time = 1;
+            else if (deviceType == 1) {
+                time = (mobileTime / 60);
+            }
+
+            double multiple = productMapper.selectVideoGoodsMultiple(jLecKey);
+            TLecCurriVO lecCurriVO = productMapper.selectVideoLectureRemainTimeByJLecKeyAndCurriKey(jLecKey, curriKey);
+            //무제한이 아니면
+            if (multiple > 0) {
+                int limitTime = (int)(lecCurriVO.getVodTime() * multiple);
+                if (lecCurriVO.getRemainTime() < limitTime) {
+                    TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
+                    TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, time);
+                    if (selectTOrderLecCurriVO == null) {
+                        productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
+                    } else {
+                        if (deviceType == 0) productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                        else if (deviceType == 1) productMapper.updateTOrderLecCurriByMobile(jLecKey, curriKey, time);
+                    }
+                } else {
+                    bl = false;
+                }
+            } else if (multiple == 0) { //무제한
+                TOrderLecCurriVO selectTOrderLecCurriVO = productMapper.selectTOrderLecCurriInfo(jLecKey, curriKey);
+                TOrderLecCurriVO tOrderLecCurriVO = new TOrderLecCurriVO(jLecKey, curriKey, time);
+                if (selectTOrderLecCurriVO == null) {
+                    productMapper.insertTOrderLecCurri(tOrderLecCurriVO);
+                } else {
+                    if (deviceType == 0) productMapper.updateTOrderLecCurri(jLecKey, curriKey, time);
+                    else if (deviceType == 1) productMapper.updateTOrderLecCurriByMobile(jLecKey, curriKey, time);
+                }
+            }
+        }
+        return new ApiResultCodeDTO("RESULT", bl, resultCode);
     }
 
 }

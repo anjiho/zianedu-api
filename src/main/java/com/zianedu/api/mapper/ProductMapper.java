@@ -165,6 +165,8 @@ public interface ProductMapper {
 
     List<TLecCurriVO> selectVideoLectureListByJLecKey(@Param("jLecKey") int jLecKey, @Param("deviceType") String deviceType);
 
+    TLecCurriVO selectVideoLectureRemainTimeByJLecKeyAndCurriKey(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey);
+
     List<TypeDTO> selectSignUpAcademyTypeList(@Param("userKey") int userKey);
 
     List<SignUpLectureVO> selectSignUpAcademySubjectNameList(@Param("userKey") int userKey, @Param("stepCtgKey") int stepCtgKey);
@@ -209,9 +211,21 @@ public interface ProductMapper {
 
     TLinkKeyVO selectExamOnOffKeyByExamKey(@Param("examKey") int examKey);
 
+    double selectVideoGoodsMultiple(@Param("jLecKey") int jLecKey);
+
+    int selectVideoGoodsJGKey(@Param("jLecKey") int jLecKey);
+
+    TOrderLecCurriVO selectTOrderLecCurriInfo(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
+    void insertTOrderLecCurri(TOrderLecCurriVO tOrderLecCurriVO);
+
     /** UPDATE **/
     void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
+
+    void updateTOrderLecCurri(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
+
+    void updateTOrderLecCurriByMobile(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
 }

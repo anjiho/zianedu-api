@@ -84,7 +84,7 @@
     </select>
 
     <select id="selectUserCurrentPoint" resultType="Integer">
-        SELECT SUM(POINT)
+        SELECT NVL(SUM(POINT), 0) as point
         FROM T_POINT Z
         WHERE Z.USER_KEY = #{userKey}
         AND TYPE IN (0,1)
@@ -126,6 +126,19 @@
         SELECT * FROM T_DEVICE_LIMIT
         WHERE USER_KEY = #{userKey}
         AND TYPE = #{deviceType}
+    </select>
+
+    <select id="selectTDeviceLimitCountByDeviceId" resultType="int">
+        SELECT COUNT (DEVICE_LIMIT_KEY)
+        FROM T_DEVICE_LIMIT
+        WHERE TYPE = #{deviceType}
+        <if test="userKey > 0">
+            AND USER_KEY = #{userKey}
+        </if>
+
+        <if test="deviceId != ''">
+            AND DEVICE_ID = #{deviceId}
+        </if>
     </select>
 
     <insert id="insertUserInfo" parameterType="TUserVO">
@@ -189,6 +202,20 @@
         (
             #{deviceLogKey}, #{deviceLimitKey}, #{cKey}, #{userKey}, TO_DATE(#{indate}, 'YYYY-mm-dd hh24:mi:ss'),
             TO_DATE(#{deleteDate}, 'YYYY-mm-dd hh24:mi:ss'), #{type}, #{dataKey}, #{deviceId}, #{deviceModel}, #{osVersion}, #{appVersion}
+        )
+    </insert>
+
+    <insert id="insertTDeviceLimit" parameterType="TDeviceLimitVO">
+        <selectKey resultType="int" keyProperty="deviceLimitKey" order="BEFORE">
+            SELECT T_DEVICE_LIMIT_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO T_DEVICE_LIMIT
+        (
+            DEVICE_LIMIT_KEY, C_KEY, USER_KEY, INDATE, TYPE, DATA_KEY, DEVICE_ID, DEVICE_MODEL, OS_VERSION, APP_VERSION
+        )
+        VALUES
+        (
+            #{deviceLimitKey}, #{cKey}, #{userKey}, sysdate, #{type}, #{dataKey}, #{deviceId}, #{deviceModel}, #{osVersion}, #{appVersion}
         )
     </insert>
 

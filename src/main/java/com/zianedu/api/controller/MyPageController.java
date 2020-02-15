@@ -4,10 +4,7 @@ import com.zianedu.api.dto.ApiPagingResultDTO;
 import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultListDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
-import com.zianedu.api.service.BoardService;
-import com.zianedu.api.service.ExamService;
-import com.zianedu.api.service.MyPageService;
-import com.zianedu.api.service.OrderService;
+import com.zianedu.api.service.*;
 import com.zianedu.api.utils.ZianApiUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,6 +28,12 @@ public class MyPageController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/getAcademySignUp/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 학원수강내역")
@@ -444,6 +447,51 @@ public class MyPageController {
                                                         @RequestParam("sPage") int sPage,
                                                         @RequestParam("listLimit") int listLimit) {
         return examService.getUserExamLogList(userKey, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/confirmVideoPlay", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("구매한 동영상 플레이가 가능한지 여부 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "curriKey", value = "커리큘럽 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultCodeDTO confirmVideoPlay(@RequestParam(value = "jLecKey") int jLecKey,
+                                             @RequestParam(value = "curriKey") int curriKey) {
+        return productService.confirmVideoPlay(jLecKey, curriKey);
+    }
+
+    @RequestMapping(value = "/confirmDuplicateDevice/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("동영상 플레이시 기기중복 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "deviceId", value = "기기값", dataType = "string", paramType = "query", required = true),
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "osVersion", value = "모바일 버전", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "appVersion", value = "모바일 앱 버전", dataType = "string", paramType = "query", required = false),
+    })
+    public ApiResultCodeDTO confirmDuplicateDevice(@PathVariable("userKey") int userKey,
+                                                   @RequestParam("deviceType") int deviceType,
+                                                   @RequestParam("deviceId") String deviceId,
+                                                   @RequestParam("jLecKey") int jLecKey,
+                                                   @RequestParam(value = "osVersion", required = false, defaultValue = "") String osVersion,
+                                                   @RequestParam(value = "appVersion", required = false, defaultValue = "") String appVersion) {
+        return userService.confirmDuplicateDevice(userKey, deviceType, deviceId, jLecKey, osVersion, appVersion);
+    }
+
+    @RequestMapping(value = "/injectVideoPlayTime", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("동영상 플레이시간 주입")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "curriKey", value = "커리큘럽 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류(0:PC, 1:MOBILE)", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "mobileTime", value = "모바일 시간", dataType = "string", paramType = "query", required = false)
+    })
+    public ApiResultCodeDTO injectVideoPlayTime(@RequestParam(value = "jLecKey") int jLecKey,
+                                                @RequestParam(value = "curriKey") int curriKey,
+                                                @RequestParam(value = "deviceType", required = false, defaultValue = "0") String deviceType,
+                                                @RequestParam(value = "mobileTime", required = false, defaultValue = "0") String mobileTime) {
+        return productService.injectVideoPlayTime(jLecKey, curriKey, Integer.parseInt(deviceType), Integer.parseInt(mobileTime));
     }
 
 }
