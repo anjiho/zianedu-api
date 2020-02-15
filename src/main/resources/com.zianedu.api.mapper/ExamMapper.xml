@@ -664,6 +664,26 @@
         ORDER BY A.BANK_SUBJECT_EXAM_LINK_KEY ASC
     </select>
 
+    <select id="selectExamMasterSubjectListBySerial" resultType="TBankSubjectExamLinkVO">
+        SELECT A.*, B.name, C.name as CTG_NAME,
+        (
+            SELECT count(T_BANK_SUBJECT_QUES_LINK.BANK_SUBJECT_QUES_LINK_KEY)
+            FROM T_BANK_SUBJECT_QUES_LINK
+            WHERE EXAM_QUES_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        ) as QUESTION_NUMBER
+        FROM T_BANK_SUBJECT_EXAM_LINK A
+        INNER JOIN T_EXAM_QUESTION_BANK_SUBJECT B
+        ON A.EXAM_QUESTION_BANK_SUBJECT_KEY = B.EXAM_QUESTION_BANK_SUBJECT_KEY
+        INNER JOIN T_CATEGORY C
+        ON B.SUBJECT_CTG_KEY = C.CTG_KEY
+        WHERE A.EXAM_KEY  = (
+            SELECT EXAM_KEY
+            FROM T_EXAM_USER
+            WHERE SERIAL = #{serial}
+        )
+        ORDER BY A.BANK_SUBJECT_EXAM_LINK_KEY ASC
+    </select>
+
     <select id="selectTExamUserInfo" resultType="TExamUserVO">
         SELECT * FROM T_EXAM_USER WHERE EXAM_KEY = #{examKey} AND USER_KEY = #{userKey}
     </select>
@@ -1158,6 +1178,12 @@
         )Z
         WHERE 1=1
         AND Z.COMPLATEDATE >= ADD_MONTHS(sysdate, -3)
+    </select>
+
+    <select id="selectExamUserKeyBySerial" resultType="TExamUserVO">
+        SELECT *
+        FROM T_EXAM_USER
+        WHERE SERIAL = #{serial}
     </select>
 
     <insert id="insertTExamUser" parameterType="TExamUserVO">

@@ -70,6 +70,8 @@ public interface ExamMapper {
 
     List<TBankSubjectExamLinkVO> selectExamMasterSubjectList(@Param("examKey") int examKey);
 
+    List<TBankSubjectExamLinkVO> selectExamMasterSubjectListBySerial(@Param("serial") String serial);
+
     TExamUserVO selectTExamUserInfo(@Param("examKey") int examKey, @Param("userKey") int userKey);
 
     List<ExamListVO> selectExamList(@Param("examQuesBankSubjectKey") int examQuesBankSubjectKey);
@@ -115,6 +117,7 @@ public interface ExamMapper {
 
     int selectUserExamApplyLogListCount(@Param("userKey") int userKey);
 
+    TExamUserVO selectExamUserKeyBySerial(@Param("serial") String serial);
 
     /** INSERT **/
     void insertTExamUser(TExamUserVO tExamUserVO);

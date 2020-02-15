@@ -677,6 +677,39 @@ public class ExamService extends PagingSupport {
         return new ApiResultObjectDTO(examDTOList, resultCode);
     }
 
+    @Transactional(readOnly = true)
+    public List<ExamListDTO> getUserExamListAtOfflineExam(int examUserKey, int userKey) {
+
+        List<String> subjectNameList = new ArrayList<>();
+        List<ExamListDTO> examDTOList = new ArrayList<>();
+        if (examUserKey == 0 && userKey == 0) {
+            return null;
+        } else {
+            List<TExamSubjectUserVO> examSubjectUserList = examMapper.selectTExamSubjectUserList(examUserKey, userKey);
+            if (examSubjectUserList.size() > 0) {
+                //시험시작 상태로 업데이트
+                this.updateExamResultStatus(examUserKey, 0, 0, 1);
+
+                for (TExamSubjectUserVO subjectUserVO : examSubjectUserList) {
+                    subjectNameList.add(subjectUserVO.getSubjectName());
+                    List<ExamListVO> examList = examMapper.selectExamList(subjectUserVO.getExamQuesBankSubjectKey());
+                    for (ExamListVO examListVO : examList) {
+                        examListVO.setExamUserKey(subjectUserVO.getExamUserKey());
+                        examListVO.setExamSbjUserKey(subjectUserVO.getExamSbjUserKey());
+                        examListVO.setQuestionImage(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examListVO.getQuestionImage()));
+
+                    }
+                    ExamListDTO examListDTO = new ExamListDTO(subjectUserVO.getSubjectName(), examList);
+                    examDTOList.add(examListDTO);
+                }
+                TExamUserVO examHeaderInfo = examMapper.selectExamResultHeaderInfo(examUserKey);
+                examHeaderInfo.setSubjectNameList(StringUtils.implodeList(",", subjectNameList));
+                examDTOList.get(0).setExamHeaderInfo(examHeaderInfo);
+            }
+        }
+        return examDTOList;
+    }
+
     /**
      * 모의고사 시험을 보기위한 정보 저장
      * @param examKey
@@ -987,5 +1020,43 @@ public class ExamService extends PagingSupport {
             examMapper.updateTExamQuestionUserInterest(examQuestionUserKey, isInterest);
         }
         return new ApiResultCodeDTO("EXAM_QUESTION_USER_KEY", examQuestionUserKey, resultCode);
+    }
+
+    /**
+     * 오프라인 시험 엑셀파일 저장 데이터 가공하기
+     * @param offLineExamResult
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<ExamResultDTO> manufactureOfflineExam(List<OffLineExamDTO> offLineExamResult) {
+        List<ExamResultDTO>examResultDTOList = new ArrayList<>();
+        if (offLineExamResult.size() == 0) {
+            return null;
+        } else {
+            for (OffLineExamDTO dto : offLineExamResult) {
+                TExamUserVO examUserVO = examMapper.selectExamUserKeyBySerial(dto.getSerial());
+
+                if (examUserVO != null) {
+                    List<ExamListDTO> examList = this.getUserExamListAtOfflineExam(examUserVO.getExamUserKey(), examUserVO.getUserKey());
+                    for (ExamListDTO examQuestionDTO : examList) {
+                        List<ExamListVO>questionList = examQuestionDTO.getExamInfo();
+
+                        int i=0;
+                        for (ExamListVO questionResult : questionList) {
+                            ExamResultDTO examResultDTO = new ExamResultDTO();
+                            examResultDTO.setExamUserKey(questionResult.getExamUserKey());
+                            examResultDTO.setUserKey(examUserVO.getUserKey());
+                            examResultDTO.setExamSbjUserKey(questionResult.getExamSbjUserKey());
+                            examResultDTO.setExamQuestionBankKey(questionResult.getExamQuestionBankKey());
+                            examResultDTO.setUserAnswer(dto.getExamNumberList().get(i));
+
+                            examResultDTOList.add(examResultDTO);
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+        return examResultDTOList;
     }
 }

@@ -18,7 +18,13 @@ import java.util.Map;
 @Service
 public class ExcelReadService {
 
-    public int readOffLineExamResult(File destFile) throws Exception {
+    /**
+     * 오프라인 시험 엑셀파일 읽기
+     * @param destFile
+     * @return
+     * @throws Exception
+     */
+    public List<OffLineExamDTO> readOffLineExamResult(File destFile) throws Exception {
         FileInputStream fis = new FileInputStream(destFile);
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
         int rowIdx = 0;
@@ -92,7 +98,6 @@ public class ExcelReadService {
                                 number.add(scoreNumber);
                             }
                         }
-                        System.out.println("각 셀 내용 :" + value);
                         offLineExamDTO.setExamNumberList(number);
                     }
                     offLineExamDTO.setSerial(serial);
@@ -101,7 +106,6 @@ public class ExcelReadService {
                 }
             }
         }
-        System.out.println(offLineExamDTOList);
-        return 0;
+        return offLineExamDTOList;
     }
 }

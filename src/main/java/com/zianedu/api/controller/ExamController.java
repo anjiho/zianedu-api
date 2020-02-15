@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping(value = "/exam")
 public class ExamController {
@@ -267,9 +269,18 @@ public class ExamController {
         }
         File destFile = new File(excelFile.getOriginalFilename());
         excelFile.transferTo(destFile);
-        int result = excelReadService.readOffLineExamResult(destFile);
+        //엑셀파일 내용 추출
+        List<OffLineExamDTO> offLineExamResult = excelReadService.readOffLineExamResult(destFile);
+        if (offLineExamResult.size() > 0) {
+            //추출한 내용 가공하기
+            List<ExamResultDTO> examResultList = examService.manufactureOfflineExam(offLineExamResult);
+            if (examResultList.size() > 0) {
+                //결과저장
+                examService.injectUserExamResult(0, examResultList);
+            }
+        }
         FileUtil.fileDelete(excelFile.getOriginalFilename());
-        return null;
+        return new ApiResultCodeDTO("RESULT", "OK", OK.value());
     }
 
 }
