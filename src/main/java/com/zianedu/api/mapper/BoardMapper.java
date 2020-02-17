@@ -31,6 +31,8 @@ public interface BoardMapper {
     List<GoodsReviewVO> selectGoodsReviewList(@Param("teacherKey") int teacherKey, @Param("listType") String listType,
                                            @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
+    List<GoodsReviewVO> selectGoodsReviewAllList();
+
 
     List<GoodsReviewVO> selectTeacherReviewList(@Param("teacherKey") int teacherKey, @Param("gKey") int gKey,
                                                 @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
@@ -113,7 +115,7 @@ public interface BoardMapper {
                                                  @Param("listLimitNumber") int listLimitNumber, @Param("searchType") String searchType, @Param("searchText") String searchText);
 
     List<TBbsDataVO> selectReviewList(@Param("bbsMasterKey") int bbsMasterKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber,
-                                              @Param("searchType") String searchType, @Param("searchText") String searchText);
+                                              @Param("searchType") String searchType, @Param("searchText") String searchText, @Param("gKey") int gKey);
 
     int selectReviewListCount(@Param("bbsMasterKey") int bbsMasterKey, @Param("searchType") String searchType, @Param("searchText") String searchText);
 

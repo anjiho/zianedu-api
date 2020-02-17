@@ -9,6 +9,8 @@ public class GoodsReviewVO {
 
     private String title;
 
+    private int userKey;
+
     private int point;
 
     private String name;
@@ -16,4 +18,12 @@ public class GoodsReviewVO {
     private String indate;
 
     private String contents;
+
+    private String goodsName;
+
+    private String userName;
+
+    private int teacherKey;
+
+    private int gKey;
 }

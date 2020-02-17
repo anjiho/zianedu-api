@@ -347,14 +347,16 @@ public class BoardController {
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "listLimit", value = "리스트 개수", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, name : 이름, content : 내용) ", dataType = "string", paramType = "query", required = false),
-            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false)
+            @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "gKey", value = "상품 키값", dataType = "int", paramType = "query", required = false),
     })
     public ApiPagingResultDTO getReviewBoardList(@PathVariable("bbsMasterKey") int bbsMasterKey,
                                                            @RequestParam("sPage") int sPage,
                                                            @RequestParam("listLimit") int listLimit,
                                                            @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
-                                                           @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
-        return boardService.getReviewBoardList(bbsMasterKey, sPage, listLimit, searchType, searchText);
+                                                           @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
+                                                           @RequestParam(value = "gKey", required = false, defaultValue = "0") String gKey) throws Exception {
+        return boardService.getReviewBoardList(bbsMasterKey, sPage, listLimit, searchType, searchText, Integer.parseInt(gKey));
     }
 
     @RequestMapping(value = "/saveBoardReview", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
@@ -447,5 +449,11 @@ public class BoardController {
                                            @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                                            @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText) throws Exception {
         return boardService.getFaQList(faqTypeKey, sPage, listLimit, searchType, searchText);
+    }
+
+    @RequestMapping(value = "/migrationTGoodsReviewList", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("T_GOODS_REVIEW > T_BBS_DATA 마이그레이션")
+    public void migrationTGoodsReviewList() {
+        boardService.migrationTGoodsReviewToTBbsData();
     }
 }

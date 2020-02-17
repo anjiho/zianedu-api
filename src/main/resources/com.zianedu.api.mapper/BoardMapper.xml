@@ -108,6 +108,22 @@
         </if>
     </select>
 
+    <select id="selectGoodsReviewAllList" resultType="GoodsReviewVO">
+       SELECT
+            A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS, A.USER_KEY, A.G_KEY,
+            B.NAME as goodsName, C.TEACHER_KEY, D.USER_KEY, E.NAME as userName
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_GOODS B
+        ON A.G_KEY = B.G_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK C
+        ON B.G_KEY = C.G_KEY
+        INNER JOIN T_TEACHER D
+        ON C.TEACHER_KEY = D.TEACHER_KEY
+        INNER JOIN T_USER E
+        ON D.USER_KEY = E.USER_KEY
+        ORDER BY A.G_REVIEW_KEY ASC
+    </select>
+
     <select id="selectTeacherReviewList" resultType="GoodsReviewVO">
         SELECT
         A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY.MM.dd') as indate, A.CONTENTS
@@ -746,6 +762,9 @@
         WHERE 1=1
         <if test="bbsMasterKey > 0">
             AND BBS_MASTER_KEY = #{bbsMasterKey}
+        </if>
+        <if test="gKey > 0">
+            AND G_KEY = #{gKey}
         </if>
         <if test="searchType == 'title'">
             AND TITLE LIKE '%'||#{searchText}||'%'

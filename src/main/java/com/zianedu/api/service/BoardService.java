@@ -11,10 +11,14 @@ import com.zianedu.api.utils.Util;
 import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +31,9 @@ public class BoardService extends PagingSupport {
 
     @Autowired
     private BoardMapper boardMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     protected int resultCode = OK.value();
 
@@ -489,7 +496,7 @@ public class BoardService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiPagingResultDTO getReviewBoardList(int bbsMasterKey, int sPage, int listLimit, String searchType, String searchText) {
+    public ApiPagingResultDTO getReviewBoardList(int bbsMasterKey, int sPage, int listLimit, String searchType, String searchText, int gKey) {
         int resultCode = OK.value();
 
         int totalCount = 0;
@@ -499,7 +506,7 @@ public class BoardService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             totalCount = boardMapper.selectReviewListCount(bbsMasterKey, searchType, searchText);
-            boardList = boardMapper.selectReviewList(bbsMasterKey, startNumber, listLimit, searchType, searchText);
+            boardList = boardMapper.selectReviewList(bbsMasterKey, startNumber, listLimit, searchType, searchText, gKey);
         }
         return new ApiPagingResultDTO(totalCount, boardList, resultCode);
     }
@@ -560,4 +567,27 @@ public class BoardService extends PagingSupport {
         return new ApiPagingResultDTO(totalCount, faqList, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void migrationTGoodsReviewToTBbsData() {
+        List<GoodsReviewVO> goodsReviewList = boardMapper.selectGoodsReviewAllList();
+        if (goodsReviewList.size() > 0) {
+            String sql = "INSERT INTO T_BBS_DATA (BBS_KEY, BBS_MASTER_KEY, BBS_PARENT_KEY, INDATE, TITLE, WRITE_USER_KEY, CTG_KEY, CTG_KEY_02, IS_NOTICE, PWD, CONTENTS, G_KEY)" +
+                                        "VALUES (T_BBS_DATA_SEQ.nextval, 10015, 0, ?, ?, ?, ?, 0, 0, '', ?, ?)";
+            jdbcTemplate.batchUpdate(
+                    sql,
+                    goodsReviewList,
+                    10,
+                    new ParameterizedPreparedStatementSetter<GoodsReviewVO>() {
+                        @Override
+                        public void setValues(PreparedStatement ps, GoodsReviewVO vo) throws SQLException {
+                            ps.setString(1, vo.getIndate());
+                            ps.setString(2, vo.getTitle());
+                            ps.setInt(3, vo.getUserKey());
+                            ps.setInt(4, vo.getTeacherKey());
+                            ps.setString(5, vo.getContents());
+                            ps.setInt(6, vo.getGKey());
+                        }
+                    });
+        }
+    }
 }
