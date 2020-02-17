@@ -1039,20 +1039,22 @@ public class ExamService extends PagingSupport {
 
                 if (examUserVO != null) {
                     List<ExamListDTO> examList = this.getUserExamListAtOfflineExam(examUserVO.getExamUserKey(), examUserVO.getUserKey());
+                    int j=0;
                     for (ExamListDTO examQuestionDTO : examList) {
                         List<ExamListVO>questionList = examQuestionDTO.getExamInfo();
 
-                        int i=0;
+                        //int i=0;
                         for (ExamListVO questionResult : questionList) {
                             ExamResultDTO examResultDTO = new ExamResultDTO();
                             examResultDTO.setExamUserKey(questionResult.getExamUserKey());
                             examResultDTO.setUserKey(examUserVO.getUserKey());
                             examResultDTO.setExamSbjUserKey(questionResult.getExamSbjUserKey());
                             examResultDTO.setExamQuestionBankKey(questionResult.getExamQuestionBankKey());
-                            examResultDTO.setUserAnswer(dto.getExamNumberList().get(i));
+                            examResultDTO.setUserAnswer(dto.getExamNumberList().get(j));
 
                             examResultDTOList.add(examResultDTO);
-                            i++;
+                          //  i++;
+                            j++;
                         }
                     }
                 }
