@@ -217,6 +217,8 @@ public interface ProductMapper {
 
     TOrderLecCurriVO selectTOrderLecCurriInfo(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey);
 
+    String selectTOrderLecStartDt(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
@@ -224,6 +226,8 @@ public interface ProductMapper {
 
     /** UPDATE **/
     void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
+
+    void updateTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 
     void updateTOrderLecCurri(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
 

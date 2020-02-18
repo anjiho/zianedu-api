@@ -341,6 +341,7 @@ public class UserService extends ApiResultKeyCode {
             int deviceLimitCountByUserKey = userMapper.selectTDeviceLimitCountByDeviceId(userKey, deviceType, "");
             int deviceLimitCountByDeviceId = userMapper.selectTDeviceLimitCountByDeviceId(0, deviceType, deviceId);
             if (deviceLimitCountByUserKey > 0 && deviceLimitCountByDeviceId > 0) {  //사용자 키와 사용자 기기가 일치할때
+                this.updateTOrderLecStartDt(jLecKey);
                 bl = true;
             } else if (deviceLimitCountByUserKey == 0 && deviceLimitCountByDeviceId == 0) { //사용자가 처음 기기로 동영상을 플레이할때
                 int jGKey = productMapper.selectVideoGoodsJGKey(jLecKey);
@@ -361,11 +362,20 @@ public class UserService extends ApiResultKeyCode {
                     );
                     userMapper.insertTDeviceLimitLog(limitLogVO);
                 }
+                this.updateTOrderLecStartDt(jLecKey);
                 bl = true;
             }
         }
         return new ApiResultCodeDTO("RESULT", bl, resultCode);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateTOrderLecStartDt(int jLecKey) {
+        if (jLecKey == 0) return;
+        String startDt = productMapper.selectTOrderLecStartDt(jLecKey);
+        if (!"".equals(startDt)) {
+            productMapper.updateTOrderLecStartDt(jLecKey);
+        }
+    }
 }
 

@@ -2623,6 +2623,10 @@
         AND CURRI_KEY = #{curriKey}
     </select>
 
+    <select id="selectTOrderLecStartDt" resultType="String">
+        SELECT START_DT FROM T_ORDER_LEC WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
@@ -2634,6 +2638,14 @@
                 PAUSE_CNT = PAUSE_CNT + 1,
             </if>
             PAUSE_DAY = #{pauseDay}
+        </set>
+        WHERE J_LEC_KEY = #{jLecKey}
+    </update>
+
+    <update id="updateTOrderLecStartDt" parameterType="Integer">
+        UPDATE T_ORDER_LEC
+        <set>
+           START_DT = sysdate
         </set>
         WHERE J_LEC_KEY = #{jLecKey}
     </update>
