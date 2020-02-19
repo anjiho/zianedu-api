@@ -175,7 +175,7 @@ public class PaymentService {
                     } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey()) {
                         TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
                         int zianPassPageKey = productMapper.selectZianPassPageKeyFromGKey(vo.getGKey());
-                        TCategoryGoodsVO categoryGoodsVO = productMapper.selectTCategoryGoods(zianPassPageKey);
+                        TCategoryGoodsVO categoryGoodsVO = productMapper.selectTCategoryGoodsOne(zianPassPageKey);
 
                         tOrderGoodsVO = new TOrderGoodsVO(
                                 jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),

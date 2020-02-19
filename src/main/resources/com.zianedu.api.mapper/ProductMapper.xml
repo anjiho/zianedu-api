@@ -1267,6 +1267,10 @@
         SELECT * FROM T_CATEGORY_GOODS WHERE G_KEY = #{gKey}
     </select>
 
+    <select id="selectTCategoryGoodsOne" resultType="TCategoryGoodsVO">
+        SELECT * FROM T_CATEGORY_GOODS WHERE G_KEY = #{gKey} AND ROWNUM =1
+    </select>
+
     <select id="selectTGoodsPriceOptionCount" resultType="Integer">
         SELECT count(*) from t_goods_price_option where g_key = #{gKey}
     </select>
@@ -1645,7 +1649,7 @@
         AND B.PAY_STATUS = 2
         AND B.USER_KEY = #{userKey}
          <![CDATA[
-            AND B.PAY_DATE <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+            AND TO_DATE(B.PAY_DATE, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
          ]]>
         <![CDATA[
             AND (B.pay_date + (C.KIND * 31)) >= TO_CHAR(sysdate, 'YYYY-MM-DD')

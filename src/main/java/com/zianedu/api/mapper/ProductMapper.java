@@ -124,6 +124,8 @@ public interface ProductMapper {
 
     TCategoryGoodsVO selectTCategoryGoods(@Param("gKey") int gKey);
 
+    TCategoryGoodsVO selectTCategoryGoodsOne(@Param("gKey") int gKey);
+
     Integer selectTGoodsPriceOptionCount(@Param("gKey") int gKey);
 
     Integer selectFreeLectureListCountFromCategoryMenu(@Param("ctgKey") int ctgKey, @Param("stepCtgKey") int stepCtgKey,
