@@ -135,7 +135,6 @@
         <if test="userKey > 0">
             AND USER_KEY = #{userKey}
         </if>
-
         <if test="deviceId != ''">
             AND DEVICE_ID = #{deviceId}
         </if>

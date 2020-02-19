@@ -393,6 +393,10 @@ public class OrderService extends PagingSupport {
                     if (product.getType() == 4) {
                         examPrice += product.getSellPrice();
                     }
+
+                    if (product.getType() == 5) {
+                        promotionPrice += product.getSellPrice();
+                    }
                     orderProductList.add(orderProductListDTO);
                 }
 
