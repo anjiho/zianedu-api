@@ -232,4 +232,6 @@ public interface ProductMapper {
     void updateTOrderLecCurri(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
 
     void updateTOrderLecCurriByMobile(@Param("jLecKey") int jLecKey, @Param("curriKey") int curriKey, @Param("time") int time);
+
+    void updateTOrderLecStartDtByUserKey(@Param("userKey") int userKey);
 }

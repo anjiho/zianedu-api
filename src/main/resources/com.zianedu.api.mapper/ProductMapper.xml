@@ -1474,13 +1474,13 @@
             B.AFFILIATION_CTG_KEY as menuKey,
             (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = B.AFFILIATION_CTG_KEY ) as name
         FROM T_GOODS A
-                 LEFT JOIN T_PROMOTION B
-                           ON A.G_KEY = B.G_KEY
-                 LEFT JOIN T_GOODS_PRICE_OPTION C
-                           ON A.G_KEY = C.G_KEY
+        LEFT JOIN T_PROMOTION B
+        ON A.G_KEY = B.G_KEY
+        LEFT JOIN T_GOODS_PRICE_OPTION C
+        ON A.G_KEY = C.G_KEY
         WHERE A.PARENT_KEY = #{parentKey}
-          AND A.TYPE = 5
-          AND A.IS_SELL = 1
+        AND A.TYPE = 5
+        AND A.IS_SELL = 1
         GROUP BY B.AFFILIATION_CTG_KEY
         ORDER BY B.AFFILIATION_CTG_KEY ASC
     </select>
@@ -2664,6 +2664,15 @@
         WHERE 1=1
         AND J_LEC_KEY = #{jLecKey}
         AND CURRI_KEY = #{curriKey}
+    </update>
+
+    <update id="updateTOrderLecStartDtByUserKey" parameterType="int">
+        UPDATE T_ORDER_LEC
+        SET START_DT = sysdate
+        WHERE J_G_KEY IN (
+            SELECT J_G_KEY FROM ZIANEDU.T_ORDER_GOODS WHERE USER_KEY = #{userKey} AND TYPE = 1
+        )
+        AND START_DT IS NULL
     </update>
 
     <insert id="insertTOrderLecStartStopLog" parameterType="TOrderLecStartStopLogVO">
