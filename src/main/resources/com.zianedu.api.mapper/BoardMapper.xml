@@ -41,7 +41,6 @@
         <if test="searchType == 'user'">
             AND Z.WRITE_USER_KEY IN ( SELECT USER_KEY FROM T_USER WHERE 1=1 AND NAME LIKE '%'||#{searchText}||'%' )
         </if>
-        --ORDER BY Z.IS_NOTICE DESC
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
