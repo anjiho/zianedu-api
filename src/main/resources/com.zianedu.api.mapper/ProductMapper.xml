@@ -2448,6 +2448,7 @@
             ORDER BY C.SUBJECT_CTG_KEY ASC
         ) Z
         WHERE 1=1
+        AND Z.name IS NOT NULL
         <if test="subjectMenuKeys.size  != 0">
             AND Z.ctgKey IN
             <foreach collection="subjectMenuKeys" item="subjectKey" separator="," open="(" close=")">
