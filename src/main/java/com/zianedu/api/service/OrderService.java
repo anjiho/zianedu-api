@@ -106,8 +106,8 @@ public class OrderService extends PagingSupport {
             if (promotionCartInfo.size() > 0) {
                 for (CartListVO promotionList : promotionCartInfo) {
                     if (promotionList.getKind() == 0) {
-                        orderPrice += promotionList.getLinkSellPrice();
-                        promotionOrderPrice += promotionList.getLinkSellPrice();
+                        orderPrice += promotionList.getSellPrice();
+                        promotionOrderPrice += promotionList.getSellPrice();
 
                         TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
                         promotionList.setPmType(promotionVO.getPmType());
