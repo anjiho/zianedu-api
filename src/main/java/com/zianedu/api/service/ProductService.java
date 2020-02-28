@@ -597,7 +597,7 @@ public class ProductService extends PagingSupport {
                 for (ZianPassProductDTO productDTO : zianPassProductDTOList) {
                     if (productDTO.getZianPassProductList().size() > 0) {
                         for (ZianPassProductListVO productListVO : productDTO.getZianPassProductList()) {
-                            String fileName = "yearmember" + productListVO.getGKey() + ".html";
+                            String fileName = "yearmember_" + productListVO.getGKey() + ".html";
                             productListVO.setTargetUrl(YEAR_MEMBER_HTML_URL + fileName);
                         }
                     }
