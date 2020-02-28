@@ -105,28 +105,38 @@ public class OrderService extends PagingSupport {
 
             if (promotionCartInfo.size() > 0) {
                 for (CartListVO promotionList : promotionCartInfo) {
-                    if (promotionList.getKind() == 0) {
-                        orderPrice += promotionList.getSellPrice();
-                        promotionOrderPrice += promotionList.getSellPrice();
+//                    if (promotionList.getKind() == 0) {
+//                        orderPrice += promotionList.getSellPrice();
+//                        promotionOrderPrice += promotionList.getSellPrice();
+//
+//                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
+//                        promotionList.setPmType(promotionVO.getPmType());
+//
+//                        promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
+//                        promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
+//                        promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
+//
+//                    } else {
+//                        orderPrice += promotionList.getSellPrice();
+//                        promotionOrderPrice += promotionList.getSellPrice();
+//
+//                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
+//                        promotionList.setPmType(promotionVO.getPmType());
+//
+//                        promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
+//                        promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
+//                        promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
+//                    }
+                    orderPrice += promotionList.getSellPrice();
+                    promotionOrderPrice += promotionList.getSellPrice();
 
-                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
-                        promotionList.setPmType(promotionVO.getPmType());
+                    TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
+                    promotionList.setPmType(promotionVO.getPmType());
 
-                        promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getLinkPrice())) + "원");
-                        promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getLinkSellPrice())) + "원");
-                        promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
-
-                    } else {
-                        orderPrice += promotionList.getSellPrice();
-                        promotionOrderPrice += promotionList.getSellPrice();
-
-                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionList.getGKey());
-                        promotionList.setPmType(promotionVO.getPmType());
-
-                        promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
-                        promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
-                        promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
-                    }
+                    promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
+                    promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
+                    promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
+                    
                     totalPoint += promotionList.getPoint();
                 }
             }
