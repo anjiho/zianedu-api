@@ -136,7 +136,7 @@ public class OrderService extends PagingSupport {
                     promotionList.setPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPrice())) + "원");
                     promotionList.setSellPriceName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getSellPrice())) + "원");
                     promotionList.setPointName(StringUtils.addThousandSeparatorCommas(String.valueOf(promotionList.getPoint())) + "점");
-                    
+
                     totalPoint += promotionList.getPoint();
                 }
             }
@@ -258,18 +258,29 @@ public class OrderService extends PagingSupport {
 //                        totalPoint += cartInfo.getPoint();
 //                        promotionPrice += cartInfo.getSellPrice();
 //                    }
-                    if (cartInfo.getKind() > 0) {
-                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(cartInfo.getGKey());
+                    TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(cartInfo.getGKey());
 
-                        orderProductListDTO = new OrderProductListDTO(
-                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
-                                GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
-                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), promotionVO.getPmType()
-                        );
-                        totalProductPrice += cartInfo.getSellPrice();
-                        totalPoint += cartInfo.getPoint();
-                        promotionPrice += cartInfo.getSellPrice();
-                    }
+                    orderProductListDTO = new OrderProductListDTO(
+                            cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+                            GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
+                            cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), promotionVO.getPmType()
+                    );
+                    totalProductPrice += cartInfo.getSellPrice();
+                    totalPoint += cartInfo.getPoint();
+                    promotionPrice += cartInfo.getSellPrice();
+
+//                    if (cartInfo.getKind() > 0) {
+//                        TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(cartInfo.getGKey());
+//
+//                        orderProductListDTO = new OrderProductListDTO(
+//                                cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
+//                                GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
+//                                cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), promotionVO.getPmType()
+//                        );
+//                        totalProductPrice += cartInfo.getSellPrice();
+//                        totalPoint += cartInfo.getPoint();
+//                        promotionPrice += cartInfo.getSellPrice();
+//                    }
                 } else {
                     if (cartInfo.getExtendDay() == -1) {
                         orderProductListDTO = new OrderProductListDTO(
