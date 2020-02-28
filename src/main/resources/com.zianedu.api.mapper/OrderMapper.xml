@@ -222,6 +222,7 @@
         ON A.G_KEY = C.G_KEY
         WHERE A.USER_KEY = #{userKey}
         AND A.EXTEND_DAY > -1
+        AND A.IS_DELETE = 0
     </select>
 
     <select id="selectCartLinkGoodsList" resultType="TCartLinkGoodsVO">
