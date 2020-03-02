@@ -897,6 +897,10 @@
             INNER JOIN T_TEACHER F
             ON E.TEACHER_KEY = F.TEACHER_KEY
             WHERE C.SUBJECT_CTG_KEY = #{ctgKey}
+            AND A.CTG_KEY IN (
+                SELECT CTG_KEY FROM T_CATEGORY
+                WHERE PARENT_KEY = #{menuCtgKey}
+            )
             <if test="teacherKey > 0">
                 AND F.TEACHER_KEY = #{teacherKey}
             </if>

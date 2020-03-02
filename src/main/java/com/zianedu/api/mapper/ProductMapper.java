@@ -80,8 +80,8 @@ public interface ProductMapper {
     List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
                                                                                       @Param("teacherKey") int teacherKey);
 
-    List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture2(@Param("ctgKey") int ctgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
-                                                                                      @Param("teacherKey") int teacherKey);
+    List<TeacherHomeLectureVO> selectVideoLectureListFromCategoryMenuFromApplyLecture2(@Param("menuCtgKey") int menuCtgKey, @Param("ctgKey") int ctgKey,
+                                                                                       @Param("stepCtgKeys") List<String> stepCtgKeys, @Param("teacherKey") int teacherKey);
 
     List<SpecialPackageVO> selectPromotionPackageList(@Param("menuCtgKey") int menuCtgKey, @Param("stepCtgKeys") List<String> stepCtgKeys,
                                                       @Param("teacherKeys") List<String> teacherKeys, @Param("subjectCtgKeys") List<String> subjectCtgKeys);

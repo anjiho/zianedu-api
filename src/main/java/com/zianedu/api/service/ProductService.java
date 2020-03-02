@@ -199,7 +199,7 @@ public class ProductService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public List<TeacherHomeLectureVO> getLectureApplyVideoLectureListFromCategoryMenu(int ctgKey, String[] stepCtgKeys, int teacherKey) {
+    public List<TeacherHomeLectureVO> getLectureApplyVideoLectureListFromCategoryMenu(int menuCtgKey, int ctgKey, String[] stepCtgKeys, int teacherKey) {
         List<TeacherHomeLectureVO> teacherHomeLectureList = new ArrayList<>();
 
         if (ctgKey == 0) {
@@ -207,7 +207,7 @@ public class ProductService extends PagingSupport {
         } else {
             List<String>stepKeyList = Arrays.asList(stepCtgKeys);
             //teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture(ctgKey, stepKeyList, teacherKey);
-            teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture2(ctgKey, stepKeyList, teacherKey);
+            teacherHomeLectureList = productMapper.selectVideoLectureListFromCategoryMenuFromApplyLecture2(menuCtgKey, ctgKey, stepKeyList, teacherKey);
             if (teacherHomeLectureList.size() > 0) {
                 for (TeacherHomeLectureVO vo : teacherHomeLectureList) {
                     for (TeacherHomeLectureListVO vo2 : vo.getTeacherLectureList()) {
@@ -764,14 +764,14 @@ public class ProductService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getApplyVideoLectureInfo(int teacherKey, int subjectCtgKey, String[] stepCtgKeys) {
+    public ApiResultListDTO getApplyVideoLectureInfo(int menuCtgKey, int teacherKey, int subjectCtgKey, String[] stepCtgKeys) {
         int resultCode = OK.value();
 
         List<TeacherHomeLectureVO> videoLectureList = new ArrayList<>();
         if (teacherKey == 0 || subjectCtgKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectCtgKey, stepCtgKeys, teacherKey);
+            videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(menuCtgKey, subjectCtgKey, stepCtgKeys, teacherKey);
         }
         return new ApiResultListDTO(videoLectureList, resultCode);
     }
