@@ -482,7 +482,9 @@ public class ExamService extends PagingSupport {
         );
         //본인관 평균성적 비교 값 주입
         achievementManagementDTO.setUserStaticsScore(examSubjectTotalVO.getStaticsAnswerScore());
-        achievementManagementDTO.setTotalStaticsScore(totalStaticsScore / examSubjectStaticsList.size());
+
+        if (totalStaticsScore > 0) achievementManagementDTO.setTotalStaticsScore(totalStaticsScore / examSubjectStaticsList.size());
+        else achievementManagementDTO.setTotalStaticsScore(0);
 
         return new ApiResultObjectDTO(achievementManagementDTO, resultCode);
     }
