@@ -276,7 +276,8 @@ public class ExamService extends PagingSupport {
                     subjectStaticsGraphCategoryNameList.add(vo.getSubjectName());
                     subjectStaticsGraphTopTenDataList.add(tenPercentScore);
                     subjectStaticsGraphTopThirtyDataList.add(thirtyPercentScore);
-                    subjectStaticsGraphMyDataList.add(examCompareTotalStaticsVO.getTotalSubjectScore());
+                    //subjectStaticsGraphMyDataList.add(examCompareTotalStaticsVO.getTotalSubjectScore());
+                    subjectStaticsGraphMyDataList.add((double)vo.getAnswerScore());
 
                     //유형별 정답률
                     List<ScoreRateGraphVO> scoreRateByTypeList = examMapper.selectScoreRateByStepCtgKey(vo.getExamQuesBankSubjectKey(), vo.getUserKey());
