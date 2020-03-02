@@ -1033,7 +1033,7 @@
     </select>
     
     <select id="selectSpecialPackageIncludeProductList" resultType="SpecialPackageLectureVO">
-        SELECT B.G_KEY, B.EMPHASIS, B.NAME, C.LIMIT_DAY, F.IMAGE_LIST,
+        SELECT B.G_KEY, B.EMPHASIS, B.NAME, C.LIMIT_DAY, F.IMAGE_TEACHER_LIST as IMAGE_LIST,
                 (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.STEP_CTG_KEY) as stepName,
                 (SELECT COUNT(Z.LEC_KEY) FROM T_LEC_CURRI Z WHERE Z.LEC_KEY = C.LEC_KEY) as lectureCount
         FROM T_LINK_KEY A
