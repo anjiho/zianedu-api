@@ -259,6 +259,23 @@ public class ProductController {
         return productService.getLectureApplyTeacherTypeList(menuCtgKey, subjectMenuKeyStrs, teacherKeyStrs, stepCtgKeyStrs, goodsType);
     }
 
+    @RequestMapping(value = "/getApplyVideoLectureInfo/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("수강신청 > 강의 리스트 > 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "선생님 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 키값", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "stepCtgKeys", value = "유형 키값", dataType = "object", paramType = "query", required = false)
+    })
+    public ApiResultListDTO getApplyVideoLectureInfo(@PathVariable("teacherKey") int teacherKey,
+                                                     @RequestParam(value = "subjectCtgKey") int subjectCtgKey,
+                                                     @RequestParam(value = "stepCtgKeys", defaultValue = "", required = false) String stepCtgKeys) {
+        String[] stepCtgKeyStrs = new String[0];
+
+        if (!"".equals(Util.isNullValue(stepCtgKeys, ""))) stepCtgKeyStrs = GsonUtil.convertToStringArrayFromString(stepCtgKeys);
+
+        return productService.getApplyVideoLectureInfo(teacherKey, subjectCtgKey, stepCtgKeyStrs);
+    }
+
     @RequestMapping(value = "/getSpecialPackageSubjectList/{menuCtgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("수강신청 > 패키지 과목 리스트 가져오기")
     @ApiImplicitParams({

@@ -724,8 +724,8 @@ public class ProductService extends PagingSupport {
                                 if (subjectVO.getCtgKey() == teacherTypeVO.getSubjectCtgKey()) {
                                     productDTO.setTeacherTypeInfo(teacherTypeList);
                                 }
-                                List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(teacherTypeVO.getSubjectCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
-                                teacherTypeVO.setVideoLectureInfo(videoLectureList);
+//                                List<TeacherHomeLectureVO> videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(teacherTypeVO.getSubjectCtgKey(), stepCtgKeys, teacherTypeVO.getTeacherKey());
+//                                teacherTypeVO.setVideoLectureInfo(videoLectureList);
                             }
                         }
                     } else if (GoodsType.getGoodsTypeKey(goodsType) == 2) {
@@ -761,6 +761,19 @@ public class ProductService extends PagingSupport {
             }
         }
         return new ApiResultObjectDTO(lectureApplyProductList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getApplyVideoLectureInfo(int teacherKey, int subjectCtgKey, String[] stepCtgKeys) {
+        int resultCode = OK.value();
+
+        List<TeacherHomeLectureVO> videoLectureList = new ArrayList<>();
+        if (teacherKey == 0 || subjectCtgKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            videoLectureList = this.getLectureApplyVideoLectureListFromCategoryMenu(subjectCtgKey, stepCtgKeys, teacherKey);
+        }
+        return new ApiResultListDTO(videoLectureList, resultCode);
     }
 
     @Transactional(readOnly = true)
