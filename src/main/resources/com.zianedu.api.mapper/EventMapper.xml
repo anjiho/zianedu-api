@@ -92,7 +92,7 @@
             <if test="eventEndDate != ''">EVENT_END_DATE = #{eventEndDate},</if>
             <if test="thumbnailPath != ''">THUMBNAIL_PATH = #{thumbnailPath},</if>
             <if test="targetUrl != ''">TARGET_URL = #{targetUrl},</if>
-            <if test="targetUrl != ''">TARGET_NAME = #{targetUrl},</if>
+            <if test="targetName != ''">TARGET_NAME = #{targetName},</if>
         </set>
         WHERE IDX = #{idx}
     </update>
