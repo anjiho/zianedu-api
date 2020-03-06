@@ -1132,7 +1132,13 @@
         SELECT COUNT(T.G_KEY) FROM (
             SELECT
                 (SELECT RES_TYPE FROM T_LINK_KEY TT WHERE A.G_KEY = TT.REQ_KEY) as onOffKey,
-                A.G_KEY
+                A.G_KEY,
+                (
+                    SELECT TT.CLASS_CTG_KEY
+                    FROM T_LINK_KEY T INNER JOIN T_EXAM_MASTER TT
+                    ON T.RES_KEY = TT.EXAM_KEY
+                    WHERE T.REQ_KEY = A.G_KEY
+                ) as classCtgKey
             FROM T_GOODS A
             WHERE A.TYPE = 4
             AND A.IS_SHOW = 1
