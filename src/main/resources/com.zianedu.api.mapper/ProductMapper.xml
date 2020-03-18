@@ -2295,7 +2295,7 @@
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
-        AND C.STEP_CTG_KEY = 207
+        AND C.STEP_CTG_KEY = 204
         )T
         WHERE T.TEACHER_KEY = TT.TEACHER_KEY
         GROUP BY T.TEACHER_KEY
@@ -2323,7 +2323,7 @@
         AND B.IS_SHOW = 1
         AND B.IS_SELL =1
         AND C.SUBJECT_CTG_KEY = TT.SUBJECT_CTG_KEY
-        AND C.STEP_CTG_KEY = 4172
+        AND C.STEP_CTG_KEY = 767
         )T
         WHERE T.TEACHER_KEY = TT.TEACHER_KEY
         GROUP BY T.TEACHER_KEY
@@ -2690,7 +2690,7 @@
         UPDATE T_ORDER_LEC
         SET START_DT = sysdate
         WHERE J_G_KEY IN (
-            SELECT J_G_KEY FROM ZIANEDU.T_ORDER_GOODS WHERE USER_KEY = #{userKey} AND TYPE = 1
+            SELECT J_G_KEY FROM T_ORDER_GOODS WHERE USER_KEY = #{userKey} AND TYPE = 1
         )
         AND START_DT IS NULL
     </update>
