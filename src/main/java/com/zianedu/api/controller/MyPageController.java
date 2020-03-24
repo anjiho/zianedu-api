@@ -190,6 +190,15 @@ public class MyPageController {
         return myPageService.getZianPassProductList(userKey);
     }
 
+    @RequestMapping(value = "/getPackageSignUpList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 패키지 상품 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자키 값(41677)", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultListDTO getPackageSignUpList(@PathVariable("userKey") int userKey) {
+        return myPageService.getSignUpPackageProductList(userKey);
+    }
+
     @RequestMapping(value = "/getSignUpZianPassTypeList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 지안패스 유형 목록")
     @ApiImplicitParams({
@@ -198,6 +207,16 @@ public class MyPageController {
     })
     public ApiResultListDTO getSignUpZianPassTypeList(@PathVariable("jKey") int jKey, @RequestParam("deviceType") String deviceType) {
         return myPageService.getSignUpZianPassTypeList(jKey, deviceType);
+    }
+
+    @RequestMapping(value = "/getSignUpPackageTypeList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 패키지 유형 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jKey", value = "주문 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultListDTO getSignUpPackageTypeList(@PathVariable("jKey") int jKey, @RequestParam("deviceType") String deviceType) {
+        return myPageService.getSignUpPackageTypeList(jKey, deviceType);
     }
 
     @RequestMapping(value = "/getSignUpZianPassSubjectNameList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

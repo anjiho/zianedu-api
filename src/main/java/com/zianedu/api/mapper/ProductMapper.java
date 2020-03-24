@@ -160,7 +160,11 @@ public interface ProductMapper {
 
     List<ZianPassSignUpVO> selectSignUpZianPassList(@Param("userKey") int userKey);
 
+    List<ZianPassSignUpVO> selectSignUpPackageList(@Param("userKey") int userKey);
+
     List<TypeDTO> selectSignUpZianPassTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
+
+   // List<TypeDTO> selectSignUpPackageTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
 
     List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
                                          @Param("deviceType") String deviceType);

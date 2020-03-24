@@ -1666,6 +1666,25 @@
         ]]>
     </select>
 
+    <select id="selectSignUpPackageList" resultType="ZianPassSignUpVO">
+        SELECT A.J_G_KEY, A.J_KEY, A.G_KEY, A.G_NAME
+        FROM T_ORDER_GOODS A
+        LEFT OUTER JOIN T_ORDER B
+        ON A.J_KEY = B.J_KEY
+        LEFT OUTER JOIN T_PROMOTION C
+        ON A.G_KEY = C.G_KEY
+        WHERE A.type = 5
+        AND A.pm_type = 1
+        AND B.PAY_STATUS = 2
+        AND B.USER_KEY = #{userKey}
+         <![CDATA[
+        AND TO_DATE(B.PAY_DATE, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
+         ]]>
+        <![CDATA[
+        AND (B.pay_date + C.LIMIT_DAY)  >= TO_CHAR(sysdate, 'YYYY-MM-DD');
+         ]]>
+    </select>
+
     <select id="selectSignUpZianPassTypeList" resultType="com.zianedu.api.dto.TypeDTO">
         SELECT * FROM (
             SELECT

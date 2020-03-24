@@ -386,6 +386,32 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpPackageProductList(int userKey) {
+        int resultCode = OK.value();
+
+        List<ZianPassSignUpVO> zianPassList = new ArrayList<>();
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassList = productMapper.selectSignUpPackageList(userKey);
+        }
+        return new ApiResultListDTO(zianPassList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultListDTO getSignUpPackageTypeList(int jKey, String device) {
+        int resultCode = OK.value();
+
+        List<TypeDTO> zianPassTypeList = new ArrayList<>();
+        if (jKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(jKey, device);
+        }
+        return new ApiResultListDTO(zianPassTypeList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
     public ApiResultListDTO getSignUpAcademyTypeList(int userKey) {
         int resultCode = OK.value();
 
