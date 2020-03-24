@@ -1681,7 +1681,7 @@
         AND TO_DATE(B.PAY_DATE, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
          ]]>
         <![CDATA[
-        AND (B.pay_date + C.LIMIT_DAY)  >= TO_CHAR(sysdate, 'YYYY-MM-DD');
+        AND (B.pay_date + C.LIMIT_DAY)  >= TO_CHAR(sysdate, 'YYYY-MM-DD')
          ]]>
     </select>
 
