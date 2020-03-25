@@ -2679,8 +2679,8 @@
         SELECT START_DT FROM T_ORDER_LEC WHERE J_LEC_KEY = #{jLecKey}
     </select>
 
-    <select id="selectPromotionGKeyFromByJKey" resultType="int">
-        SELECT G_KEY FROM T_ORDER_GOODS
+    <select id="selectPromotionGKeyFromByJKey" resultType="TOrderGoodsVO">
+        SELECT * FROM T_ORDER_GOODS
         WHERE J_PM_KEY = 0
         AND J_KEY = #{jKey}
     </select>

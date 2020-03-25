@@ -134,11 +134,15 @@ public class MyPageService extends PagingSupport {
                 Integer progressRate = productMapper.selectOnlineLectureProgressRate(jLecKey);
                 onlineSubjectListVO.setProgressRateName(progressRate + "%");
 
-                int promotionGKey = productMapper.selectPromotionGKeyFromByJKey(onlineSubjectListVO.getJKey());
-                TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(promotionGKey);
+                TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJKey(onlineSubjectListVO.getJKey());
+                TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(orderGoodsVO.getGKey());
                 if (promotionVO != null) {
-                    onlineSubjectListVO.setLimitDay(promotionVO.getLimitDay());
-                    onlineSubjectListVO.setEndDate(Util.plusDate2(onlineSubjectListVO.getStartDt(), promotionVO.getLimitDay()));
+                    int limitDay = promotionVO.getLimitDay();
+                    if (orderGoodsVO.getKind() < 100) {
+                        limitDay = (30 * orderGoodsVO.getKind());
+                    }
+                    onlineSubjectListVO.setLimitDay(limitDay);
+                    onlineSubjectListVO.setEndDate(Util.plusDate2(onlineSubjectListVO.getStartDt(), limitDay));
                 }
             }
         }
