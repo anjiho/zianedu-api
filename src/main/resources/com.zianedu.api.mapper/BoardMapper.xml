@@ -346,7 +346,7 @@
     <select id="selectBoardCommentList" resultType="CommentListVO">
         SELECT
             /*+index_asc (A PK_T_BBS_COMMENT) */
-            TO_CHAR(A.INDATE, 'YYYY.MM.DD 24hh:mm:ss') as indate, A.COMMENT_ as contents,
+            TO_CHAR(A.INDATE, 'YYYY.MM.DD hh24:mm:ss') as indate, A.COMMENT_ as contents,
             (SELECT USER_ID FROM T_USER T WHERE T.USER_KEY = A.USER_KEY) as userId,
             (SELECT NAME FROM T_USER T WHERE T.USER_KEY = A.USER_KEY) as userName
         FROM T_BBS_COMMENT A
