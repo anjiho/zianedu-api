@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class OnlineSubjectListVO implements LectureProgressRateContain {
 
+    private int jKey;
+
     private int jGKey;
 
     private int gKey;

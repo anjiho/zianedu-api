@@ -227,6 +227,8 @@ public interface ProductMapper {
 
     String selectTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 
+    int selectPromotionGKeyFromByJKey(@Param("jKey") int jKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
