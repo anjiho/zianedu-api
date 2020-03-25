@@ -409,6 +409,7 @@ public class TeacherService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             ReferenceRoomDetailVO referenceRoomDetailVO = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
+            List<CommentListVO> commentList = new ArrayList<>();
             if (referenceRoomDetailVO != null) {
                 //파일정보 주입 시작
                 List<BbsFileDataVO> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
@@ -427,13 +428,15 @@ public class TeacherService extends PagingSupport {
                     referenceRoomDetailVO.setFileInfo(fileInfoList);
                     //파일정보 주입 끝
                 }
+                commentList = boardMapper.selectBoardCommentList(bbsKey);
             }
             detailDTO = new ReferenceRoomDetailDTO(
                     //학습자료실 상세정보
                     referenceRoomDetailVO,
                     //하단 이전글, 다음글
                     boardMapper.selectTeacherReferenceRoomPrevNext(
-                            BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
+                            BbsMasterKeyType.LEARNING_REFERENCE_ROOM.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice()),
+                    commentList
             );
             //ReadCount 증가
             boardMapper.updateTBbsReadCount(bbsKey);
@@ -451,6 +454,7 @@ public class TeacherService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             ReferenceRoomDetailVO referenceRoomDetailVO = boardMapper.selectTeacherReferenceRoomDetailInfo(bbsKey);
+            List<CommentListVO> commentList = new ArrayList<>();
             if (referenceRoomDetailVO != null) {
                 //파일정보 주입 시작
                 List<BbsFileDataVO> fileNameList = boardMapper.selectTBbsDataFileNameList(bbsKey);
@@ -469,6 +473,7 @@ public class TeacherService extends PagingSupport {
                     referenceRoomDetailVO.setFileInfo(fileInfoList);
                     //파일정보 주입 끝
                 }
+                commentList = boardMapper.selectBoardCommentList(bbsKey);
             }
             detailDTO = new ReferenceRoomDetailDTO(
                     //학습자료실 상세정보
@@ -478,7 +483,8 @@ public class TeacherService extends PagingSupport {
 //                            BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice())
                     boardMapper.selectBoardPrevNextInfoByReply(
                             BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey, bbsKey, referenceRoomDetailVO.getIsNotice()
-                    )
+                    ),
+                    commentList
             );
             //ReadCount 증가
             boardMapper.updateTBbsReadCount(bbsKey);
