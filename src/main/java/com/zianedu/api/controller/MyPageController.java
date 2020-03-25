@@ -202,10 +202,11 @@ public class MyPageController {
     @RequestMapping(value = "/getPackageSignUpList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 패키지 상품 목록")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userKey", value = "사용자키 값(41677)", dataType = "int", paramType = "path", required = true)
+            @ApiImplicitParam(name = "userKey", value = "사용자키 값(41677)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
     })
-    public ApiResultListDTO getPackageSignUpList(@PathVariable("userKey") int userKey) {
-        return myPageService.getSignUpPackageProductList(userKey);
+    public ApiResultListDTO getPackageSignUpList(@PathVariable("userKey") int userKey, @RequestParam("deviceType") String deviceType) {
+        return myPageService.getSignUpPackageProductList(userKey, deviceType);
     }
 
     @RequestMapping(value = "/getSignUpZianPassTypeList/{jKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

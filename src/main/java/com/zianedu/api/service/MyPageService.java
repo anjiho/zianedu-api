@@ -415,14 +415,18 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSignUpPackageProductList(int userKey) {
+    public ApiResultListDTO getSignUpPackageProductList(int userKey, String deviceType) {
         int resultCode = OK.value();
 
         List<ZianPassSignUpVO> zianPassList = new ArrayList<>();
         if (userKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            zianPassList = productMapper.selectSignUpPackageList(userKey);
+            int kind = 0;
+            if ("PC".equals(deviceType)) kind = 100;
+            else if ("MOBILE".equals(deviceType)) kind = 101;
+
+            zianPassList = productMapper.selectSignUpPackageList(userKey, kind);
         }
         return new ApiResultListDTO(zianPassList, resultCode);
     }

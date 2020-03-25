@@ -1689,6 +1689,9 @@
         WHERE A.type = 5
         AND A.pm_type = 1
         AND B.PAY_STATUS = 2
+        <if test="kind > 0">
+            AND KIND = #{kind}
+        </if>
         AND B.USER_KEY = #{userKey}
          <![CDATA[
         AND TO_DATE(B.PAY_DATE, 'YYYY-MM-DD') <= TO_CHAR(sysdate, 'YYYY-MM-DD')
