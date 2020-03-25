@@ -224,7 +224,8 @@
             E.J_LEC_KEY,
             E.PAUSE_CNT,
             E.LIMIT_DAY,
-            DECODE(E.PAUSE_START_DT, '', '0','1') as isPause
+            DECODE(E.PAUSE_START_DT, '', '0','1') as isPause,
+            E.start_dt
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
@@ -1251,6 +1252,18 @@
             INNER JOIN T_GOODS B
             ON A.RES_KEY = B.G_KEY
             WHERE A.REQ_KEY = #{promotionGKey}
+            AND A.RES_TYPE = 1
+        )
+    </select>
+    
+    <select id="selectTPromotionInfoByLinkGKey" resultType="TPromotionVO">
+        SELECT * FROM T_PROMOTION
+        WHERE G_KEY IN (
+            SELECT A.REQ_KEY
+            FROM T_LINK_KEY A
+            INNER JOIN T_GOODS B
+            ON A.RES_KEY = B.G_KEY
+            WHERE A.RES_KEY = #{gKey}
             AND A.RES_TYPE = 1
         )
     </select>

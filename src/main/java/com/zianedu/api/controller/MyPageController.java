@@ -97,8 +97,17 @@ public class MyPageController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
     })
-    public ApiResultObjectDTO getUserVideoOnlineSignUpList(@PathVariable("jLecKey") int jLecKey) {
+    public ApiResultObjectDTO getUserVideoOnlineSignUpList(@PathVariable("jLecKey") int jLecKey) throws Exception {
         return myPageService.getUserVideoOnlineSignUpLectureList(jLecKey);
+    }
+
+    @RequestMapping(value = "/getPromotionUserVideoOnlineSignUpLectureList/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 프로모션(패키지, 지안패스) > 수강중인강좌 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jLecKey", value = "주문 강좌 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getPromotionUserVideoOnlineSignUpLectureList(@PathVariable("jLecKey") int jLecKey) throws Exception {
+        return myPageService.getPromotionUserVideoOnlineSignUpLectureList(jLecKey);
     }
 
     @RequestMapping(value = "/getOnlineLectureDetail/{jLecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)

@@ -37,6 +37,8 @@ public class OnlineSubjectListVO implements LectureProgressRateContain {
 
     private int isPause;
 
+    private String startDt;
+
     @Override
     public Integer jLecKey() {
         return jLecKey;

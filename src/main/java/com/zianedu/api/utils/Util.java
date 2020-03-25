@@ -925,6 +925,20 @@ public class Util {
         return (df.format(cal.getTime()));
     }
 
+    public static String plusDate2(String fromDate, int plusDay) throws Exception {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = df.parse(fromDate);
+        // 날짜 더하기
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, plusDay);
+        String addDate = df.format(cal.getTime());
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(addDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        //return (df.format(cal.getTime()));
+        return sdf.format(date1);
+    }
+
     public static int getCornRewardByPercent(int corn, int percent) {
         float calcPercent = percent * (float) 0.01;
         int rewardPopcorn = (int)((corn * 10 ) * Float.valueOf(String.format("%.2f", calcPercent)));
@@ -1029,12 +1043,7 @@ public class Util {
     }
 
     public static void main(String[] args) throws Exception {
-        List<Integer>list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        Integer num[] = StringUtils.arrayIntegerListToStringArray(list);
+        System.out.println(plusDate2("2020-03-25", 90));
     }
 }
 

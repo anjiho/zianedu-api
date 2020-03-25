@@ -118,6 +118,8 @@ public interface ProductMapper {
 
     List<TCartLinkGoodsVO> selectGoodsPriceOptionListBySpecialPackage(@Param("kind") int kind, @Param("promotionGKey") int promotionGKey);
 
+    TPromotionVO selectTPromotionInfoByLinkGKey(@Param("gKey") int gKey);
+
     Integer selectZianPassPageKeyFromGKey(@Param("gKey") int gKey);
 
     List<Integer> selectGoodsPriceOptionListByZianPass(@Param("gKey") int gKey);

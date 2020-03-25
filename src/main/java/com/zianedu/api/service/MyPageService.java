@@ -12,6 +12,7 @@ import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,7 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultObjectDTO getUserVideoOnlineSignUpLectureList(int jLecKey) {
+    public ApiResultObjectDTO getUserVideoOnlineSignUpLectureList(int jLecKey) throws Exception {
         int resultCode = OK.value();
         OnlineSubjectListVO onlineSubjectListVO = new OnlineSubjectListVO();
 
@@ -115,6 +116,29 @@ public class MyPageService extends PagingSupport {
             if (onlineSubjectListVO != null) {
                 Integer progressRate = productMapper.selectOnlineLectureProgressRate(jLecKey);
                 onlineSubjectListVO.setProgressRateName(progressRate + "%");
+            }
+        }
+        return new ApiResultObjectDTO(onlineSubjectListVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getPromotionUserVideoOnlineSignUpLectureList(int jLecKey) throws Exception {
+        int resultCode = OK.value();
+        OnlineSubjectListVO onlineSubjectListVO = new OnlineSubjectListVO();
+
+        if (jLecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            onlineSubjectListVO = productMapper.selectLectureDetailInfoByJLecKey(jLecKey);
+            if (onlineSubjectListVO != null) {
+                Integer progressRate = productMapper.selectOnlineLectureProgressRate(jLecKey);
+                onlineSubjectListVO.setProgressRateName(progressRate + "%");
+
+                TPromotionVO promotionVO = productMapper.selectTPromotionInfoByLinkGKey(onlineSubjectListVO.getGKey());
+                if (promotionVO != null) {
+                    onlineSubjectListVO.setLimitDay(promotionVO.getLimitDay());
+                    onlineSubjectListVO.setEndDate(Util.plusDate2(onlineSubjectListVO.getStartDt(), promotionVO.getLimitDay()));
+                }
             }
         }
         return new ApiResultObjectDTO(onlineSubjectListVO, resultCode);
