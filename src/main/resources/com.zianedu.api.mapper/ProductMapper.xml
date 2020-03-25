@@ -1690,7 +1690,7 @@
         AND A.pm_type = 1
         AND B.PAY_STATUS = 2
         <if test="kind > 0">
-            AND KIND = #{kind}
+            AND A.KIND = #{kind}
         </if>
         AND B.USER_KEY = #{userKey}
          <![CDATA[
