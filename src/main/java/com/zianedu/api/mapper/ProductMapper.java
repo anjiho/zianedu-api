@@ -229,6 +229,8 @@ public interface ProductMapper {
 
     TOrderGoodsVO selectPromotionGKeyFromByJKey(@Param("jKey") int jKey);
 
+    TLecCurriVO selectVodSampleByGKey(@Param("gKey") int gKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

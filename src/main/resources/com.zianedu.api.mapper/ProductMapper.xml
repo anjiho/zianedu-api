@@ -2688,6 +2688,17 @@
         AND J_KEY = #{jKey}
     </select>
 
+    <select id="selectVodSampleByGKey" resultType="TLecCurriVO">
+        SELECT
+            CONCAT('http://zianedu.star.skcdn.com/', VOD_FILE_LOW)  as vodFileLow,
+            CONCAT('http://zianedu.star.skcdn.com/', VOD_FILE_HIGH) as vodFileHigh
+        FROM T_LEC_CURRI
+        WHERE LEC_KEY = (
+            SELECT LEC_KEY FROM T_LEC where G_KEY = #{gKey}
+        )
+        AND ROWNUM =1
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

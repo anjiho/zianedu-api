@@ -52,4 +52,8 @@ public class TeacherHomeLectureListVO {
     private List<LectureBookVO> teacherLectureBook;
 
     private List<TLecCurriVO> lectureList;
+
+    private String vodFileLow;
+
+    private String vodFileHigh;
 }
