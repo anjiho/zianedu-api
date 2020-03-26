@@ -250,7 +250,7 @@ public class ProductService extends PagingSupport {
                         TLecCurriVO lecCurriVO = productMapper.selectVodSampleByGKey(vo2.getGKey());
                         vo2.setVodFileLow(lecCurriVO.getVodFileLow());
                         vo2.setVodFileHigh(lecCurriVO.getVodFileHigh());
-                        
+
                         vo2.setTeacherLectureBook(teacherBookList);
                     }
                 }
