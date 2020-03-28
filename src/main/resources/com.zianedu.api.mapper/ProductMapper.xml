@@ -581,6 +581,10 @@
         SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
     </select>
 
+    <select id="selectGoodsPriceOptionOne" resultType="TGoodsPriceOptionVO">
+        SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
+    </select>
+
     <select id="selectLectureListFromVideoProduct" resultType="TLecCurriVO">
         SELECT ROW_NUMBER() OVER(ORDER BY T.CURRI_KEY) NUM, T.*
         FROM (

@@ -221,10 +221,13 @@ public class PaymentService {
                         orderMapper.insertTOrderPromotion(promotionVO);     //T_ORDER_PROMOTION 테이블 저장
 
                         List<TCartLinkGoodsVO> cartLinkGoodsList = new ArrayList<>();
+                        int packageLimitDay = 0;
                         if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {   // 자유패키지일때
                             cartLinkGoodsList = orderMapper.selectCartLinkGoodsList(cartGoodsLinkCartKey);
                         } else if (vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()) {    //특별패키지
                             cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(vo.getKind(), vo.getGKey());
+                            TPromotionVO tPromotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
+                            packageLimitDay = tPromotionVO.getLimitDay();
                         } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey() || vo.getPmType() == PromotionPmType.YEAR_MEMBER.getPromotionPmKey()) {    //지안패스, 연간회원제일때
                             //cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(0, vo.getGKey());
                             cartLinkGoodsList = new ArrayList<>();
@@ -245,7 +248,7 @@ public class PaymentService {
 
                                 TLecVO lecVO = productMapper.selectTLecInfo(linkGoodsVO.getGKey());
                                 tOrderLecVO = new TOrderLecVO(
-                                        tOrderGoodsVO2.getJGKey(), 0, "", lecVO.getLimitDay(), lecVO.getMultiple()
+                                        tOrderGoodsVO2.getJGKey(), 0, "", packageLimitDay, lecVO.getMultiple()
                                 );
                                 //T_ORDER_LEC 저장
                                 paymentMapper.insertTOrderLec(tOrderLecVO);

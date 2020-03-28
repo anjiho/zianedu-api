@@ -60,6 +60,8 @@ public interface ProductMapper {
 
     List<TGoodsPriceOptionVO> selectGoodsPriceOption(@Param("gKey") int gKey);
 
+    TGoodsPriceOptionVO selectGoodsPriceOptionOne(@Param("gKey") int gKey);
+
     List<TLecCurriVO> selectLectureListFromVideoProduct(@Param("gKey") int gKey, @Param("device") int device);
 
     int selectLectureListFromVideoProductCount(@Param("gKey") int gKey);
