@@ -330,7 +330,7 @@
         SELECT A.J_LEC_KEY, C.NAME,
                TO_CHAR(A.START_DT, 'YYYY-MM-DD') as startDt,
                TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt,
-               (60 - A.PAUSE_DAY) as remainDay
+               (60 - A.PAUSE_TOTAL_DAY) as remainStopDay
         FROM T_ORDER_LEC A
         INNER JOIN T_ORDER_GOODS B
         ON A.J_G_KEY = B.J_G_KEY
@@ -2704,6 +2704,12 @@
         AND ROWNUM =1
     </select>
 
+    <select id="selectPauseTotalDay" resultType="int">
+        SELECT CEIL((sysdate - T_ORDER_LEC.PAUSE_START_DT)) as pauseTotalDay
+        FROM T_ORDER_LEC
+        WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>
@@ -2713,6 +2719,9 @@
             <if test="pauseDay > 0">
                 PAUSE_START_DT = sysdate,
                 PAUSE_CNT = PAUSE_CNT + 1,
+            </if>
+            <if test="pauseTotalDay > 0">
+                PAUSE_TOTAL_DAY = PAUSE_TOTAL_DAY + #{pauseTotalDay},
             </if>
             PAUSE_DAY = #{pauseDay}
         </set>

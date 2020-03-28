@@ -269,7 +269,12 @@ public class MyPageService extends PagingSupport {
         if (jLecKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            videoPausePopupVO = productMapper.selectVideoPauseRequestPopup(jLecKey);
+            int pauseCnt = productMapper.selectTOrderLecPauseCnt(jLecKey);
+            if (pauseCnt >= 3) {
+                resultCode = ZianErrCode.CUSTOM_PAUSE_LIMIT_OVER_VIDEO.code();
+            } else {
+                videoPausePopupVO = productMapper.selectVideoPauseRequestPopup(jLecKey);
+            }
         }
         return new ApiResultObjectDTO(videoPausePopupVO, resultCode);
     }
@@ -289,14 +294,16 @@ public class MyPageService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             int pauseCnt = productMapper.selectTOrderLecPauseCnt(jLecKey);
-            if (pauseCnt >= 3) {
+            if (pauseCnt > 3) {
                 resultCode = ZianErrCode.CUSTOM_PAUSE_LIMIT_OVER_VIDEO.code();
             } else {
                 if ("STOP".equals(requestType)) {
-                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay);
+                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay, 0);
                 } else if ("START".equals(requestType)) {
-                    pauseDay = 0;
-                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay);
+                    int pauseTotalDay = productMapper.selectPauseTotalDay(jLecKey);
+                    if (pauseTotalDay > 0) {
+                        productMapper.updateTOrderLecPauseCnt(jLecKey, 0, pauseTotalDay);
+                    }
                 }
                 TOrderLecStartStopLogVO startStopLogVO = new TOrderLecStartStopLogVO(jLecKey, requestType);
                 productMapper.insertTOrderLecStartStopLog(startStopLogVO);

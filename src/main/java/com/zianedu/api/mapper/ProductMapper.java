@@ -233,13 +233,15 @@ public interface ProductMapper {
 
     TLecCurriVO selectVodSampleByGKey(@Param("gKey") int gKey);
 
+    int selectPauseTotalDay(@Param("jLecKey") int jLecKey);
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 
     void insertTOrderLecCurri(TOrderLecCurriVO tOrderLecCurriVO);
 
     /** UPDATE **/
-    void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
+    void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay, @Param("pauseTotalDay") int pauseTotalDay);
 
     void updateTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 
