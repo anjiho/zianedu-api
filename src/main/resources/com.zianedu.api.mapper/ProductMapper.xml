@@ -329,7 +329,8 @@
     <select id="selectVideoPauseRequestPopup" resultType="VideoPausePopupVO">
         SELECT A.J_LEC_KEY, C.NAME,
                TO_CHAR(A.START_DT, 'YYYY-MM-DD') as startDt,
-               TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt
+               TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt,
+               (60 - A.PAUSE_DAY) as remainDay
         FROM T_ORDER_LEC A
         INNER JOIN T_ORDER_GOODS B
         ON A.J_G_KEY = B.J_G_KEY

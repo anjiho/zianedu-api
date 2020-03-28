@@ -12,4 +12,6 @@ public class VideoPausePopupVO {
     private String startDt;
 
     private String endDt;
+
+    private int remainDay;
 }
