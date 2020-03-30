@@ -235,6 +235,8 @@ public interface ProductMapper {
 
     int selectPauseTotalDay(@Param("jLecKey") int jLecKey);
 
+    List<TOrderLecVO> selectTOrderLecListAtStopRelease();
+
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
 

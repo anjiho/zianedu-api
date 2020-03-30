@@ -2710,6 +2710,18 @@
         WHERE J_LEC_KEY = #{jLecKey}
     </select>
 
+    <select id="selectTOrderLecListAtStopRelease" resultType="TOrderLecVO">
+        SELECT *  FROM (
+            SELECT A.*, TO_CHAR((PAUSE_START_DT + PAUSE_DAY), 'YYYY-MM-DD') as stopDay
+            FROM T_ORDER_LEC A
+            WHERE A.PAUSE_START_DT IS NOT NULL
+             <![CDATA[
+            AND A.PAUSE_CNT < 3
+             ]]>
+        ) Z
+        WHERE Z.stopDay = TO_CHAR((sysdate - 1), 'YYYY-MM-DD')
+    </select>
+
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
         UPDATE T_ORDER_LEC
         <set>

@@ -33,6 +33,9 @@ public class ConfigHolder {
     @Value("#{config['mail.send.address']}")
     private String mailSendAddress;
 
+    @Value("#{config['is.schedule']}")
+    private boolean isSchedule;
+
 
     public static String getFileDomainUrl() {
         return configHolder.fileDomainUrl;
@@ -60,6 +63,10 @@ public class ConfigHolder {
 
     public static String getMailSendAddress() {
         return configHolder.mailSendAddress;
+    }
+
+    public static boolean isSchedule() {
+        return configHolder.isSchedule;
     }
 
     @PostConstruct
