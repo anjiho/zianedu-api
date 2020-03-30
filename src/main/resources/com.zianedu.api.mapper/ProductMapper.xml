@@ -400,7 +400,8 @@
             E.PAUSE_DAY,
             B.USER_KEY,
             E.LIMIT_DAY,
-            (E.LIMIT_DAY + E.PAUSE_DAY) as changeLimitDay
+            (E.LIMIT_DAY + E.PAUSE_DAY) as changeLimitDay,
+            E.PAUSE_TOTAL_DAY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY

@@ -45,6 +45,8 @@ public class OnlineVideoPauseVO implements LectureProgressRateContain {
 
     private int changeLimitDay;
 
+    private int pauseTotalDay;
+
 
     @Override
     public Integer jLecKey() {
