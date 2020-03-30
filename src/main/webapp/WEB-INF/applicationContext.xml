@@ -126,7 +126,7 @@
         <property name="jobDetail" ref="lectureStopReleaseQuartz"/>
 <!--        <property name="cronExpression" value="0/10 * * * * ? "/>-->
         <!-- 새벽 00시 예약 -->
-<!--        <property name="cronExpression" value="0 00 12 * * ?"/>-->
+        <property name="cronExpression" value="0 00 12 * * ?"/>
 
     </bean>
 
