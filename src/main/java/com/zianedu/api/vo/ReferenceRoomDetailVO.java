@@ -26,5 +26,7 @@ public class ReferenceRoomDetailVO {
 
     private int pwd;
 
+    private int writeUserKey;
+
     private List<FileInfoDTO> fileInfo;
 }
