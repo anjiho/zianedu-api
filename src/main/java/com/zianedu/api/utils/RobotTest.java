@@ -85,7 +85,7 @@ public class RobotTest {
         }
     }
 
-    public static void jump() throws Exception {
+    public static void jump1() throws Exception {
         Robot robot = new Robot();
         //10번동안
         for (int i=0; i<60; i++) {
