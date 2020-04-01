@@ -75,6 +75,7 @@ public class PaymentController {
             @ApiImplicitParam(name = "userKey", value = "사용자키", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "price", value = "상품총 가격", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "pricePay", value = "결제할 가격", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "payType", value = "결제종류", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "point", value = "적립될 총 포인트", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "discountPoint", value = "사용한 포인트", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "deliveryPrice", value = "배송비", dataType = "int", paramType = "query", required = false),
