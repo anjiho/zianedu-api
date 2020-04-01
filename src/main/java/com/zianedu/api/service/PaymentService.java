@@ -200,7 +200,7 @@ public class PaymentService {
                 int jGKey = tOrderGoodsVO.getJGKey();
 
                 //결제완료이고 동영상상품이면 T_ORDER_LEC 테이블에 정보 저장
-                if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 1) {
+                if (tGoodsVO.getType() == 1) {
                     /**
                      * TODO 동영상 상품이 정상결제일때 필요한 정보 저장
                      */
@@ -210,7 +210,7 @@ public class PaymentService {
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
                     }
-                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
+                } else if (tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
                     /**
                      * TODO 자유패키지, 특별패키지 상품이 정상결제일때 필요한 동영상 강좌정보 저장
                      */
