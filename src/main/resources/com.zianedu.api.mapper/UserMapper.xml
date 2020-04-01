@@ -140,6 +140,13 @@
         </if>
     </select>
 
+    <select id="">
+        SELECT COUNT(IDX)
+        FROM T_DEVICE_CHANGE_CODE
+        WHERE USER_KEY = #{userKey}
+
+    </select>
+
     <insert id="insertUserInfo" parameterType="TUserVO">
         <selectKey resultType="Integer" keyProperty="userKey" order="BEFORE">
             SELECT T_USER_SEQ.nextval FROM DUAL

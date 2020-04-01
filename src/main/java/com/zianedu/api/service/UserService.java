@@ -352,16 +352,16 @@ public class UserService extends ApiResultKeyCode {
                     limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId, osVersion, appVersion);
                 }
                 userMapper.insertTDeviceLimit(limitVO);
-                TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
-                if (deviceLimitVO != null) {
-                    String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
-                    TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
-                            deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
-                            deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
-                            deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
-                    );
-                    userMapper.insertTDeviceLimitLog(limitLogVO);
-                }
+//                TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
+//                if (deviceLimitVO != null) {
+//                    String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
+//                    TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
+//                            deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
+//                            deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
+//                            deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
+//                    );
+//                    userMapper.insertTDeviceLimitLog(limitLogVO);
+//                }
                 this.updateTOrderLecStartDt(jLecKey);
                 bl = true;
             }
