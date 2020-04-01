@@ -407,14 +407,15 @@ public class MyPageService extends PagingSupport {
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSinUpZianPassLectureNameList(int jKey, String deviceType, int stepCtgKey) {
+    public ApiResultListDTO getSinUpZianPassLectureNameList(int jGKey, String deviceType, int stepCtgKey) {
         int resultCode = OK.value();
 
         List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
-        if (jKey == 0 && "".equals(deviceType)) {
+        if (jGKey == 0 && "".equals(deviceType)) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            signUpLectureNameList = productMapper.selectZianPassSubjectNameList(jKey, stepCtgKey, deviceType);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jGKey);
+            signUpLectureNameList = productMapper.selectZianPassSubjectNameList(orderPromotionVO.getJPmKey(), stepCtgKey, deviceType);
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }

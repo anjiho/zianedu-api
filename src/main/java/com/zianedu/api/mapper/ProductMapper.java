@@ -170,7 +170,7 @@ public interface ProductMapper {
 
    // List<TypeDTO> selectSignUpPackageTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
 
-    List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
+    List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jPmKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
                                          @Param("deviceType") String deviceType);
 
     List<TLecCurriVO> selectVideoLectureListByJLecKey(@Param("jLecKey") int jLecKey, @Param("deviceType") String deviceType);

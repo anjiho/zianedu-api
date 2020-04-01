@@ -1754,7 +1754,7 @@
         ON C.G_KEY = D.G_KEY
         INNER JOIN T_ORDER_LEC E
         ON A.J_G_KEY = E.J_G_KEY
-        WHERE A.J_KEY = #{jKey}
+        WHERE A.J_PM_KEY = #{jPmKey}
         AND A.J_PM_KEY > 0
         AND E.PAUSE_DAY = 0
         <if test="stepCtgKey > 0">
