@@ -231,6 +231,8 @@ public interface ProductMapper {
 
     TOrderGoodsVO selectPromotionGKeyFromByJGKey(@Param("jGKey") int jGKey);
 
+    TOrderPromotionVO selectTOrderPromotionInfo(@Param("jPmKey") int jPmKey);
+
     TLecCurriVO selectVodSampleByGKey(@Param("gKey") int gKey);
 
     int selectPauseTotalDay(@Param("jLecKey") int jLecKey);

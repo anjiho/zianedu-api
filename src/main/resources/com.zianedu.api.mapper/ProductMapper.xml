@@ -225,7 +225,8 @@
             E.PAUSE_CNT,
             E.LIMIT_DAY,
             DECODE(E.PAUSE_START_DT, '', '0','1') as isPause,
-            E.start_dt
+            E.start_dt,
+            A.J_PM_KEY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
@@ -2693,6 +2694,10 @@
         WHERE J_PM_KEY = 0
         AND PM_TYPE > 0
         AND J_G_KEY = #{jGKey}
+    </select>
+
+    <select id="selectTOrderPromotionInfo" resultType="TOrderPromotionVO">
+        SELECT * FROM T_ORDER_PROMOTION WHERE J_PM_KEY = #{jPmKey}
     </select>
 
     <select id="selectVodSampleByGKey" resultType="TLecCurriVO">
