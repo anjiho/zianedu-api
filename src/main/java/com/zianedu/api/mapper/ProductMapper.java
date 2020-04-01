@@ -166,7 +166,7 @@ public interface ProductMapper {
 
     List<ZianPassSignUpVO> selectSignUpPackageList(@Param("userKey") int userKey, @Param("kind") int kind);
 
-    List<TypeDTO> selectSignUpZianPassTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
+    List<TypeDTO> selectSignUpZianPassTypeList(@Param("jPmKey") int jPmKey, @Param("deviceType") String deviceType);
 
    // List<TypeDTO> selectSignUpPackageTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
 
