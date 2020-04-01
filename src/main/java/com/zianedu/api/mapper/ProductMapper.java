@@ -229,7 +229,7 @@ public interface ProductMapper {
 
     String selectTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 
-    TOrderGoodsVO selectPromotionGKeyFromByJKey(@Param("jKey") int jKey);
+    TOrderGoodsVO selectPromotionGKeyFromByJGKey(@Param("jGKey") int jGKey);
 
     TLecCurriVO selectVodSampleByGKey(@Param("gKey") int gKey);
 
