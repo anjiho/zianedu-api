@@ -2700,6 +2700,10 @@
         SELECT * FROM T_ORDER_PROMOTION WHERE J_PM_KEY = #{jPmKey}
     </select>
 
+    <select id="selectTOrderPromotionInfoByJGKey" resultType="TOrderPromotionVO">
+        SELECT * FROM T_ORDER_PROMOTION WHERE J_G_KEY = #{jGKey}
+    </select>
+
     <select id="selectVodSampleByGKey" resultType="TLecCurriVO">
         SELECT
             CONCAT('http://zianedu.star.skcdn.com/', VOD_FILE_LOW)  as vodFileLow,

@@ -11,17 +11,14 @@ import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
-import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -447,8 +444,9 @@ public class MyPageService extends PagingSupport {
         if (jKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJGKey(jKey);
-            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(orderGoodsVO.getJPmKey(), device);
+            //TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJGKey(jKey);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jKey);
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(orderPromotionVO.getJPmKey(), device);
         }
         return new ApiResultListDTO(zianPassTypeList, resultCode);
     }
