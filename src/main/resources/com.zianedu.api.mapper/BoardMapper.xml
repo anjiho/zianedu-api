@@ -306,7 +306,7 @@
         FROM T_BBS_DATA
         WHERE 1=1
         AND BBS_MASTER_KEY = #{bbsMasterKey}
-        AND IS_NOTICE IN (0)
+        AND IS_NOTICE IN (0, 1)
         <if test="searchType == 'title'">
             AND TITLE LIKE '%'||#{searchText}||'%'
         </if>
@@ -316,6 +316,25 @@
         <if test="searchType == 'content'">
             AND BBS_KEY IN (
                 SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
+            )
+        </if>
+    </select>
+
+    <select id="selectNoticeListCount2" resultType="Integer">
+        SELECT COUNT (BBS_KEY)
+        FROM T_BBS_DATA
+        WHERE 1=1
+        AND BBS_MASTER_KEY = #{bbsMasterKey}
+        AND IS_NOTICE IN (1)
+        <if test="searchType == 'title'">
+            AND TITLE LIKE '%'||#{searchText}||'%'
+        </if>
+        <if test="searchType == 'name'">
+            AND WRITE_USER_KEY IN (SELECT USER_KEY FROM T_USER WHERE NAME LIKE '%'||#{searchText}||'%')
+        </if>
+        <if test="searchType == 'content'">
+            AND BBS_KEY IN (
+            SELECT BBS_KEY FROM T_BBS_DATA WHERE CONTENTS LIKE '%'||#{searchText}||'%'
             )
         </if>
     </select>
