@@ -317,7 +317,7 @@ public class PaymentService {
                             }
                         }
                     }
-                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 4) {
+                } else if (tGoodsVO.getType() == 4) {
                     String onOff = "";
                     TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKey(vo.getGKey());
                     if (linkKeyVO.getResType() == 2) onOff = "2";
