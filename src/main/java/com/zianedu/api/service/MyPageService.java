@@ -91,14 +91,28 @@ public class MyPageService extends PagingSupport {
             //과목 리스트 주입
             List<SubjectDTO>subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
             //유형 리스트 주입
-            List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
+            //List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
 
             onlineSignUpDTO.setSubjectInfo(subjectList);
-            onlineSignUpDTO.setTypeInfo(typeList);
+           // onlineSignUpDTO.setTypeInfo(typeList);
 
             onlineSignUpDTO.setOnlineSignUpList(resultList);
         }
         return new ApiResultObjectDTO(onlineSignUpDTO, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultObjectDTO getUserVideoOnlineSignUpTypeList(int userKey, int subjectCtgKey, String deviceType) {
+        int resultCode = OK.value();
+        List<TypeDTO> typeList = new ArrayList<>();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //유형 리스트 주입
+            typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, subjectCtgKey, deviceType);
+        }
+        return new ApiResultObjectDTO(typeList, resultCode);
     }
 
     @Transactional(readOnly = true)

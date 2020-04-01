@@ -1593,6 +1593,7 @@
             ON A.J_G_KEY = E.J_G_KEY
             WHERE 1=1
             AND B.user_key = #{userKey}
+            AND D.SUBJECT_CTG_KEY = #{subjectCtgKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
