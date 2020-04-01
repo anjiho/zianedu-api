@@ -401,7 +401,8 @@ public class MyPageService extends PagingSupport {
         if (jKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(jKey, device);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jKey);
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(orderPromotionVO.getJPmKey(), device);
         }
         return new ApiResultListDTO(zianPassTypeList, resultCode);
     }
