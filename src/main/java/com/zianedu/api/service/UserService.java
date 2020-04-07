@@ -95,10 +95,37 @@ public class UserService extends ApiResultKeyCode {
             //회원가입에 의한 마일리지 주입
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
 
+
+            System.out.println("utf-8(1) : " + new String(regUser.getName().getBytes("utf-8"), "euc-kr"));
+            System.out.println("utf-8(2) : " + new String(regUser.getName().getBytes("utf-8"), "ksc5601"));
+            System.out.println("utf-8(3) : " + new String(regUser.getName().getBytes("utf-8"), "x-windows-949"));
+            System.out.println("utf-8(4) : " + new String(regUser.getName().getBytes("utf-8"), "iso-8859-1"));
+
+            System.out.println("iso-8859-1(1) : " + new String(regUser.getName().getBytes("iso-8859-1"), "euc-kr"));
+            System.out.println("iso-8859-1(2) : " + new String(regUser.getName().getBytes("iso-8859-1"), "ksc5601"));
+            System.out.println("iso-8859-1(3) : " + new String(regUser.getName().getBytes("iso-8859-1"), "x-windows-949"));
+            System.out.println("iso-8859-1(4) : " + new String(regUser.getName().getBytes("iso-8859-1"), "utf-8"));
+
+            System.out.println("euc-kr(1) : " + new String(regUser.getName().getBytes("euc-kr"), "ksc5601"));
+            System.out.println("euc-kr(2) : " + new String(regUser.getName().getBytes("euc-kr"), "utf-8"));
+            System.out.println("euc-kr(3) : " + new String(regUser.getName().getBytes("euc-kr"), "x-windows-949"));
+            System.out.println("euc-kr(4) : " + new String(regUser.getName().getBytes("euc-kr"), "iso-8859-1"));
+
+            System.out.println("ksc5601(1) : " + new String(regUser.getName().getBytes("ksc5601"), "euc-kr"));
+            System.out.println("ksc5601(2) : " + new String(regUser.getName().getBytes("ksc5601"), "utf-8"));
+            System.out.println("ksc5601(3) : " + new String(regUser.getName().getBytes("ksc5601"), "x-windows-949"));
+            System.out.println("ksc5601(4) : " + new String(regUser.getName().getBytes("ksc5601"), "iso-8859-1"));
+
+            System.out.println("x-windows-949(1) : " + new String(regUser.getName().getBytes("x-windows-949"), "euc-kr"));
+            System.out.println("x-windows-949(2) : " + new String(regUser.getName().getBytes("x-windows-949"), "utf-8"));
+            System.out.println("x-windows-949(3) : " + new String(regUser.getName().getBytes("x-windows-949"), "ksc5601"));
+            System.out.println("x-windows-949(4) : " + new String(regUser.getName().getBytes("x-windows-949"), "iso-8859-1"));
+
             String url = "http://118.217.181.175:8088/login/memberInsert.html";
             String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "utf-8");
             String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "utf-8");
             String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "utf-8");
+
             String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+newUserName+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+newAddressRoad+"&ADDRESS=" + newAddress;
             DateUtils.httpPost(url, paramStr);
         }
