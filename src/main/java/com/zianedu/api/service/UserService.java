@@ -122,9 +122,9 @@ public class UserService extends ApiResultKeyCode {
             System.out.println("x-windows-949(4) : " + new String(regUser.getName().getBytes("x-windows-949"), "iso-8859-1"));
 
             String url = "http://118.217.181.175:8088/login/memberInsert.html";
-            String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "utf-8");
-            String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "utf-8");
-            String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "utf-8");
+            String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "ksc5601");
+            String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "ksc5601");
+            String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "ksc5601");
 
             String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+newUserName+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+newAddressRoad+"&ADDRESS=" + newAddress;
             DateUtils.httpPost(url, paramStr);
