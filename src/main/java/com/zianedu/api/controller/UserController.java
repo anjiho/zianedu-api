@@ -62,7 +62,7 @@ public class UserController {
             //@ApiImplicitParam(name = "isMobileReg", value = "모바일여부", dataType = "int", paramType = "query", required = false),
 
     })
-    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) {
+    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) throws Exception {
         return userService.regUser(tUserVO);
     }
 
