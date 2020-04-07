@@ -95,7 +95,7 @@ public class UserController {
     })
     public ApiResultCodeDTO modifyUserPwd(@RequestParam("userKey") int userKey,
                                           @RequestParam("currentUserPwd") String currentUserPwd,
-                                          @RequestParam("changeUserPwd") String changeUserPwd) {
+                                          @RequestParam("changeUserPwd") String changeUserPwd) throws Exception {
         return userService.modifyUserPassword(userKey, currentUserPwd, changeUserPwd);
     }
 

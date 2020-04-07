@@ -153,6 +153,24 @@ public class UserService extends ApiResultKeyCode {
             TUserVO modifyTUserVO = new TUserVO(tUserVO);
             userMapper.updateUserInfo(modifyTUserVO);
             resultTUserVO = userMapper.selectUserInfoByUserKey(tUserVO.getUserKey());
+
+            Connection conn = null;
+            String user = "ZIANEDU";
+            String pwd = "wldks0815!";
+            String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, user, pwd);
+
+            CallableStatement cs = conn.prepareCall("UPDATE TB_MA_MEMBER SET PHONE_NO=?, ZIP_CODE=?,ADDRESS1=?,ADDRESS2=?,UPD_DT=SYSDATE WHERE USER_ID = ? ");
+            cs.setString(1, modifyTUserVO.getTelephoneMobile());
+            cs.setString(2, modifyTUserVO.getZipcode());
+            cs.setString(3, modifyTUserVO.getAddressRoad());
+            cs.setString(4, modifyTUserVO.getAddress());
+            cs.setString(5, resultTUserVO.getUserId());
+            cs.execute();
+
+            cs.close();
+            conn.close();
         }
         return new ApiResultObjectDTO( resultTUserVO, resultCode );
     }
@@ -165,7 +183,7 @@ public class UserService extends ApiResultKeyCode {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO modifyUserPassword(int userKey, String currentUserPwd,  String changeUserPwd) {
+    public ApiResultCodeDTO modifyUserPassword(int userKey, String currentUserPwd,  String changeUserPwd) throws Exception {
         int resultCode = OK.value();
 
         if (userKey == 0 && "".equals(Util.isNullValue(currentUserPwd, "")) && "".equals(Util.isNullValue(changeUserPwd, ""))) {
@@ -180,6 +198,22 @@ public class UserService extends ApiResultKeyCode {
                 //현재 비밀번호가 맞으면 새로운 비밀번호로 업데이트
                 if (userCount == 1) {
                     userMapper.updateUserPassword(userKey, SecurityUtil.encryptSHA256(changeUserPwd));
+
+                    TUserVO resultTUserVO = userMapper.selectUserInfoByUserKey(userKey);
+                    Connection conn = null;
+                    String user = "ZIANEDU";
+                    String pwd = "wldks0815!";
+                    String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+                    Class.forName("oracle.jdbc.driver.OracleDriver");
+                    conn = DriverManager.getConnection(url, user, pwd);
+
+                    CallableStatement cs = conn.prepareCall("UPDATE TB_MA_MEMBER SET USER_PWD=? WHERE USER_ID = ?");
+                    cs.setString(1, changeUserPwd);
+                    cs.setString(2, resultTUserVO.getUserId());
+                    cs.execute();
+                    cs.close();
+                    conn.close();
+
                 } else {
                     //현재 비밀번호가 틀리면 에러
                     resultCode = ZianErrCode.CUSTOM_DIFFERENT_CURRENT_USER_PASSWORD.code();
