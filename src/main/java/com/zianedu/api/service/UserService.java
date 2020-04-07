@@ -96,10 +96,10 @@ public class UserService extends ApiResultKeyCode {
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
 
             String url = "http://118.217.181.175:8088/login/memberInsert.html";
-            String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "utf-8");
-            String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "utf-8");
-            String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "utf-8");
-            String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+newUserName+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+newAddressRoad+"&ADDRESS=" + newAddress;
+            //String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "utf-8");
+            //String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "utf-8");
+            //String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "utf-8");
+            String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+regUser.getName()+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+regUser.getAddressRoad()+"&ADDRESS=" + regUser.getAddress();
             DateUtils.httpPost(url, paramStr);
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
