@@ -10,10 +10,21 @@ import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.HashMap;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -33,6 +44,9 @@ public class UserService extends ApiResultKeyCode {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 사용자 로그인
@@ -95,39 +109,30 @@ public class UserService extends ApiResultKeyCode {
             //회원가입에 의한 마일리지 주입
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
 
+            Connection conn = null;
+            String user = "ZIANEDU";
+            String pwd = "wldks0815!";
+            String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, user, pwd);
 
-            System.out.println("utf-8(1) : " + new String(regUser.getName().getBytes("utf-8"), "euc-kr"));
-            System.out.println("utf-8(2) : " + new String(regUser.getName().getBytes("utf-8"), "ksc5601"));
-            System.out.println("utf-8(3) : " + new String(regUser.getName().getBytes("utf-8"), "x-windows-949"));
-            System.out.println("utf-8(4) : " + new String(regUser.getName().getBytes("utf-8"), "iso-8859-1"));
+            CallableStatement cs = conn.prepareCall("INSERT INTO TB_MA_MEMBER( USER_ID, USER_NM, USER_NICKNM, SEX,USER_ROLE,USER_PWD, EMAIL,PHONE_NO ,USER_POINT,ISUSE,REG_DT,REG_ID, UPD_DT,PHONERECV_YN,EMAILRECV_YN,ZIP_CODE,ADDRESS1,ADDRESS2,MEMBER_GRADE,USER_POSITION,ADMIN_ROLE)" +
+                "                                       VALUES( ?, ?, ?, ? , 'USER', ?, ?, ?, 0,'Y', SYSDATE,?, SYSDATE, 'Y','Y', ?, ?, ?,'일반','수강생', '')");
+            cs.setString(1, regUser.getUserId());
+            cs.setString(2, regUser.getName());
+            cs.setString(3, regUser.getName());
+            cs.setString(4, regUser.getGender() == 0 ? "M" : "F");
+            cs.setString(5, regUser.getPwd());
+            cs.setString(6, regUser.getEmail());
+            cs.setString(7, regUser.getTelephoneMobile());
+            cs.setString(8, String.valueOf(userKey));
+            cs.setString(9, regUser.getZipcode());
+            cs.setString(10, regUser.getAddressRoad());
+            cs.setString(11, regUser.getAddress());
+            cs.execute();
 
-            System.out.println("iso-8859-1(1) : " + new String(regUser.getName().getBytes("iso-8859-1"), "euc-kr"));
-            System.out.println("iso-8859-1(2) : " + new String(regUser.getName().getBytes("iso-8859-1"), "ksc5601"));
-            System.out.println("iso-8859-1(3) : " + new String(regUser.getName().getBytes("iso-8859-1"), "x-windows-949"));
-            System.out.println("iso-8859-1(4) : " + new String(regUser.getName().getBytes("iso-8859-1"), "utf-8"));
-
-            System.out.println("euc-kr(1) : " + new String(regUser.getName().getBytes("euc-kr"), "ksc5601"));
-            System.out.println("euc-kr(2) : " + new String(regUser.getName().getBytes("euc-kr"), "utf-8"));
-            System.out.println("euc-kr(3) : " + new String(regUser.getName().getBytes("euc-kr"), "x-windows-949"));
-            System.out.println("euc-kr(4) : " + new String(regUser.getName().getBytes("euc-kr"), "iso-8859-1"));
-
-            System.out.println("ksc5601(1) : " + new String(regUser.getName().getBytes("ksc5601"), "euc-kr"));
-            System.out.println("ksc5601(2) : " + new String(regUser.getName().getBytes("ksc5601"), "utf-8"));
-            System.out.println("ksc5601(3) : " + new String(regUser.getName().getBytes("ksc5601"), "x-windows-949"));
-            System.out.println("ksc5601(4) : " + new String(regUser.getName().getBytes("ksc5601"), "iso-8859-1"));
-
-            System.out.println("x-windows-949(1) : " + new String(regUser.getName().getBytes("x-windows-949"), "euc-kr"));
-            System.out.println("x-windows-949(2) : " + new String(regUser.getName().getBytes("x-windows-949"), "utf-8"));
-            System.out.println("x-windows-949(3) : " + new String(regUser.getName().getBytes("x-windows-949"), "ksc5601"));
-            System.out.println("x-windows-949(4) : " + new String(regUser.getName().getBytes("x-windows-949"), "iso-8859-1"));
-
-            String url = "http://118.217.181.175:8088/login/memberInsert.html";
-            String newUserName = new String(regUser.getName().getBytes("euc-kr"), "utf-8");
-            String newAddressRoad = new String(regUser.getAddressRoad().getBytes("euc-kr"), "utf-8");
-            String newAddress = new String(regUser.getAddress().getBytes("euc-kr"), "utf-8");
-
-            String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+newUserName+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+newAddressRoad+"&ADDRESS=" + newAddress;
-            DateUtils.httpPost(url, paramStr);
+            cs.close();
+            conn.close();
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
