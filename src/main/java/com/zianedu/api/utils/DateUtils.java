@@ -3,9 +3,16 @@ package com.zianedu.api.utils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DateUtils {
@@ -107,7 +114,70 @@ public class DateUtils {
         return formatter.format(date);
     }
 
+    public static String httpPost(String targetUrl, String parameters) throws Exception {
+        URL url = new URL(targetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+        con.setRequestMethod("POST");// HTTP POST 메소드 설정
+        //con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setDoOutput(true); // POST 파라미터 전달을 위한 설정
+        // Send post request
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(parameters);
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        } in.close();
+        // print result
+        System.out.println("HTTP 응답 코드 : " + responseCode);
+        System.out.println("HTTP body : " + response.toString());
+
+        return response.toString();
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(isBetweenDateFromToday("2019-06-11 00:00:00", "2020-01-28 13:59:59"));
+        String url = "http://118.217.181.175:8088/login/memberInsert.html";
+        String name = "안지호";
+        String newVodTitle = new String(name.getBytes("EUC-KR"), "utf-8");
+
+        System.out.println(newVodTitle);
+        String newVodTitle2 = new String(newVodTitle.getBytes("ksc5601"), "utf-8");
+        System.out.println(newVodTitle2);
+
+//        String word = name;
+//        System.out.println("utf-8(1) : " + new String(word.getBytes("utf-8"), "euc-kr"));
+//        System.out.println("utf-8(2) : " + new String(word.getBytes("utf-8"), "ksc5601"));
+//        System.out.println("utf-8(3) : " + new String(word.getBytes("utf-8"), "x-windows-949"));
+//        System.out.println("utf-8(4) : " + new String(word.getBytes("utf-8"), "iso-8859-1"));
+//
+//        System.out.println("iso-8859-1(1) : " + new String(word.getBytes("iso-8859-1"), "euc-kr"));
+//        System.out.println("iso-8859-1(2) : " + new String(word.getBytes("iso-8859-1"), "ksc5601"));
+//        System.out.println("iso-8859-1(3) : " + new String(word.getBytes("iso-8859-1"), "x-windows-949"));
+//        System.out.println("iso-8859-1(4) : " + new String(word.getBytes("iso-8859-1"), "utf-8"));
+//
+//        System.out.println("euc-kr(1) : " + new String(word.getBytes("euc-kr"), "ksc5601"));
+//        System.out.println("euc-kr(2) : " + new String(word.getBytes("euc-kr"), "utf-8"));
+//        System.out.println("euc-kr(3) : " + new String(word.getBytes("euc-kr"), "x-windows-949"));
+//        System.out.println("euc-kr(4) : " + new String(word.getBytes("euc-kr"), "iso-8859-1"));
+//
+//        System.out.println("ksc5601(1) : " + new String(word.getBytes("ksc5601"), "euc-kr"));
+//        System.out.println("ksc5601(2) : " + new String(word.getBytes("ksc5601"), "utf-8"));
+//        System.out.println("ksc5601(3) : " + new String(word.getBytes("ksc5601"), "x-windows-949"));
+//        System.out.println("ksc5601(4) : " + new String(word.getBytes("ksc5601"), "iso-8859-1"));
+//
+//        System.out.println("x-windows-949(1) : " + new String(word.getBytes("x-windows-949"), "euc-kr"));
+//        System.out.println("x-windows-949(2) : " + new String(word.getBytes("x-windows-949"), "utf-8"));
+//        System.out.println("x-windows-949(3) : " + new String(word.getBytes("x-windows-949"), "ksc5601"));
+//        System.out.println("x-windows-949(4) : " + new String(word.getBytes("x-windows-949"), "iso-8859-1"));
+
+
+        String paramStr = "USER_ID=test1234750&USER_KEY=12389&NAME="+newVodTitle+"&PWD=c7684301-+&GENDER=1&EMAIL=anjo0070@naver.com&TELEPHONE_MOBILE=010-6258-5228&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE=12345&ADDRESS_ROAD=경기 성남시 수정구 탄리로 81&ADDRESS=302호";
+        httpPost(url, paramStr);
     }
 }

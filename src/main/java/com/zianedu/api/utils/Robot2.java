@@ -8,9 +8,9 @@ public class Robot2 {
 
     public static void main(String[] args) {
         try {
-            //jump();
+            jump1();
             //keyboard1();
-            spacebar();
+            //spacebar();
 
         } catch (Exception e) {
             e.printStackTrace();

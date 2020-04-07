@@ -7,10 +7,7 @@ import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
-import com.zianedu.api.utils.RandomUtil;
-import com.zianedu.api.utils.SecurityUtil;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +77,7 @@ public class UserService extends ApiResultKeyCode {
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO regUser(TUserVO tUserVO) {
+    public ApiResultCodeDTO regUser(TUserVO tUserVO) throws Exception {
         int resultCode = OK.value();
         int userKey = 0;
         if (tUserVO == null) resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -97,6 +94,13 @@ public class UserService extends ApiResultKeyCode {
             userKey = regUser.getUserKey();
             //회원가입에 의한 마일리지 주입
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
+
+            String url = "http://118.217.181.175:8088/login/memberInsert.html";
+            String newUserName = new String(regUser.getName().getBytes("EUC-KR"), "utf-8");
+            String newAddressRoad = new String(regUser.getAddressRoad().getBytes("EUC-KR"), "utf-8");
+            String newAddress = new String(regUser.getAddress().getBytes("EUC-KR"), "utf-8");
+            String paramStr = "USER_ID="+regUser.getUserId() +"&USER_KEY="+ userKey +"&NAME="+newUserName+"&PWD="+ regUser.getPwd() +"&GENDER=" + regUser.getGender() + "&EMAIL="+regUser.getEmail()+"&TELEPHONE_MOBILE="+regUser.getTelephoneMobile()+"&RECV_SMS=1&RECV_EMAIL=1&AUTHORITY=10&ZIPCODE="+regUser.getZipcode()+"&ADDRESS_ROAD="+newAddressRoad+"&ADDRESS=" + newAddress;
+            DateUtils.httpPost(url, paramStr);
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
