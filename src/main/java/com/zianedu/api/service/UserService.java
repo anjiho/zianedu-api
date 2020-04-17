@@ -108,7 +108,7 @@ public class UserService extends ApiResultKeyCode {
             userKey = regUser.getUserKey();
             //회원가입에 의한 마일리지 주입
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
-
+            //알기사접속
             Connection conn = null;
             String user = "ZIANEDU";
             String pwd = "wldks0815!";
@@ -154,6 +154,7 @@ public class UserService extends ApiResultKeyCode {
             userMapper.updateUserInfo(modifyTUserVO);
             resultTUserVO = userMapper.selectUserInfoByUserKey(tUserVO.getUserKey());
 
+            //알기사 접속
             Connection conn = null;
             String user = "ZIANEDU";
             String pwd = "wldks0815!";
@@ -199,6 +200,7 @@ public class UserService extends ApiResultKeyCode {
                 if (userCount == 1) {
                     userMapper.updateUserPassword(userKey, SecurityUtil.encryptSHA256(changeUserPwd));
 
+                    //알기사접속
                     TUserVO resultTUserVO = userMapper.selectUserInfoByUserKey(userKey);
                     Connection conn = null;
                     String user = "ZIANEDU";
@@ -282,6 +284,8 @@ public class UserService extends ApiResultKeyCode {
                         emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);    //이메일 발송
                         sendEmailAddress = userInfo.getEmail();
                     }
+                } else {
+                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT.code();
                 }
             }
         }
