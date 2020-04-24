@@ -10,7 +10,7 @@ public enum GoodsType {
     //모의고사
     EXAM(4, "모의고사"),
     //패키지
-    PACKAGE(5, "프로모션"),
+    PACKAGE(5, "지안패스"),
     ;
 
     int goodsTypeKey;
