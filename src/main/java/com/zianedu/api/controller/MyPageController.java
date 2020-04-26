@@ -382,7 +382,7 @@ public class MyPageController {
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, contents : 내용) ", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false),
     })
     public ApiPagingResultDTO getOneByOneQuestionList(@PathVariable("userKey") int userKey,
