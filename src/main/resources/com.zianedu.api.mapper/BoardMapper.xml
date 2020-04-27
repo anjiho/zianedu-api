@@ -491,6 +491,9 @@
                 <if test="searchType == 'title'">
                     START WITH A.TITLE LIKE '%'||#{searchText}||'%'
                 </if>
+                <if test="searchType == 'contents'">
+                    START WITH A.CONTENTS LIKE '%'||#{searchText}||'%'
+                </if>
             </if>
             CONNECT BY PRIOR A.BBS_KEY = A.BBS_PARENT_KEY
             ORDER SIBLINGS BY A.BBS_PARENT_KEY DESC, A.BBS_KEY DESC
@@ -501,7 +504,7 @@
                 START WITH Z.TITLE LIKE '%'||#{searchText}||'%'
                 CONNECT BY PRIOR Z.BBS_KEY = Z.BBS_PARENT_KEY
             </if>
-            <if test="searchType == 'title'">
+            <if test="searchType == 'contents'">
                 START WITH Z.CONTENTS LIKE '%'||#{searchText}||'%'
                 CONNECT BY PRIOR Z.BBS_KEY = Z.BBS_PARENT_KEY
             </if>
@@ -520,7 +523,7 @@
         <if test="searchType == 'title'">
             AND A.TITLE LIKE '%'||#{searchText}||'%'
         </if>
-        <if test="searchType == 'title'">
+        <if test="searchType == 'contents'">
             AND A.CONTENTS LIKE '%'||#{searchText}||'%'
         </if>
     </select>
