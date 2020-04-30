@@ -941,10 +941,10 @@ public class ExamService extends PagingSupport {
                     //문제지, 해설지 주입
                     TExamMasterVO examMasterVO = examMapper.selectExamMasterInfo(vo.getExamKey());
                     if (examMasterVO != null) {
-                        vo.setPrintQuestionFile(examMasterVO.getPrintQuestionFile());
+                        vo.setPrintQuestionFile(ZianUtils.getFileNameFromPath(examMasterVO.getPrintQuestionFile()));
                         vo.setPrintQuestionFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintQuestionFile()));
 
-                        vo.setPrintCommentaryFile(examMasterVO.getPrintCommentaryFile());
+                        vo.setPrintCommentaryFile(ZianUtils.getFileNameFromPath(examMasterVO.getPrintCommentaryFile()));
                         vo.setPrintCommentaryFileUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), examMasterVO.getPrintCommentaryFile()));
                     }
                 }
