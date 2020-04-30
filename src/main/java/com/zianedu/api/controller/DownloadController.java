@@ -65,7 +65,7 @@ public class DownloadController {
     public ApiResultObjectDTO downloadFullPath(@RequestParam(value = "filePath") String filePath, HttpServletResponse response) {
         logger.info("File Download Start");
         logger.info("=======================================================");
-        StringBuilder sb = new StringBuilder("C:/fileServer/Upload/");
+        StringBuilder sb = new StringBuilder("C:/fileServer/Upload/100/exam/");
         //StringBuilder sb = new StringBuilder("/Users/jihoan/Documents/100/bbs/");
         sb.append(filePath);
         String saveFileName = sb.toString();
