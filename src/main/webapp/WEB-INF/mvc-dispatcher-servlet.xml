@@ -77,15 +77,4 @@
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
     </context:component-scan>
 
-    <!--
-    <bean id="jsonFilterAspect" class="com.challabros.birdletter.aop.JsonFilterAspect"/>
-    <bean id="userGradeAspect" class="com.challabros.birdletter.aop.UserGradeAspect"/>
-    -->
-    <aop:aspectj-autoproxy>
-        <!--<aop:include name="jsonFilterAspect"/>-->
-        <!--<aop:include name="userGradeAspect"/>-->
-        <!--<aop:include name="userStatusAspect"/>-->
-    </aop:aspectj-autoproxy>
-
-
 </beans>

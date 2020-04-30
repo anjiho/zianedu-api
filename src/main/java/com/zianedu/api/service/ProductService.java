@@ -246,6 +246,11 @@ public class ProductService extends PagingSupport {
                         vo2.setTeacherImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo2.getImageTeacherList()));
                         //강좌책 주입
                         List<LectureBookVO> teacherBookList = productMapper.selectTeacherBookListFromVideoLectureLink(vo2.getGKey());
+                        //샘플강좌 주입
+                        TLecCurriVO lecCurriVO = productMapper.selectVodSampleByGKey(vo2.getGKey());
+                        vo2.setVodFileLow(lecCurriVO.getVodFileLow());
+                        vo2.setVodFileHigh(lecCurriVO.getVodFileHigh());
+
                         vo2.setTeacherLectureBook(teacherBookList);
                     }
                 }

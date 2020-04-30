@@ -20,4 +20,5 @@
     <entry key="mail.user.id">${mail.user.id}</entry>
     <entry key="mail.user.pass">${mail.user.pass}</entry>
     <entry key="mail.send.address">${mail.send.address}</entry>
+    <entry key="is.schedule">${is.schedule}</entry>
 </properties>

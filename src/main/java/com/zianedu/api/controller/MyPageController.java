@@ -66,6 +66,19 @@ public class MyPageController {
         return myPageService.getUserVideoOnlineSignUpList(userKey, deviceType);
     }
 
+    @RequestMapping(value = "/getVideoSignUpTypeList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강중인강좌(동영상) > 유형목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키 (86942)", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "subjectCtgKey", value = "과목 키 ", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "deviceType", value = "기기종류('MOBILE':모바일, 'PC':데스크탑) ", dataType = "String", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getUserVideoOnlineSignUpTypeList(@PathVariable("userKey") int userKey,
+                                                           @RequestParam("subjectCtgKey") int subjectCtgKey,
+                                                           @RequestParam("deviceType") String deviceType) {
+        return myPageService.getUserVideoOnlineSignUpTypeList(userKey, subjectCtgKey, deviceType);
+    }
+
     @RequestMapping(value = "/getVideoSignUpLectureNameList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강중인강좌(동영상) 강좌명 리스트 가져오기")
     @ApiImplicitParams({
@@ -369,7 +382,7 @@ public class MyPageController {
             @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
             @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
             @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
-            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목) ", dataType = "string", paramType = "query", required = false),
+            @ApiImplicitParam(name = "searchType", value = "검색 종류(title : 제목, contents : 내용) ", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "searchText", value = "검색 값", dataType = "string", paramType = "query", required = false),
     })
     public ApiPagingResultDTO getOneByOneQuestionList(@PathVariable("userKey") int userKey,

@@ -60,6 +60,8 @@ public interface ProductMapper {
 
     List<TGoodsPriceOptionVO> selectGoodsPriceOption(@Param("gKey") int gKey);
 
+    TGoodsPriceOptionVO selectGoodsPriceOptionOne(@Param("gKey") int gKey);
+
     List<TLecCurriVO> selectLectureListFromVideoProduct(@Param("gKey") int gKey, @Param("device") int device);
 
     int selectLectureListFromVideoProductCount(@Param("gKey") int gKey);
@@ -155,7 +157,7 @@ public interface ProductMapper {
 
     List<SubjectDTO> selectVideoOnlineSignUpSubjectList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
 
-    List<TypeDTO> selectVideoOnlineSignUpTypeList(@Param("userKey") int userKey, @Param("deviceType") String deviceType);
+    List<TypeDTO> selectVideoOnlineSignUpTypeList(@Param("userKey") int userKey, @Param("subjectCtgKey") int subjectCtgKey, @Param("deviceType") String deviceType);
 
     List<SignUpLectureVO> selectSignUpLectureList(@Param("userKey") int userKey, @Param("deviceType") String deviceType,
                                                   @Param("subjectCtgKey") int subjectCtgKey, @Param("stepCtgKey") int stepCtgKey);
@@ -164,11 +166,11 @@ public interface ProductMapper {
 
     List<ZianPassSignUpVO> selectSignUpPackageList(@Param("userKey") int userKey, @Param("kind") int kind);
 
-    List<TypeDTO> selectSignUpZianPassTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
+    List<TypeDTO> selectSignUpZianPassTypeList(@Param("jPmKey") int jPmKey, @Param("deviceType") String deviceType);
 
    // List<TypeDTO> selectSignUpPackageTypeList(@Param("jKey") int jKey, @Param("deviceType") String deviceType);
 
-    List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
+    List<SignUpLectureVO> selectZianPassSubjectNameList(@Param("jPmKey") int jKey, @Param("stepCtgKey") int stepCtgKey,
                                          @Param("deviceType") String deviceType);
 
     List<TLecCurriVO> selectVideoLectureListByJLecKey(@Param("jLecKey") int jLecKey, @Param("deviceType") String deviceType);
@@ -227,7 +229,17 @@ public interface ProductMapper {
 
     String selectTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 
-    TOrderGoodsVO selectPromotionGKeyFromByJKey(@Param("jKey") int jKey);
+    TOrderGoodsVO selectPromotionGKeyFromByJGKey(@Param("jGKey") int jGKey);
+
+    TOrderPromotionVO selectTOrderPromotionInfo(@Param("jPmKey") int jPmKey);
+
+    TOrderPromotionVO selectTOrderPromotionInfoByJGKey(@Param("jGKey") int jGKey);
+
+    TLecCurriVO selectVodSampleByGKey(@Param("gKey") int gKey);
+
+    int selectPauseTotalDay(@Param("jLecKey") int jLecKey);
+
+    List<TOrderLecVO> selectTOrderLecListAtStopRelease();
 
     /** INSERT **/
     Integer insertTOrderLecStartStopLog(TOrderLecStartStopLogVO tOrderLecStartStopLogVO);
@@ -235,7 +247,7 @@ public interface ProductMapper {
     void insertTOrderLecCurri(TOrderLecCurriVO tOrderLecCurriVO);
 
     /** UPDATE **/
-    void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay);
+    void updateTOrderLecPauseCnt(@Param("jLecKey") int jLecKey, @Param("pauseDay") int pauseDay, @Param("pauseTotalDay") int pauseTotalDay);
 
     void updateTOrderLecStartDt(@Param("jLecKey") int jLecKey);
 

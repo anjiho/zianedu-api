@@ -1,12 +1,19 @@
 package com.zianedu.api.utils;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class DateUtils {
 
@@ -107,7 +114,36 @@ public class DateUtils {
         return formatter.format(date);
     }
 
+    public static String httpPost(String targetUrl, String parameters) throws Exception {
+        URL url = new URL(targetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+        con.setRequestMethod("POST");// HTTP POST 메소드 설정
+        //con.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        con.setDoOutput(true); // POST 파라미터 전달을 위한 설정
+        // Send post request
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes("Content-Disposition: form-data; name=\"title\"\r\n\r\n");
+        //wr.writeBytes(parameters);
+        wr.writeUTF(parameters);
+        wr.flush();
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        } in.close();
+        // print result
+        System.out.println("HTTP 응답 코드 : " + responseCode);
+        System.out.println("HTTP body : " + response.toString());
+
+        return response.toString();
+    }
+
     public static void main(String[] args) throws Exception {
-        System.out.println(isBetweenDateFromToday("2019-06-11 00:00:00", "2020-01-28 13:59:59"));
+
     }
 }

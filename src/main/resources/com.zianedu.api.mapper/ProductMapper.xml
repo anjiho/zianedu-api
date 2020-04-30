@@ -225,7 +225,8 @@
             E.PAUSE_CNT,
             E.LIMIT_DAY,
             DECODE(E.PAUSE_START_DT, '', '0','1') as isPause,
-            E.start_dt
+            E.start_dt,
+            A.J_PM_KEY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
@@ -329,7 +330,8 @@
     <select id="selectVideoPauseRequestPopup" resultType="VideoPausePopupVO">
         SELECT A.J_LEC_KEY, C.NAME,
                TO_CHAR(A.START_DT, 'YYYY-MM-DD') as startDt,
-               TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt
+               TO_CHAR((A.START_DT + A.LIMIT_DAY), 'YYYY-MM-DD') as end_dt,
+               (60 - A.PAUSE_TOTAL_DAY) as remainStopDay
         FROM T_ORDER_LEC A
         INNER JOIN T_ORDER_GOODS B
         ON A.J_G_KEY = B.J_G_KEY
@@ -399,7 +401,8 @@
             E.PAUSE_DAY,
             B.USER_KEY,
             E.LIMIT_DAY,
-            (E.LIMIT_DAY + E.PAUSE_DAY) as changeLimitDay
+            (E.LIMIT_DAY + E.PAUSE_DAY) as changeLimitDay,
+            E.PAUSE_TOTAL_DAY
         FROM T_ORDER_GOODS A
         INNER JOIN T_ORDER B
         ON A.J_KEY = B.J_KEY
@@ -577,6 +580,10 @@
     </select>
 
     <select id="selectGoodsPriceOption" resultType="TGoodsPriceOptionVO">
+        SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
+    </select>
+
+    <select id="selectGoodsPriceOptionOne" resultType="TGoodsPriceOptionVO">
         SELECT * FROM T_GOODS_PRICE_OPTION WHERE G_KEY = #{gKey}
     </select>
 
@@ -1586,6 +1593,7 @@
             ON A.J_G_KEY = E.J_G_KEY
             WHERE 1=1
             AND B.user_key = #{userKey}
+            AND D.SUBJECT_CTG_KEY = #{subjectCtgKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
             AND E.PAUSE_DAY = 0
@@ -1715,7 +1723,7 @@
             ON C.G_KEY = D.G_KEY
             INNER JOIN T_ORDER_LEC E
             ON A.J_G_KEY = E.J_G_KEY
-            WHERE A.J_KEY = #{jKey}
+            WHERE A.J_PM_KEY = #{jPmKey}
             AND A.J_PM_KEY > 0
             AND E.PAUSE_DAY = 0
             <if test="deviceType != '' and deviceType != null">
@@ -1747,7 +1755,7 @@
         ON C.G_KEY = D.G_KEY
         INNER JOIN T_ORDER_LEC E
         ON A.J_G_KEY = E.J_G_KEY
-        WHERE A.J_KEY = #{jKey}
+        WHERE A.J_PM_KEY = #{jPmKey}
         AND A.J_PM_KEY > 0
         AND E.PAUSE_DAY = 0
         <if test="stepCtgKey > 0">
@@ -2682,10 +2690,48 @@
         SELECT START_DT FROM T_ORDER_LEC WHERE J_LEC_KEY = #{jLecKey}
     </select>
 
-    <select id="selectPromotionGKeyFromByJKey" resultType="TOrderGoodsVO">
+    <select id="selectPromotionGKeyFromByJGKey" resultType="TOrderGoodsVO">
         SELECT * FROM T_ORDER_GOODS
         WHERE J_PM_KEY = 0
-        AND J_KEY = #{jKey}
+        AND PM_TYPE > 0
+        AND J_G_KEY = #{jGKey}
+    </select>
+
+    <select id="selectTOrderPromotionInfo" resultType="TOrderPromotionVO">
+        SELECT * FROM T_ORDER_PROMOTION WHERE J_PM_KEY = #{jPmKey}
+    </select>
+
+    <select id="selectTOrderPromotionInfoByJGKey" resultType="TOrderPromotionVO">
+        SELECT * FROM T_ORDER_PROMOTION WHERE J_G_KEY = #{jGKey}
+    </select>
+
+    <select id="selectVodSampleByGKey" resultType="TLecCurriVO">
+        SELECT
+            CONCAT('http://zianedu.star.skcdn.com/', VOD_FILE_LOW)  as vodFileLow,
+            CONCAT('http://zianedu.star.skcdn.com/', VOD_FILE_HIGH) as vodFileHigh
+        FROM T_LEC_CURRI
+        WHERE LEC_KEY = (
+            SELECT LEC_KEY FROM T_LEC where G_KEY = #{gKey}
+        )
+        AND ROWNUM =1
+    </select>
+
+    <select id="selectPauseTotalDay" resultType="int">
+        SELECT CEIL((sysdate - T_ORDER_LEC.PAUSE_START_DT)) as pauseTotalDay
+        FROM T_ORDER_LEC
+        WHERE J_LEC_KEY = #{jLecKey}
+    </select>
+
+    <select id="selectTOrderLecListAtStopRelease" resultType="TOrderLecVO">
+        SELECT *  FROM (
+            SELECT A.*, TO_CHAR((PAUSE_START_DT + PAUSE_DAY), 'YYYY-MM-DD') as stopDay
+            FROM T_ORDER_LEC A
+            WHERE A.PAUSE_START_DT IS NOT NULL
+             <![CDATA[
+            AND A.PAUSE_CNT < 3
+             ]]>
+        ) Z
+        WHERE Z.stopDay = TO_CHAR((sysdate - 1), 'YYYY-MM-DD')
     </select>
 
     <update id="updateTOrderLecPauseCnt" parameterType="Integer">
@@ -2697,6 +2743,9 @@
             <if test="pauseDay > 0">
                 PAUSE_START_DT = sysdate,
                 PAUSE_CNT = PAUSE_CNT + 1,
+            </if>
+            <if test="pauseTotalDay > 0">
+                PAUSE_TOTAL_DAY = PAUSE_TOTAL_DAY + #{pauseTotalDay},
             </if>
             PAUSE_DAY = #{pauseDay}
         </set>

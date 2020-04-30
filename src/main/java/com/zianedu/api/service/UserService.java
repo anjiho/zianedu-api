@@ -7,16 +7,24 @@ import com.zianedu.api.dto.ApiResultCodeDTO;
 import com.zianedu.api.dto.ApiResultObjectDTO;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.mapper.UserMapper;
-import com.zianedu.api.utils.RandomUtil;
-import com.zianedu.api.utils.SecurityUtil;
-import com.zianedu.api.utils.StringUtils;
-import com.zianedu.api.utils.Util;
+import com.zianedu.api.utils.*;
 import com.zianedu.api.vo.*;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.HashMap;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -36,6 +44,9 @@ public class UserService extends ApiResultKeyCode {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 사용자 로그인
@@ -80,7 +91,7 @@ public class UserService extends ApiResultKeyCode {
      * @throws Exception
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO regUser(TUserVO tUserVO) {
+    public ApiResultCodeDTO regUser(TUserVO tUserVO) throws Exception {
         int resultCode = OK.value();
         int userKey = 0;
         if (tUserVO == null) resultCode = ZianErrCode.BAD_REQUEST.code();
@@ -97,6 +108,31 @@ public class UserService extends ApiResultKeyCode {
             userKey = regUser.getUserKey();
             //회원가입에 의한 마일리지 주입
             paymentService.injectUserPoint("U", userKey, 3000, 0, "");
+            //알기사접속
+            Connection conn = null;
+            String user = "ZIANEDU";
+            String pwd = "wldks0815!";
+            String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, user, pwd);
+
+            CallableStatement cs = conn.prepareCall("INSERT INTO TB_MA_MEMBER( USER_ID, USER_NM, USER_NICKNM, SEX,USER_ROLE,USER_PWD, EMAIL,PHONE_NO ,USER_POINT,ISUSE,REG_DT,REG_ID, UPD_DT,PHONERECV_YN,EMAILRECV_YN,ZIP_CODE,ADDRESS1,ADDRESS2,MEMBER_GRADE,USER_POSITION,ADMIN_ROLE)" +
+                "                                       VALUES( ?, ?, ?, ? , 'USER', ?, ?, ?, 0,'Y', SYSDATE,?, SYSDATE, 'Y','Y', ?, ?, ?,'일반','수강생', '')");
+            cs.setString(1, regUser.getUserId());
+            cs.setString(2, regUser.getName());
+            cs.setString(3, regUser.getName());
+            cs.setString(4, regUser.getGender() == 0 ? "M" : "F");
+            cs.setString(5, regUser.getPwd());
+            cs.setString(6, regUser.getEmail());
+            cs.setString(7, regUser.getTelephoneMobile());
+            cs.setString(8, String.valueOf(userKey));
+            cs.setString(9, regUser.getZipcode());
+            cs.setString(10, regUser.getAddressRoad());
+            cs.setString(11, regUser.getAddress());
+            cs.execute();
+
+            cs.close();
+            conn.close();
         }
         return new ApiResultCodeDTO(USER_KEY, userKey, resultCode);
     }
@@ -117,6 +153,25 @@ public class UserService extends ApiResultKeyCode {
             TUserVO modifyTUserVO = new TUserVO(tUserVO);
             userMapper.updateUserInfo(modifyTUserVO);
             resultTUserVO = userMapper.selectUserInfoByUserKey(tUserVO.getUserKey());
+
+            //알기사 접속
+            Connection conn = null;
+            String user = "ZIANEDU";
+            String pwd = "wldks0815!";
+            String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(url, user, pwd);
+
+            CallableStatement cs = conn.prepareCall("UPDATE TB_MA_MEMBER SET PHONE_NO=?, ZIP_CODE=?,ADDRESS1=?,ADDRESS2=?,UPD_DT=SYSDATE WHERE USER_ID = ? ");
+            cs.setString(1, modifyTUserVO.getTelephoneMobile());
+            cs.setString(2, modifyTUserVO.getZipcode());
+            cs.setString(3, modifyTUserVO.getAddressRoad());
+            cs.setString(4, modifyTUserVO.getAddress());
+            cs.setString(5, resultTUserVO.getUserId());
+            cs.execute();
+
+            cs.close();
+            conn.close();
         }
         return new ApiResultObjectDTO( resultTUserVO, resultCode );
     }
@@ -129,7 +184,7 @@ public class UserService extends ApiResultKeyCode {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public ApiResultCodeDTO modifyUserPassword(int userKey, String currentUserPwd,  String changeUserPwd) {
+    public ApiResultCodeDTO modifyUserPassword(int userKey, String currentUserPwd,  String changeUserPwd) throws Exception {
         int resultCode = OK.value();
 
         if (userKey == 0 && "".equals(Util.isNullValue(currentUserPwd, "")) && "".equals(Util.isNullValue(changeUserPwd, ""))) {
@@ -144,6 +199,23 @@ public class UserService extends ApiResultKeyCode {
                 //현재 비밀번호가 맞으면 새로운 비밀번호로 업데이트
                 if (userCount == 1) {
                     userMapper.updateUserPassword(userKey, SecurityUtil.encryptSHA256(changeUserPwd));
+
+                    //알기사접속
+                    TUserVO resultTUserVO = userMapper.selectUserInfoByUserKey(userKey);
+                    Connection conn = null;
+                    String user = "ZIANEDU";
+                    String pwd = "wldks0815!";
+                    String url = "jdbc:oracle:thin:@118.217.181.175:1521:ZIAN";
+                    Class.forName("oracle.jdbc.driver.OracleDriver");
+                    conn = DriverManager.getConnection(url, user, pwd);
+
+                    CallableStatement cs = conn.prepareCall("UPDATE TB_MA_MEMBER SET USER_PWD=? WHERE USER_ID = ?");
+                    cs.setString(1, changeUserPwd);
+                    cs.setString(2, resultTUserVO.getUserId());
+                    cs.execute();
+                    cs.close();
+                    conn.close();
+
                 } else {
                     //현재 비밀번호가 틀리면 에러
                     resultCode = ZianErrCode.CUSTOM_DIFFERENT_CURRENT_USER_PASSWORD.code();
@@ -212,6 +284,8 @@ public class UserService extends ApiResultKeyCode {
                         emailSendService.sendEmail(userInfo.getEmail(), "기기변경 인증 메일", "인증코드 : " + code);    //이메일 발송
                         sendEmailAddress = userInfo.getEmail();
                     }
+                } else {
+                    resultCode = ZianErrCode.CUSTOM_DEVICE_LIMIT.code();
                 }
             }
         }
@@ -352,16 +426,16 @@ public class UserService extends ApiResultKeyCode {
                     limitVO = new TDeviceLimitVO(userKey, deviceType, jGKey, deviceId, osVersion, appVersion);
                 }
                 userMapper.insertTDeviceLimit(limitVO);
-                TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
-                if (deviceLimitVO != null) {
-                    String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
-                    TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
-                            deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
-                            deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
-                            deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
-                    );
-                    userMapper.insertTDeviceLimitLog(limitLogVO);
-                }
+//                TDeviceLimitVO deviceLimitVO = userMapper.selectTDeviceLimitInfo(userKey, deviceType);
+//                if (deviceLimitVO != null) {
+//                    String[] indates = StringUtils.splitComma(deviceLimitVO.getIndate());
+//                    TDeviceLimitLogVO limitLogVO = new TDeviceLimitLogVO(
+//                            deviceLimitVO.getDeviceLimitKey(), deviceLimitVO.getCKey(), deviceLimitVO.getUserKey(), indates[0],
+//                            deviceLimitVO.getType(), deviceLimitVO.getDataKey(), deviceLimitVO.getDeviceId(),
+//                            deviceLimitVO.getDeviceModel(), deviceLimitVO.getOsVersion(), deviceLimitVO.getAppVersion()
+//                    );
+//                    userMapper.insertTDeviceLimitLog(limitLogVO);
+//                }
                 this.updateTOrderLecStartDt(jLecKey);
                 bl = true;
             }

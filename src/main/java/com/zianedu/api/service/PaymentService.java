@@ -200,7 +200,7 @@ public class PaymentService {
                 int jGKey = tOrderGoodsVO.getJGKey();
 
                 //결제완료이고 동영상상품이면 T_ORDER_LEC 테이블에 정보 저장
-                if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 1) {
+                if (tGoodsVO.getType() == 1) {
                     /**
                      * TODO 동영상 상품이 정상결제일때 필요한 정보 저장
                      */
@@ -210,7 +210,7 @@ public class PaymentService {
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
                     }
-                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
+                } else if (tGoodsVO.getType() == 5) {    //결제완료이고 자유패키지상품이면
                     /**
                      * TODO 자유패키지, 특별패키지 상품이 정상결제일때 필요한 동영상 강좌정보 저장
                      */
@@ -221,10 +221,13 @@ public class PaymentService {
                         orderMapper.insertTOrderPromotion(promotionVO);     //T_ORDER_PROMOTION 테이블 저장
 
                         List<TCartLinkGoodsVO> cartLinkGoodsList = new ArrayList<>();
+                        int packageLimitDay = 0;
                         if (vo.getPmType() == PromotionPmType.FREE_PACKAGE.getPromotionPmKey()) {   // 자유패키지일때
                             cartLinkGoodsList = orderMapper.selectCartLinkGoodsList(cartGoodsLinkCartKey);
                         } else if (vo.getPmType() == PromotionPmType.SPECIAL_PACKAGE.getPromotionPmKey()) {    //특별패키지
                             cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(vo.getKind(), vo.getGKey());
+                            TPromotionVO tPromotionVO = productMapper.selectTPromotionInfoByGKey(vo.getGKey());
+                            packageLimitDay = tPromotionVO.getLimitDay();
                         } else if (vo.getPmType() == PromotionPmType.ZIAN_PASS.getPromotionPmKey() || vo.getPmType() == PromotionPmType.YEAR_MEMBER.getPromotionPmKey()) {    //지안패스, 연간회원제일때
                             //cartLinkGoodsList = productMapper.selectGoodsPriceOptionListBySpecialPackage(0, vo.getGKey());
                             cartLinkGoodsList = new ArrayList<>();
@@ -245,7 +248,7 @@ public class PaymentService {
 
                                 TLecVO lecVO = productMapper.selectTLecInfo(linkGoodsVO.getGKey());
                                 tOrderLecVO = new TOrderLecVO(
-                                        tOrderGoodsVO2.getJGKey(), 0, "", lecVO.getLimitDay(), lecVO.getMultiple()
+                                        tOrderGoodsVO2.getJGKey(), 0, "", packageLimitDay, lecVO.getMultiple()
                                 );
                                 //T_ORDER_LEC 저장
                                 paymentMapper.insertTOrderLec(tOrderLecVO);
@@ -314,7 +317,7 @@ public class PaymentService {
                             }
                         }
                     }
-                } else if (orderVO.getPayStatus() == 2 && tGoodsVO.getType() == 4) {
+                } else if (tGoodsVO.getType() == 4) {
                     String onOff = "";
                     TLinkKeyVO linkKeyVO = productMapper.selectExamOnOffKey(vo.getGKey());
                     if (linkKeyVO.getResType() == 2) onOff = "2";

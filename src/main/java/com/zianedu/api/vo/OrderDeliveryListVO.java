@@ -34,4 +34,7 @@ public class OrderDeliveryListVO {
     private String deliveryStatusName;
 
     private int orderGoodsCount;
+
+    private int payType;
+
 }

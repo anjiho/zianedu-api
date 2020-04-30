@@ -971,6 +971,8 @@ public class OrderService extends PagingSupport {
                     vo.setSellPriceName(vo.getSellPriceName() + "원");
                     vo.setJId("[" + vo.getJId() + "]");
                     vo.setDeliveryStatusName(DeliveryStatusType.getDeliveryStatusName(vo.getDeliveryStatus()));
+                    if (vo.getPayStatus() == 0) vo.setPayStatusName("결제대기");
+                    else if (vo.getPayStatus() == 2) vo.setPayStatusName("결제완료");
                 }
             }
         }

@@ -234,8 +234,8 @@
     </select>
 
     <select id="selectUserOrderList" resultType="OrderDeliveryListVO">
-        SELECT Z.J_KEY, Z.jId ,
-                TRIM ( TO_CHAR(Z.PRICE_PAY, '999,999') ) as sellPriceName,
+        SELECT Z.J_KEY, Z.jId, Z.PAY_STATUS, Z.PAY_TYPE,
+                TRIM ( TO_CHAR(Z.PRICE_PAY, '999,999,999,999') ) as sellPriceName,
                 Z.INDATE, Z.orderGoodsName, Z.deliveryStatus,
                 CASE  Z.orderGoodsCount
                 WHEN 0 THEN 0
@@ -245,7 +245,7 @@
         FROM (
             SELECT
                 A.J_KEY, A.J_ID as jId, A.PRICE, A.PRICE_PAY,  TO_CHAR(A.INDATE, 'YYYY-MM-DD') as INDATE,
-                A.PAY_STATUS, A.J_ID, A.IS_CANCEL_REQUEST,
+                A.PAY_STATUS, A.J_ID, A.IS_CANCEL_REQUEST, A.PAY_TYPE,
                 ( SELECT NAME FROM
                     (
                         SELECT /*+ PARALLEL(4) */ TT.NAME FROM T_ORDER_GOODS T  LEFT JOIN T_GOODS TT ON T.G_KEY = TT.G_KEY WHERE T.J_KEY = A.J_KEY
@@ -263,7 +263,7 @@
             <![CDATA[
                 AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
              ]]>
-            AND A.PAY_STATUS = 2
+            AND A.PAY_STATUS IN (0, 2)
             ORDER BY A.J_KEY DESC
             OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
         ) Z
@@ -281,7 +281,7 @@
         <![CDATA[
             AND TO_CHAR(A.INDATE, 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
          ]]>
-        AND A.PAY_STATUS = 2
+        AND A.PAY_STATUS IN (0, 2)
         ORDER BY A.J_KEY DESC
     </select>
 

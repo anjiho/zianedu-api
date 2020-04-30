@@ -62,7 +62,7 @@ public class UserController {
             //@ApiImplicitParam(name = "isMobileReg", value = "모바일여부", dataType = "int", paramType = "query", required = false),
 
     })
-    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) {
+    public ApiResultCodeDTO regUser(@ModelAttribute TUserVO tUserVO) throws Exception {
         return userService.regUser(tUserVO);
     }
 
@@ -95,7 +95,7 @@ public class UserController {
     })
     public ApiResultCodeDTO modifyUserPwd(@RequestParam("userKey") int userKey,
                                           @RequestParam("currentUserPwd") String currentUserPwd,
-                                          @RequestParam("changeUserPwd") String changeUserPwd) {
+                                          @RequestParam("changeUserPwd") String changeUserPwd) throws Exception {
         return userService.modifyUserPassword(userKey, currentUserPwd, changeUserPwd);
     }
 

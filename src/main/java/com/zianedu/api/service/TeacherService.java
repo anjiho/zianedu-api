@@ -462,7 +462,7 @@ public class TeacherService extends PagingSupport {
                     List<FileInfoDTO> fileInfoList = new ArrayList<>();
                     for (BbsFileDataVO vo : fileNameList) {
                         FileInfoDTO fileInfoDTO = new FileInfoDTO();
-                        String fileName = ZianUtils.getSplitFileName(vo.getFileName());
+                        String fileName = ZianUtils.getFileNameFromPath(vo.getFileName());
                         String fileUrl = FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getFileName());
                         fileInfoDTO.setFileName(fileName);
                         fileInfoDTO.setFileUrl(fileUrl);

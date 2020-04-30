@@ -81,25 +81,6 @@
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-<!--    <bean id="fileDownload" class="com.epplt.app.util.DownloadView"/>-->
-
-    <!-- Filter -->
-<!--    <bean id="userSessionFilter" class="com.zianedu.lms.filter.UserSessionFilter"/>-->
-<!--     @ResponseBoby 한글 깨짐 처리-->
-<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
-<!--        <property name="messageConverters">-->
-<!--            <list>-->
-<!--                <bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
-<!--                    <property name="supportedMediaTypes">-->
-<!--                        <list>-->
-<!--                            <value>text/html;charset=UTF-8</value>-->
-<!--                        </list>-->
-<!--                    </property>-->
-<!--                </bean>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
-
     <!-- ========================= CONFIG OBJECT DEFINITIONS CONFIG ======================== -->
     <bean id="ConfigHolder" class="com.zianedu.api.config.ConfigHolder"/>
 
@@ -112,5 +93,41 @@
 
     <!-- SPRING JAVA MAIL -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" p:defaultEncoding="UTF-8"/>
+
+
+    <bean id="scheduleService" class="com.zianedu.api.service.ScheduleService"/>
+
+    <!-- ========================= CRONQUARTZ DEFINITIONS ======================== -->
+    <!-- 일시정지 제한일 초과된 강좌 일시정지 해제 스케쥴링 -->
+    <bean id="lectureStopReleaseQuartz" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="com.zianedu.api.schedule.LectureStopReleaseSchedule" />
+        <property name="applicationContextJobDataKey" value="applicationContext"/>
+    </bean>
+    <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="lectureStopReleaseQuartz"/>
+<!--        <property name="cronExpression" value="0/10 * * * * ? "/>-->
+        <!-- 새벽 00시 예약 -->
+        <property name="cronExpression" value="0 00 12 * * ?"/>
+
+    </bean>
+
+    <!-- 3.Cron 실행 -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger1"/>
+            </list>
+        </property>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">3</prop>
+                <prop key="org.quartz.threadPool.threadPriority">4</prop>
+                <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
+                <prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+            </props>
+        </property>
+    </bean>
+
 
 </beans>

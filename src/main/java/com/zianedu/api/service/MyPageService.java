@@ -11,17 +11,14 @@ import com.zianedu.api.mapper.UserMapper;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
-import com.zianedu.api.utils.StringUtils;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -94,14 +91,28 @@ public class MyPageService extends PagingSupport {
             //과목 리스트 주입
             List<SubjectDTO>subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
             //유형 리스트 주입
-            List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
+            //List<TypeDTO>typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, deviceType);
 
             onlineSignUpDTO.setSubjectInfo(subjectList);
-            onlineSignUpDTO.setTypeInfo(typeList);
+           // onlineSignUpDTO.setTypeInfo(typeList);
 
             onlineSignUpDTO.setOnlineSignUpList(resultList);
         }
         return new ApiResultObjectDTO(onlineSignUpDTO, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultObjectDTO getUserVideoOnlineSignUpTypeList(int userKey, int subjectCtgKey, String deviceType) {
+        int resultCode = OK.value();
+        List<TypeDTO> typeList = new ArrayList<>();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //유형 리스트 주입
+            typeList = productMapper.selectVideoOnlineSignUpTypeList(userKey, subjectCtgKey, deviceType);
+        }
+        return new ApiResultObjectDTO(typeList, resultCode);
     }
 
     @Transactional(readOnly = true)
@@ -134,7 +145,8 @@ public class MyPageService extends PagingSupport {
                 Integer progressRate = productMapper.selectOnlineLectureProgressRate(jLecKey);
                 onlineSubjectListVO.setProgressRateName(progressRate + "%");
 
-                TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJKey(onlineSubjectListVO.getJKey());
+                TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfo(onlineSubjectListVO.getJPmKey());
+                TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJGKey(orderPromotionVO.getJGKey());
                 TPromotionVO promotionVO = productMapper.selectTPromotionInfoByGKey(orderGoodsVO.getGKey());
                 if (promotionVO != null) {
                     int limitDay = promotionVO.getLimitDay();
@@ -269,7 +281,12 @@ public class MyPageService extends PagingSupport {
         if (jLecKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            videoPausePopupVO = productMapper.selectVideoPauseRequestPopup(jLecKey);
+            int pauseCnt = productMapper.selectTOrderLecPauseCnt(jLecKey);
+            if (pauseCnt >= 3) {
+                resultCode = ZianErrCode.CUSTOM_PAUSE_LIMIT_OVER_VIDEO.code();
+            } else {
+                videoPausePopupVO = productMapper.selectVideoPauseRequestPopup(jLecKey);
+            }
         }
         return new ApiResultObjectDTO(videoPausePopupVO, resultCode);
     }
@@ -289,14 +306,16 @@ public class MyPageService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             int pauseCnt = productMapper.selectTOrderLecPauseCnt(jLecKey);
-            if (pauseCnt >= 3) {
+            if (pauseCnt > 3) {
                 resultCode = ZianErrCode.CUSTOM_PAUSE_LIMIT_OVER_VIDEO.code();
             } else {
                 if ("STOP".equals(requestType)) {
-                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay);
+                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay, 0);
                 } else if ("START".equals(requestType)) {
-                    pauseDay = 0;
-                    productMapper.updateTOrderLecPauseCnt(jLecKey, pauseDay);
+                    int pauseTotalDay = productMapper.selectPauseTotalDay(jLecKey);
+                    if (pauseTotalDay > 0) {
+                        productMapper.updateTOrderLecPauseCnt(jLecKey, 0, pauseTotalDay);
+                    }
                 }
                 TOrderLecStartStopLogVO startStopLogVO = new TOrderLecStartStopLogVO(jLecKey, requestType);
                 productMapper.insertTOrderLecStartStopLog(startStopLogVO);
@@ -396,20 +415,22 @@ public class MyPageService extends PagingSupport {
         if (jKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(jKey, device);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jKey);
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(orderPromotionVO.getJPmKey(), device);
         }
         return new ApiResultListDTO(zianPassTypeList, resultCode);
     }
 
     @Transactional(readOnly = true)
-    public ApiResultListDTO getSinUpZianPassLectureNameList(int jKey, String deviceType, int stepCtgKey) {
+    public ApiResultListDTO getSinUpZianPassLectureNameList(int jGKey, String deviceType, int stepCtgKey) {
         int resultCode = OK.value();
 
         List<SignUpLectureVO> signUpLectureNameList = new ArrayList<>();
-        if (jKey == 0 && "".equals(deviceType)) {
+        if (jGKey == 0 && "".equals(deviceType)) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            signUpLectureNameList = productMapper.selectZianPassSubjectNameList(jKey, stepCtgKey, deviceType);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jGKey);
+            signUpLectureNameList = productMapper.selectZianPassSubjectNameList(orderPromotionVO.getJPmKey(), stepCtgKey, deviceType);
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
     }
@@ -439,7 +460,9 @@ public class MyPageService extends PagingSupport {
         if (jKey == 0) {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
-            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(jKey, device);
+            //TOrderGoodsVO orderGoodsVO = productMapper.selectPromotionGKeyFromByJGKey(jKey);
+            TOrderPromotionVO orderPromotionVO = productMapper.selectTOrderPromotionInfoByJGKey(jKey);
+            zianPassTypeList = productMapper.selectSignUpZianPassTypeList(orderPromotionVO.getJPmKey(), device);
         }
         return new ApiResultListDTO(zianPassTypeList, resultCode);
     }

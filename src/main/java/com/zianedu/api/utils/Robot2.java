@@ -4,19 +4,20 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-public class RobotTest {
+public class Robot2 {
 
     public static void main(String[] args) {
         try {
-            spacebar();
+            jump1();
             //keyboard1();
+            //spacebar();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    public static void mouse1() throws Exception {
+    //    public static void mouse1() throws Exception {
 //        Robot robot = new Robot();
 //        robot.mouseMove(2000, 250);
 //        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -81,6 +82,16 @@ public class RobotTest {
             robot.keyPress(KeyEvent.VK_SPACE);
             robot.keyRelease(KeyEvent.VK_SPACE);
             robot.delay(1000);
+        }
+    }
+
+    public static void jump1() throws Exception {
+        Robot robot = new Robot();
+        //10번동안
+        for (int i=0; i<60; i++) {
+            robot.delay(60000);
+            robot.keyPress(KeyEvent.VK_SPACE);
+            robot.keyRelease(KeyEvent.VK_SPACE);
         }
     }
 }
