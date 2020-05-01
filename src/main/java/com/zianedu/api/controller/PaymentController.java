@@ -94,6 +94,7 @@ public class PaymentController {
             //@ApiImplicitParam(name = "uniqueExtendDayList", value = "상품 유니크한 재수강날짜 리스트( 재수강일수, 기본 구매일때는 -1, 형식 >> '-1,-1,-1,..') ", dataType = "String", paramType = "query", required = true),
             @ApiImplicitParam(name = "payKey", value = "이니시스 결제 키값(T_PAY_INIPAY.pay_key)", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(name = "isMobile", value = "모바일여부", dataType = "int", paramType = "query", required = false),
+            @ApiImplicitParam(name = "depositDate", value = "무통장입금 예정일", dataType = "string", paramType = "query", required = false),
             @ApiImplicitParam(name = "orderGoodsList", value = "구매할 상품정보( [{ 'priceKey': 100924,   'cartKey': 388144,  'kind': 0,    'gKey': 101400,         'extendDay': -1,  'pmType':2 }, .... ])", dataType = "String", paramType = "query", required = true)
     })
     public ApiResultCodeDTO savePaymentResult(@ModelAttribute OrderVO orderVO) throws Exception {
