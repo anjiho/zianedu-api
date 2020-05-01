@@ -2738,7 +2738,7 @@
         UPDATE T_ORDER_LEC
         <set>
             <if test="pauseDay == 0">
-                STATUS = 0,
+                STATUS = 1,
                 PAUSE_START_DT = '',
             </if>
             <if test="pauseDay > 0">
@@ -2780,7 +2780,9 @@
 
     <update id="updateTOrderLecStartDtByUserKey" parameterType="int">
         UPDATE T_ORDER_LEC
-        SET START_DT = sysdate
+        SET
+            START_DT = sysdate,
+            STATUS = 1
         WHERE J_G_KEY IN (
             SELECT J_G_KEY FROM T_ORDER_GOODS WHERE USER_KEY = #{userKey} AND TYPE = 1
         )
