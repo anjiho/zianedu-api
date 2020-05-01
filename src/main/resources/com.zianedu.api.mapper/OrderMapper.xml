@@ -176,13 +176,13 @@
 
     <select id="selectUserPointListInfo" resultType="PointListVO">
         SELECT
-            T.createDate, T.type, T.desc_type,
+            T.createDate, T.type, T.desc_type, T.DESCRIPTION
             TRIM( TO_CHAR(ABS(T.POINT), '999,999,999,999,999') ) as point,
             TRIM( TO_CHAR(SUM(T.POINT) OVER(ORDER BY T.NUM), '999,999,999,999,999') ) as seqPoint
         FROM (
                 SELECT ROW_NUMBER() OVER(ORDER BY INDATE) NUM,
                 TO_CHAR(INDATE, 'YYYY-MM-DD') as createDate,
-                TYPE, POINT, J_KEY, J_ID, DESC_TYPE
+                TYPE, POINT, J_KEY, J_ID, DESC_TYPE, DESCRIPTION
                 FROM T_POINT
                 WHERE USER_KEY = #{userKey}
                 ORDER BY INDATE DESC

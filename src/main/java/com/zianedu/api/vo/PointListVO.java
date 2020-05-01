@@ -22,4 +22,6 @@ public class PointListVO {
     private String pointName;
 
     private String seqPoint;
+
+    private String description;
 }
