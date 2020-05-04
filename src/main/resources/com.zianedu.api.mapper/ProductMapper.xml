@@ -413,6 +413,7 @@
         INNER JOIN T_ORDER_LEC E
         ON A.J_G_KEY = E.J_G_KEY
         WHERE 1=1
+        AND E.STATUS = 2
         AND E.J_LEC_KEY = #{jLecKey}
     </select>
 
