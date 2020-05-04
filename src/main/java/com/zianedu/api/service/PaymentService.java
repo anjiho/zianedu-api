@@ -76,7 +76,7 @@ public class PaymentService {
              * TODO 포인트 적립과 사용내역 저장하기
              */
             if (jKey > 0 && !"".equals(orderVO.getJId())) {
-                if (orderVO.getPayStatus() == 2) {
+                if (orderVO.getPayStatus() <= 2) {
                     //물건을 사서 마일리지를 획득할때
                     if (orderVO.getPoint() > 0) {
                         this.injectUserPoint("P", orderVO.getUserKey(), orderVO.getPoint(), jKey, orderVO.getJId());

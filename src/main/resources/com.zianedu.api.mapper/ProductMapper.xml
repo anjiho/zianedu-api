@@ -1043,7 +1043,7 @@
         </if>
         ORDER BY B.G_KEY DESC
     </select>
-    
+
     <select id="selectSpecialPackageIncludeProductList" resultType="SpecialPackageLectureVO">
         SELECT B.G_KEY, B.EMPHASIS, B.NAME, C.LIMIT_DAY, F.IMAGE_TEACHER_LIST as IMAGE_LIST,
                 (SELECT NAME FROM T_CATEGORY Z WHERE Z.CTG_KEY = C.STEP_CTG_KEY) as stepName,
@@ -1262,7 +1262,7 @@
             AND A.RES_TYPE = 1
         )
     </select>
-    
+
     <select id="selectTPromotionInfoByLinkGKey" resultType="TPromotionVO">
         SELECT * FROM T_PROMOTION
         WHERE G_KEY IN (
@@ -2637,7 +2637,7 @@
             AND Z.end_dt <= sysdate
         ]]>
     </select>
-    
+
     <select id="selectGoodsInfoByJLecKey" resultType="VideoLectureDetailVO">
         SELECT A.G_KEY, A.NAME as goodsName, D.NAME as teacherName
         FROM T_GOODS A
@@ -2744,9 +2744,11 @@
         UPDATE T_ORDER_LEC
         <set>
             <if test="pauseDay == 0">
+                STATUS = 1,
                 PAUSE_START_DT = '',
             </if>
             <if test="pauseDay > 0">
+                STATUS = 2,
                 PAUSE_START_DT = sysdate,
                 PAUSE_CNT = PAUSE_CNT + 1,
             </if>
@@ -2784,7 +2786,9 @@
 
     <update id="updateTOrderLecStartDtByUserKey" parameterType="int">
         UPDATE T_ORDER_LEC
-        SET START_DT = sysdate
+        SET
+            START_DT = sysdate,
+            STATUS = 1
         WHERE J_G_KEY IN (
             SELECT J_G_KEY FROM T_ORDER_GOODS WHERE USER_KEY = #{userKey} AND TYPE = 1
         )

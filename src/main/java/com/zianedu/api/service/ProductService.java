@@ -248,9 +248,10 @@ public class ProductService extends PagingSupport {
                         List<LectureBookVO> teacherBookList = productMapper.selectTeacherBookListFromVideoLectureLink(vo2.getGKey());
                         //샘플강좌 주입
                         TLecCurriVO lecCurriVO = productMapper.selectVodSampleByGKey(vo2.getGKey());
-                        vo2.setVodFileLow(lecCurriVO.getVodFileLow());
-                        vo2.setVodFileHigh(lecCurriVO.getVodFileHigh());
-
+                        if (lecCurriVO != null) {
+                            vo2.setVodFileLow(Util.isNullValue(lecCurriVO.getVodFileLow(), ""));
+                            vo2.setVodFileHigh(Util.isNullValue(lecCurriVO.getVodFileHigh(), ""));
+                        }
                         vo2.setTeacherLectureBook(teacherBookList);
                     }
                 }

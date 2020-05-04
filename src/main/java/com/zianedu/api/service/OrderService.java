@@ -780,7 +780,7 @@ public class OrderService extends PagingSupport {
 
                 for (PointListVO vo : pointList) {
                     String pointDesc = "";
-                    if (vo.getDescType() == 0) pointDesc = "회원가입 마일리지 획득";
+                    if (vo.getDescType() == 0) pointDesc = vo.getDescription();
                     else if (vo.getDescType() == 1) pointDesc = "상품구매 마일리지 획득";
                     else if (vo.getDescType() == 2) pointDesc = "상품구매 마일리지 사용";
                     else if (vo.getDescType() == 3) pointDesc = "상품구매 주문취소 마일리지 반환";

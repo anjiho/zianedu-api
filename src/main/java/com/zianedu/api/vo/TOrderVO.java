@@ -111,7 +111,7 @@ public class TOrderVO {
         this.bankAccount = vo.getBankAccount();
         this.cardCode = vo.getCardCode();
         this.depositUser = vo.getDepositUser();
-        this.depositDate = "";
+        this.depositDate = Util.isNullValue(vo.getDepositDate(), "");
         this.deliveryName = vo.getDeliveryName();
         this.deliveryTelephone = vo.getDeliveryTelephone();
         this.deliveryTelephoneMobile = vo.getDeliveryTelephoneMobile();

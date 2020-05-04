@@ -71,6 +71,8 @@ public class ZianUtils {
     }
 
     public static String getFileNameFromPath(String filePath) {
+        if (filePath == null) return null;
+
         String fileName = "";
         if (!"".equals(filePath)) {
             if (filePath.contains("/")) {

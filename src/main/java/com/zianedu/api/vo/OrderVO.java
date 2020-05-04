@@ -78,6 +78,9 @@ public class OrderVO {
     @ApiModelProperty(hidden = true, readOnly = true)
     private int isMobile = 0;
 
+    @ApiModelProperty(hidden = true, required = true)
+    private String depositDate;
+
     @ApiModelProperty(hidden = true, readOnly = true)
     private String orderGoodsList;
 
