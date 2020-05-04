@@ -1553,7 +1553,9 @@
             AND B.USER_KEY = #{userKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
-            AND E.PAUSE_DAY = 0
+            <![CDATA[
+            AND E.PAUSE_DAY <= 3
+            ]]>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
                     AND A.KIND IN (100, 102)
@@ -1596,7 +1598,9 @@
             AND D.SUBJECT_CTG_KEY = #{subjectCtgKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
-            AND E.PAUSE_DAY = 0
+            <![CDATA[
+            AND E.PAUSE_DAY <= 3
+            ]]>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
                     AND A.KIND IN (100, 102)
@@ -1641,7 +1645,9 @@
             AND B.user_key = #{userKey}
             AND B.pay_status = 2
             AND A.j_pm_key = 0
-            AND E.PAUSE_DAY = 0
+            <![CDATA[
+            AND E.PAUSE_DAY <= 3
+            ]]>
             <if test="subjectCtgKey > 0">
                 AND D.subject_ctg_key = #{subjectCtgKey}
             </if>
