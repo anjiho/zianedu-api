@@ -59,7 +59,7 @@ public class PaymentService {
             for (OrderGoodsListVO vo : orderGoodsList) {
                 TGoodsVO goodsVO = productMapper.selectTGoodsInfo(vo.getGKey());
                 if (!COMMA.matcher(String.valueOf(goodsVO.getType())).matches()) {
-                    sj.add(String.valueOf(vo.getKind()));
+                    sj.add(String.valueOf(goodsVO.getType()));
                 }
                 uniqueTypeList = sj.toString();
 
