@@ -57,8 +57,8 @@ public class PaymentService {
             StringJoiner sj = new StringJoiner(",");
             StringJoiner sj2 = new StringJoiner(",");
             for (OrderGoodsListVO vo : orderGoodsList) {
-
-                if (!COMMA.matcher(String.valueOf(vo.getKind())).matches()) {
+                TGoodsVO goodsVO = productMapper.selectTGoodsInfo(vo.getGKey());
+                if (!COMMA.matcher(String.valueOf(goodsVO.getType())).matches()) {
                     sj.add(String.valueOf(vo.getKind()));
                 }
                 uniqueTypeList = sj.toString();
