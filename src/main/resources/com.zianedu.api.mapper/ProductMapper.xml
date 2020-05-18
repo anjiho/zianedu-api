@@ -1938,7 +1938,7 @@
             AND B.PAY_STATUS = 2
             --AND E.STATUS = 3
             <![CDATA[
-                AND (E.START_DT + E.LIMIT_DAY) <= sysdate
+                AND (E.START_DT + E.LIMIT_DAY) < sysdate
             ]]>
             AND B.USER_KEY = #{userKey}
             AND A.J_PM_KEY = 0
@@ -1974,7 +1974,10 @@
             AND A.TYPE = 1
             AND B.PAY_TYPE NOT IN (20)
             AND B.PAY_STATUS = 2
-            AND E.STATUS = 3
+            --AND E.STATUS = 3
+            <![CDATA[
+                AND (E.START_DT + E.LIMIT_DAY) < sysdate
+            ]]>
             AND B.USER_KEY = #{userKey}
             AND D.STEP_CTG_KEY = #{stepCtgKey}
             AND A.J_PM_KEY = 0
