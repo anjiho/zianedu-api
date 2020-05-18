@@ -2026,7 +2026,10 @@
         AND A.TYPE = 1
         AND B.PAY_TYPE NOT IN (20)
         AND B.PAY_STATUS = 2
-        AND E.STATUS = 3
+        --AND E.STATUS = 3
+        <![CDATA[
+                AND (E.START_DT + E.LIMIT_DAY) < sysdate
+            ]]>
         AND E.J_LEC_KEY = #{jLecKey}
         ORDER BY A.J_G_KEY ASC
     </select>
