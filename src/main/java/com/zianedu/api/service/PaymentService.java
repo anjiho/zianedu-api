@@ -9,6 +9,7 @@ import com.zianedu.api.mapper.PaymentMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,9 +132,16 @@ public class PaymentService {
                         teacherName = StringUtils.implodeList(",", teacherNameList);
                     }
 
+                    int sellPrice = priceOptionVO.getSellPrice();
+                    int point = priceOptionVO.getPoint();
+                    if (vo.getExtendDay() > -1) {
+                        sellPrice = (priceOptionVO.getSellPrice() / priceOptionVO.getLimitDay()) * vo.getExtendDay();
+                        point = (priceOptionVO.getPoint() / priceOptionVO.getLimitDay()) * vo.getExtendDay();
+                    }
+
                     tOrderGoodsVO = new TOrderGoodsVO(
                             jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
-                            priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                            sellPrice, point,
                             tGoodsVO.getType(), 0, priceOptionVO.getKind(), vo.getExtendDay(), 0, tLecVO.getExamYear(), tLecVO.getClassGroupCtgKey(),
                             tLecVO.getSubjectCtgKey(), teacherName, tGoodsVO.getName()
                     );

@@ -228,7 +228,7 @@ public class OrderService extends PagingSupport {
             int retakePrice = 0;
 
             List<OrderProductListDTO>orderProductList = new ArrayList<>();
-
+            int retakePoint = 0;
             int videoProductCnt = 0;
             for (Integer cartKey : cartKeys) {
                 CartListVO cartInfo = orderMapper.selectOrderListByCartKey(cartKey);
@@ -289,6 +289,7 @@ public class OrderService extends PagingSupport {
                                 cartInfo.getCnt(), cartInfo.getSellPrice(), cartInfo.getKind(), cartInfo.getExtendDay(), 0
                         );
                     } else {
+                        retakePoint = (cartInfo.getPoint() / cartInfo.getLimitDay()) * cartInfo.getExtendDay();
                         orderProductListDTO = new OrderProductListDTO(
                                 cartInfo.getGKey(), cartInfo.getPriceKey(), cartInfo.getCartKey(), cartInfo.getType(),
                                 GoodsType.getGoodsTypeStr(cartInfo.getType(), cartInfo.getExtendDay()), cartInfo.getGoodsName(),
@@ -305,6 +306,7 @@ public class OrderService extends PagingSupport {
                         videoProductCnt++;
                     } else if (cartInfo.getType() == 1 && cartInfo.getExtendDay() > -1) {
                         retakePrice += cartInfo.getLinkSellPrice();
+                        totalPoint += retakePoint;
                     }
 
                     //학원실강 상품 합계
@@ -1054,11 +1056,13 @@ public class OrderService extends PagingSupport {
 
                     for (CartListVO product : buyProductList) {
                         int sellPrice = 0;
+                        int point = 0;
                         if (product.getType() == 1) {
                             if (retakeInfo.getExtendDay() == 0) {
                                 sellPrice = ZianUtils.calcPercent(product.getSellPrice(), product.getExtendPercent());
                             } else {
                                 sellPrice = (product.getSellPrice() / product.getLimitDay()) * retakeInfo.getExtendDay();
+                                point = (product.getPoint() / product.getLimitDay()) * retakeInfo.getExtendDay();
                             }
                         } else if (product.getType() == 5) {
                             sellPrice = (product.getSellPrice() / product.getKind() ) * (retakeInfo.getExtendDay() / 30);
@@ -1066,10 +1070,10 @@ public class OrderService extends PagingSupport {
                         OrderProductListDTO orderProductListDTO = new OrderProductListDTO(
                                 product.getGKey(), product.getPriceKey(), product.getCartKey(), product.getType(),
                                 GoodsType.getGoodsTypeStr(product.getType(), retakeInfo.getExtendDay()), product.getGoodsName(),
-                                product.getCnt(), StringUtils.convertSipWonZero(sellPrice), product.getKind(), retakeInfo.getExtendDay(), product.getPmType()
+                                1, StringUtils.convertSipWonZero(sellPrice), product.getKind(), retakeInfo.getExtendDay(), product.getPmType()
                         );
                         //totalProductPrice += product.getSellPrice();
-                        totalPoint += product.getPoint();
+                        totalPoint += point;
                         if (retakeInfo.getExtendDay() == -1) {
                             totalPoint += product.getPoint();
                         }
@@ -1106,7 +1110,7 @@ public class OrderService extends PagingSupport {
                     totalProductPrice = promotionPrice + videoPrice + academyPrice + bookPrice + examPrice + deliveryPrice + StringUtils.convertSipWonZero(retakePrice);
                     //상품총합
                     ProductTotalPriceDTO productTotalPrice = new ProductTotalPriceDTO(
-                            totalProductPrice, 0, deliveryPrice
+                            totalProductPrice, totalPoint, deliveryPrice
                     );
                     //상품별 상품 금액
                     GroupTotalPriceDTO productGroupPrice = new GroupTotalPriceDTO(
