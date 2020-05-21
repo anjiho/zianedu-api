@@ -81,6 +81,14 @@ public class PaymentService {
                     //물건을 사서 마일리지를 획득할때
                     if (orderVO.getPoint() > 0) {
                         this.injectUserPoint("P", orderVO.getUserKey(), orderVO.getPoint(), jKey, orderVO.getJId());
+                    } else {
+                        int totalPoint = 0;
+                        for (OrderGoodsListVO orderListVO : orderGoodsList) {
+                            TGoodsPriceOptionVO priceOptionVO = productMapper.selectGoodsPriceOptionByPriceKey(orderListVO.getPriceKey());
+                            int point = (priceOptionVO.getPoint() / priceOptionVO.getLimitDay()) * orderListVO.getExtendDay();
+                            totalPoint += point;
+                        }
+                        this.injectUserPoint("P", orderVO.getUserKey(), totalPoint, jKey, orderVO.getJId());
                     }
                     //물건을 사서 마일이지를 사용할때
                     if (orderVO.getDiscountPoint() > 0) {
