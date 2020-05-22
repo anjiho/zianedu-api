@@ -99,7 +99,7 @@ public class TOrderVO {
         this.pricePay = vo.getPricePay();
         this.point = vo.getPoint();
         this.dcWelfare = 0;
-        this.dcPoint = 0;
+        this.dcPoint = vo.getDiscountPoint();
         this.dcCoupon = 0;
         this.dcFree = 0;
         this.deliveryPrice = vo.getDeliveryPrice();
