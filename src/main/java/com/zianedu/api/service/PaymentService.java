@@ -219,8 +219,15 @@ public class PaymentService {
                     /**
                      * TODO 동영상 상품이 정상결제일때 필요한 정보 저장
                      */
+                    int limitDay = tLecVO.getLimitDay();
+                    if (vo.getExtendDay() > -1) {
+                        limitDay = vo.getExtendDay();
+                    }
+//                    tOrderLecVO = new TOrderLecVO(
+//                            jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
+//                    );
                     tOrderLecVO = new TOrderLecVO(
-                            jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
+                            jGKey, 0, "", limitDay, tLecVO.getMultiple()
                     );
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
