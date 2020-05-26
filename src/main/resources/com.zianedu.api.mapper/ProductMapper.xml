@@ -1559,10 +1559,10 @@
             ]]>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
-                    AND A.KIND IN (100, 102)
+                    AND A.KIND IN (100, 101, 102) /*101추가*/
                 </if>
                 <if test="deviceType == 'MOBILE'">
-                    AND A.KIND IN (101, 102)
+                    AND A.KIND IN (100, 101, 102) /*100추가*/
                 </if>
             </if>
         )Z
@@ -1604,10 +1604,10 @@
             ]]>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
-                    AND A.KIND IN (100, 102)
+                    AND A.KIND IN (100, 101, 102) /*101추가*/
                 </if>
                 <if test="deviceType == 'MOBILE'">
-                    AND A.KIND IN (101, 102)
+                    AND A.KIND IN (101, 100, 102) /*100추가*/
                 </if>
             </if>
         )Z
@@ -1657,10 +1657,10 @@
             </if>
             <if test="deviceType != '' and deviceType != null">
                 <if test="deviceType == 'PC'">
-                    AND A.KIND IN (100, 102)
+                    AND A.KIND IN (100, 101, 102) /*101추가*/
                 </if>
                 <if test="deviceType == 'MOBILE'">
-                    AND A.KIND IN (101, 102)
+                    AND A.KIND IN (100, 101, 102) /*100추가*/
                 </if>
             </if>
         ) Z

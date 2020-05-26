@@ -9,6 +9,8 @@ public class TLecCurriVO {
 
     private String numStr;
 
+    private int kind;
+
     private int curriKey;//강의 KEY
 
     private int lecKey;//강좌 Key

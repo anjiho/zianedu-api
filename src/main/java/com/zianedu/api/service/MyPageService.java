@@ -87,7 +87,7 @@ public class MyPageService extends PagingSupport {
             resultCode = ZianErrCode.BAD_REQUEST.code();
         } else {
             //내강의실 들어오면 시작안된 단관상품 시작일 업데이트
-            productMapper.updateTOrderLecStartDtByUserKey(userKey);
+            /*productMapper.updateTOrderLecStartDtByUserKey(userKey);*/
             //과목 리스트 주입
             List<SubjectDTO>subjectList = productMapper.selectVideoOnlineSignUpSubjectList(userKey, deviceType);
             //유형 리스트 주입
