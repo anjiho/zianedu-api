@@ -1209,7 +1209,10 @@
     </select>
 
     <select id="selectGoodsPriceOptionByPriceKey" resultType="TGoodsPriceOptionVO">
-        SELECT * FROM T_GOODS_PRICE_OPTION WHERE PRICE_KEY = #{priceKey}
+        SELECT A.*, B.LIMIT_DAY FROM T_GOODS_PRICE_OPTION A
+        LEFT OUTER JOIN T_LEC B
+        ON A.G_KEY = B.G_KEY
+        WHERE A.PRICE_KEY = #{priceKey}
     </select>
 
     <select id="selectGoodsPriceOptionByGKey" resultType="TGoodsPriceOptionVO">

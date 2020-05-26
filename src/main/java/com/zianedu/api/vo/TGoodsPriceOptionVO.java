@@ -30,4 +30,6 @@ public class TGoodsPriceOptionVO {
     private String mobileDiscountPercent;
 
     private String pcMobileDiscountPercent;
+
+    private int limitDay;
 }

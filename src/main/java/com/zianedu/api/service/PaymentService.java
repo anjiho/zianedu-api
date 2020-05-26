@@ -9,6 +9,7 @@ import com.zianedu.api.mapper.PaymentMapper;
 import com.zianedu.api.mapper.ProductMapper;
 import com.zianedu.api.utils.GsonUtil;
 import com.zianedu.api.utils.StringUtils;
+import com.zianedu.api.utils.ZianUtils;
 import com.zianedu.api.vo.*;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +79,16 @@ public class PaymentService {
             if (jKey > 0 && !"".equals(orderVO.getJId())) {
                 if (orderVO.getPayStatus() <= 2) {
                     //물건을 사서 마일리지를 획득할때
-                    if (orderVO.getPoint() > 0) {
-                        this.injectUserPoint("P", orderVO.getUserKey(), orderVO.getPoint(), jKey, orderVO.getJId());
+                    int totalPoint = 0;
+                    for (OrderGoodsListVO orderListVO : orderGoodsList) {
+                        TGoodsPriceOptionVO priceOptionVO = productMapper.selectGoodsPriceOptionByPriceKey(orderListVO.getPriceKey());
+                        int point = priceOptionVO.getPoint();
+                        if (orderListVO.getExtendDay() > -1) {
+                            point = (priceOptionVO.getPoint() / priceOptionVO.getLimitDay()) * orderListVO.getExtendDay();
+                        }
+                        totalPoint += point;
                     }
+                    this.injectUserPoint("P", orderVO.getUserKey(), totalPoint, jKey, orderVO.getJId());
                     //물건을 사서 마일이지를 사용할때
                     if (orderVO.getDiscountPoint() > 0) {
                         this.injectUserPoint("M", orderVO.getUserKey(), orderVO.getDiscountPoint(), jKey, orderVO.getJId());
@@ -131,9 +139,16 @@ public class PaymentService {
                         teacherName = StringUtils.implodeList(",", teacherNameList);
                     }
 
+                    int sellPrice = priceOptionVO.getSellPrice();
+                    int point = priceOptionVO.getPoint();
+                    if (vo.getExtendDay() > -1) {
+                        sellPrice = (priceOptionVO.getSellPrice() / priceOptionVO.getLimitDay()) * vo.getExtendDay();
+                        point = (priceOptionVO.getPoint() / priceOptionVO.getLimitDay()) * vo.getExtendDay();
+                    }
+
                     tOrderGoodsVO = new TOrderGoodsVO(
                             jKey, orderVO.getUserKey(), vo.getGKey(), StringUtils.convertLongToInt(vo.getCartKey()), vo.getPriceKey(), priceOptionVO.getPrice(),
-                            priceOptionVO.getSellPrice(), priceOptionVO.getPoint(),
+                            sellPrice, point,
                             tGoodsVO.getType(), 0, priceOptionVO.getKind(), vo.getExtendDay(), 0, tLecVO.getExamYear(), tLecVO.getClassGroupCtgKey(),
                             tLecVO.getSubjectCtgKey(), teacherName, tGoodsVO.getName()
                     );
@@ -204,8 +219,15 @@ public class PaymentService {
                     /**
                      * TODO 동영상 상품이 정상결제일때 필요한 정보 저장
                      */
+                    int limitDay = tLecVO.getLimitDay();
+                    if (vo.getExtendDay() > -1) {
+                        limitDay = vo.getExtendDay();
+                    }
+//                    tOrderLecVO = new TOrderLecVO(
+//                            jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
+//                    );
                     tOrderLecVO = new TOrderLecVO(
-                            jGKey, 0, "", tLecVO.getLimitDay(), tLecVO.getMultiple()
+                            jGKey, 0, "", limitDay, tLecVO.getMultiple()
                     );
                     if (tOrderLecVO != null) {
                         paymentMapper.insertTOrderLec(tOrderLecVO);
