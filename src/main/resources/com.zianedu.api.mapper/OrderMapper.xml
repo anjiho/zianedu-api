@@ -193,11 +193,28 @@
         OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
+    <select id="selectUserCouponListInfoCount" resultType="int">
+        SELECT COUNT(COUPON_ISSUE_KEY)
+        FROM T_COUPON_ISSUE
+        WHERE USER_KEY = #{userKey}
+        ORDER BY INDATE DESC
+    </select>
+
     <select id="selectUserPointListInfoCount" resultType="int">
         SELECT COUNT(POINT_KEY)
         FROM T_POINT
         WHERE USER_KEY = #{userKey}
         ORDER BY INDATE DESC
+    </select>
+
+    <select id="selectUserCouponListInfo" resultType="CouponListVO">
+        SELECT
+            B.COUPON_MASTER_KEY, A.COUPON_ISSUE_KEY, A.INDATE, A.DESCRIPTION, B.DC_TYPE, B.DC_VALUE, B.PERIOD_TYPE,
+            B.LIMIT_DAY, B.START_DATE, B.END_DATE, B.NAME, B.DEVICE, A.USE_DATE
+        FROM T_COUPON_ISSUE A
+        INNER JOIN T_COUPON_MASTER B ON A.COUPON_MASTER_KEY = B.COUPON_MASTER_KEY
+        WHERE A.USER_KEY = #{userKey}
+        ORDER BY A.INDATE DESC
     </select>
 
     <select id="selectUserPointInfo" resultType="UserPointInfoVO">
@@ -209,6 +226,25 @@
         FROM T_POINT A
         WHERE USER_KEY = #{userKey}
         AND ROWNUM =1
+    </select>
+
+    <select id="selectCouponChkNumber" resultType="int">
+        SELECT COUNT(*)
+            FROM T_COUPON_OFFLINE
+        WHERE CODE = #{couponNumber}
+    </select>
+
+    <select id="selectCouponOverlapNumber" resultType="int">
+        SELECT COUNT(*)
+            FROM T_COUPON_OFFLINE
+        WHERE CODE = #{couponNumber}
+        AND IS_ISSUE = 0
+    </select>
+
+    <select id="selectOfflineKey" resultType="CouponOfflineInfoVO">
+        SELECT *
+            FROM T_COUPON_OFFLINE
+        WHERE CODE = #{couponNumber}
     </select>
 
     <select id="selectCartInfoByCartKey" resultType="TCartVO">
@@ -314,6 +350,16 @@
         )
     </select>
 
+
+    <select id="selectJidChk" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+            SELECT *
+            FROM T_ORDER
+            WHERE J_ID = #{jId}
+        )
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL
@@ -358,10 +404,30 @@
         )
     </insert>
 
+    <insert id="insertCouponIssue" >
+        <selectKey resultType="Integer" keyProperty="couponIssueKey" order="BEFORE">
+            SELECT T_COUPON_ISSUE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO T_COUPON_ISSUE
+        (
+        COUPON_ISSUE_KEY, COUPON_MASTER_KEY, USER_KEY, INDATE, COUPON_OFFLINE_KEY, J_G_KEY, USE_DATE, DESCRIPTION
+        )
+        VALUES
+        (
+        #{couponIssueKey}, #{couponMasterKey}, #{userKey}, sysdate, #{couponOffKey}, 0, '', ''
+        )
+    </insert>
+
     <update id="updateTOderLecLimitDay">
         UPDATE T_ORDER_LEC
         SET LIMIT_DAY = LIMIT_DAY + #{dayCount}
         WHERE J_LEC_KEY = #{jLecKey}
+    </update>
+
+    <update id="updateCouponOfflineNumber">
+        UPDATE T_COUPON_OFFLINE
+        SET IS_ISSUE = 1
+        WHERE CODE = #{couponNumber}
     </update>
 
     <delete id="deleteCartInfo">

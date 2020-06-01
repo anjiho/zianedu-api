@@ -757,6 +757,64 @@ public class OrderService extends PagingSupport {
     }
 
     /**
+     * 쿠폰 목록
+     * @param userKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getUserCouponList(int userKey, int sPage, int listLimit) {
+        int resultCode = OK.value();
+
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        //UserPointInfoVO pointInfoVO = null;
+        List<CouponListVO> couponList = new ArrayList<>();
+
+        if (userKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //pointInfoVO = orderMapper.selectUserPointInfo(userKey);
+            totalCount = orderMapper.selectUserCouponListInfoCount(userKey);
+            couponList = orderMapper.selectUserCouponListInfo(userKey, startNumber, listLimit);
+        }
+        //PointInfoDTO pointInfo = new PointInfoDTO(pointInfoVO, pointList);
+
+        return new ApiPagingResultDTO(totalCount, couponList, resultCode);
+    }
+
+    /**
+     * 쿠폰 등록(사용자)
+     * @param userKey
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ApiResultCodeDTO saveCouponOffline(String couponNumber,int userKey) {
+        int resultCode = OK.value();
+        int couponChk = orderMapper.selectCouponChkNumber(couponNumber);
+
+        if(couponChk == 0){
+            resultCode = ZianErrCode.CUSTOM_NOT_FOUNT_USER.code();
+        }else{
+            int couponOverlapChk = orderMapper.selectCouponOverlapNumber(couponNumber);
+            if(couponOverlapChk == 1){
+                orderMapper.updateCouponOfflineNumber(couponNumber);
+
+                new CouponOfflineInfoVO();
+                CouponOfflineInfoVO couponOfflineInfoVO;
+                couponOfflineInfoVO = orderMapper.selectOfflineKey(couponNumber);
+
+                int couponMasterKey = couponOfflineInfoVO.getCouponMasterKey();
+                int couponOffKey = couponOfflineInfoVO.getCouponOfflineKey();
+
+                orderMapper.insertCouponIssue(couponOffKey,userKey,couponMasterKey);
+            }else resultCode = ZianErrCode.CUSTOM_DUPLICATED_USER_ID.code();
+        }
+
+        return new ApiResultCodeDTO("couponChk", couponChk, resultCode);
+    }
+
+    /**
      * 마일리지 목록
      * @param userKey
      * @return
@@ -1154,5 +1212,13 @@ public class OrderService extends PagingSupport {
             orderMapper.updateTOderLecLimitDay(jLecKey, 3);
         }
         return new ApiResultCodeDTO("RESULT", jLecKey, resultCode);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int selectJIdChk(String jId) {
+
+        int jidChk = orderMapper.selectJidChk(jId);
+
+        return jidChk;
     }
 }

@@ -70,8 +70,15 @@ public class PaymentService {
                 uniqueExtendDayList = sj2.toString();
             }
             TOrderVO tOrderVO = new TOrderVO(orderVO, uniqueTypeList, uniqueExtendDayList);
-            paymentMapper.insertTOrder(tOrderVO);
-            jKey = tOrderVO.getJKey();
+
+            int jidChk = orderMapper.selectJidChk(tOrderVO.getJId());
+            if (jidChk == 0) {
+                paymentMapper.insertTOrder(tOrderVO);
+                jKey = tOrderVO.getJKey();
+            }else {
+                jKey = 0;
+                System.out.println("================ J_ID OVERLAP ERROR ================");
+            }
 
             /**
              * TODO 포인트 적립과 사용내역 저장하기

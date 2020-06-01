@@ -19,6 +19,7 @@ public enum ZianErrCode {
     CUSTOM_DEVICE_LIMIT_NULL(911, "CUSTOM :: 기기가 등록되어있지 않습니다."),
     CUSTOM_CONSULT_RESERVE_LIMIT(912, "CUSTOM :: 요청 상담예약(월, 시간, 장소) 중복"),
     CUSTOM_DEVICE_LIMIT(913, "CUSTOM :: 기기제한 초기화 초과"),
+    CUSTOM_PAYMENT_OVERLAP(914, "CUSTOM :: 결제 중복 확인"),
     ;
 
     int code;

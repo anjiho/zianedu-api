@@ -34,6 +34,16 @@ public interface OrderMapper {
 
     PaymentVO selectUserPaymentInfo(@Param("jKey") int jKey);
 
+    int selectUserCouponListInfoCount(@Param("userKey") int userKey);
+
+    List<CouponListVO> selectUserCouponListInfo(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
+
+    int selectCouponChkNumber(@Param("couponNumber") String couponNumber);
+
+    int selectCouponOverlapNumber(@Param("couponNumber") String couponNumber);
+
+    CouponOfflineInfoVO selectOfflineKey(@Param("couponNumber") String couponNumber);
+
     List<PointListVO> selectUserPointListInfo(@Param("userKey") int userKey, @Param("startNumber") int startNumber, @Param("listLimitNumber") int listLimitNumber);
 
     int selectUserPointListInfoCount(@Param("userKey") int userKey);
@@ -57,6 +67,8 @@ public interface OrderMapper {
 
     int selectTBbsDataCountByJLecKey(@Param("userKey") int userKey, @Param("jLecKey") int jLecKey);
 
+    int selectJidChk(@Param("jId") String jId);
+
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);
 
@@ -64,8 +76,12 @@ public interface OrderMapper {
 
     void insertTOrderPromotion(TOrderPromotionVO tOrderPromotionVO);
 
+    void insertCouponIssue(@Param("couponOffKey") int couponOffKey, @Param("userKey") int userKey, @Param("couponMasterKey") int couponMasterKey);
+
     /** UPDATE **/
     void updateTOderLecLimitDay(@Param("jLecKey") int jLecKey, @Param("dayCount") int dayCount);
+
+    void updateCouponOfflineNumber(@Param("couponNumber") String couponNumber);
 
     /** DELETE **/
     void deleteCartInfo(@Param("cartKey") int cartKey);

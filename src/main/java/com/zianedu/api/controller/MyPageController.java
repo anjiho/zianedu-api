@@ -354,6 +354,30 @@ public class MyPageController {
         return orderService.getUserOrderDetailInfo(jKey);
     }
 
+    @RequestMapping(value = "/getUserCouponList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("마이페이지 > 쿠폰 리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiPagingResultDTO getUserCouponList(@PathVariable("userKey") int userKey,
+                                               @RequestParam("sPage") int sPage,
+                                               @RequestParam("listLimit") int listLimit) {
+        return orderService.getUserCouponList(userKey, sPage, listLimit);
+    }
+
+    @RequestMapping(value = "/saveCouponOffline", method = RequestMethod.POST, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("상품 리뷰 저장하기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "couponNumber", value = "쿠폰 번호", dataType = "String", paramType = "path", required = true),
+            @ApiImplicitParam(name = "userKey", value = "사용자 키", dataType = "int", paramType = "path", required = true),
+    })
+    public ApiResultCodeDTO saveCouponOffline(@RequestParam("couponNumber") String couponNumber, @RequestParam("userKey") int userKey) {
+        return orderService.saveCouponOffline(couponNumber, userKey);
+    }
+
+
     @RequestMapping(value = "/getUserPointList/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("마이페이지 > 마일리지 리스트")
     @ApiImplicitParams({
