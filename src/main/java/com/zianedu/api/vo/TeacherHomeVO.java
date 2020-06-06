@@ -13,8 +13,6 @@ public class TeacherHomeVO {
 
     private List<TBbsDataVO> learningQna;
 
-    private List<GoodsReviewVO> lectureReview;
-
     private List<GoodsListVO> videoLecture;
 
     private List<GoodsListVO> academyLecture;
@@ -23,12 +21,11 @@ public class TeacherHomeVO {
 
     public TeacherHomeVO() {}
 
-    public TeacherHomeVO(TTeacherVO teacherInfo, List<TBbsDataVO> referenceRoom, List<TBbsDataVO> learningQna, List<GoodsReviewVO> lectureReview,
-                         List<GoodsListVO> videoLecture, List<GoodsListVO> academyLecture, List<BannerBookVO> teacherBook) {
+    public TeacherHomeVO(TTeacherVO teacherInfo, List<TBbsDataVO> referenceRoom, List<TBbsDataVO> learningQna, List<GoodsListVO> videoLecture,
+                         List<GoodsListVO> academyLecture, List<BannerBookVO> teacherBook) {
         this.teacherInfo = teacherInfo;
         this.referenceRoom = referenceRoom;
         this.learningQna = learningQna;
-        this.lectureReview = lectureReview;
         this.videoLecture = videoLecture;
         this.academyLecture = academyLecture;
         this.teacherBook = teacherBook;

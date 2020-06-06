@@ -7,7 +7,7 @@
     </select>
 
     <select id="selectParentKeyFromCategory" resultType="Integer">
-        SELECT PARENT_KEY FROM T_CATEGORY WHERE CTG_KEY = #{ctgKey};
+        SELECT PARENT_KEY FROM T_CATEGORY WHERE CTG_KEY = #{ctgKey}
     </select>
 
     <select id="selectTCategoryInfoByCtgKey" resultType="TCategoryVO">

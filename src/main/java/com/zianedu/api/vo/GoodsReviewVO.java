@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class GoodsReviewVO {
 
-    private int gReviewKey;
+    private int greviewKey;
 
     private String title;
 
@@ -22,6 +22,8 @@ public class GoodsReviewVO {
     private String goodsName;
 
     private String userName;
+
+    private String userId;
 
     private int teacherKey;
 

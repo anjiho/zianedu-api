@@ -360,6 +360,13 @@
         )
     </select>
 
+    <select id="selectGkey" resultType="int">
+        SELECT A.G_KEY
+        FROM T_ORDER_GOODS A
+        INNER JOIN T_ORDER_LEC B ON A.J_G_KEY=B.J_G_KEY
+        WHERE B.J_LEC_KEY = #{jleckey}
+    </select>
+
     <insert id="insertTCart" parameterType="TCartVO">
         <selectKey resultType="Integer" keyProperty="cartKey" order="BEFORE">
             SELECT T_CART_SEQ.NEXTVAL FROM DUAL

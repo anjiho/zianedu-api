@@ -271,4 +271,33 @@
             ORDER BY B.G_KEY DESC
         ) T
     </select>
+
+    <select id="selectTeacherLecTureList" resultType="GoodsListVO">
+        SELECT A.G_KEY, A.NAME as goodsName
+        FROM T_GOODS A
+        INNER JOIN T_GOODS_TEACHER_LINK B ON A.G_KEY = B.G_KEY
+        WHERE A.IS_SHOW =1
+            AND A.IS_SELL=1
+            AND B.TEACHER_KEY = #{teacherKey}
+        GROUP BY A.G_KEY, A.NAME
+        ORDER BY A.G_KEY DESC
+    </select>
+
+    <select id="selectGoodsReviewDetailInfo" resultType="GoodsReviewVO">
+        SELECT C.NAME, C.USER_ID, A.G_REVIEW_KEY, A.G_KEY, A.INDATE, A.USER_KEY, A.TITLE, A.CONTENTS, A.POINT
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_GOODS_TEACHER_LINK B ON A.G_KEY = B.G_KEY
+        INNER JOIN T_USER C ON A.USER_KEY = C.USER_KEY
+        WHERE B.TEACHER_KEY = #{teacherKey}
+            AND A.G_REVIEW_KEY = #{gReviewKey}
+    </select>
+
+
+    <select id="getTeacherKeyOfJLecKey" resultType="int">
+        SELECT c.TEACHER_KEY
+        FROM T_ORDER_LEC A
+        INNER JOIN T_ORDER_GOODS B ON A.J_G_KEY=B.J_G_KEY
+        INNER JOIN T_GOODS_TEACHER_LINK C ON B.G_KEY=C.G_KEY
+        WHERE A.J_LEC_KEY = #{jlecKey}
+    </select>
 </mapper>

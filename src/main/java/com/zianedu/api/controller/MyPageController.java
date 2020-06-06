@@ -94,6 +94,16 @@ public class MyPageController {
         return myPageService.getUserSignUpLectureNameList(userKey, deviceType, subjectCtgKey, stepCtgKey);
     }
 
+
+    @RequestMapping(value = "/getLecCtgInfo/{jlecKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("내 강의실 > 수강중인강좌(동영상)의 사이트 카테고리 키 / 선생님 키 가져오기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jlecKey", value = "주문한 강의 키", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getLecCtgInfo(@PathVariable("jlecKey") int jlecKey) {
+        return myPageService.getLecCtgInfo(jlecKey);
+    }
+
     @RequestMapping(value = "/getVideoSignUpCount/{userKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("내 강의실 > 수강중인 강좌수")
     @ApiImplicitParams({

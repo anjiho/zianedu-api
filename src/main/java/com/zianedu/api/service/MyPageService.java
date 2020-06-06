@@ -5,20 +5,20 @@ import com.zianedu.api.define.datasource.GoodsKindType;
 import com.zianedu.api.define.datasource.LectureStatusType;
 import com.zianedu.api.define.err.ZianErrCode;
 import com.zianedu.api.dto.*;
-import com.zianedu.api.mapper.BoardMapper;
-import com.zianedu.api.mapper.ProductMapper;
-import com.zianedu.api.mapper.UserMapper;
+import com.zianedu.api.mapper.*;
 import com.zianedu.api.repository.LectureProgressRateRepository;
 import com.zianedu.api.utils.FileUtil;
 import com.zianedu.api.utils.PagingSupport;
 import com.zianedu.api.utils.Util;
 import com.zianedu.api.vo.*;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -35,6 +35,15 @@ public class MyPageService extends PagingSupport {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private TeacherMapper teacherMapper;
 
     @Autowired
     private LectureProgressRateRepository lectureProgressRateRepository;
@@ -172,6 +181,42 @@ public class MyPageService extends PagingSupport {
             signUpLectureNameList = productMapper.selectSignUpLectureList(userKey, deviceType, subjectCtgKey, stepCtgKey);
         }
         return new ApiResultListDTO(signUpLectureNameList, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getLecCtgInfo(int jlecKey) {
+        int resultCode = OK.value();
+
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        int teacherKey =0;
+
+        if (jlecKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            int gKey = orderMapper.selectGkey(jlecKey);
+            List<Integer> ctgKey = categoryMapper.selectCtgKetListFromTCategoryGoods(gKey);
+
+            int ctg = 0;
+            ctg =Integer.parseInt(ctgKey.get(0).toString());
+            int parentCtgkey = categoryMapper.selectParentKeyFromCategory(ctg);
+
+            if(parentCtgkey !=0 ){
+                int parentCtgkey2 = categoryMapper.selectParentKeyFromCategory(parentCtgkey);
+
+                if(parentCtgkey2 !=0 ){
+                    int parentCtgkey3 = categoryMapper.selectParentKeyFromCategory(parentCtgkey2);
+
+                    if(parentCtgkey3 !=0 ) {
+                        teacherKey = teacherMapper.getTeacherKeyOfJLecKey(jlecKey);
+
+                        hashMap.put("teacherKey", teacherKey);
+                        hashMap.put("ctgKey", parentCtgkey3);
+                    }else resultCode = ZianErrCode.BAD_REQUEST.code();
+                }else resultCode = ZianErrCode.BAD_REQUEST.code();
+            }else resultCode = ZianErrCode.BAD_REQUEST.code();
+        }
+
+        return new ApiResultObjectDTO(hashMap, resultCode);
     }
 
     @Transactional(readOnly = true)

@@ -59,8 +59,8 @@ public class TeacherService extends PagingSupport {
             List<TBbsDataVO> learningQna = boardMapper.selectTBbsDataList(
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey,ZianApiUtils.LIMIT,0, listLimit
             );
-            //수강후기
-            List<GoodsReviewVO> lectureReview = boardMapper.selectGoodsReviewList(teacherKey, ZianApiUtils.LIMIT, 0, listLimit);
+            /*//수강후기
+            List<GoodsReviewVO> lectureReview = boardMapper.selectGoodsReviewList(teacherKey, ZianApiUtils.LIMIT, 0, listLimit);*/
             //동영상강좌정보
             List<GoodsListVO> videoLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 1);
             if (videoLecture.size() > 0) {
@@ -83,7 +83,7 @@ public class TeacherService extends PagingSupport {
                     vo.setImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
                 }
             }
-            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, lectureReview, videoLecture, academyLecture, teacherBook);
+            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, videoLecture, academyLecture, teacherBook);
         }
         return new ApiResultObjectDTO(teacherHomeInfo, resultCode);
     }
@@ -107,8 +107,8 @@ public class TeacherService extends PagingSupport {
             List<TBbsDataVO> learningQna = boardMapper.selectTBbsDataList(
                     BbsMasterKeyType.LEARNING_QNA.getBbsMasterKey(), teacherKey,ZianApiUtils.LIMIT,0, listLimit
             );
-            //수강후기
-            List<GoodsReviewVO> lectureReview = boardMapper.selectGoodsReviewList(teacherKey, ZianApiUtils.LIMIT, 0, listLimit);
+            /*//수강후기
+            List<GoodsReviewVO> lectureReview = boardMapper.selectGoodsReviewList(teacherKey, ZianApiUtils.LIMIT, 0, listLimit);*/
             //동영상강좌정보
             List<GoodsListVO> videoLecture = teacherMapper.selectGoodsListAtTeacherHome(teacherKey, 1);
             if (videoLecture.size() > 0) {
@@ -131,7 +131,7 @@ public class TeacherService extends PagingSupport {
                     vo.setImageUrl(FileUtil.concatPath(ConfigHolder.getFileDomainUrl(), vo.getImageList()));
                 }
             }
-            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna, lectureReview, videoLecture, academyLecture, teacherBook);
+            teacherHomeInfo = new TeacherHomeVO(teacherInfo, referenceRoom, learningQna , videoLecture, academyLecture, teacherBook);
         }
         return new ApiResultObjectDTO(teacherHomeInfo, resultCode);
     }
@@ -492,6 +492,23 @@ public class TeacherService extends PagingSupport {
         return new ApiResultObjectDTO(detailDTO, resultCode);
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ApiResultObjectDTO getTeacherReviewDetail(int gReviewKey, int teacherKey) {
+        int resultCode = OK.value();
+
+        GoodsReviewVO detailDTO = null;
+
+        if (teacherKey == 0 && gReviewKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            detailDTO = teacherMapper.selectGoodsReviewDetailInfo(teacherKey,gReviewKey);
+        }
+
+        return new ApiResultObjectDTO(detailDTO, resultCode);
+    }
+
+
     @Transactional(readOnly = true)
     public ApiResultObjectDTO getTeacherIntroduceList(int ctgKey, int pos) {
         int resultCode = OK.value();
@@ -559,6 +576,41 @@ public class TeacherService extends PagingSupport {
             teacherNameSubjectVO = teacherMapper.selectTeacherNameSubjectName(teacherKey, reqKey);
         }
         return new ApiResultObjectDTO(teacherNameSubjectVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiResultObjectDTO getGKeyListSelectBox(int teacherKey) {
+
+        List<GoodsListVO> goodsListVO = new ArrayList<>();
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            //강사 상세설명 정보
+            goodsListVO = teacherMapper.selectTeacherLecTureList(teacherKey);
+        }
+        return new ApiResultObjectDTO(goodsListVO, resultCode);
+    }
+
+    @Transactional(readOnly = true)
+    public ApiPagingResultDTO getTeacherLecReviewList(int teacherKey, int sPage, int listLimit, int gKey) throws Exception {
+        int resultCode = OK.value();
+
+        List<GoodsReviewVO> lectureReview = new ArrayList<>();
+        int totalCount = 0;
+        int startNumber = getPagingStartNumber(sPage, listLimit);
+
+        if (teacherKey == 0) {
+            resultCode = ZianErrCode.BAD_REQUEST.code();
+        } else {
+            totalCount = boardMapper.selectGoodsReviewListCount(
+                    teacherKey,
+                    gKey
+            );
+            //수강후기
+            lectureReview = boardMapper.selectGoodsReviewList(teacherKey, gKey, startNumber, listLimit);
+        }
+
+        return new ApiPagingResultDTO(totalCount, lectureReview, resultCode);
     }
 
 }

@@ -26,6 +26,12 @@ public interface TeacherMapper {
 
     TeacherNameSubjectVO selectTeacherNameSubjectName(@Param("teacherKey") int teacherKey, @Param("reqKey") int reqKey);
 
+    List<GoodsListVO> selectTeacherLecTureList(@Param("teacherKey") int teacherKey);
+
+    GoodsReviewVO selectGoodsReviewDetailInfo(@Param("teacherKey") int teacherKey, @Param("gReviewKey") int gReviewKey);
+
+    int getTeacherKeyOfJLecKey(@Param("jlecKey") int jlecKey);
+
 
     /** INSERT **/
 

@@ -69,6 +69,8 @@ public interface OrderMapper {
 
     int selectJidChk(@Param("jId") String jId);
 
+    int selectGkey(@Param("jleckey") int jleckey);
+
     /** INSERT **/
     void insertTCart(TCartVO tCartVO);
 

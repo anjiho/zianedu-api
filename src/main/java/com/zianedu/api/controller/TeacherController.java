@@ -151,6 +151,17 @@ public class TeacherController {
         return teacherService.getTeacherLearningQnaDetailInfo(bbsKey, teacherKey);
     }
 
+    @RequestMapping(value = "/getTeacherReviewDetail/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 수강후기 상세정보")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "gReviewKey", value = "선생님 강의 후기 키값", dataType = "int", paramType = "query", required = true)
+    })
+    public ApiResultObjectDTO getTeacherReviewDetail(@PathVariable("teacherKey") int teacherKey,
+                                                              @RequestParam("gReviewKey") int gReviewKey) {
+        return teacherService.getTeacherReviewDetail(gReviewKey, teacherKey);
+    }
+
     @RequestMapping(value = "/getTeacherIntroduceList/{ctgKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
     @ApiOperation("직렬별 교수소개 리스트")
     @ApiImplicitParams({
@@ -185,6 +196,30 @@ public class TeacherController {
     public ApiResultObjectDTO getTeacherNameSubjectName(@PathVariable("teacherKey") int teacherKey,
                                                       @RequestParam("reqKey") int reqKey) {
         return teacherService.getTeacherNameSubjectName(teacherKey, reqKey);
+    }
+
+    @RequestMapping(value = "/getGKeyListSelectBox/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 수강후기(판매중) > 상품리스트")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true)
+    })
+    public ApiResultObjectDTO getGKeyListSelectBox(@PathVariable("teacherKey") int teacherKey) {
+        return teacherService.getGKeyListSelectBox(teacherKey);
+    }
+
+    @RequestMapping(value = "/getTeacherLecReviewList/{teacherKey}", method = RequestMethod.GET, produces = ZianApiUtils.APPLICATION_JSON)
+    @ApiOperation("강사소개 > 학습 Q/A")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teacherKey", value = "강사 키값", dataType = "int", paramType = "path", required = true),
+            @ApiImplicitParam(name = "sPage", value = "페이징 시작 넘버", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "listLimit", value = "페이징 리스 개수", dataType = "int", paramType = "query", required = true),
+            @ApiImplicitParam(name = "gKey", value = "상품 키값", dataType = "int", paramType = "query", required = true),
+    })
+    public ApiPagingResultDTO getTeacherLecReviewList(@PathVariable("teacherKey") int teacherKey,
+                                                    @RequestParam("sPage") int sPage,
+                                                    @RequestParam("listLimit") int listLimit,
+                                                    @RequestParam("gKey") int gKey) throws Exception {
+        return teacherService.getTeacherLecReviewList(teacherKey, sPage, listLimit, gKey);
     }
 
 

@@ -90,21 +90,28 @@
 
     </select>
 
-    <select id="selectGoodsReviewList" resultType="GoodsReviewVO">
-        SELECT
-            A.G_REVIEW_KEY, A.TITLE, A.POINT, B.NAME, TO_CHAR(A.indate, 'YYYY-MM-dd') as indate, A.CONTENTS
+    <select id="selectGoodsReviewListCount" resultType="Integer">
+        SELECT COUNT(*)
         FROM T_GOODS_REVIEW A
-        INNER JOIN T_USER B
-        ON A.USER_KEY = B.USER_KEY
-        WHERE 1=1
-        AND A.G_KEY IN ( SELECT G_KEY FROM T_GOODS_TEACHER_LINK WHERE TEACHER_KEY = #{teacherKey} )
+        INNER JOIN T_GOODS_TEACHER_LINK B ON A.G_KEY = B.G_KEY
+        WHERE B.TEACHER_KEY = #{teacherKey}
+        <if test="gKey != 0">
+            AND A.G_KEY = #{gKey}
+        </if>
         ORDER BY A.G_REVIEW_KEY DESC
-        <if test="listType =='LIMIT'">
-            OFFSET 0 ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
+    </select>
+
+    <select id="selectGoodsReviewList" resultType="GoodsReviewVO">
+        SELECT C.NAME, C.USER_ID, A.G_REVIEW_KEY, A.G_KEY, A.INDATE, A.USER_KEY, A.TITLE, A.CONTENTS, A.POINT
+        FROM T_GOODS_REVIEW A
+        INNER JOIN T_GOODS_TEACHER_LINK B ON A.G_KEY = B.G_KEY
+        INNER JOIN T_USER C ON A.USER_KEY = C.USER_KEY
+        WHERE B.TEACHER_KEY = #{teacherKey}
+        <if test="gKey != 0">
+            AND A.G_KEY = #{gKey}
         </if>
-        <if test="listType =='PAGE'">
-            OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
-        </if>
+        ORDER BY A.G_REVIEW_KEY DESC
+        OFFSET #{startNumber} ROWS FETCH NEXT #{listLimitNumber} ROWS ONLY
     </select>
 
     <select id="selectGoodsReviewAllList" resultType="GoodsReviewVO">
